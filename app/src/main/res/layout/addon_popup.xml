@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/employee_popup_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tranfer_color">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/background_edittext"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/takaway_status_img"
+                android:layout_width="200dp"
+                android:layout_height="120dp"
+                android:layout_above="@+id/update_popup"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/bell" />
+
+
+            <TextView
+                android:id="@+id/takaway_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:textColor="@color/car_total"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/takaway_status_dec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/hindvadodara_regular"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:textColor="@color/update_txt"
+                android:textSize="18dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cus_address"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="@color/white">
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/browse"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_edittext"
+                    android:backgroundTint="@color/background"
+                    android:fontFamily="@font/hindvadodara_medium"
+                    android:gravity="center"
+                    android:text="Browse"
+                    android:textAllCaps="false"
+                    android:textColor="@color/txt_two"
+                    android:textSize="@dimen/_18sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/update"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_edittext"
+                    android:backgroundTint="@color/car_total"
+                    android:fontFamily="@font/hindvadodara_medium"
+                    android:gravity="center"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18sdp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

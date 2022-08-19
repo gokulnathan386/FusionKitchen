@@ -1,0 +1,122 @@
+<resources>
+    <string name="app_name">Fusion Kitchen</string>
+    <string name="post_code_txt">Your food is just one click away</string>
+    <string name="post_code_txt_ent">Enter Your Postcode Here</string>
+
+    <string name="this_internet">This function requires internet connection.</string>
+    <string name="somthinnot_right">Something not right Please try again</string>
+    <string name="dialog_message">Anew version of the app is available.\n Would you like to update them now?</string>
+    <string name="dialog_title">Update available</string>
+
+
+    <string name="skip">Get Started</string>
+    <string name="start">Get Started</string>
+    <string name="slide_1_title">EXPLORE RESTAURANTS</string>
+    <string name="slide_1_desc">Explore restaurants that are available for takeaway or delivery near you.</string>
+    <string name="slide_2_title">PLACE YOUR ORDER</string>
+    <string name="slide_2_desc">Browse menu and build \n your order in seconds.</string>
+    <string name="slide_3_title">RECEIVE YOUR FOOD</string>
+    <string name="slide_3_desc">Pay online securely and \n enjoy your food order.</string>
+
+
+    <string name="post_txt1">Welcome Foodie!</string>
+    <string name="post_txt2">Start Your Online Food Ordering\nJourney &amp; Avail Exciting Fusion Perks!</string>
+    <string name="post_txt3">FUSION PERKS</string>
+    <string name="post_txt4">Order Food Online In Just A Click</string>
+    <string name="post_txt5">Enter postcode and find your city"'"s best eats</string>
+    <string name="post_txt6">Enter your postcode</string>
+    <string name="post_txt7">Restaurants</string>
+    <string name="post_txt8">Zero-contact delivery available</string>
+    <string name="post_txt9">View all</string>
+    <string name="post_txt10">Explore \n Restaurants</string>
+    <string name="post_txt11">Select \n Your Food </string>
+    <string name="post_txt12">Place \n Your Order</string>
+    <string name="post_txt13">Pay \n &amp; Enjoy</string>
+    <string name="post_txt14">View all</string>
+    <string name="post_txt15"><font color='#FF204356'>Order</font><font color='#FF1DC070'> what You Love!</font></string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home_bottom">Home</string>
+    <string name="home_search">Search</string>
+    <string name="home_card">Cart</string>
+    <string name="home_account">Account</string>
+    <string name="home_help">Help</string>
+    <string name="offers">Offers</string>
+    <string name="filter">Filter</string>
+
+    <string name="back">Back</string>
+    <string name="colloction">Collection</string>
+    <string name="delivery">Delivery</string>
+    <string name="moreinfo">More Info</string>
+    <string name="menu_search">Search menu</string>
+    <string name="selectaddon">Select your Add on</string>
+    <string name="more">More</string>
+    <string name="less">...Less</string>
+
+
+    <string name="addon_extra_no">No</string>
+    <string name="addon_extra_less">Less</string>
+    <string name="addon_extra_half">Half</string>
+    <string name="addon_extra_on">On</string>
+    <string name="addon_extra_with">With</string>
+    <string name="addon_extra_onburger">On Burger</string>
+    <string name="addon_extra_onchips">On Chips</string>
+    <string name="guest">Guest</string>
+    <string name="facebook">Facebook</string>
+    <string name="gp"> Google </string>
+    <string name="sigup_link"><font color='#414158'>You don&#8217;t have account?</font> <font color='#36a749'>  SIGN UP</font></string>
+    <string name="teams">Terms &amp; Conditions</string>
+    <string name="map_key" translatable="false">AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0</string>
+
+
+    <string name="facebook_app_id">636968437734329</string>
+    <string name="fb_login_protocol_scheme">fb636968437734329</string>
+
+
+    <string name="freshchat_file_provider_authority">com.example.demoapp.provider</string>
+    <string name="freshchat_activity_title_channel_list">Fusion-Kitchen</string>
+    <string name="service_info">Service fee: A pay for services provided by Fusion Kitchen apart from food charge. The service includes availing you new features, and great customer support</string>
+    <string name="availablebalance">Available Balance</string>
+    <string name="backtohome">Back to home</string>
+    <string name="recharge">Recharge</string>
+    <string name="savedcard">Saved Cards</string>
+    <string name="walletterms">Wallet Terms</string>
+    <string name="recenttransactions">Recent Transactions</string>
+    <string name="seeall">See all</string>
+    <string name="wallettermscon">Wallet Terms &amp; Conditions</string>
+
+
+    <string name="termsone">The terms and conditions subject to which the Fusion Kitchen Wallet Services are mentioned herewith. The utility of Fusion Kitchen Wallet Services by the users is provided to the acceptance of Terms and Conditions. By acceptance of these Services, the users acknowledge that you all have read and understood and agree to be bound by these Terms and Conditions.</string>
+    <string name="termstwo"> &#11044;  &#160; Fusion Kitchen is a Company incorporated with some kind of payment methods also with some banking organizations for transactional sources.</string>
+    <string name="termsthree"> &#11044;  &#160; I agree that the registration and maintenance of the wallet account are subject to rules and regulations introduced or amended from time to time. I hereby certify that I have declared my status as per the rules applicable under laws and legislatures.</string>
+    <string name="termsfour"> &#11044;  &#160; I certify that the information provided by me above as applicable to me as well as in the documentary evidence provided by me are, to the best of my knowledge and belief, true, correct, and complete and that I have not withheld any material information that may affect the assessment &#x2215; categorization of my wallet.</string>
+    <string name="termsfive"> &#11044;  &#160; I give my consent to the Fusion Kitchen Wallet to display my balance in the wallet under the section of My Account.</string>
+    <string name="termssix"> &#11044;  &#160; By agreeing with all these terms, you are supposed to accept the amenities to save your card details for letting the process with ease consisting of your Cardholder name, Card number, and validity of the credit &#x2215; debit card.</string>
+    <string name="termsseven"> &#11044;  &#160; All the details you fed will be under the wallet for placing your orders through the wallet. Meanwhile, you can fill your wallet with any value as when ordering you can use the wallet for deductions with the same wallet money.</string>
+    <string name="termsegit"> &#11044;  &#160; When reaching certain limits pertained to your wallet, you are in a position to recharge your wallet with the needed values. Once recharged, your wallet will get updated with the accurate money on the section.</string>
+    <string name="termsnin"> &#11044;  &#160; One of these terms includes that not a withdrawal &#x2215; transfer of wallet money to your bank account will occur on any conditions. The only choice for using that amount in your wallet is by making orders through Fusion Kitchen and avail the particular cost for the day.</string>
+    <string name="termsten"> &#11044;  &#160; In case of, any suspicious activity to be found with your transactions, we commence you that we have all rights to hold your wallet account, and after proper verification and investigations with authority, actions will be taken.</string>
+    <string name="termselven"> &#11044;  &#160; If any misuse occurs in a case out of our hands or any disclosure of your details leads to miscarriage, Fusion Kitchen is not responsible for handling those in accordance. This may happen due to your third-party access while performing payment actions in a gateway.</string>
+
+
+    <string name="walletprivacypolicy">Wallet Privacy Policy</string>
+    <string name="walletprivacypolicyone"> &#11044;  &#160; We may at any point not disclose any of your personal information and your card details to any of the other entities or groups of companies. You with huge trust and belief have disclosed all of your information on your card and personal entities shall not be leaked without any consent.</string>
+    <string name="walletprivacypolicytwo"> &#11044;  &#160; This policy in turn may lead you to feel free to share your information for all of our transactions in order to proceed with the requirements &#x2215; ordering with us through any mode of payment.</string>
+    <string name="walletprivacypolicythree"> &#11044;  &#160; Fusion Kitchen recognizes the expectations of its customers with regard to privacy, confidentiality, and security of their personal information that resides with the Bank.</string>
+    <string name="walletprivacypolicyfour"> &#11044;  &#160; Keeping the personal information of customers secure and using it solely for the activities related to the Bank and preventing any misuse thereof is a top priority of the Bank. The Bank has adopted a privacy policy aimed at protecting the personal information entrusted and disclosed by the customers.</string>
+
+
+
+    <string name="sigin">Sign In</string>
+    <string name="loginwith">Or Login With</string>
+    <string name="signup">New to Fusion Kitchen? <a href="">Sign Up</a> </string>
+    <string name="maiauth">Please check you email for the \n Account activation link</string>
+    <string name="description">Welcome! to Fusion Kitchen Products </string>
+
+
+    <string name="edittext_hint_post_text"><font size="15">Enter your postcode</font></string>
+
+
+</resources>

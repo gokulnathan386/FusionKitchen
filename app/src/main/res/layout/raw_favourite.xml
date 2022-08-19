@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linerhead"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:backgroundTint="@color/txt_four"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:id="@+id/relative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/shopimg"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/headerplaceholder" />
+
+
+            <TextView
+                android:id="@+id/client_offertwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginBottom="48dp"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingLeft="@dimen/_7sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingRight="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/client_offerone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:paddingLeft="@dimen/_7sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingRight="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <TextView
+                android:id="@+id/client_openstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="110dp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:paddingLeft="@dimen/_7sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingRight="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/layout_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopimg"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:backgroundTint="@color/txt_four"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp">
+
+                <ImageView
+                    android:id="@+id/client_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:maxLines="1"
+                    android:src="@drawable/hederlocoplaceimg"
+                    android:text="Winter is coming"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/clent_rateing_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_below="@id/shopimg"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/star" />
+
+            <TextView
+                android:id="@+id/clent_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopimg"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/clent_rateing_img"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:textColor="@color/das_rateing"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/clent_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopimg"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_toLeftOf="@+id/clent_rating"
+                android:layout_toRightOf="@+id/layout_logo"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/clent_submenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/clent_name"
+                android:layout_toRightOf="@+id/layout_logo"
+                android:fontFamily="@font/roboto_regular"
+                android:text=""
+                android:textColor="@color/post_col_das"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:id="@+id/takway_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/clent_submenu"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/layout_logo">
+
+                <ImageView
+                    android:id="@+id/clent_takway_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:src="@drawable/takeaway" />
+
+
+                <TextView
+                    android:id="@+id/client_takeaway"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingRight="@dimen/_3sdp"
+                    android:text=""
+                    android:textColor="@color/das_open"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delivery_time_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/takway_layout"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toLeftOf="@+id/min_time_layout"
+                android:layout_toRightOf="@+id/layout_logo">
+
+                <ImageView
+                    android:id="@+id/clent_deliverytime_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:src="@drawable/backintime" />
+
+                <TextView
+                    android:id="@+id/client_deliverytime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text=""
+                    android:textColor="@color/post_col_das"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/delivery_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/clent_submenu"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/takway_layout">
+
+                <ImageView
+                    android:id="@+id/clent_delivery_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:src="@drawable/deliveryman" />
+
+                <TextView
+                    android:id="@+id/clent_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text=""
+                    android:textColor="@color/post_col_das"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/min_time_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/delivery_layout"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toLeftOf="@+id/clent_spacel_img"
+                android:layout_toRightOf="@+id/takway_layout">
+
+                <ImageView
+                    android:id="@+id/clent_minorder_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/shoppingbag" />
+
+                <TextView
+                    android:id="@+id/client_deliverymin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text=""
+                    android:textColor="@color/post_col_das"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/clent_spacel_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_below="@id/delivery_layout"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:src="@drawable/heartoffer" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

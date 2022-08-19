@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/terms_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/leftarrow" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/hindvadodara_bold"
+                android:gravity="center"
+                android:text="Filters"
+                android:textColor="@color/txt_ten"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/edit_btns"
+            android:layout_below="@+id/terms_top">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- Linear layout to contain 2 text view and button -->
+                <!-- About Us -->
+                <LinearLayout
+                    android:id="@+id/about_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:text="Sort"
+                            android:textColor="@color/txt_blu_col"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/reset_sort"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="Reset"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp">
+
+                        <TableLayout
+                            android:id="@+id/tableLayout1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+
+                            <TableRow
+                                android:id="@+id/tableRow1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/rating_ACB"
+                                    android:layout_width="0dip"
+                                    android:layout_height="fill_parent"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_corner_bg"
+                                    android:fontFamily="@font/hindvadodara_medium"
+                                    android:gravity="center"
+                                    android:paddingTop="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_5sdp"
+                                    android:text="Rating"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/menu_arrow"
+                                    android:textSize="17dp" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/delivery_ACB"
+                                    android:layout_width="0dip"
+                                    android:layout_height="fill_parent"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_corner_bg"
+                                    android:fontFamily="@font/hindvadodara_medium"
+                                    android:gravity="center"
+                                    android:paddingTop="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_5sdp"
+                                    android:text="Delivery"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/menu_arrow"
+                                    android:textSize="17dp" />
+                            </TableRow>
+
+                            <TableRow
+                                android:id="@+id/tableRow2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_weight="1">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/tablebooking_ACB"
+                                    android:layout_width="0dip"
+                                    android:layout_height="fill_parent"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_corner_bg"
+                                    android:fontFamily="@font/hindvadodara_medium"
+                                    android:gravity="center"
+                                    android:paddingTop="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_5sdp"
+                                    android:text="Table Booking"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/menu_arrow"
+                                    android:textSize="17dp" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/preorder_ACB"
+                                    android:layout_width="0dip"
+                                    android:layout_height="fill_parent"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_corner_bg"
+                                    android:fontFamily="@font/hindvadodara_medium"
+                                    android:gravity="center"
+                                    android:paddingTop="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_5sdp"
+                                    android:text="Pre Order"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/menu_arrow"
+                                    android:textSize="17dp" />
+                            </TableRow>
+
+                        </TableLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:text="Filters"
+                            android:textColor="@color/txt_blu_col"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/reset_filters"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="Reset"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/filter_buton_bg"
+                        android:backgroundTint="@color/filter_buton_bg"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:fontFamily="@font/hindvadodara_medium"
+                            android:gravity="center"
+                            android:text="Special Offer"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/specialofferSW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textOff="Off"
+                            android:textOn="On"
+                            android:textSize="@dimen/_13sdp"
+                            android:theme="@style/mySwitchTheme" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/filter_buton_bg"
+                        android:backgroundTint="@color/filter_buton_bg"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:fontFamily="@font/hindvadodara_medium"
+                            android:gravity="center"
+                            android:text="Collection"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/collectionSW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:switchMinWidth="60dp"
+                            android:textOff="Off"
+                            android:textOn="On"
+                            android:textSize="@dimen/_13sdp"
+                            android:theme="@style/mySwitchTheme" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/filter_buton_bg"
+                        android:backgroundTint="@color/filter_buton_bg"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:fontFamily="@font/hindvadodara_medium"
+                            android:gravity="center"
+                            android:text="Open Now"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/opennowSW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:switchMinWidth="60dp"
+                            android:textOff="Off"
+                            android:textOn="On"
+                            android:textSize="@dimen/_13sdp"
+                            android:theme="@style/mySwitchTheme" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/filter_buton_bg"
+                        android:backgroundTint="@color/filter_buton_bg"
+                        android:padding="@dimen/_3sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:fontFamily="@font/hindvadodara_medium"
+                            android:gravity="center"
+                            android:text="Pre Order"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="20dp" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/preorderSW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:switchMinWidth="60dp"
+                            android:textOff="Off"
+                            android:textOn="On"
+                            android:textSize="@dimen/_13sdp"
+                            android:theme="@style/mySwitchTheme" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:text="Cuisine"
+                            android:textColor="@color/txt_blu_col"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/reset_cusine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="Reset"
+                            android:textColor="@color/menu_arrow"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/cusion_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:overScrollMode="never"
+                        android:scrollbars="vertical" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/edit_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/menu_item_line">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reset_filter_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/background_button"
+                android:backgroundTint="@color/filter_switch"
+                android:fontFamily="@font/hindvadodara_medium"
+                android:gravity="center"
+                android:text="Reset Filters"
+                android:textAllCaps="false"
+                android:textColor="@color/txt_ten"
+                android:textSize="@dimen/_15sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/apply_filter_button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/background_button"
+                android:backgroundTint="@color/welcome_button_color"
+                android:fontFamily="@font/hindvadodara_medium"
+                android:gravity="center"
+                android:text="Apply Filters"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
