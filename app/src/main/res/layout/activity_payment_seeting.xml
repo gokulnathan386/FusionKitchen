@@ -86,6 +86,7 @@
                         android:backgroundTint="@color/white"
                         android:divider="@null"
                         android:dividerHeight="5dp" />
+
                 </RelativeLayout>
 
                 <!--Cash-->

@@ -115,13 +115,16 @@ public class serachgetshop_modal {
         private String favroite;
 
 
-        @SerializedName("Rating")
-        private String Rating;
+        @SerializedName("rating")
+        private String rating;
         @SerializedName("menuurl")
         private String menuurl;
 
         @SerializedName("distance")
         private String distance;
+
+        @SerializedName("collectiontime")
+        private String collectiontime;
 
 
         @SerializedName("offer")
@@ -141,6 +144,18 @@ public class serachgetshop_modal {
 
         @SerializedName("path")
         private String path;
+
+
+
+
+
+        public String getcollectiontime() {
+            return collectiontime;
+        }
+
+        public void setcollectiontime(String collectiontime) {
+            this.collectiontime = collectiontime;
+        }
 
 
 
@@ -244,11 +259,11 @@ public class serachgetshop_modal {
         }
 
         public String getRating() {
-            return Rating;
+            return rating;
         }
 
         public void setRating(String rating) {
-            Rating = rating;
+            rating = rating;
         }
 
         public String getMenuurl() {
@@ -283,6 +298,10 @@ public class serachgetshop_modal {
         public void setClient_cuisines(List<clientinfos.client_cuisines> client_cuisines) {
             this.client_cuisines = client_cuisines;
         }
+
+
+
+
 
         public class offer {
             @SerializedName("offerimg")

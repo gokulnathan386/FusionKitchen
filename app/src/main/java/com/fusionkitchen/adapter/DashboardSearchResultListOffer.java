@@ -98,17 +98,17 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
         Log.e("dasboard_user_id", "" + user_id);
 //Add Fab
         if (user_id != null && !user_id.equals("")) {
-            holder.fav_btn.setVisibility(View.VISIBLE);
+            //holder.fav_btn.setVisibility(View.VISIBLE);
 
             if (listdata[position].getFavroite().equalsIgnoreCase("0")) {
-                holder.fav_btn.setImageResource(R.drawable.heartnoselect);
+              //  holder.fav_btn.setImageResource(R.drawable.heartnoselect);
             } else {
-                holder.fav_btn.setImageResource(R.drawable.heartselect);
+              //  holder.fav_btn.setImageResource(R.drawable.heartselect);
             }
 
 
         } else {
-            holder.fav_btn.setVisibility(View.GONE);
+            //holder.fav_btn.setVisibility(View.GONE);
         }
 
         Picasso.get()
@@ -125,40 +125,45 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
 
 
 //client logo set
-        Picasso.get()
+     /*   Picasso.get()
                 .load(listdata[position].getClientlogo())
                 .placeholder(R.drawable.hederlocoplaceimg)
                 .error(R.drawable.hederlocoplaceimg)
-                .into(holder.client_logo);
+                .into(holder.client_logo);*/
 //client name and rate set
         holder.clent_name.setText(listdata[position].getClientName());
         holder.clent_rating.setText(listdata[position].getRating());
 
+
+        if(listdata[position].getRating().equalsIgnoreCase("0")){
+            holder.View_your_star_rating.setVisibility(View.GONE);
+        }
+
 //client takeaway dliver 4 opp set
         if (listdata[position].getTakeaway() != null && !listdata[position].getTakeaway().isEmpty()) {
-            holder.takway_layout.setVisibility(View.VISIBLE);
-            holder.client_takeaway.setText(listdata[position].getTakeaway());
+        //    holder.takway_layout.setVisibility(View.VISIBLE);
+            holder.client_takeaway.setText(listdata[position].getcollectiontime());
         } else {
 
-            holder.takway_layout.setVisibility(View.GONE);
+           // holder.takway_layout.setVisibility(View.GONE);
         }
 
 
         if (listdata[position].getDelivery() != null && !listdata[position].getDelivery().isEmpty()) {
 
-            holder.delivery_layout.setVisibility(View.VISIBLE);
-            holder.clent_delivery.setText(listdata[position].getDelivery());
+           // holder.delivery_layout.setVisibility(View.VISIBLE);
+            holder.clent_delivery.setText(listdata[position].getDeliverytime());
 
             if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
-                holder.delivery_time_layout.setVisibility(View.VISIBLE);
-                holder.client_deliverytime.setText(listdata[position].getDeliverytime());
+              //  holder.delivery_time_layout.setVisibility(View.VISIBLE);
+               // holder.client_deliverytime.setText(listdata[position].getDeliverytime());
             } else {
-                holder.delivery_time_layout.setVisibility(View.GONE);
+               // holder.delivery_time_layout.setVisibility(View.GONE);
             }
 
         } else {
-            holder.delivery_layout.setVisibility(View.GONE);
-            holder.delivery_time_layout.setVisibility(View.GONE);
+           // holder.delivery_layout.setVisibility(View.GONE);
+           // holder.delivery_time_layout.setVisibility(View.GONE);
         }
 
 
@@ -188,9 +193,9 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
         } else if (listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("preorder")) {
             holder.client_openstatus.setText("PRE-ORDER");
-            holder.client_openstatus.setBackgroundResource(R.drawable.open_background);
+            holder.client_openstatus.setBackgroundResource(R.drawable.preorder_background);
         } else if (listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("openorder")) {
-            holder.client_openstatus.setText("ORDER NOW");
+            holder.client_openstatus.setText("OPEN");
             holder.client_openstatus.setBackgroundResource(R.drawable.open_background);
         } else {
             holder.client_openstatus.setText("CLOSED");
@@ -235,10 +240,10 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
                 holder.client_offerone.setVisibility(View.VISIBLE);
                 if (offerData.get(offerData.size() - 1).getType().equalsIgnoreCase("0")) {
                     holder.client_offerone.setText(offerData.get(offerData.size() - 1).getProdiscount() + " " + "%" + " OFF ");// + myofferData.get(0).getDiscount_code()
-                    holder.client_offerone.setBackgroundResource(R.color.das_offer);
+                    holder.client_offerone.setBackgroundResource(R.color.white);
                 } else {
                     holder.client_offerone.setText("£" + " " + offerData.get(offerData.size() - 1).getProdiscount() + " OFF ");// + myofferData.get(0).getDiscount_code()
-                    holder.client_offerone.setBackgroundResource(R.color.das_offer);
+                    holder.client_offerone.setBackgroundResource(R.color.white);
                 }
               /*  holder.client_offerone.setText(offerData.get(offerData.size() - 1).getProdiscount() + " OFF ");// + myofferData.get(0).getDiscount_code()
                 holder.client_offerone.setBackgroundResource(R.color.das_offer);*/
@@ -248,11 +253,11 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             if (myofferData.get(myofferData.size() - 1).getType().equalsIgnoreCase("0")) {
                 //  offertypeone = "%";
                 holder.client_offerone.setText(myofferData.get(myofferData.size() - 1).getDiscount() + " " + "%" + " OFF ");// + myofferData.get(0).getDiscount_code()
-                holder.client_offerone.setBackgroundResource(R.color.das_offer);
+                holder.client_offerone.setBackgroundResource(R.color.white);
             } else {
                 // offertypeone = "£";
                 holder.client_offerone.setText("£" + " " + myofferData.get(myofferData.size() - 1).getDiscount() + " OFF ");// + myofferData.get(0).getDiscount_code()
-                holder.client_offerone.setBackgroundResource(R.color.das_offer);
+                holder.client_offerone.setBackgroundResource(R.color.white);
             }
         }
 
@@ -346,8 +351,6 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             public void onClick(View view) {
 
 
-
-
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
@@ -374,7 +377,7 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
 
 
         //Add Fab
-        holder.fav_btn.setOnClickListener(new View.OnClickListener() {
+/*        holder.fav_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingshow();
@@ -429,7 +432,7 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
 
 
             }
-        });
+        });*/
 
 
     }
@@ -446,6 +449,8 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
         public ImageView shopimg, client_logo, fav_btn;
         public TextView clent_name, clent_rating, client_takeaway, client_deliverytime, clent_delivery, client_deliverymin, client_openstatus, client_offerone, client_offertwo, clent_submenu;
         public LinearLayout takway_layout, delivery_layout, delivery_time_layout, min_time_layout, linerhead;
+        public TextView coupon_code;
+        LinearLayout View_your_star_rating;
 
 
         public ViewHolder(View itemView) {
@@ -454,7 +459,7 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             //this.report_details_address = (TextView) itemView.findViewById(R.id.report_details_address);
 
             this.shopimg = itemView.findViewById(R.id.shopimg);
-            this.client_logo = itemView.findViewById(R.id.client_logo);
+          //  this.client_logo = itemView.findViewById(R.id.client_logo);
             this.clent_name = itemView.findViewById(R.id.clent_name);
             this.clent_rating = itemView.findViewById(R.id.clent_rating);
             this.client_takeaway = itemView.findViewById(R.id.client_takeaway);
@@ -464,13 +469,16 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             this.client_openstatus = itemView.findViewById(R.id.client_openstatus);
             this.client_offerone = itemView.findViewById(R.id.client_offerone);
             //  this.client_offertwo = itemView.findViewById(R.id.client_offertwo);
-            this.takway_layout = itemView.findViewById(R.id.takway_layout);
-            this.delivery_layout = itemView.findViewById(R.id.delivery_layout);
-            this.delivery_time_layout = itemView.findViewById(R.id.delivery_time_layout);
-            this.min_time_layout = itemView.findViewById(R.id.min_time_layout);
+           // this.takway_layout = itemView.findViewById(R.id.takway_layout);
+            //this.delivery_layout = itemView.findViewById(R.id.delivery_layout);
+            //this.delivery_time_layout = itemView.findViewById(R.id.delivery_time_layout);
+            //this.min_time_layout = itemView.findViewById(R.id.min_time_layout);
             this.clent_submenu = itemView.findViewById(R.id.clent_submenu);
             this.linerhead = itemView.findViewById(R.id.linerhead);
-            this.fav_btn = itemView.findViewById(R.id.fav_btn);
+         //   this.fav_btn = itemView.findViewById(R.id.fav_btn);
+
+            this.coupon_code = itemView.findViewById(R.id.coupon_code);
+            this.View_your_star_rating = itemView.findViewById(R.id.View_your_star_rating);
         }
     }
 

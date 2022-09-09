@@ -230,7 +230,13 @@
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:menu="@menu/bottom_navigation_menu" />
+                app:menu="@menu/bottom_navigation_menu"
+                android:background="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:itemIconTint="#bcbbbc"
+                app:itemTextColor="#bcbbbc"
+                app:itemBackground="@color/white"
+                />
 
         </LinearLayout>
 

@@ -147,7 +147,9 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
 //client takeaway dliver 4 opp set
         if (listdata[position].getTakeaway() != null && !listdata[position].getTakeaway().isEmpty()) {
          //   holder.takway_layout.setVisibility(View.VISIBLE);
-            holder.client_takeaway.setText(listdata[position].getTakeaway());
+
+            //holder.client_takeaway.setText(listdata[position].getTakeaway());
+            holder.client_takeaway.setText(listdata[position].getcollectiontime());
         } else {
 
           //  holder.takway_layout.setVisibility(View.GONE);
@@ -157,7 +159,12 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
         if (listdata[position].getDelivery() != null && !listdata[position].getDelivery().isEmpty()) {
 
            // holder.delivery_layout.setVisibility(View.VISIBLE);
-            holder.clent_delivery.setText(listdata[position].getDelivery());
+
+        //    holder.clent_delivery.setText(listdata[position].getDelivery());
+
+            holder.clent_delivery.setText(listdata[position].getDeliverytime());
+
+
 
             if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
               //  holder.delivery_time_layout.setVisibility(View.VISIBLE);
@@ -203,7 +210,7 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
             holder.client_openstatus.setText("PRE-ORDER");
             holder.client_openstatus.setBackgroundResource(R.drawable.preorder_background);
         } else if (listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("openorder")) {
-            holder.client_openstatus.setText("ORDER NOW");
+            holder.client_openstatus.setText("OPEN");
             holder.client_openstatus.setBackgroundResource(R.drawable.open_background);
         } else {
             holder.client_openstatus.setText("CLOSED");
@@ -369,17 +376,17 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                if(listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("closed")){
 
-                }else{
                     Intent intent = new Intent("custom-message-menuurlpath");
                     intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
                     Log.d("menupath",listdata[position].getMenuurlpath());
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                }
 
 
-
+/*
+                if(listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("closed")){
+                }else{
+*/
 
 
                 //Toast.makeText(view.getContext(), "click on item: " + listdata[position].getId(), Toast.LENGTH_LONG).show();

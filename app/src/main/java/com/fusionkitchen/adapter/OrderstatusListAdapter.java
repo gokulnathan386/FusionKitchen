@@ -49,9 +49,7 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
     // RecyclerView recyclerView;
     public OrderstatusListAdapter(Context mContext, List<orderstatus_model.orderstatus> orderhistory, int num) {
 
-
         this.orderhistory = orderhistory.toArray(new orderstatus_model.orderstatus[0]);
-
         this.mContext = mContext;
         this.num = num;
 

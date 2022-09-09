@@ -84,7 +84,7 @@ public class PopularRestaurantsListAdapter extends RecyclerView.Adapter<PopularR
                 .into(holder.Most_Popular_ImageView_Icon);
 
 
-/*        holder.Most_Popular_Linear_Layout.setOnClickListener(new View.OnClickListener() {
+       /*holder.Most_Popular_Linear_Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -109,8 +109,8 @@ public class PopularRestaurantsListAdapter extends RecyclerView.Adapter<PopularR
                 editorpostcode.putString("KEY_postcode",popularlistmodule.get(position).getPost_code());
                 editorpostcode.putString("KEY_address",popularlistmodule.get(position).getaddress_Location());
                 editorpostcode.putString("KEY_posturl",popularlistmodule.get(position).getmenupage_url());
-               // editorpostcode.putString("KEY_lat", response.body().getLocation().getLat());
-               // editorpostcode.putString("KEY_lon", response.body().getLocation().getLng());
+                editorpostcode.putString("KEY_lat", popularlistmodule.get(position).getLat());
+                editorpostcode.putString("KEY_lon", popularlistmodule.get(position).getLang());
                 editorpostcode.commit();
 
 
@@ -119,8 +119,8 @@ public class PopularRestaurantsListAdapter extends RecyclerView.Adapter<PopularR
 
 
             }
-        });*/
-
+        });
+*/
     }
 
     public void loadingshow() {

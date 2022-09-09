@@ -50,7 +50,7 @@
                         android:src="@drawable/backbtn" />
 
                 </LinearLayout>
-                <LinearLayout
+ <!--               <LinearLayout
                     android:id="@+id/change_postcode"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -119,10 +119,10 @@
                         android:textColor="@color/post_col_das"
                         android:textSize="@dimen/_13sdp" />
 
-                </LinearLayout>
+                </LinearLayout>-->
 
 
-                <!--                <LinearLayout
+                              <LinearLayout
                                     android:id="@+id/change_postcode"
                                     android:layout_width="wrap_content"
                                     android:layout_height="40dp"
@@ -161,14 +161,13 @@
                                         android:textColor="#89898B"
                                         android:textSize="@dimen/_12sdp" />
 
-                                </LinearLayout>-->
+                                </LinearLayout>
 
 
                 <LinearLayout
-                    android:visibility="gone"
-                    android:gravity="end"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:gravity="end"
                     android:layout_marginRight="5dp"
                     android:orientation="horizontal">
                     <LinearLayout
@@ -185,24 +184,39 @@
                             android:src="@drawable/filter_icon" />
                     </LinearLayout>
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:src="@drawable/add_to_card_icon" />
+
+                    <LinearLayout
+                        android:id="@+id/show_offer_page"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_height="match_parent"
+                        tools:ignore="Orientation">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/discount_icon" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-
-
-
-    <!--            <LinearLayout
+          <!--    <LinearLayout
                     android:id="@+id/show_offer_page"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:background="@drawable/background_text_email"
-                    android:visibility="gone">
+                 >
+
+                  &lt;!&ndash;android:background="@drawable/background_text_email"&ndash;&gt;
 
                     <ImageView
                         android:layout_width="20dp"
@@ -327,9 +341,21 @@
                     android:orientation="vertical"
                     >
 
-                    <include layout="@layout/raw_dashboard_search_details" />
+                    <include layout="@layout/dashboard_listview" />
+
+                    <include layout="@layout/dashboard_listview" />
+
+                    <include layout="@layout/dashboard_listview" />
+
+                    <include layout="@layout/dashboard_listview" />
+
+                    <include layout="@layout/dashboard_listview" />
+
+                    <include layout="@layout/dashboard_listview" />
 
                     <include layout="@layout/raw_dashboard_search_details" />
+
+               <!--     <include layout="@layout/raw_dashboard_search_details" />-->
 
                 </LinearLayout>
 
@@ -432,6 +458,12 @@
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:itemIconSize="20dp"
+                app:itemIconTint="@drawable/icon_text_color"
+                app:itemTextColor="@drawable/icon_text_color"
+                app:itemBackground="@drawable/buttom_selector_true"
                 app:menu="@menu/bottom_navigation_menu" />
 
 

@@ -269,6 +269,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
     String  mlaterdatefullUrl;
     ImageView bikeimgonlydelivery;
     CardView mode_view2;
+
   /*  CardView ordermode_popup_view;
     String metdpasfullUrl, mlaterdatefullUrl;
 
@@ -1384,6 +1385,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
     };
 
 
+
     /*---------------------------get order mode coll delivery----------------------------------------------------*/
     private void collDelivery(String smenuurlpath) {
         fullUrl = smenuurlpath + "/collDelivery";
@@ -1504,8 +1506,6 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
 
-
-
         CardView ordermode_popup_view  =dialog.findViewById(R.id.ordermode_popup_view);
         TextView colloetion_tattime = dialog.findViewById(R.id.colloetion_tattime);
         TextView delivery_tattime = dialog.findViewById(R.id.delivery_tattime);
@@ -1547,6 +1547,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         metdpasfullUrl = menuurlpath + "/loadPreOrderPop";
 
+        Log.d("metdpasfullUrl",metdpasfullUrl);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<modeof_order_popup_model> call = apiService.modeofordershow(metdpasfullUrl);
@@ -1597,7 +1598,6 @@ public class Item_Menu_Activity extends AppCompatActivity {
                                 public void run() {
                                     dismissloading();
                                     collection_but.performClick();
-
 
                                 }
                             }, 1000);
@@ -3391,6 +3391,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
         params.put("payment_mode", paymentmode);
         params.put("ordermode", ordermodeoffer);
 
+        Log.d("menu_offer", String.valueOf(params));
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<offer_code_model> call = apiService.offershow(params);

@@ -69,7 +69,7 @@ public class DashboardMostPopularAdapter  extends RecyclerView.Adapter<Dashboard
                 .into(viewHolder.Most_Popular_ImageView_Icon);
 
 
-       /* viewHolder.linear_layout_listview.setOnClickListener(new View.OnClickListener() {
+/*        viewHolder.linear_layout_listview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -95,6 +95,10 @@ public class DashboardMostPopularAdapter  extends RecyclerView.Adapter<Dashboard
                 editorpostcode.putString("KEY_area", dashboardMostPopularModel.get(i).getArea());
                 editorpostcode.putString("KEY_postcode",dashboardMostPopularModel.get(i).getPost_code());
                 editorpostcode.putString("KEY_address",dashboardMostPopularModel.get(i).getaddress_Location());
+                editorpostcode.putString("KEY_posturl",dashboardMostPopularModel.get(i).getmenupage_url());
+                editorpostcode.putString("KEY_lat", dashboardMostPopularModel.get(i).getLat());
+                editorpostcode.putString("KEY_lon", dashboardMostPopularModel.get(i).getLang());
+
                 editorpostcode.commit();
              //   intent.putExtra("menuurlpath",dashboardMostPopularModel.get(i).getmenupage_url());
                 hideloading();

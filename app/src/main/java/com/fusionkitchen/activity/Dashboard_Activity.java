@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.KeyListener;
@@ -94,6 +95,7 @@ public class Dashboard_Activity extends AppCompatActivity {
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
     HttpUrl baseUrl;
+    int bottonkey;
 
     /*---------------------------Session Manager Class----------------------------------------------------*/
     // Session Manager Class
@@ -296,6 +298,27 @@ public class Dashboard_Activity extends AppCompatActivity {
         badge.setBackgroundColor(R.color.app_color);*/
         bottomNav.getMenu().getItem(4).setIcon(R.drawable.menufavourite);
         bottomNav.getMenu().getItem(4).setTitle("Favourite");
+
+        bottomNav.getMenu().findItem(R.id.home_bottom).setCheckable(true);
+
+        final Handler handler = new Handler();
+        final int delay = 2500;
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if(bottonkey == 2){
+                    bottomNav.getMenu().findItem(R.id.home_search).setChecked(true);
+                }else if(bottonkey == 3){
+                    bottomNav.getMenu().findItem(R.id.home_card).setCheckable(true);
+                }else{
+                    bottomNav.getMenu().findItem(R.id.home_bottom).setChecked(true);
+                }
+
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
+
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -303,15 +326,20 @@ public class Dashboard_Activity extends AppCompatActivity {
                     case R.id.home_bottom:
                         // finish();
                         //startActivity(getIntent());
+                        bottonkey = 1;
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
                         break;
                     case R.id.home_search:
+                        bottonkey = 2;
+                        bottomNav.getMenu().findItem(R.id.home_search).setCheckable(true);
                         card_view_search_client.setVisibility(View.VISIBLE);
                         editTextSearchclient.requestFocus();
                         //   bottomNav.getMenu().findItem(R.id.home_search).setChecked(true);
                         break;
                     case R.id.home_card:
+                        bottonkey = 3;
+                        bottomNav.getMenu().findItem(R.id.home_card).setCheckable(true);
                         /*Intent intentreview = new Intent(getApplicationContext(), Review.class);
                         startActivity(intentreview);*/
                         // Toast.makeText(getApplicationContext(), "Card", Toast.LENGTH_SHORT).show();
@@ -321,6 +349,7 @@ public class Dashboard_Activity extends AppCompatActivity {
                         }
                         break;
                     case R.id.home_account:
+                        bottomNav.getMenu().findItem(R.id.home_account).setCheckable(true);
                         if (user_id != null && !user_id.isEmpty()) {
                             Intent intent = new Intent(getApplicationContext(), Favourite_Activity.class);
                             startActivity(intent);
@@ -507,7 +536,10 @@ public class Dashboard_Activity extends AppCompatActivity {
                                             object.getString("image_url"),
                                             object.getString("postcode"),
                                             object.getString("address_location"),
-                                            object.getString("menupageurl")
+                                            object.getString("menupageurl"),
+                                           object.getString("lat"),
+                                           object.getString("lang")
+
 
                                 );
                                dashboardMostPopularModel.add(popularlist);
@@ -758,7 +790,7 @@ public class Dashboard_Activity extends AppCompatActivity {
         Call<location_type_modal> call = apiService.getlocationshop(fullUrl, params);
 
         Log.e("fullUrl", "" + fullUrl);
-        Log.e("params", "" + params);
+        Log.e("params", "" + params + "" +fullUrl);
         call.enqueue(new Callback<location_type_modal>() {
             @Override
             public void onResponse(Call<location_type_modal> call, Response<location_type_modal> response) {
@@ -881,9 +913,7 @@ public class Dashboard_Activity extends AppCompatActivity {
                 //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
 
-
         });
-
     }
     /* *//*---------------------------get api order type values----------------------------------------------------*//*
     private void ordertypecheck(Integer otp) {

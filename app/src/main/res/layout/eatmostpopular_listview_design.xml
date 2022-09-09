@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="280dp"
-    android:layout_height="170dp"
+    android:layout_height="160dp"
     android:id="@+id/Most_Popular_Linear_Layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginRight="10dp"
@@ -43,7 +43,7 @@
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:text="10% OFF"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="50dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="15dp">
@@ -83,16 +83,16 @@
             android:layout_weight="1"
             android:text="Kerala, Pizza"
             android:textColor="#66676D"
-            android:layout_marginBottom="-10dp"
+            android:layout_marginTop="-10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginTop="-20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -109,7 +109,7 @@
                 android:textColor="#204356"
                 android:text="4.5"
                 android:textStyle="bold"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/poppins_medium"

@@ -350,6 +350,7 @@
                                  android:layout_height="135dp"
                                  android:nestedScrollingEnabled="false"
                                  android:overScrollMode="never" />-->
+
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
 
@@ -947,7 +948,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/tranfer_color">
-
 
                 <include layout="@layout/apply_coupon_diagao" />
 

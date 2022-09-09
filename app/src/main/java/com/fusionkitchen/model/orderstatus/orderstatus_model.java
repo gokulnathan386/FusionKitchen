@@ -14,7 +14,6 @@ public class orderstatus_model {
     @SerializedName("msg")
     private String msg;
 
-
     @SerializedName("orderstatus")
     private List<orderstatus_model.orderstatus> orderstatus;
 

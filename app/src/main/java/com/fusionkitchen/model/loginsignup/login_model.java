@@ -56,6 +56,12 @@ public class login_model {
         @SerializedName("email")
         private String email;
 
+        @SerializedName("fname")
+        private String fname;
+
+        @SerializedName("phone")
+        private String phone;
+
         public String getId() {
             return id;
         }
@@ -95,6 +101,23 @@ public class login_model {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+
+        public String getFname() {
+            return fname;
+        }
+
+        public void setFname(String fname) {
+            this.fname = fname;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setphone(String phone) {
+            this.phone = phone;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.fusionkitchen.activity;
 
+import static java.lang.Integer.parseInt;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -102,6 +104,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
+    int bottonkey;
 
 
     /*---------------------------check internet connection----------------------------------------------------*/
@@ -254,9 +257,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         }
 
-      
-
-
         cads = findViewById(R.id.cads);
 
       /*  cads.setOnClickListener(new View.OnClickListener() {
@@ -301,11 +301,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             bottomNav.setVisibility(View.GONE); // gone
         }*/
 
+
+
         BottomNavigationItemView itemView = bottomNav.findViewById(R.id.home_card);
-        View badge = LayoutInflater.from(Postcode_Activity.this).inflate(R.layout.notifcation_badge, bottomNav, false);
+       /* View badge = LayoutInflater.from(Postcode_Activity.this).inflate(R.layout.notifcation_badge, bottomNav, false);
         TextView itemtextcut = badge.findViewById(R.id.badge_text_view);
         itemtextcut.setText(String.valueOf(cursor));
-        itemView.addView(badge);
+        itemView.addView(badge);*/
 
       /*  itemtextcut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,6 +330,22 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 (BottomNavigationMenuView) bottomNav.getChildAt(0);
         View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
         new QBadgeView(Postcode_Activity.this).bindTarget(v).setBadgeNumber(cursor);*/
+
+        final Handler handler = new Handler();
+        final int delay = 2500;
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if(bottonkey == 2){
+                    bottomNav.getMenu().findItem(R.id.home_card).setChecked(true);
+                }else{
+                    bottomNav.getMenu().findItem(R.id.home_bottom).setChecked(true);
+                }
+
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -335,11 +353,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     case R.id.home_bottom:
                         // finish();
                         //startActivity(getIntent());
+                        bottonkey = 1;
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
                         break;
                     case R.id.home_chat:
                         Freshchat.showConversations(getApplicationContext());
+                        bottonkey = 1;
                         break;
                   /*  case R.id.home_chat:
                         Intent Offer = new Intent(getApplicationContext(),Show_Offer_Activity.class);
@@ -348,10 +368,11 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
                     case R.id.home_card:
-                        
+                        bottonkey = 2;
                         if (cursor != 0) {
                             Intent intentcard = new Intent(Postcode_Activity.this, Add_to_Cart.class);
                             startActivity(intentcard);
+                            bottonkey = 1;
                         }
 
 
@@ -366,6 +387,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             intent.putExtra("activity_details", "postcode");
                             startActivity(intent);
                         }
+                        bottonkey = 1;
                         break;
 
                 }
@@ -614,8 +636,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
 
-
-
     /*---------------------------MenuItemAdapter item value get add button click----------------------------------------------------*/
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -655,7 +675,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         }
     };
-
 
     private void PopularRestaurants() {
 
@@ -735,7 +754,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                             object.getString("image_url"),
                                             object.getString("postcode"),
                                             object.getString("address_location"),
-                                            object.getString("menupageurl")
+                                            object.getString("menupageurl"),
+                                            object.getString("lat"),
+                                            object.getString("lang")
                                     );
                                   popularlistmodule.add(popularlist);
                                 }
@@ -879,7 +900,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         }
 
 
-
     }
 
 
@@ -918,6 +938,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             public void onResponse(Call<version_code_modal> call, Response<version_code_modal> response) {
                 int statusCode = response.code();
                 Log.d("responsemsg1", "ok" + statusCode);
+                Log.d("responsemsg1", "ok" + response);
                 /*Get Login Good Response...*/
                 if (statusCode == 200) {
 
@@ -929,7 +950,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             alert.showDialog(Postcode_Activity.this, url);*/
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                    showPopup(url);
+                                     showPopup(url);
+                                     //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                                 }
                             }, 200);
                         }
@@ -1309,6 +1331,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         super.onResume();
         // Tracking the screen view
         MyApplication.getInstance().trackScreenView("Postcode Activity");
+
     }
 
     public void onBackPressed(){

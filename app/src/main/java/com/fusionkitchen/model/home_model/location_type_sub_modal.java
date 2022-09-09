@@ -80,6 +80,11 @@ public class location_type_sub_modal {
         @SerializedName("distance")
         private String distance;
 
+
+        @SerializedName("collectiontime")
+        private String collectiontime;
+
+
         @SerializedName("offer")
         private List<location_type_sub_modal.clients.offer> offer;
 
@@ -101,6 +106,15 @@ public class location_type_sub_modal {
 
         @SerializedName("favroite")
         private String favroite;
+
+
+        public String getcollectiontime() {
+            return collectiontime;
+        }
+
+        public void setcollectiontime(String collectiontime) {
+            this.collectiontime = collectiontime;
+        }
 
 
         public String getDistance() {

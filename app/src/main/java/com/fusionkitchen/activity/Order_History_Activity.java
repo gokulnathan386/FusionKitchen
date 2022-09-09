@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -171,8 +172,11 @@ public class Order_History_Activity extends AppCompatActivity {
         if (cursor != 0) {
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
         }
+
+
         bottomNav = findViewById(R.id.bottom_navigation);
-        //  bottomNav.getMenu().setGroupCheckable(0, false, true);
+
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

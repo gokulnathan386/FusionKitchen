@@ -37,9 +37,18 @@ public class ordertracking_details_model {
         @SerializedName("order_date")
         private String order_date;
 
+        @SerializedName("order_feedback")
+        private String order_feedback;
 
 
 
+        public String getorderfeedback() {
+            return order_feedback;
+        }
+
+        public void setorderfeedback(String order_feedback) {
+            this.order_feedback = order_feedback;
+        }
 
 
         public String getTotal() {

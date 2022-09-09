@@ -31,7 +31,9 @@ import com.stripe.android.model.PaymentIntent;
 import com.stripe.android.model.PaymentMethodOptionsParams;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
-import com.stripe.jetbrains.annotations.NotNull;
+/*import com.stripe.jetbrains.annotations.NotNull;*/
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -119,9 +121,9 @@ public class Googlepay_Activity extends AppCompatActivity {
             Map<String, String> params = new HashMap<String, String>();
             params.put("total", "15");
             params.put("app_id", "0");
-            params.put("fname", "ramesh");
-            params.put("lname", "kr");
-            params.put("email", "ramesh@fusioninnovative.com");
+            params.put("fname", "Gokulnsthan");
+            params.put("lname", "E");
+            params.put("email", "gokulnathane@fusioninnovative.com");
             params.put("cid", "19797");
             params.put("payment_method_id", paymentMethodId);
             params.put("url", "demo2.fusionepos.co.uk");

@@ -896,6 +896,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
                         sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
                         sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());
+                        sloginEditor.putString("login_key_fname",response.body().getUserdetails().getFname());
+                        sloginEditor.putString("login_key_phone",response.body().getUserdetails().getPhone());
                         sloginEditor.commit();
 
 
@@ -1024,6 +1026,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             personId = acct.getId();
 
 
+
             GmailSignupAction(personGivenName, personFamilyName, personId, personEmail, "1");
 
 
@@ -1046,9 +1049,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 
-
-
-
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -1059,7 +1059,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
 
         //
-
 /*        if (requestCode == PHONE_LOGIN_CODE || requestCode == EMAIL_LOGIN_CODE){
             AccountKitLoginResult result = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
             if (result.getError() != null){
@@ -1087,12 +1086,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         //
 
 
-
-
-
-
-
-
     }
 
     @Override
@@ -1101,16 +1094,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            // showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
@@ -1171,7 +1158,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
                         sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
                         sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());
+                        sloginEditor.putString("login_key_fname",response.body().getUserdetails().getfname());
+                        sloginEditor.putString("login_key_phone",response.body().getUserdetails().getphone());
                         sloginEditor.commit();
+
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                         signOut();
                         if (activity_details.equalsIgnoreCase("pcode")) {
@@ -1357,6 +1347,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
                         sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
                         sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());
+                        sloginEditor.putString("login_key_fname",response.body().getUserdetails().getfname());
+                        sloginEditor.putString("login_key_phone",response.body().getUserdetails().getphone());
                         sloginEditor.commit();
                         LoginManager.getInstance().logOut();
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();

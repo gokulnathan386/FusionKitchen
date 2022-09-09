@@ -72,11 +72,12 @@ public class Feedback_Activity extends AppCompatActivity {
     /*--------------Login details get SharedPreferences------------------*/
     SharedPreferences slogin;
     SharedPreferences.Editor sloginEditor;
-    String user_id;
+    String user_id,gmail,phone;
 
     String feedback_type, orderid, clientid;
     EditText comments;
     AppCompatButton feedback_submit;
+    String Fname;
 
 
     @Override
@@ -189,6 +190,11 @@ public class Feedback_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         orderid = intent.getStringExtra("orderid");
         clientid = intent.getStringExtra("clientid");
+        Fname = intent.getStringExtra("Fname");
+        gmail = intent.getStringExtra("gmail");
+        phone = intent.getStringExtra("phone");
+
+
 
 
         comments = findViewById(R.id.comments);
@@ -205,11 +211,11 @@ public class Feedback_Activity extends AppCompatActivity {
                 } else {
                     // Log.e("errorddd ", "" + feedback_type + "   " + comments.getText().toString());
 
-                    //submitfeedback(user_id, orderid, clientid, feedback_type, comments.getText().toString()); // Feedback API calling Method
-                    Toast.makeText(getApplicationContext(), "Thank you for the feedback", Toast.LENGTH_LONG).show();
+                    submitfeedback(user_id, orderid, clientid, feedback_type, comments.getText().toString(),Fname,gmail,phone); // Feedback API calling Method
+                   /* Toast.makeText(getApplicationContext(), "Thank you for the feedback", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Feedback_Activity.this,Order_Status_List_Activity.class);
                     startActivity(intent);
-                    finish();
+                    finish();*/
                 }
             }
         });
@@ -252,7 +258,7 @@ public class Feedback_Activity extends AppCompatActivity {
 
 
     /*  --------------------------Submit feedback----------------------------------------------------*/
-    private void submitfeedback(String struserid, String strorderid, String strclientid, String strtype, String strcomment) {
+    private void submitfeedback(String struserid, String strorderid, String strclientid, String strtype, String strcomment,String fname,String gmail,String phone) {
 
         // get user data from session
         Map<String, String> params = new HashMap<String, String>();
@@ -261,6 +267,9 @@ public class Feedback_Activity extends AppCompatActivity {
         params.put("client_id", strclientid);
         params.put("feedback", strtype);
         params.put("comments", strcomment);
+        params.put("name",fname);
+        params.put("email",gmail);
+        params.put("phone",phone);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<submitfeedback_model> call = apiService.submitfeedback(params);

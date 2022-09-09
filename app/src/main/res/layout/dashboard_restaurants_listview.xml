@@ -172,6 +172,7 @@
 
                                 </TextView>
                                 <TextView
+                                    android:visibility="gone"
                                     android:gravity="center"
                                     android:text="UseCode"
                                     android:textSize="10dp"
@@ -182,6 +183,7 @@
                                     android:layout_height="match_parent">
                                 </TextView>
                                 <TextView
+                                    android:visibility="gone"
                                     android:id="@+id/coupon_code"
                                     android:gravity="center"
                                     android:text="”FUSION10”"

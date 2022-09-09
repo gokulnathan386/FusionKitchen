@@ -132,13 +132,15 @@
                     android:visibility="gone">
 
 
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <RelativeLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
 
-                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -265,16 +267,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:itemBackground="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:itemIconTint="#bcbbbc"
+                app:itemTextColor="#bcbbbc"
                 app:menu="@menu/bottom_navigation_menu" />
 
         </LinearLayout>
-
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

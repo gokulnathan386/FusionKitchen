@@ -114,7 +114,6 @@
                         android:visibility="gone"
                         android:scrollbars="horizontal" />
 
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/myofferlist"
                         android:layout_width="match_parent"
@@ -265,6 +264,11 @@
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:itemBackground="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:itemIconTint="#bcbbbc"
+                app:itemTextColor="#bcbbbc"
                 app:menu="@menu/bottom_navigation_menu" />
 
 

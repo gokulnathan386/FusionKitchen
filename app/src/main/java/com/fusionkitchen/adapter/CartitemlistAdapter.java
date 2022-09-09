@@ -1018,7 +1018,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
             popupWindowaddon.showAsDropDown(popupView, 0, 0);
         }
 
-
     }
 
 
@@ -1037,7 +1036,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
         Log.e("totalPrice", "" + String.format("%.2f", num5));
     }
-
 
 }
 //"£ "+

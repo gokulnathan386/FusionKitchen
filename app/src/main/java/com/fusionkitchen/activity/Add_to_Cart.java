@@ -346,8 +346,11 @@ public class Add_to_Cart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                updateaccountdetails(cusomer_mobile.getText().toString(), user_id, first_name, last_name);
-
+                if(Integer.parseInt(String.valueOf(cusomer_mobile.getText().length())) < 11){
+                    Toast.makeText(Add_to_Cart.this, " Phone Number should be 11 digit", Toast.LENGTH_SHORT).show();
+                }else{
+                    updateaccountdetails(cusomer_mobile.getText().toString(), user_id, first_name, last_name);
+                }
             }
         });
 
@@ -867,11 +870,14 @@ public class Add_to_Cart extends AppCompatActivity {
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                if (cusomer_mobile.getText().toString().isEmpty()) {
-                    Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), "Please enter your contact Number", Snackbar.LENGTH_LONG).show();
-                } else {
+                   Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), "Please enter your contact Number", Snackbar.LENGTH_LONG).show();
+               } else if(Integer.parseInt(String.valueOf(cusomer_mobile.getText().length())) < 11){
+                       Toast.makeText(Add_to_Cart.this, " Phone Number should be 11 digit", Toast.LENGTH_SHORT).show();
+               }else if(mobilenumber.getVisibility() == View.VISIBLE){
+                   updateaccountdetails(cusomer_mobile.getText().toString(), user_id, first_name, last_name);
+                   checkoutvalidate(menuurlpath, totalcardamt, "1", "");
+               }else {
                     checkoutvalidate(menuurlpath, totalcardamt, "1", "");
-
-                    //  Toast.makeText(getApplicationContext(),"collection",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -885,15 +891,15 @@ public class Add_to_Cart extends AppCompatActivity {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                // delivery_time_popup.setVisibility(View.VISIBLE);
-
-                // delivery_time_popup.setVisibility(View.GONE);
-
                 if (cusomer_mobile.getText().toString().isEmpty()) {
                     Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), "Please enter your contact Number", Snackbar.LENGTH_LONG).show();
-                } else {
+                }else if(Integer.parseInt(String.valueOf(cusomer_mobile.getText().length())) < 11){
+                    Toast.makeText(Add_to_Cart.this, " Phone Number should be 11 digit", Toast.LENGTH_SHORT).show();
+                } else if(mobilenumber.getVisibility() == View.VISIBLE){
+                    updateaccountdetails(cusomer_mobile.getText().toString(), user_id, first_name, last_name);
                     checkoutvalidate(menuurlpath, totalcardamt, "0", customerpostcode);
-                    //Toast.makeText(getApplicationContext(),"delivery",Toast.LENGTH_LONG).show();
+                }else {
+                     checkoutvalidate(menuurlpath, totalcardamt, "0", customerpostcode);
                 }
             }
         });
@@ -1036,7 +1042,6 @@ public class Add_to_Cart extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<menu_addon_status_model> call, Response<menu_addon_status_model> response) {
                     //response.headers().get("Set-Cookie");
-
                     int statusCode = response.code();
                     if (statusCode == 200) {
                         hideloading();
@@ -1180,6 +1185,8 @@ public class Add_to_Cart extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+
+
             addressviewopen = intent.getStringExtra("addressviewopen");
             addresstitle = intent.getStringExtra("addresstitle");
             addressname = intent.getStringExtra("addressname");
@@ -1190,7 +1197,6 @@ public class Add_to_Cart extends AppCompatActivity {
             address_titels.setText(addresstitle);
             cus_address.setText(addressname);
 
-            //  Toast.makeText(getApplicationContext(), addressids, Toast.LENGTH_LONG).show();
             if (addressviewopen.equalsIgnoreCase("1")) {
                 edit_postcode.setText("");
                 edit_doorno.setText("");
@@ -1942,6 +1948,7 @@ public class Add_to_Cart extends AppCompatActivity {
     //get api values
     private void getaddressforpostcode(final String post_code) {
 
+
         //final ProgressDialog loader = ProgressDialog.show(Add_to_Cart.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("postcode", post_code);
@@ -1966,7 +1973,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
                         edit_postcode.setText(post_code);
                         keyDel = 1;
-
                     }
 
                 } else {
@@ -2235,6 +2241,11 @@ public class Add_to_Cart extends AppCompatActivity {
     /*---------------------------get account details----------------------------------------------------*/
     //get api values
     private void getaccountdetails(final String cid, final String logintype) {
+
+       // loadingshow();
+
+
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("cid", cid);
         params.put("typeoflogin", logintype);
@@ -2247,8 +2258,9 @@ public class Add_to_Cart extends AppCompatActivity {
                 int statusCode = response.code();
                 Log.d("responsemsg2", "ok" + statusCode);
                 /*Get Login Good Response...*/
-                if (statusCode == 200) {
 
+                if (statusCode == 200) {
+                   // hideloading();
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         if (response.body().getRESPONSE_CODE().equalsIgnoreCase("201")) {
                             first_name = response.body().getData().getFname();
@@ -2260,9 +2272,6 @@ public class Add_to_Cart extends AppCompatActivity {
                             } else {
                                 mobilenumber.setVisibility(View.GONE);
                             }
-
-
-
 
                         } else if (response.body().getRESPONSE_CODE().equalsIgnoreCase("202")) {
                             first_name = response.body().getData().getSsologin().getFname();
@@ -2285,19 +2294,18 @@ public class Add_to_Cart extends AppCompatActivity {
                                 mobilenumber.setVisibility(View.GONE);
                             }
 
-
                         }
-
 
                     }
                 } else {
+                  //  hideloading();
                     Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-
                 }
             }
 
             @Override
             public void onFailure(Call<get_account_modal> call, Throwable t) {
+                //hideloading();
                 Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
@@ -2352,9 +2360,7 @@ public class Add_to_Cart extends AppCompatActivity {
                 //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
 
-
         });
-
 
     }
 
@@ -2372,13 +2378,6 @@ public class Add_to_Cart extends AppCompatActivity {
         //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
 
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(Add_to_Cart.this)
                 .load(R.drawable.loading)

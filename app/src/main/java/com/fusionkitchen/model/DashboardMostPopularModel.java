@@ -10,11 +10,13 @@ public class DashboardMostPopularModel {
     private String postcode;
     private String address_location;
     private String menupageurl;
+    private String lat;
+    private String lang;
 
 
     public DashboardMostPopularModel(String name, String area, String rating_average,
                                      String takeawaystatus,String discount,String image_url,
-                                     String postcode,String address_location,String menupageurl ) {
+                                     String postcode,String address_location,String menupageurl,String lat,String lang) {
         this.name = name;
         this.area = area;
         this.rating_average=rating_average;
@@ -24,6 +26,8 @@ public class DashboardMostPopularModel {
         this.postcode = postcode;
         this.address_location = address_location;
         this.menupageurl = menupageurl;
+        this.lat = lat;
+        this.lang = lang;
     }
 
     public String getDiscount() {
@@ -62,5 +66,13 @@ public class DashboardMostPopularModel {
 
     public  String  getmenupage_url(){
         return menupageurl;
+    }
+
+    public  String  getLat(){
+        return lat;
+    }
+
+    public  String  getLang(){
+        return lang;
     }
 }

@@ -1,5 +1,6 @@
 package com.fusionkitchen.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
@@ -32,7 +33,6 @@ public class CardOfferAdapter extends RecyclerView.Adapter<CardOfferAdapter.View
     public CardOfferAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata) {
         this.mContext = mContext;
         this.listdata = listdata.toArray(new offer_list_model_details.discountcode[0]);
-
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CardOfferAdapter extends RecyclerView.Adapter<CardOfferAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(CardOfferAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(CardOfferAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final offer_list_model_details.discountcode myListData = listdata[position];
 
 

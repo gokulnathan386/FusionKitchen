@@ -1,11 +1,9 @@
 package com.fusionkitchen.activity;
 
 import static com.fusionkitchen.DBHelper.SQLDBHelper.DATABASE_NAME;
-import static com.fusionkitchen.DBHelper.SQLDBHelper.ITEM_TABLE_NAME;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -18,14 +16,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -54,7 +49,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.browser.customtabs.CustomTabsService;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -63,41 +57,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.fusionkitchen.DBHelper.SQLDBHelper;
+import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.viewsavecardAdapter;
 import com.fusionkitchen.app.MyApplication;
+import com.fusionkitchen.check_internet.Internet_connection_checking;
 import com.fusionkitchen.model.Savecard.addnewsavecard_model;
 import com.fusionkitchen.model.Savecard.getclientscSecret_model;
 import com.fusionkitchen.model.Savecard.viewsavecard_details_model;
-import com.fusionkitchen.model.gpay.getgpayclientscSecret_model;
-import com.fusionkitchen.model.wallet.wallet_getrefer_details;
-
-import com.google.android.material.snackbar.Snackbar;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.StringTokenizer;
-
-import com.fusionkitchen.DBHelper.SQLDBHelper;
-import com.fusionkitchen.R;
-import com.fusionkitchen.check_internet.Internet_connection_checking;
 import com.fusionkitchen.model.cart.Cartitem;
 import com.fusionkitchen.model.checkout.CheckloginModel;
+import com.fusionkitchen.model.gpay.getgpayclientscSecret_model;
 import com.fusionkitchen.model.myaccount.get_account_modal;
 import com.fusionkitchen.model.paymentgatway.appkey;
 import com.fusionkitchen.model.paymentgatway.completpay_model;
 import com.fusionkitchen.model.paymentgatway.getclientSecret_model;
+import com.fusionkitchen.model.wallet.wallet_getrefer_details;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.android.material.snackbar.Snackbar;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentIntentResult;
@@ -110,7 +88,19 @@ import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.PaymentMethodOptionsParams;
 import com.stripe.android.view.CardInputWidget;
-import com.stripe.jetbrains.annotations.NotNull;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -221,8 +211,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         hiddencharges = intent.getStringExtra("hiddencharges");
         gpay_apikey = intent.getStringExtra("gpay_apikey");
 
-
-
+        Log.d("public_key",gpay_apikey);
 
 
         if (intent.getStringExtra("coupon_Discription").equalsIgnoreCase("no")) {
@@ -484,9 +473,8 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         );
 
         Log.e("gpayapikey", "" + gpay_apikey);
-
-        GooglePayPaymentMethodLauncher  googlePayLauncher;
-        googlePayLauncher = new GooglePayPaymentMethodLauncher(
+        
+        GooglePayPaymentMethodLauncher googlePayLauncher = new GooglePayPaymentMethodLauncher(
 
                 Payment_Settings_Activity.this,
                 new GooglePayPaymentMethodLauncher.Config(
@@ -497,6 +485,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 Payment_Settings_Activity.this::onGooglePayReady,
                 Payment_Settings_Activity.this::onGooglePayResult
         );
+
       /*    card_number.addTextChangedListener(new TextWatcher() {
             private static final int TOTAL_SYMBOLS = 19; // size of pattern 0000-0000-0000-0000
             private static final int TOTAL_DIGITS = 16; // max numbers of digits in pattern: 0000 x 4
@@ -555,6 +544,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 return digits;
             }
         });*/
+
         if (pay_type.equalsIgnoreCase("1")) {
             /*---------------------------card----------------------------------*/
             card_item.setVisibility(View.VISIBLE);
@@ -625,7 +615,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 promo_discount.put("desc", coupon_Discription);
                 promo_discount.put("type", coupon_type);
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             JSONObject studentsObj = new JSONObject();
@@ -649,7 +638,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                     studentsObj.put("time", sharedpreferences.getString("orderlatertime", null));//ok
                     studentsObj.put("date", sharedpreferences.getString("orderlaterdate", null));//ok
                     studentsObj.put("date_string",sharedpreferences.getString("latertimestring", null));
-
                 }
                 studentsObj.put("preorder_time", "0");//ok
                 studentsObj.put("items", jsonArray1);//ok
@@ -695,7 +683,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             gpay_showamt.setText("Total £ " + pay_amount);
             amount_change_button.setText("Change Payment");
             paybotton_type = "8";
-
         }
 
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
@@ -718,10 +705,11 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         listView.setNestedScrollingEnabled(true);
         listView.setAdapter(cursorAdapter);
+
+
         amount_pay_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if (paybotton_type.equalsIgnoreCase("0")) {
                     /*--------cash---------*/
@@ -745,10 +733,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                     savecartvalidate();
                 } else if (paybotton_type.equalsIgnoreCase("8")) {
                     /*--------GooglePay card Payment---------*/
-
-                    // Toast.makeText(getApplicationContext(), "Google pay", Toast.LENGTH_LONG).show();
-                    googlePayLauncher.present("GBP", Integer.parseInt(tempamount));
-
+                     googlePayLauncher.present("GBP", Integer.parseInt(tempamount));
                 }
             }
         });
@@ -788,7 +773,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         /*---------------------------save_card_get_methodid----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(Save_card_get_details, new IntentFilter("Save_card_details"));
 
-
     }
 
     /*---------------------------Google Pay----------------------------*/
@@ -796,7 +780,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         Log.e("pay_type", "" + pay_type);
         Log.e("pay_type", "" + isReady);
         if (pay_type.equalsIgnoreCase("8")) {
-            amount_pay_button.setEnabled(isReady);
+            amount_pay_button.setEnabled(true);
             Log.e("isReady", "" + isReady);
             if (isReady == false) {
                 amount_pay_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.filter_switch));
@@ -806,8 +790,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 amount_pay_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.welcome_button_color));
             }
         }
-
-
     }
 
     private void onGooglePayResult(@NotNull GooglePayPaymentMethodLauncher.Result result) {
@@ -868,7 +850,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                     }
                 }
 
-
                 @Override
                 public void onFailure(retrofit2.Call<getgpayclientscSecret_model> call, Throwable t) {
                     hideloading();
@@ -877,21 +858,18 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 }
             });
 
-
         } else if (result instanceof GooglePayPaymentMethodLauncher.Result.Canceled) {
             // User cancelled the operation
-            //  Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_LONG).show();
+              Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_LONG).show();
         } else if (result instanceof GooglePayPaymentMethodLauncher.Result.Failed) {
             // Operation failed; inspect `result.getError()` for the exception
-            Log.e("paymentfails", "" + ((GooglePayPaymentMethodLauncher.Result.Failed) result).getError());
-            // Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
+              Log.e("paymentfails", "" + ((GooglePayPaymentMethodLauncher.Result.Failed) result).getError());
+             Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
 
         }
 
 
     }
-
-
     /*---------------------------save_card_get_methodid----------------------------------------------------*/
     public BroadcastReceiver Save_card_get_details = new BroadcastReceiver() {
         @SuppressLint("SetTextI18n")
@@ -979,7 +957,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             TextView alertTextView = dialog.findViewById(R.id.text_dialog1);
             TextView alertTextViewtwo = dialog.findViewById(R.id.text_dialog);
             alertTextView.setText("Thank You !");
-            alertTextViewtwo.setText("Your Payment was successfull.\nNow you can Track your order");
+            alertTextViewtwo.setText("Your Payment was successful.\nNow you can Track your order");
             dialog.show();
         }
     }
@@ -1141,6 +1119,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
 
     private void getpublisekey() {
         bulkeyfullUrl = menuurlpath + "/stripeAppId";
+        Log.d("stripeappid",bulkeyfullUrl);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<appkey> call = apiService.stripepubliskey(bulkeyfullUrl);
         call.enqueue(new Callback<appkey>() {
@@ -1154,8 +1133,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                         Log.e("securitykey", "" + response.body().getData().getSecuritykey());
                         token = response.body().getData().getSecuritykey();
                         apikey = response.body().getData().getApi_id();
-
-
                     }
                 } else {
                     // loader.dismiss();

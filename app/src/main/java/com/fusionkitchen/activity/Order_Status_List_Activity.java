@@ -224,7 +224,7 @@ public class Order_Status_List_Activity extends AppCompatActivity {
         });
     }
 
-    /*---------------------------check internet connection----------------------------------------------------*/
+    /*------------------------------------------check internet connection----------------------------------------------------*/
 
     public class ViewDialog {
         public void showDialog(Activity activity) {
@@ -414,7 +414,6 @@ public class Order_Status_List_Activity extends AppCompatActivity {
         }
         return false;
     }
-
 
     @Override
     public void onResume() {

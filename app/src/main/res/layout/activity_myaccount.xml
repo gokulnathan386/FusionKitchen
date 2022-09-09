@@ -294,6 +294,7 @@
                                     android:fontFamily="@font/roboto_bold"
                                     android:inputType="number"
                                     android:text=""
+                                    android:maxLength="11"
                                     android:textColor="@color/txt_ten"
                                     android:textSize="@dimen/_15sdp" />
 
@@ -549,6 +550,12 @@
                 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:itemIconSize="20dp"
+                app:itemIconTint="@drawable/icon_text_color"
+                app:itemTextColor="@drawable/icon_text_color"
+                app:itemBackground="@drawable/buttom_selector_true"
+                app:labelVisibilityMode="labeled"
                 app:menu="@menu/bottom_navigation_menu" />
 
 

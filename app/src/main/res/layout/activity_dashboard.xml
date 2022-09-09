@@ -204,9 +204,10 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-                    <include layout="@layout/raw_dashboard_search_details" />
+                   <include layout="@layout/raw_dashboard_search_details" />
 
                     <include layout="@layout/raw_dashboard_search_details" />
+
 
                 </LinearLayout>
 

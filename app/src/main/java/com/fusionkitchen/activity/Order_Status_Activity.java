@@ -85,7 +85,7 @@ public class Order_Status_Activity extends AppCompatActivity {
 
 
 
-
+    String fname;
     /*---------------------------XML ID Call----------------------------------------------------*/
 
     View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
@@ -127,6 +127,7 @@ public class Order_Status_Activity extends AppCompatActivity {
     boolean check_reject_btn = true;
 
     AppCompatButton chat_client, call_client;
+    String phone,gmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +162,10 @@ public class Order_Status_Activity extends AppCompatActivity {
         /*--------------Login details get SharedPreferences------------------*/
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
         user_id = (slogin.getString("login_key_cid", null));
+        fname = (slogin.getString("login_key_fname",null));
+        gmail = (slogin.getString("login_key_email",null));
+        phone = (slogin.getString("login_key_phone",null));
+
         /*---------------------------Fresh Chat----------------------------------------------------*/
 
         FreshchatConfig config = new FreshchatConfig("67d078d8-604f-44c7-8807-c8a96810af62", "0604e381-8106-48e8-95bf-bc74bc8893fe");
@@ -230,6 +235,8 @@ public class Order_Status_Activity extends AppCompatActivity {
         clientphonenumber = intent.getStringExtra("clientphonenumber");
 
 
+
+
        /* if (clsstype.equalsIgnoreCase("1")) {
             dbHelper.deleteAll();
           //  Order_Status_Activity.this.deleteDatabase("SQLiteExample.db");
@@ -274,9 +281,7 @@ public class Order_Status_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 handler.removeCallbacksAndMessages(null);
-
                 startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
-
             }
         });
 
@@ -460,6 +465,8 @@ public class Order_Status_Activity extends AppCompatActivity {
 
 
 
+
+
                         if (otype.equalsIgnoreCase("0")) {
                             orderprocessed.setImageResource(R.drawable.deliverybike);
                             textorderpickup.setText("Order Delivered");
@@ -479,8 +486,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 //Order recived
                                 if (check_again_btn == true) {
                                     check_again_btn = false;
-                                    ViewwaitingDialog alert = new ViewwaitingDialog();
-                                    alert.shownowaitingDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewwaitingDialog alert = new ViewwaitingDialog();
+                                        alert.shownowaitingDialog(Order_Status_Activity.this);
+                                    }
                                 }
                             } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("1") && response.body().getOrdertracking().getOrder().getOrder().getDrivertracking().equalsIgnoreCase("false")) {
 
@@ -488,8 +497,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 getOrderStatus("1");
                                 if (check_confirmDialog_btn == true) {
                                     check_confirmDialog_btn = false;
-                                    ViewconfirmDialog alert = new ViewconfirmDialog();
-                                    alert.showconfirmDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewconfirmDialog alert = new ViewconfirmDialog();
+                                        alert.showconfirmDialog(Order_Status_Activity.this);
+                                    }
                                 }
                                 if (waitingdialog != null && waitingdialog.isShowing()) {
                                     waitingdialog.cancel();
@@ -511,9 +522,10 @@ public class Order_Status_Activity extends AppCompatActivity {
 
                                 if (check_delivedDialog_btn == true) {
                                     check_delivedDialog_btn = false;
-
-                                    ViewdelivedDialog alert = new ViewdelivedDialog();
-                                    alert.showdelivedDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewdelivedDialog alert = new ViewdelivedDialog();
+                                        alert.showdelivedDialog(Order_Status_Activity.this);
+                                    }
                                 }
 
                                 if (confirmdialog != null && confirmdialog.isShowing()) {
@@ -530,8 +542,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 getOrderStatus("0");
                                 if (check_reject_btn == true) {
                                     check_reject_btn = false;
-                                    ViewrejectDialog alert = new ViewrejectDialog();
-                                    alert.showrejectDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewrejectDialog alert = new ViewrejectDialog();
+                                        alert.showrejectDialog(Order_Status_Activity.this);
+                                    }
                                 }
 
                                 if (confirmdialog != null && confirmdialog.isShowing()) {
@@ -550,8 +564,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 //Order recived
                                 if (check_again_btn == true) {
                                     check_again_btn = false;
-                                    ViewwaitingDialog alert = new ViewwaitingDialog();
-                                    alert.shownowaitingDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewwaitingDialog alert = new ViewwaitingDialog();
+                                        alert.shownowaitingDialog(Order_Status_Activity.this);
+                                    }
                                 }
                             } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("1")) {
                                 //   handler.removeCallbacksAndMessages(null);
@@ -559,8 +575,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 getOrderStatus("1");
                                 if (check_confirmDialog_btn == true) {
                                     check_confirmDialog_btn = false;
-                                    ViewconfirmDialog alert = new ViewconfirmDialog();
-                                    alert.showconfirmDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewconfirmDialog alert = new ViewconfirmDialog();
+                                        alert.showconfirmDialog(Order_Status_Activity.this);
+                                    }
                                 }
                                 if (waitingdialog != null && waitingdialog.isShowing()) {
                                     waitingdialog.cancel();
@@ -571,8 +589,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 //Order Delived
                                 if (check_delivedDialog_btn == true) {
                                     check_delivedDialog_btn = false;
-                                    ViewdelivedDialog alert = new ViewdelivedDialog();
-                                    alert.showdelivedDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewdelivedDialog alert = new ViewdelivedDialog();
+                                        alert.showdelivedDialog(Order_Status_Activity.this);
+                                    }
 
                                     if (confirmdialog != null && confirmdialog.isShowing()) {
                                         confirmdialog.cancel();
@@ -587,8 +607,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                                 //Order rejected
                                 if (check_reject_btn == true) {
                                     check_reject_btn = false;
-                                    ViewrejectDialog alert = new ViewrejectDialog();
-                                    alert.showrejectDialog(Order_Status_Activity.this);
+                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                        ViewrejectDialog alert = new ViewrejectDialog();
+                                        alert.showrejectDialog(Order_Status_Activity.this);
+                                    }
                                 }
 
                                 if (confirmdialog != null && confirmdialog.isShowing()) {
@@ -605,6 +627,7 @@ public class Order_Status_Activity extends AppCompatActivity {
 
                     }
                 } else {
+                    Log.d("Gokulnathan","Test");
 
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
@@ -825,6 +848,10 @@ public class Order_Status_Activity extends AppCompatActivity {
                     Intent intent = new Intent(mContext, Feedback_Activity.class);
                     intent.putExtra("orderid", orderid);
                     intent.putExtra("clientid", clientid);
+                    intent.putExtra("Fname",fname);
+                    intent.putExtra("gmail",gmail);
+                    intent.putExtra("phone",phone);
+
 
                     startActivity(intent);
 

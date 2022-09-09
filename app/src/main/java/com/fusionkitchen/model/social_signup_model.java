@@ -58,6 +58,12 @@ public class social_signup_model {
         @SerializedName("email")
         private String email;
 
+        @SerializedName("fname")
+        private String fname;
+
+        @SerializedName("phone")
+        private String phone;
+
 
 
         public String getId() {
@@ -99,6 +105,22 @@ public class social_signup_model {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+
+        public String getfname() {
+            return fname;
+        }
+
+        public void setfname(String fname) {
+            this.fname = fname;
+        }
+
+        public String getphone() {
+            return phone;
+        }
+        public void setphone(String phone) {
+            this.phone = phone;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.fusionkitchen.activity;
 
+import static java.lang.Integer.parseInt;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +59,7 @@ public class MyAccount_Activity extends AppCompatActivity {
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
+    int bottonkey;
 
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
@@ -188,7 +192,19 @@ public class MyAccount_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                updateaccountdetails(first_name.getText().toString(), last_name.getText().toString(), mobile_number.getText().toString(), user_id);
+                if(first_name.getText().toString().trim().isEmpty()){
+                    Toast.makeText(MyAccount_Activity.this, "Please Enter Your are FirstName", Toast.LENGTH_SHORT).show();
+                }else if(last_name.getText().toString().trim().isEmpty()){
+                    Toast.makeText(MyAccount_Activity.this, "Please Enter Your are LastName", Toast.LENGTH_SHORT).show();
+                }else if(email.getText().toString().trim().isEmpty()){
+                    Toast.makeText(MyAccount_Activity.this, "Please Enter Your are Email", Toast.LENGTH_SHORT).show();
+                }else if(mobile_number.getText().toString().trim().equalsIgnoreCase("")){
+                    Toast.makeText(MyAccount_Activity.this, "Please Enter Your are Mobile number", Toast.LENGTH_SHORT).show();
+                }else if(Integer.parseInt(String.valueOf(mobile_number.getText().length())) < 11){
+                    Toast.makeText(MyAccount_Activity.this, " Phone Number should be 11 digit", Toast.LENGTH_SHORT).show();
+                }else{
+                    updateaccountdetails(first_name.getText().toString(), last_name.getText().toString(), mobile_number.getText().toString(), user_id);
+                }
             }
         });
         personal_close.setOnClickListener(new View.OnClickListener() {
@@ -261,6 +277,24 @@ public class MyAccount_Activity extends AppCompatActivity {
         }
         bottomNav.getMenu().findItem(R.id.home_search).setVisible(false);
         bottomNav.getMenu().findItem(R.id.home_chat).setVisible(true);
+
+
+        final Handler handler = new Handler();
+        final int delay = 2500;
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                if(bottonkey == 2){
+                    bottomNav.getMenu().findItem(R.id.home_card).setChecked(true);
+                }else{
+                    bottomNav.getMenu().findItem(R.id.home_account).setChecked(true);
+                }
+
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
+
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -273,8 +307,10 @@ public class MyAccount_Activity extends AppCompatActivity {
                         break;
                     case R.id.home_chat:
                         Freshchat.showConversations(getApplicationContext());
+                        bottonkey = 3;
                         break;
                     case R.id.home_card:
+                        bottonkey = 2;
                         /*Intent intentreview = new Intent(getApplicationContext(), Review.class);
                         startActivity(intentreview);*/
                         // Toast.makeText(getApplicationContext(), "Card", Toast.LENGTH_SHORT).show();
@@ -286,6 +322,7 @@ public class MyAccount_Activity extends AppCompatActivity {
 
                         break;
                     case R.id.home_account:
+                        bottonkey = 3;
                        /* Intent intentmore = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intentmore);*/
                         Toast.makeText(getApplicationContext(), "My Account", Toast.LENGTH_SHORT).show();
