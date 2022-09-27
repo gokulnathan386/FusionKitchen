@@ -214,6 +214,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         Log.d("public_key",gpay_apikey);
 
 
+
         if (intent.getStringExtra("coupon_Discription").equalsIgnoreCase("no")) {
             coupon_Discription = "";
         } else {
@@ -351,30 +352,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 return false;
             }
         });
-     /*   card_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nestscro.scrollTo(0, 3000);
-            }
 
-        });
-*/
-/*        card_name.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View view, MotionEvent event) {
-                // TODO Auto-generated method stub
-                nestscro.scrollTo(0, 3000);
-                // nestscro.fullScroll(View.FOCUS_UP);
-              *//*  if (view.getId() ==R.id.card_name) {
-                    view.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction()&MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_UP:
-                            view.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-                }*//*
-                return false;
-            }
-        });*/
         //card_date.addTextChangedListener(mDateEntryWatcher);
         /*-------------------card date validation----------------*/
         card_date.addTextChangedListener(mDateEntryWatcher);
@@ -411,57 +389,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 }
             }
         });
-      /*  card_number.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean flag = true;
-                String eachBlock[] = card_number.getText().toString().split(" ");
-                for (int i = 0; i < eachBlock.length; i++) {
-                    if (eachBlock[i].length() > 4) {
-                        flag = false;
-                    }
-                }
-                if (flag) {
-                    card_number.setOnKeyListener(new View.OnKeyListener() {
-                        @Override
-                        public boolean onKey(View v, int keyCode, KeyEvent event) {
-                            if (keyCode == KeyEvent.KEYCODE_DEL)
-                                keyDel = 1;
-                            return false;
-                        }
-                    });
-
-                    if (keyDel == 0) {
-                        if (((card_number.getText().length() + 1) % 5) == 0) {
-                            if (card_number.getText().toString().split(" ").length <= 3) {
-                                card_number.setText(card_number.getText() + " ");
-                                card_number.setSelection(card_number.getText().length());
-                            }
-                        }
-                        a = card_number.getText().toString();
-                    } else {
-                        a = card_number.getText().toString();
-                        keyDel = 0;
-                    }
-                    if (card_number.getText().toString().length() == 19) {
-                        card_date.requestFocus();
-                    }
-                } else {
-                    card_number.setText(a);
-
-                }
-
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });*/
-        /*---------------------get securt key and publise key -----------------------------*/
+             /*---------------------get securt key and publise key -----------------------------*/
         getpublisekey();
 
 
@@ -486,64 +414,84 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 Payment_Settings_Activity.this::onGooglePayResult
         );
 
-      /*    card_number.addTextChangedListener(new TextWatcher() {
-            private static final int TOTAL_SYMBOLS = 19; // size of pattern 0000-0000-0000-0000
-            private static final int TOTAL_DIGITS = 16; // max numbers of digits in pattern: 0000 x 4
-            private static final int DIVIDER_MODULO = 5; // means divider position is every 5th symbol beginning with 1
-            private static final int DIVIDER_POSITION = DIVIDER_MODULO - 1; // means divider position is every 4th symbol beginning with 0
-            private static final char DIVIDER = ' ';
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // noop
-            }
+
+        card_name.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // noop
+
+                       if(s.length() == 1 ){
+                          amount_pay_button.setBackgroundResource(R.color.welcome_button_color);
+                          amount_pay_button.setEnabled(true);
+                      }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_MODULO, DIVIDER)) {
-                    s.replace(0, s.length(), buildCorrectString(getDigitArray(s, TOTAL_DIGITS), DIVIDER_POSITION, DIVIDER));
-                }
             }
-            private boolean isInputCorrect(Editable s, int totalSymbols, int dividerModulo, char divider) {
-                boolean isCorrect = s.length() <= totalSymbols; // check size of entered string
-                for (int i = 0; i < s.length(); i++) { // check that every element is right
-                    if (i > 0 && (i + 1) % dividerModulo == 0) {
-                        isCorrect &= divider == s.charAt(i);
-                    } else {
-                        isCorrect &= Character.isDigit(s.charAt(i));
-                    }
+        });
+
+
+
+        card_number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.length() == 1 ){
+                    amount_pay_button.setBackgroundResource(R.color.welcome_button_color);
+                    amount_pay_button.setEnabled(true);
                 }
-                return isCorrect;
             }
 
-            private String buildCorrectString(char[] digits, int dividerPosition, char divider) {
-                final StringBuilder formatted = new StringBuilder();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
-                for (int i = 0; i < digits.length; i++) {
-                    if (digits[i] != 0) {
-                        formatted.append(digits[i]);
-                        if ((i > 0) && (i < (digits.length - 1)) && (((i + 1) % dividerPosition) == 0)) {
-                            formatted.append(divider);
-                        }
-                    }
+
+
+        card_date.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.length() == 1 ){
+                    amount_pay_button.setBackgroundResource(R.color.welcome_button_color);
+                    amount_pay_button.setEnabled(true);
                 }
-                return formatted.toString();
             }
-            private char[] getDigitArray(final Editable s, final int size) {
-                char[] digits = new char[size];
-                int index = 0;
-                for (int i = 0; i < s.length() && index < size; i++) {
-                    char current = s.charAt(i);
-                    if (Character.isDigit(current)) {
-                        digits[index] = current;
-                        index++;
-                    }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        card_cvv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.length() == 1 ){
+                    amount_pay_button.setBackgroundResource(R.color.welcome_button_color);
+                    amount_pay_button.setEnabled(true);
                 }
-                return digits;
             }
-        });*/
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
 
         if (pay_type.equalsIgnoreCase("1")) {
             /*---------------------------card----------------------------------*/
@@ -554,6 +502,9 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             amount_below_btoon.setVisibility(View.VISIBLE);
             amount_change_button.setText("Amount Payable\nTotal £ " + pay_amount);
             paybotton_type = "1";
+
+            amount_pay_button.setBackgroundResource(R.color.txt_two);
+            amount_pay_button.setEnabled(false);
             /*-------------------View save Crd--------------------*/
             viewsavecard(user_id);
         } else if (pay_type.equalsIgnoreCase("0")) {
@@ -1148,39 +1099,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         });
     }
 
-    /*  private TextWatcher mDateEntryWatcher = new TextWatcher() {
-          @Override
-          public void onTextChanged(CharSequence s, int start, int before, int count) {
-              String working = s.toString();
-              boolean isValid = true;
-              if (working.length() == 2 && before == 0) {
-                  if (Integer.parseInt(working) < 1 || Integer.parseInt(working) > 12) {
-                      isValid = false;
-                      card_date.setText("");
-                      card_date.setError("Your Exp Date is invalide");
-                  } else {
-                      working += "/";
-                      card_date.setText(working);
-                      card_date.setSelection(working.length());
-                  }
-              } else if (working.length() == 5 && before == 0) {
-                  String enteredYear = working.substring(3);
-                  int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                  if (Integer.parseInt(enteredYear) < currentYear) {
-                      isValid = false;
-                  }
-              }
-              if (working.length() == 5) {
-                  card_cvv.requestFocus();
-              }
-          }
-          @Override
-          public void afterTextChanged(Editable s) {
-          }
-          @Override
-          public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-          }
-      };*/
     /*---------------------card date validation---------------*/
     private TextWatcher mDateEntryWatcher = new TextWatcher() {
         @Override
@@ -1257,9 +1175,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
     }
 
     private void pay() {
-
-
-
        /* CardInputWidget cardInputWidget = findViewById(R.id.cardInputWidget);
         PaymentMethodCreateParams params;
         params = cardInputWidget.getPaymentMethodCreateParams();*/
@@ -1327,6 +1242,8 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         params.put("email", user_email);
         params.put("app_id", "0");
         metdpasfullUrl = menuurlpath + "/stripepaymentProcess";
+
+
 //, "Bearer " + token
         //ApiInterface apiService = ApiClient.getInstance().getClient2().create(ApiInterface.class);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1426,9 +1343,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
 
                 Log.e("paymentIntenterror3", "" + paymentIntent);
 
-                // Payment failed – allow retrying using a different payment method
-              /*activity.runOnUiThread(() -> activity.displayAlert("Payment failed",
-                        paymentIntent.getLastPaymentError().getMessage(), false));*/
+
                 showPopup("Your card's security code is incorrect.");
             } else if (status == PaymentIntent.Status.RequiresConfirmation) {
                 // After handling a required action on the client, the status of the PaymentIntent is
@@ -2233,74 +2148,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         }
     }
 
-    //errormsg
-// new PaymentMethodOptionsParams.Card(sc_cvc)
-    /*----------------------------cvc check--------------------------*/
-   /* private class CvcUpdateResultCallback implements ApiResultCallback<Token> {
-        @Override
-        public void onSuccess(@NotNull Token result) {
-            final String tokenId = result.getId();
-            // pass token ID to your backend
-            Log.e("tokenId", "" + tokenId);
-            loadingshow();
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("total", pay_amount);
-            params.put("fname", first_name);
-            params.put("lname", last_name);
-            params.put("email", user_email);
-            params.put("app_id", "0");
-            params.put("svuid", user_id);
-            params.put("pmid", savecardmid);
-            params.put("token", tokenId);
-
-            metdpasfullUrl = menuurlpath + "/svcardpayment";
-            //, "Bearer " + token
-            //ApiInterface apiService = ApiClient.getInstance().getClient2().create(ApiInterface.class);
-            ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-            retrofit2.Call<getclientscSecret_model> call = apiService.getscclientsecret(metdpasfullUrl, params);
-            Log.e("paramsintentpass", "" + params);
-            call.enqueue(new retrofit2.Callback<getclientscSecret_model>() {
-                @Override
-                public void onResponse(Call<getclientscSecret_model> call, Response<getclientscSecret_model> response) {
-                    int statusCode = response.code();
-                    Log.e("statusCode", "" + statusCode);
-                    if (statusCode == 200) {
-                        hideloading();
-                        if (response.body().getStatus().equalsIgnoreCase("true")) {
-                            sc_client_secret = response.body().getData().getClient_secret();
-                            Log.e("sc_client_secret", "" + sc_client_secret);
-                            PaymentConfiguration.init(getApplicationContext(), apikey);//new version add this line version 17.0.0
-                            // stripe = new Stripe(getApplicationContext(), PaymentConfiguration.getInstance(getApplicationContext()).getPublishableKey());
-                            stripe = new Stripe(
-                                    getApplicationContext(),
-                                    Objects.requireNonNull(apikey)
-                            );
-                            Log.e("sc_apikey", "" + apikey);
-                            confirmPaymentIntent(savecardmid, sc_client_secret, sc_card_cvv);
-                        }
-                    } else {
-                        hideloading();
-                        Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), "Client secret id not found", Snackbar.LENGTH_LONG).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(retrofit2.Call<getclientscSecret_model> call, Throwable t) {
-                    hideloading();
-                    Log.e("errorcode1", "" + t);
-                    Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                }
-            });
-        }
-
-        @Override
-        public void onError(@NotNull Exception e) {
-            // handle error
-        }
-    }*/
-
-
     private void confirmPaymentIntent(String scmid, String sc_clientSecret, String cvc) {
         final ConfirmPaymentIntentParams params =
                 ConfirmPaymentIntentParams.createWithPaymentMethodId(
@@ -2348,30 +2195,20 @@ public class Payment_Settings_Activity extends AppCompatActivity {
     public void loadingshow() {
         imgdialog = new Dialog(Payment_Settings_Activity.this);
         imgdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         imgdialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         imgdialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = imgdialog.findViewById(R.id.custom_loading_imageView);
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
+
 
         Glide.with(Payment_Settings_Activity.this)
                 .load(R.drawable.loading)
                 .placeholder(R.drawable.loading)
                 .centerCrop()
                 .into(gifImageView);
-        //...finaly show it
         imgdialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
     public void hideloading() {
         imgdialog.dismiss();
     }
@@ -2380,7 +2217,6 @@ public class Payment_Settings_Activity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // Tracking the screen view
         MyApplication.getInstance().trackScreenView("Payment Setting Activity");
     }
 }

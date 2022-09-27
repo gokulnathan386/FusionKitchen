@@ -204,8 +204,6 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
 
-
-
         /*---------------------------check internet connection----------------------------------------------------*/
         int_chk = new Internet_connection_checking(Moreinfo_Activity.this);
         Connection = int_chk.checkInternetConnection();
@@ -248,6 +246,7 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
         sharedpreferences = getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
 
         menuurlpath = sharedpreferences.getString("menuurlpath", null);
+
 
         /*---------------------------Session Manager Class----------------------------------------------------*/
        /* session = new SessionManager(getApplicationContext());
@@ -475,6 +474,9 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
         params.put("address_location", address);
 
         fullUrl = path + "/about";
+
+        Log.d("params&path", String.valueOf(params) +" "+ fullUrl);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<about_us_model> call = apiService.getaboutus(fullUrl, params);
         call.enqueue(new Callback<about_us_model>() {
@@ -568,10 +570,6 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
                         open_hrs_review.setAdapter(adapter);
 
 
-
-
-
-
                       /*  fetchType = Constants.USE_ADDRESS_NAME;
                         mResultReceiver = new AddressResultReceiver(null);
 
@@ -585,10 +583,8 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
                         startService(intent);*/
 
 
-                    } else {
                     }
                 } else {
-
                     Snackbar.make(Moreinfo_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -605,51 +601,6 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-
-   /* class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, final Bundle resultData) {
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                final Address address = resultData.getParcelable(Constants.RESULT_ADDRESS);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        latvalue = address.getLatitude();
-                        lonvalue = address.getLongitude();
-                        Log.e("Latitude1", "Latitude: " + latvalue);
-                        Log.e("Latitude2", "Longitude: " + lonvalue);
-
-
-                        new CountDownTimer(2000, 1000) {
-
-                            public void onTick(long millisUntilFinished) {
-
-                            }
-
-                            public void onFinish() {
-                                fetchLocation();
-                            }
-                        }.start();
-
-
-                        // onMapReady(latvalue,lonvalue);
-                    }
-                });
-            } else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e("Latitude3", "Latitude: " + resultData.getString(Constants.RESULT_DATA_KEY));
-
-                    }
-                });
-            }
-        }
-    }*/
 
 
     /*---------------------------check internet connection----------------------------------------------------*/
@@ -846,21 +797,11 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
         dialog = new Dialog(Moreinfo_Activity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
 
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(Moreinfo_Activity.this)
                 .load(R.drawable.loading)

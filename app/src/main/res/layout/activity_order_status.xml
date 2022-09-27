@@ -67,11 +67,23 @@
                             android:textSize="@dimen/_20sdp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/Delivery_Collection_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text=""
+                            android:textColor="@color/txt_three"
+                            android:textSize="16dp"
+                       />
+
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/order_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:fontFamily="@font/roboto_medium"
                             android:text=""
                             android:textColor="@color/txt_ten"
@@ -545,7 +557,7 @@
                                         android:layout_marginRight="@dimen/_10sdp"
                                         android:fontFamily="@font/roboto_regular"
                                         android:gravity="center"
-                                        android:text="Items"
+                                        android:text="Price"
                                         android:textColor="@color/white"
                                         android:textSize="@dimen/_15sdp" />
 

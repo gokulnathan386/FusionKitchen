@@ -41,6 +41,10 @@ public class ordertracking_details_model {
         private String order_feedback;
 
 
+        @SerializedName("order_dateword")
+        private String order_dateword;
+
+
 
         public String getorderfeedback() {
             return order_feedback;
@@ -140,6 +144,16 @@ public class ordertracking_details_model {
 
         public void set_order_date(String order_date) {
             this.order_date = order_date;
+        }
+
+
+
+        public String get_order_dateword() {
+            return order_dateword;
+        }
+
+        public void set_order_dateword(String order_dateword) {
+            this.order_dateword = order_dateword;
         }
 
     }

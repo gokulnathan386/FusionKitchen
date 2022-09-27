@@ -174,6 +174,17 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         holder.delete_All_Item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+              if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("1")){
+                    SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                    editor_extra.putString("pop_up_show","2");
+                    editor_extra.commit();
+                }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("3")){
+                  SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                  editor_extra.putString("pop_up_show","2");
+                  editor_extra.commit();
+              }
+
                 SharedPreferences.Editor editor = sharedpreferences1.edit();
                 editor.putString("More_info", "MoreInfo");
                 editor.commit();
@@ -201,6 +212,17 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                     holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.minus_item));
                 }
                 if (count == 0) {
+
+                    if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("1")){
+                        SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                        editor_extra.putString("pop_up_show","2");
+                        editor_extra.commit();
+                    }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("3")){
+                        SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                        editor_extra.putString("pop_up_show","2");
+                        editor_extra.commit();
+                    }
+
                     SharedPreferences.Editor editor = sharedpreferences1.edit();
                     editor.putString("More_info", "MoreInfo");
                     editor.commit();

@@ -83,6 +83,18 @@ public class PopularRestaurantsListAdapter extends RecyclerView.Adapter<PopularR
                 .load(popularlistmodule.get(position).getImage_url())
                 .into(holder.Most_Popular_ImageView_Icon);
 
+        /*Intent intent = new Intent("custom-message-menuurlpath");
+        intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
+
+        holder.Most_Popular_Linear_Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("Invaild_Postcode_activity");
+                intent.putExtra("PostCode_Activity","PostCode_Message");
+                LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
+            }
+        });
 
        /*holder.Most_Popular_Linear_Layout.setOnClickListener(new View.OnClickListener() {
             @Override

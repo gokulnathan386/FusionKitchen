@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginStart="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+              <ImageView
+                  android:visibility="gone"
+                  android:id="@+id/Enter_your_Left_arrow"
+                  android:background="@drawable/menu_left_arrow"
+                  android:layout_width="10dp"
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginBottom="1dp"
+                  android:layout_height="12dp">
+              </ImageView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/menu_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="7dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/colloction"
+            android:textColor="#17284D"
+            android:textSize="@dimen/_15sdp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

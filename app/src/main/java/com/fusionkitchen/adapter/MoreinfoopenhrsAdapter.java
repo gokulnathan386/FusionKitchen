@@ -2,6 +2,7 @@ package com.fusionkitchen.adapter;
 
 import android.content.Context;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
     public MoreinfoopenhrsAdapter(Context mContext, List<about_us_model.aboutdetails.openinghours> listdata) {
         this.mContext = mContext;
         this.listdata = listdata.toArray(new about_us_model.aboutdetails.openinghours[0]);
-
     }
 
     @Override

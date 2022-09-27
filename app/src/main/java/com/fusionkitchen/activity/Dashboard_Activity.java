@@ -296,12 +296,13 @@ public class Dashboard_Activity extends AppCompatActivity {
        /* BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.home_card);
         badge.setNumber(cursor);
         badge.setBackgroundColor(R.color.app_color);*/
-        bottomNav.getMenu().getItem(4).setIcon(R.drawable.menufavourite);
-        bottomNav.getMenu().getItem(4).setTitle("Favourite");
+
+        //bottomNav.getMenu().getItem(4).setIcon(R.drawable.menufavourite);
+        //bottomNav.getMenu().getItem(4).setTitle("Favourite");
 
         bottomNav.getMenu().findItem(R.id.home_bottom).setCheckable(true);
 
-        final Handler handler = new Handler();
+      /*  final Handler handler = new Handler();
         final int delay = 2500;
 
         handler.postDelayed(new Runnable() {
@@ -316,7 +317,7 @@ public class Dashboard_Activity extends AppCompatActivity {
 
                 handler.postDelayed(this, delay);
             }
-        }, delay);
+        }, delay);*/
 
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -326,19 +327,19 @@ public class Dashboard_Activity extends AppCompatActivity {
                     case R.id.home_bottom:
                         // finish();
                         //startActivity(getIntent());
-                        bottonkey = 1;
+                      //  bottonkey = 1;
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
                         break;
                     case R.id.home_search:
-                        bottonkey = 2;
+                       // bottonkey = 2;
                         bottomNav.getMenu().findItem(R.id.home_search).setCheckable(true);
                         card_view_search_client.setVisibility(View.VISIBLE);
                         editTextSearchclient.requestFocus();
                         //   bottomNav.getMenu().findItem(R.id.home_search).setChecked(true);
                         break;
                     case R.id.home_card:
-                        bottonkey = 3;
+                       // bottonkey = 3;
                         bottomNav.getMenu().findItem(R.id.home_card).setCheckable(true);
                         /*Intent intentreview = new Intent(getApplicationContext(), Review.class);
                         startActivity(intentreview);*/
@@ -350,25 +351,22 @@ public class Dashboard_Activity extends AppCompatActivity {
                         break;
                     case R.id.home_account:
                         bottomNav.getMenu().findItem(R.id.home_account).setCheckable(true);
-                        if (user_id != null && !user_id.isEmpty()) {
+                       /* if (user_id != null && !user_id.isEmpty()) {
                             Intent intent = new Intent(getApplicationContext(), Favourite_Activity.class);
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
                             intent.putExtra("activity_details", "myfavourite");
                             startActivity(intent);
-                        }
-                      /*  Intent intent = new Intent(getApplicationContext(), Favourite_Activity.class);
-                        startActivity(intent);*/
-                        // item.setIcon(R.drawable.icon4);
-                        /*if (user_id != null && !user_id.isEmpty()) {
+                        }*/
+                        if (user_id != null && !user_id.isEmpty()) {
                             Intent intentcard = new Intent(getApplicationContext(), MyAccount_Activity.class);
                             startActivity(intentcard);
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
-                            intent.putExtra("activity_details", "myaccount");
-                            startActivity(intent);
-                        }*/
+                            Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
+                            intent_account.putExtra("activity_details", "myaccount");
+                            startActivity(intent_account);
+                        }
                         break;
                 }
                 return true;
@@ -379,6 +377,8 @@ public class Dashboard_Activity extends AppCompatActivity {
         linearLayout_backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(Dashboard_Activity.this,Postcode_Activity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -477,7 +477,7 @@ public class Dashboard_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), Item_Filters.class));
+               // startActivity(new Intent(getApplicationContext(), Item_Filters.class));
             }
         });
 
@@ -489,7 +489,7 @@ public class Dashboard_Activity extends AppCompatActivity {
 
 
 
-  /*-----------------------------------------Recyclerview List--------------------------------------------*/
+   /*-----------------------------------------Recyclerview List--------------------------------------------*/
 
         Enter_your_RecyclerView = findViewById(R.id.Enter_your_RecyclerView);
         dashboardListViewAdapter = new DashboardListViewAdapter(dashboardListViewModels,Dashboard_Activity.this);
@@ -537,10 +537,8 @@ public class Dashboard_Activity extends AppCompatActivity {
                                             object.getString("postcode"),
                                             object.getString("address_location"),
                                             object.getString("menupageurl"),
-                                           object.getString("lat"),
-                                           object.getString("lang")
-
-
+                                            object.getString("lat"),
+                                            object.getString("lang")
                                 );
                                dashboardMostPopularModel.add(popularlist);
                             }

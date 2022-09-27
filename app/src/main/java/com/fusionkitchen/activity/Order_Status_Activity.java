@@ -92,7 +92,7 @@ public class Order_Status_Activity extends AppCompatActivity {
     ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced;
     TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced;
 
-    AppCompatTextView order_date, order_id, total_amt;
+    AppCompatTextView order_date, order_id, total_amt,Delivery_Collection_time;
 
     ConstraintLayout tracking_layout, bill_layout;
     AppCompatTextView view_bill, hide_bill;
@@ -218,6 +218,9 @@ public class Order_Status_Activity extends AppCompatActivity {
         chat_client = findViewById(R.id.chat_client);
         call_client = findViewById(R.id.call_client);
 
+        Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
+
+
 
         chat_client.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,26 +236,6 @@ public class Order_Status_Activity extends AppCompatActivity {
         clientname = intent.getStringExtra("clientname");
         clientid = intent.getStringExtra("clientid");
         clientphonenumber = intent.getStringExtra("clientphonenumber");
-
-
-
-
-       /* if (clsstype.equalsIgnoreCase("1")) {
-            dbHelper.deleteAll();
-          //  Order_Status_Activity.this.deleteDatabase("SQLiteExample.db");
-            for (int i = 0; i < dbHelper.listContacts().size(); i++) {
-                Log.e("dbHelper1", "" + dbHelper.listContacts().size());
-                Log.e("dbHelper3", "" + Integer.parseInt(dbHelper.listContacts().get(i).getId()));
-                dbHelper.deleteItem(Integer.parseInt(dbHelper.listContacts().get(i).getId()));
-
-            }
-
-        }
-*/
-
-
-
-
 
         Log.e("itemvalue1", "" + orderid);
         Log.e("itemvalue2", "" + orderpath);
@@ -423,8 +406,11 @@ public class Order_Status_Activity extends AppCompatActivity {
                         listview_total.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getTotal());
 
                         order_date.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_date());
-
+                        Delivery_Collection_time.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
                         Log.d("order_date",response.body().getOrdertracking().getOrder().getOrder().get_order_date());
+
+
+                        Log.d("delivery_collection_time",response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
 
                         sub_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
                         if (response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0")) {
@@ -627,8 +613,6 @@ public class Order_Status_Activity extends AppCompatActivity {
 
                     }
                 } else {
-                    Log.d("Gokulnathan","Test");
-
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
             }

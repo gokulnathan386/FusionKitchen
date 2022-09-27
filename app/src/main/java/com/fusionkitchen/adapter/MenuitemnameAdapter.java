@@ -156,6 +156,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 //    Toast.makeText(mContext, sub.getName(), Toast.LENGTH_LONG).show();
                 //  Toast.makeText(mContext, listdatum.getName(), Toast.LENGTH_LONG).show();
 
+                holder.menu_item_add.setEnabled(false);
 
                 if (cursor != 0) {
                         addonitem(view,position,holder);
@@ -165,7 +166,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             addonitem(view,position,holder);
 
                         }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
+
                             Order_mode_popup(view,holder,position);
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.menu_item_add.setEnabled(true);
+                                }
+                            }, 4000);
 
                         }else{
                             addonitem(view,position,holder);
@@ -248,7 +257,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             }, 1000);
 
 
-
                         } else if (!response.body().getData().getCollection().getStatus().equalsIgnoreCase("0")) {
                             loading();
                             new Handler().postDelayed(new Runnable() {
@@ -256,7 +264,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 public void run() {
                                     dismissloading();
                                     collection_but.performClick();
-
 
                                 }
                             }, 1000);
@@ -409,8 +416,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                             bun_today.performClick();
                                                         }
                                                     }, 1000);
-
-
                                                 }
                                             } else {
                                                 loading();
@@ -1033,7 +1038,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             editor_extra.commit();
                                         }
 
-
+                                        holder.menu_item_add.setEnabled(true);
 
                                         SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                                         editor_extra.putString("ordermodetype", order_mode);
@@ -1126,6 +1131,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     private void addonitem(View view, int position, ViewHolder holder) {
         loadingshow();
+        holder.menu_item_add.setEnabled(true);
         //  Toast.makeText(mContext, items[position].getId(), Toast.LENGTH_LONG).show();
         //    Toast.makeText(mContext, sub.getName(), Toast.LENGTH_LONG).show();
         //  Toast.makeText(mContext, listdatum.getName(), Toast.LENGTH_LONG).show();

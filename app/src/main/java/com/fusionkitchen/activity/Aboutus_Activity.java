@@ -184,9 +184,6 @@ public class Aboutus_Activity extends AppCompatActivity {
 
     }
 
-
-
-
     /*---------------------------check internet connection----------------------------------------------------*/
 
     public class ViewDialog {
@@ -235,21 +232,11 @@ public class Aboutus_Activity extends AppCompatActivity {
 
         dialog = new Dialog(Aboutus_Activity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
 
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(Aboutus_Activity.this)
                 .load(R.drawable.loading)
@@ -257,7 +244,6 @@ public class Aboutus_Activity extends AppCompatActivity {
                 .centerCrop()
                 .into(gifImageView);
 
-        //...finaly show it
         dialog.show();
     }
 

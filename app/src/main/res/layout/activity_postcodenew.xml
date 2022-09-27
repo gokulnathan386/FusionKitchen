@@ -37,13 +37,15 @@
                         android:id="@+id/abl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginRight="12dp"
                         android:theme="@style/AppTheme.AppBarOverlay">
+
 
                         <androidx.appcompat.widget.Toolbar
                             android:id="@+id/toolbar"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_marginStart="320dp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:background="@drawable/user_icon"
                             app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -69,6 +71,7 @@
                     android:layout_below="@+id/Online_food"
                     android:id="@+id/schedule_book_rel"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_height="match_parent"
                 >
 
@@ -101,19 +104,22 @@
 
                                     <LinearLayout
                                         android:id="@+id/lnreg"
+                                        android:weightSum="5"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/txt_normal"
                                         android:orientation="horizontal">
 
                                         <LinearLayout
+                                            android:layout_weight="4.5"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
-                                            android:background="@drawable/edittext_backgroundcolor">
+                                            android:background="@drawable/edittext_backgroundcolor"
+                                            tools:ignore="Orientation">
 
                                             <EditText
                                                 android:id="@+id/post_code_edittext"
-                                                android:layout_width="280dp"
+                                                android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
                                                 android:background="@null"
                                                 android:fontFamily="@font/poppins_regular"
@@ -145,11 +151,12 @@
                                         <!-- android:text="L37 0AB" -->
                                         <LinearLayout
                                             android:id="@+id/post_code_check"
-                                            android:layout_width="match_parent"
+                                            android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center"
                                             android:background="@drawable/search_icon_ovel"
                                             android:gravity="center"
+                                            android:layout_weight="0.5"
                                             android:orientation="horizontal">
 
                                             <ImageView
@@ -169,10 +176,10 @@
                                 <LinearLayout
                                     android:id="@+id/Office_Image"
                                     android:layout_width="match_parent"
-                                    android:layout_height="170dp"
+                                    android:layout_height="150dp"
                                     android:layout_below="@+id/rlimg"
                                     android:layout_marginLeft="8dp"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="20dp"
                                     android:weightSum="2"
                                     android:layout_marginRight="8dp"
                                     android:background="@drawable/banner_bg"
@@ -195,7 +202,7 @@
                                             android:text="Get upto *"
                                             android:textColor="#F7F9FD"
                                             android:layout_marginLeft="10dp"
-                                            android:textSize="18dp"></TextView>
+                                            android:textSize="13dp"></TextView>
 
                                         <TextView
                                             android:layout_width="match_parent"
@@ -221,14 +228,16 @@
                                         </TextView>
 
                                         <TextView
+                                            android:layout_gravity="bottom"
+                                            android:layout_alignParentBottom="true"
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="match_parent"
                                             android:layout_marginLeft="10dp"
                                             android:fontFamily="@font/poppins_regular"
                                             android:text="View more+"
-                                            android:layout_marginTop="5dp"
+                                            android:layout_marginTop="12dp"
                                             android:textColor="#F7F9FD"
-                                            android:textSize="15dp"
+                                            android:textSize="13dp"
                                             android:textStyle="bold">
                                         </TextView>
 
@@ -281,12 +290,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/Office_Image"
                                     android:layout_marginLeft="@dimen/_10sdp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="15dp"
                                     android:fontFamily="@font/poppins_bold"
                                     android:gravity="left"
                                     android:text="Eat What makes you happy"
                                     android:textColor="#204356"
-                                    android:textSize="15dp"></TextView>
+                                    android:textSize="15dp">
+                                </TextView>
 
 
                                 <androidx.recyclerview.widget.RecyclerView
@@ -343,6 +353,7 @@
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginTop="0dp"
                                     android:layout_marginEnd="0dp"
+                                    android:layout_marginBottom="70dp"
                                     android:padding="8dp"
                                     android:scrollbars="none" />
 
@@ -527,7 +538,7 @@
                 app:labelVisibilityMode="labeled"
                 app:itemIconSize="20dp"
                 app:itemIconTint="@drawable/icon_text_color"
-                app:itemTextColor="@drawable/icon_text_color"
+                app:itemTextColor="@drawable/icon_text_selected_color"
                 app:itemBackground="@drawable/buttom_selector_true"
                 app:menu="@menu/bottom_navigation_menu" />
 

@@ -11,8 +11,8 @@ android {
         applicationId "com.fusionkitchen"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 56  //56
-        versionName "1.6" //1.5
+        versionCode 58  //56
+        versionName "1.8" //1.5
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
@@ -171,4 +171,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.stripe:stripe-java:21.0.0'
+
+
+
 }

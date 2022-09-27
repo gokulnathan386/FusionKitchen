@@ -438,16 +438,25 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
             @Override
             public void afterTextChanged(Editable s) {
+
+                invalide_postcode.setVisibility(View.GONE);
+                post_code_edittext.setHintTextColor(getResources().getColor(R.color.Invalid_color_code1));
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
+
+                invalide_postcode.setVisibility(View.GONE);
+                post_code_edittext.setHintTextColor(getResources().getColor(R.color.Invalid_color_code1));
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
+                invalide_postcode.setVisibility(View.GONE);
+                post_code_edittext.setHintTextColor(getResources().getColor(R.color.Invalid_color_code1));
+
                 Log.e("lenth", "" + s.length());
 
                 if (s.length() == 5) {
@@ -458,6 +467,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     if (zipCode.matches(regex) == true) {
                         post_code_new = zipCode.substring(0, 2) + " " + zipCode.substring(2);
                         post_code_edittext.setText(post_code_new);
+                        post_code_edittext.setSelection(post_code_edittext.getText().length());
                         Log.e("zip code", " The zip code is: " + zipCode);
                         Log.e("zip code", " Is the above zip code valid? " + zipCode.matches(regex));//.matches(regex));
                     }
@@ -470,6 +480,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     if (zipCode.matches(regex) == true) {
                         post_code_new = zipCode.substring(0, 3) + " " + zipCode.substring(3);
                         post_code_edittext.setText(post_code_new);
+                        post_code_edittext.setSelection(post_code_edittext.getText().length());
                         Log.e("zip code", " The zip code is: " + zipCode);
                         Log.e("zip code", " Is the above zip code valid? " + zipCode.matches(regex));//.matches(regex));
                     }
@@ -483,6 +494,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     if (zipCode.matches(regex) == true) {
                         post_code_new = zipCode.substring(0, 4) + " " + zipCode.substring(4);
                         post_code_edittext.setText(post_code_new);
+                        post_code_edittext.setSelection(post_code_edittext.getText().length());
                         Log.e("zip code", " The zip code is: " + post_code_new);
                         Log.e("zip code", " The zip code is: " + zipCode);
                         Log.e("zip code", " Is the above zip code valid? " + zipCode.matches(regex));//.matches(regex));
@@ -599,6 +611,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message-menuurlpath"));
 
 
+        /*---------------------------Post code Adapter item value get----------------------------------------------------*/
+        LocalBroadcastManager.getInstance(this).registerReceiver(mInvaild_postcode, new IntentFilter("Invaild_Postcode_activity"));
+
+
         /*---------------Remove cart popup--------------------*/
         go_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -629,7 +645,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("More_info", "Moreinfo-popup");
         editor.commit();
-
 
 
     }
@@ -676,57 +691,28 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         }
     };
 
+
+
+
+    /*---------------------------MenuItemAdapter item value get add button click----------------------------------------------------*/
+    public BroadcastReceiver mInvaild_postcode = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String invaild_postcode = intent.getStringExtra("PostCode_Activity");
+
+            post_code_edittext.setHintTextColor(getResources().getColor(R.color.Invalid_color_code));
+            post_code_edittext.setFocusableInTouchMode(true);
+            post_code_edittext.requestFocus();
+            post_code_edittext.clearFocus();
+
+        }
+    };
+
+
     private void PopularRestaurants() {
 
-
         loadingshow();
-
-     /*   String fullUrl = "https://www.api.fusionkitchen.co.uk/loadPopularRestaurants";
-
-
-
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<popular_restaurants_listmodel> call = apiService.mostpopularlist(fullUrl);
-        call.enqueue(new Callback<popular_restaurants_listmodel>() {
-            @Override
-            public void onResponse(Call<popular_restaurants_listmodel> call, Response<popular_restaurants_listmodel> response) {
-                int statusCode = response.code();
-                Log.d("responsemsgg", "ok" + statusCode);
-                *//*Get Login Good Response...*//*
-
-                popularRestaurantsListAdapter = new PopularRestaurantsListAdapter(popularlistmodule,Postcode_Activity.this);
-                RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
-                Most_Popular_Listview.setLayoutManager(manager4);
-                Most_Popular_Listview.setAdapter(popularRestaurantsListAdapter);
-
-                if (statusCode == 200) {
-
-                   *//* if (response.body().getStatus().equalsIgnoreCase("true")) {
-
-
-
-                    }*//*
-               } else {
-
-                   Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                    // Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-               }
-
-            }
-
-
-            @Override
-            public void onFailure(Call<popular_restaurants_listmodel> call, Throwable t) {
-
-                Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-            }
-
-
-        });*/
-
-
-        //Log.d("APIPosturl", String.valueOf(baseUrl));
 
         popularRestaurantsListAdapter = new PopularRestaurantsListAdapter(popularlistmodule,Postcode_Activity.this);
         RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
@@ -857,8 +843,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(false);
 
 
-
-
         }*/
 
 
@@ -867,7 +851,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } else {
             bottomNav.setVisibility(View.GONE); // gone
         }
-
 
         if (login_status.equalsIgnoreCase("true")) {
 
@@ -895,13 +878,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(false);
 
 
-
-
         }
 
-
     }
-
 
     /*---------------------------validate Login----------------------------------------------------*/
     /*Check Login Details Hear...!*/
@@ -923,6 +902,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 str_postcode_seperate_str = str_postcode_seperate;
             }
             post_code_edittext.setText(str_postcode_seperate_str.toUpperCase());
+            post_code_edittext.setSelection(post_code_edittext.getText().length());
             postcodecheck(post_code_edittext.getText().toString());
         }
     }
@@ -943,7 +923,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 if (statusCode == 200) {
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
-                        apiversionname = response.body().getVersion().get(0).getVersion();
+                         apiversionname = response.body().getVersion().get(0).getVersion();
                         if (!versionName.equalsIgnoreCase(apiversionname)) {
                             url = response.body().getVersion().get(0).getApp_url();
                            /* Postcode_Activity.ViewDialog alert = new Postcode_Activity.ViewDialog();
@@ -1044,7 +1024,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         });
 
     }
-
 
     public void showPopup(String Playstoreurl) {
         View popupView = LayoutInflater.from(Postcode_Activity.this).inflate(R.layout.dialog_version_update, null);

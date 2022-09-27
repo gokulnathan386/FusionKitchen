@@ -120,5 +120,7 @@
     <color name="currentclick_colr">#D92662</color>
 
     <color name="text_color_per_order">#BCBBBC</color>
+    <color name="Invalid_color_code">#D02F3E</color>
+    <color name="Invalid_color_code1">#909497</color>
 
 </resources>

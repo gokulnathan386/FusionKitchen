@@ -996,6 +996,8 @@ public class Add_to_Cart extends AppCompatActivity {
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagereaplastcollectononly, new IntentFilter("collection_only_repatlast"));
 
+        delivery_pay_button.setClickable(false);
+        processto_pay_button.setClickable(false);
     }
 
     /*---------------------------collection only----------------------------------------------------*/
@@ -2242,10 +2244,6 @@ public class Add_to_Cart extends AppCompatActivity {
     //get api values
     private void getaccountdetails(final String cid, final String logintype) {
 
-       // loadingshow();
-
-
-
         Map<String, String> params = new HashMap<String, String>();
         params.put("cid", cid);
         params.put("typeoflogin", logintype);
@@ -2260,7 +2258,12 @@ public class Add_to_Cart extends AppCompatActivity {
                 /*Get Login Good Response...*/
 
                 if (statusCode == 200) {
-                   // hideloading();
+
+                    delivery_pay_button.setClickable(true);
+                    processto_pay_button.setClickable(true);
+                    delivery_pay_button.setBackgroundResource(R.color.welcome_button_color);
+                    processto_pay_button.setBackgroundResource(R.color.welcome_button_color);
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         if (response.body().getRESPONSE_CODE().equalsIgnoreCase("201")) {
                             first_name = response.body().getData().getFname();

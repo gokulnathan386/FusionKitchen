@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="140dp"
         app:cardElevation="2dp"
         app:cardCornerRadius="10dp"
         app:cardBackgroundColor="@color/white"
@@ -32,7 +32,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     />
 
@@ -90,14 +90,14 @@
                         android:id="@+id/clent_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.8"
                         android:fontFamily="@font/poppins_bold"
                         android:text="Fusion Kitchen"
                         android:textColor="#000000"
                         android:textSize="12dp"></TextView>
 
                     <RelativeLayout
-                        android:layout_weight="1"
+                        android:layout_weight="0.2"
                         android:gravity="end"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
@@ -111,7 +111,7 @@
                                 android:id="@+id/client_openstatus"
                                 android:gravity="center"
                                 android:text="PRE ORDER"
-                                android:textSize="10dp"
+                                android:textSize="8dp"
                                 android:padding="3dp"
                                 android:textColor="@color/white"
                                 android:fontFamily="@font/poppins_semibold"
@@ -170,6 +170,52 @@
                         android:layout_height="wrap_content">
 
                     </TextView>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/use_code_textview"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="12dp"
+                            android:textColor="#66676D"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/use_code_discount"
+                            android:gravity="center"
+                            android:text=""
+                            android:textSize="12dp"
+                            android:textColor="#204356"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="1dp"
+                            android:maxLength="8"
+                            android:fontFamily="@font/poppins_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/three_dot"
+                            android:text="..."
+                            android:textSize="12dp"
+                            android:textColor="#204356"
+                            android:visibility="gone"
+                            android:fontFamily="@font/poppins_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                    </LinearLayout>
+
                     <TextView
                         android:visibility="gone"
                         android:gravity="center"
@@ -207,71 +253,104 @@
                 </View>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:layout_marginTop="7dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_gravity="center"
-                        android:src="@drawable/takeawayicon"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp">
-                    </ImageView>
-                    <TextView
-                        android:id="@+id/client_takeaway"
-                        android:gravity="center"
-                        android:textColor="#66676D"
-                        android:textSize="12dp"
-                        android:text="20 mins"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-                    </TextView>
-
-
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/delivery_bike"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp">
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/clent_delivery"
-                        android:textColor="#66676D"
-                        android:textSize="12dp"
-                        android:text="20 mins"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-                    </TextView>
-
-
-                    <ImageView
-                        android:layout_marginLeft="5dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/delivery_location"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp">
-                    </ImageView>
-                    <TextView
-                        android:id="@+id/client_deliverymin"
-                        android:textColor="#66676D"
-                        android:textSize="12dp"
-                        android:text="0.00miles"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    </TextView>
 
+                        <LinearLayout
+                            android:id="@+id/collection_takeway"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:src="@drawable/takeawayicon"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp">
+                            </ImageView>
+                            <TextView
+                                android:id="@+id/client_takeaway"
+                                android:gravity="center"
+                                android:textColor="#66676D"
+                                android:textSize="12dp"
+                                android:text="0 Mins"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginLeft="2dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/delivery_linearlayout"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_marginLeft="5dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/delivery_bike"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp">
+                            </ImageView>
+
+                            <TextView
+                                android:id="@+id/clent_delivery"
+                                android:textColor="#66676D"
+                                android:textSize="12dp"
+                                android:text="0 Mins"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_marginLeft="5dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/delivery_location"
+                                android:layout_width="12dp"
+                                android:layout_height="12dp">
+                            </ImageView>
+
+                            <TextView
+                                android:id="@+id/client_deliverymin"
+                                android:textColor="#66676D"
+                                android:textSize="12dp"
+                                android:text="0.00 miles"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/poppins_regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

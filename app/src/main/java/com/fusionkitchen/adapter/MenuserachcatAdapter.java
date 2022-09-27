@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,12 @@ public class MenuserachcatAdapter extends RecyclerView.Adapter<MenuserachcatAdap
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(MenuserachcatAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MenuserachcatAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
         holder.menu_item_name.setText(listdata[position].getName());
+
+        Log.d("Menuitemlist",listdata[position].getName());
 
 
         holder.menu_layout.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +67,6 @@ public class MenuserachcatAdapter extends RecyclerView.Adapter<MenuserachcatAdap
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
               //  Toast.makeText(mContext,String.valueOf(position),Toast.LENGTH_LONG).show();
-
 
             }
         });

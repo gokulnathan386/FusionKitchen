@@ -103,7 +103,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
 
         holder.menu_item_cat_name.setText(itemcatname.get(position));
-        holder.child_recyclerview.setVisibility(View.GONE);
+        holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
 
 
     }

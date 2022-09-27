@@ -33,7 +33,7 @@
             android:layout_height="140dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:layout_gravity="center"
             />
         <TextView
@@ -46,6 +46,8 @@
             android:layout_marginTop="50dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
+            android:background="#1ACCCCCC"
+            android:elevation="150dp"
             android:textSize="15dp">
         </TextView>
 

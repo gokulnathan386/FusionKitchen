@@ -838,13 +838,15 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:background="@color/welcome_button_color"
+                    android:background="@color/txt_two"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:text="Proceed to Payment"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp" />
+
+                <!--android:background="@color/welcome_button_color"-->
 
             </LinearLayout>
         </RelativeLayout>
@@ -992,13 +994,15 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:background="@color/welcome_button_color"
+                    android:background="@color/txt_two"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:text="Proceed to Payment"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp" />
+
+                <!--android:background="@color/welcome_button_color"-->
 
             </LinearLayout>
         </RelativeLayout>

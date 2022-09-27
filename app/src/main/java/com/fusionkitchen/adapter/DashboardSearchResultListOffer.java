@@ -84,7 +84,7 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         List<location_type_sub_modal.clients.onlinediscount> myofferData = listdata[position].getOnlinediscount();
         List<location_type_sub_modal.clients.client_cuisines> myclientcuisinesData = listdata[position].getClient_cuisines();
         List<location_type_sub_modal.clients.offer> offerData = listdata[position].getOffer();
@@ -140,30 +140,19 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
         }
 
 //client takeaway dliver 4 opp set
-        if (listdata[position].getTakeaway() != null && !listdata[position].getTakeaway().isEmpty()) {
-        //    holder.takway_layout.setVisibility(View.VISIBLE);
+        if (listdata[position].getcollectiontime() != null && !listdata[position].getcollectiontime().isEmpty()) {
             holder.client_takeaway.setText(listdata[position].getcollectiontime());
         } else {
-
-           // holder.takway_layout.setVisibility(View.GONE);
+            holder.collection_takeway.setVisibility(View.INVISIBLE);
         }
 
 
-        if (listdata[position].getDelivery() != null && !listdata[position].getDelivery().isEmpty()) {
+        if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
 
-           // holder.delivery_layout.setVisibility(View.VISIBLE);
             holder.clent_delivery.setText(listdata[position].getDeliverytime());
 
-            if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
-              //  holder.delivery_time_layout.setVisibility(View.VISIBLE);
-               // holder.client_deliverytime.setText(listdata[position].getDeliverytime());
-            } else {
-               // holder.delivery_time_layout.setVisibility(View.GONE);
-            }
-
         } else {
-           // holder.delivery_layout.setVisibility(View.GONE);
-           // holder.delivery_time_layout.setVisibility(View.GONE);
+          holder.delivery_linearlayout.setVisibility(View.INVISIBLE);
         }
 
 
@@ -249,6 +238,19 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
                 holder.client_offerone.setBackgroundResource(R.color.das_offer);*/
             }
         } else {
+
+            String usetextview ="UseCode";
+            holder.use_code_textview.setText(usetextview);
+            if(myofferData.get(0).getDiscount_code().length() >= 8){
+                holder.use_code_discount.setText("\""+myofferData.get(0).getDiscount_code()+"\"");  // Use Code Text view
+                holder.three_dot.setVisibility(View.VISIBLE);
+            }else{// Use Code Text view
+                holder.use_code_discount.setText("\""+myofferData.get(0).getDiscount_code()+"\"");
+                holder.three_dot.setVisibility(View.GONE);
+            }
+
+
+
             holder.client_offerone.setVisibility(View.VISIBLE);
             if (myofferData.get(myofferData.size() - 1).getType().equalsIgnoreCase("0")) {
                 //  offertypeone = "%";
@@ -449,8 +451,8 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
         public ImageView shopimg, client_logo, fav_btn;
         public TextView clent_name, clent_rating, client_takeaway, client_deliverytime, clent_delivery, client_deliverymin, client_openstatus, client_offerone, client_offertwo, clent_submenu;
         public LinearLayout takway_layout, delivery_layout, delivery_time_layout, min_time_layout, linerhead;
-        public TextView coupon_code;
-        LinearLayout View_your_star_rating;
+        LinearLayout View_your_star_rating,collection_takeway,delivery_linearlayout;
+        TextView use_code_textview,use_code_discount,three_dot;
 
 
         public ViewHolder(View itemView) {
@@ -477,8 +479,12 @@ public class  DashboardSearchResultListOffer<sharedpreferences> extends Recycler
             this.linerhead = itemView.findViewById(R.id.linerhead);
          //   this.fav_btn = itemView.findViewById(R.id.fav_btn);
 
-            this.coupon_code = itemView.findViewById(R.id.coupon_code);
             this.View_your_star_rating = itemView.findViewById(R.id.View_your_star_rating);
+            this.collection_takeway = itemView.findViewById(R.id.collection_takeway);
+            this.delivery_linearlayout = itemView.findViewById(R.id.delivery_linearlayout);
+            this.use_code_textview = itemView.findViewById(R.id.use_code_textview);
+            this.use_code_discount =itemView.findViewById(R.id.use_code_discount);
+            this.three_dot = itemView.findViewById(R.id.three_dot);
         }
     }
 

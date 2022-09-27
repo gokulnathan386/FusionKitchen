@@ -737,6 +737,8 @@ public class Payment_method_Activity extends AppCompatActivity {
                 }
             }
         });
+
+        button_place.setClickable(false);
     }
 
     /*---------------------------Payment type showing----------------------------------------------------*/
@@ -757,6 +759,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
                 if (statusCode == 200) {
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         // paymenttype_layout.setVisibility(View.VISIBLE);
 
@@ -787,7 +790,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                             wallet_amount_symbol.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_amount_amount.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_img.setVisibility(View.INVISIBLE);
-
 //check Google Pay available or not
                             if (response.body().getData().getGooglepay().equalsIgnoreCase("8")) {
                                 gpay_linerhead.setVisibility(View.VISIBLE);
@@ -818,7 +820,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                             wallet_amount_symbol.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_amount_amount.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_img.setVisibility(View.INVISIBLE);
-
                             //check Google Pay available or not
                             if (response.body().getData().getGooglepay().equalsIgnoreCase("8")) {
                                 gpay_linerhead.setVisibility(View.VISIBLE);
@@ -848,7 +849,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                             wallet_amount_symbol.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_amount_amount.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_ten));
                             wallet_img.setVisibility(View.INVISIBLE);
-
                             //check Google Pay available or not
                             if (response.body().getData().getGooglepay().equalsIgnoreCase("8")) {
                                 gpay_linerhead.setVisibility(View.VISIBLE);
@@ -1237,7 +1237,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                     // loader.dismiss();
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
-
                         /*-------------------Service Charge-------------------*/
                         hidddenserviceamt = Double.parseDouble(response.body().getData().getService_charge());
                         hidddenfkserviceamt = Double.parseDouble(response.body().getData().getFk_servicecharge());
@@ -1325,6 +1324,10 @@ public class Payment_method_Activity extends AppCompatActivity {
 
 
                         walletpaymentbutonshow(user_id, String.valueOf(cartamt));
+
+                        button_place.setBackgroundResource(R.color.welcome_button_color);
+                        button_place.setClickable(true);
+
                     }
                 } else {
 

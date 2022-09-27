@@ -15,31 +15,24 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.fusionkitchen.model.favorite.insertfavorite_mode;
-import com.fusionkitchen.model.home_model.location_type_sub_modal;
-import com.fusionkitchen.rest.ApiClient;
-import com.fusionkitchen.rest.ApiInterface;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
 
 import com.fusionkitchen.model.home_model.serachgetshop_modal;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -149,41 +142,26 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
         }
 
 //client takeaway dliver 4 opp set
-        if (listdata[position].getTakeaway() != null && !listdata[position].getTakeaway().isEmpty()) {
-          //  holder.takway_layout.setVisibility(View.VISIBLE);
-            //holder.client_takeaway.setText(listdata[position].getTakeaway());
+        if (listdata[position].getcollectiontime() != null && !listdata[position].getcollectiontime().isEmpty()) {
             holder.client_takeaway.setText(listdata[position].getcollectiontime());
         } else {
-         //   holder.takway_layout.setVisibility(View.GONE);
+            holder.collection_takeway.setVisibility(View.INVISIBLE);
         }
 
 
-        if (listdata[position].getDelivery() != null && !listdata[position].getDelivery().isEmpty()) {
-
-            //holder.delivery_layout.setVisibility(View.VISIBLE);
-            //holder.clent_delivery.setText(listdata[position].getDelivery());
+        if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
 
             holder.clent_delivery.setText(listdata[position].getDeliverytime());
 
-            if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
-                //holder.delivery_time_layout.setVisibility(View.VISIBLE);
-                //holder.client_deliverytime.setText(listdata[position].getDeliverytime());
-            } else {
-                //holder.delivery_time_layout.setVisibility(View.GONE);
-            }
-
         } else {
-            //holder.delivery_layout.setVisibility(View.GONE);
-            //holder.delivery_time_layout.setVisibility(View.GONE);
+           holder.delivery_linearlayout.setVisibility(View.INVISIBLE);
         }
-        /*if (listdata[position].getDeliverytime() != null && !listdata[position].getDeliverytime().isEmpty()) {
-            holder.client_deliverytime.setText(listdata[position].getDeliverytime());
-        } else {
-            holder.delivery_time_layout.setVisibility(View.GONE);
-        }*/
 
 
-        holder.client_deliverymin.setText(listdata[position].getDistance() + " miles");
+        if (listdata[position].getDistance() != null && !listdata[position].getDistance().isEmpty()) {
+            holder.client_deliverymin.setText(listdata[position].getDistance() + " miles");
+        }
+
 
       /*  if (listdata[position].getDeliverymin() != null && !listdata[position].getDeliverymin().isEmpty()) {
             holder.client_deliverymin.setText(listdata[position].getDeliverymin());
@@ -260,6 +238,17 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
                 holder.client_offerone.setBackgroundResource(R.color.das_offer);*/
             }
         } else {
+
+            String usetextview ="UseCode";
+            holder.use_code_textview.setText(usetextview);
+            if(myofferData.get(0).getDiscount_code().length() >= 8){
+                holder.use_code_discount.setText("\""+myofferData.get(0).getDiscount_code()+"\"");  // Use Code Text view
+                holder.three_dot.setVisibility(View.VISIBLE);
+            }else{// Use Code Text view
+                holder.use_code_discount.setText("\""+myofferData.get(0).getDiscount_code()+"\"");
+                holder.three_dot.setVisibility(View.GONE);
+            }
+
             holder.client_offerone.setVisibility(View.VISIBLE);
             if (myofferData.get(myofferData.size() - 1).getType().equalsIgnoreCase("0")) {
                 // offertypeone = "%";
@@ -374,7 +363,7 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Log.d("Clientpathurl",""+listdata[position].getpath());
+                  Log.d("Clientpathurl",""+listdata[position].getpath());
                      Intent intent = new Intent("custom-message-menuurlpath");
                   //  intent.putExtra("menuurlpath", listdata[position].getMenuurl());
                     intent.putExtra("menuurlpath", listdata[position].getpath());
@@ -471,8 +460,8 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
         public ImageView shopimg, client_logo, fav_btn;
         public TextView clent_name, clent_rating, client_takeaway, client_deliverytime, clent_delivery, client_deliverymin, client_openstatus, client_offerone, client_offertwo, clent_submenu;
         public LinearLayout takway_layout, delivery_layout, delivery_time_layout, min_time_layout, linerhead;
-        public TextView coupon_code;
-        LinearLayout View_your_star_rating;
+        LinearLayout View_your_star_rating,collection_takeway,delivery_linearlayout;
+        TextView use_code_textview,use_code_discount,three_dot;
 
 
         public ViewHolder(View itemView) {
@@ -499,8 +488,12 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
             this.linerhead = itemView.findViewById(R.id.linerhead);
         //    this.fav_btn = itemView.findViewById(R.id.fav_btn);
 
-            this.coupon_code = itemView.findViewById(R.id.coupon_code);
             this.View_your_star_rating = itemView.findViewById(R.id.View_your_star_rating);
+            this.collection_takeway = itemView.findViewById(R.id.collection_takeway);
+            this.delivery_linearlayout = itemView.findViewById(R.id.delivery_linearlayout);
+            this.use_code_textview = itemView.findViewById(R.id.use_code_textview);
+            this.use_code_discount =itemView.findViewById(R.id.use_code_discount);
+            this.three_dot = itemView.findViewById(R.id.three_dot);
         }
     }
 
@@ -518,21 +511,11 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
 
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(mContext)
                 .load(R.drawable.loading)
@@ -540,11 +523,10 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
                 .centerCrop()
                 .into(gifImageView);
 
-        //...finaly show it
+
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
     public void hideloading() {
         dialog.dismiss();
     }
