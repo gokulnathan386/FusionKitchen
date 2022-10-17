@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:scrollbars="none"
+    android:layout_height="fill_parent" >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_bg"
+    >
+
+    <TextView
+        android:id="@+id/choosetxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Restaurant Info"
+        android:textColor="#0071E3"
+        android:layout_marginTop="5dp"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_gravity="center"
+        android:layout_width="120dp"
+        android:layout_height="1dp"
+        android:background="#0071E3"/>
+
+
+    <TextView
+        android:text="Opening Hours"
+        android:textSize="18dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textColor="#17284D"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <LinearLayout
+        android:weightSum="2"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/open_time_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:text="Day"
+            android:textStyle="bold"
+            android:textColor="#E0467C"
+            android:textSize="15dp"
+            android:layout_marginRight="50dp"
+             android:gravity="center"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+        </TextView>
+
+        <TextView
+            android:text="Opening Hours"
+            android:textStyle="bold"
+            android:textColor="#E0467C"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_marginRight="50dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+        </TextView>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutPrint"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/open_hrs_review"
+            android:layout_marginTop="-5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+    </LinearLayout>
+
+
+    <TextView
+        android:padding="5dp"
+        android:text="Contact Details"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:textColor="#17284D"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/open_time_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="2dp"
+        android:textStyle="bold"
+        android:text="info@dipzdonutsgelato.co.uk"
+        android:gravity="center"
+        android:textColor="#17284D"
+        android:textSize="@dimen/_10sdp" />
+
+
+    <TextView
+        android:id="@+id/shop_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="2dp"
+        android:text=""
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#17284D"
+        android:textSize="@dimen/_10sdp" />
+
+    <TextView
+        android:id="@+id/shop_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shop_name"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="2dp"
+        android:text=""
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#17284D"
+        android:textSize="@dimen/_10sdp" />
+
+   <fragment
+       android:layout_marginTop="15dp"
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_round">
+
+            <ImageView
+                android:id="@+id/direction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:visibility="invisible"
+                android:layout_toRightOf="@+id/shop_name"
+                android:src="@drawable/direction" />
+
+        </RelativeLayout>
+    </fragment>
+
+
+
+</LinearLayout>
+    </ScrollView>

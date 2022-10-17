@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_bg"
+        android:orientation="vertical">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/offer_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="265dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="-30dp"
+            android:src="@drawable/offergif" />
+
+        <TextView
+            android:id="@+id/TextView_Offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:layout_marginTop="-50dp"
+            android:text="50% OFF"
+            android:textColor="#0071E3"
+            android:textSize="20dp"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Use Code FUSIONPERK"
+            android:textColor="#17284D"
+            android:textSize="16dp">
+        </TextView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/offer_promo_btn"
+            style="@style/Favourite_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="60dp"
+            android:backgroundTint="@color/welcome_btn_color"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/view_offer_details"
+                    android:text="View Details"
+                    android:textColor="#0071E3"
+                    android:textSize="15dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </TextView>
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center"
+                android:layout_width="80dp"
+                android:layout_height="1dp"
+                android:background="#0071E3"/>
+
+            <LinearLayout
+                android:id="@+id/description"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+             <!--   <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/confirm_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/background_edittext"
+                    android:backgroundTint="@color/cart_couben_edit"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/_20sdp"
+                    android:paddingRight="@dimen/_20sdp"
+                    android:textColor="@color/welcome_button_color"
+                    android:textSize="@dimen/_15sdp" />
+-->
+                <TextView
+                    android:id="@+id/details_offers_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/teams"
+                    android:textColor="#17284D"
+                    android:lineSpacingExtra="5dp"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:background="@drawable/offer_textview_bg"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:weightSum="3"
+            android:layout_marginBottom="20dp"
+            android:layout_height="50dp">
+
+          <EditText
+              android:textSize="15dp"
+              android:textColor="#41474E"
+              android:textStyle=""
+              android:layout_weight="2"
+              android:fontFamily="@font/poppins_medium"
+              android:hint="Coupon Code"
+              android:layout_marginLeft="20dp"
+              android:layout_gravity="center"
+              android:layout_width="wrap_content"
+              android:singleLine="true"
+              android:maxLength="25"
+              android:background="@null"
+              android:textColorHint="#41474E"
+              android:layout_height="wrap_content">
+          </EditText>
+
+            <TextView
+                android:layout_weight="1"
+                android:textSize="15dp"
+                android:textColor="#E0467C"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Apply"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:singleLine="true"
+                android:layout_marginRight="20dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content">
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>
