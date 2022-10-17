@@ -87,6 +87,7 @@ import com.fusionkitchen.model.post_code_modal;
 import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -976,6 +977,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             @Override
             public void onResponse(Call<post_code_modal> call, Response<post_code_modal> response) {
                 int statusCode = response.code();
+
+                Log.e("Postcode_Activity", new Gson().toJson(response.body()));
+
                 /*Get Login Good Response...*/
                 if (statusCode == 200) {
                     hideloading();
@@ -995,7 +999,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         editorpostcode.putString("KEY_lon", response.body().getLocation().getLng());
                         editorpostcode.putString("KEY_address", response.body().getAddress());
                         editorpostcode.commit();
-
                         startActivity(intent);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     } else {

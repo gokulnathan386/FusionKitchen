@@ -300,7 +300,7 @@ public class Dashboard_Activity extends AppCompatActivity {
         //bottomNav.getMenu().getItem(4).setIcon(R.drawable.menufavourite);
         //bottomNav.getMenu().getItem(4).setTitle("Favourite");
 
-        bottomNav.getMenu().findItem(R.id.home_bottom).setCheckable(true);
+      //  bottomNav.getMenu().findItem(R.id.home_bottom);
 
       /*  final Handler handler = new Handler();
         final int delay = 2500;
@@ -415,8 +415,8 @@ public class Dashboard_Activity extends AppCompatActivity {
                     search_restaurants_view.setVisibility(View.GONE);
                     notakeway_layout.setVisibility(View.GONE);
 
-                    finish();
-                    startActivity(getIntent());
+                   // finish();
+                   // startActivity(getIntent());
 
                 } else if (clientworking.length() == 1) {
                     restaurants_view.setVisibility(View.VISIBLE);
@@ -451,8 +451,8 @@ public class Dashboard_Activity extends AppCompatActivity {
                 restaurants_view.setVisibility(View.VISIBLE);
                 search_restaurants_view.setVisibility(View.GONE);
                 notakeway_layout.setVisibility(View.GONE);
-                finish();
-                startActivity(getIntent());
+               // finish();
+               // startActivity(getIntent());
             }
         });
 

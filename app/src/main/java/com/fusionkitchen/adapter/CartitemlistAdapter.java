@@ -112,33 +112,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
 
 
-        /*---------------------------Sub catorgy api call----------------------------------------------------*/
-    /*    subcatfullurl = menuurlpath + "/subcategory_printer";
-        Log.e("subcatfullurl", "" + subcatfullurl);
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<subcategory_printer_model> call = apiService.subcategoryprinter(subcatfullurl);
-        call.enqueue(new Callback<subcategory_printer_model>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(Call<subcategory_printer_model> call, Response<subcategory_printer_model> response) {
-                //response.headers().get("Set-Cookie");
-                int statusCode = response.code();
-                if (statusCode == 200) {
-                    subcategory_printers = response.body().getSubcategory();
-                    Log.e("namesubcategory", "" + subcategory_printers);
-                    if (subcategory_printers.equalsIgnoreCase("enable")) {
-                        if (!contacts.getCategoryname().equalsIgnoreCase(contacts.getSubcategoryname())) {
-                            holder.tvName.setText(contacts.getSubcategoryname() + " - " + contacts.getName());
-                        }
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<subcategory_printer_model> call, Throwable t) {
-                Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-            }
-        });
-*/
 
         if (subcategory_printers.equalsIgnoreCase("enable")) {
             if (contacts.getCategoryname().equalsIgnoreCase(contacts.getSubcategoryname())) {

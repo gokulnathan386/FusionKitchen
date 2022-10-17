@@ -1281,7 +1281,11 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
                                         Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
 
                                         Intent intent = new Intent("item_successfully_custom-message");
+
                                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+
 
 
                                     } else {
@@ -1289,6 +1293,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
                                     }
 
                                     }else{
+
+
 
                                         ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(searchitemname[position].getId()));
 

@@ -181,13 +181,10 @@ public class GetcartaddressListAdapter extends RecyclerView.Adapter<Getcartaddre
                 intent.putExtra("addressgtype", listdata[position].getType());
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-
             }
         });
 
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -206,7 +203,6 @@ public class GetcartaddressListAdapter extends RecyclerView.Adapter<Getcartaddre
 
 
             this.layout_titel = itemView.findViewById(R.id.layout_titel);
-
             this.changea_ddress_titels = itemView.findViewById(R.id.changea_ddress_titels);
             this.change_cus_address = itemView.findViewById(R.id.change_cus_address);
             this.edit_address = itemView.findViewById(R.id.edit_address);

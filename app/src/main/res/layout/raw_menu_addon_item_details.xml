@@ -31,9 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_regular"
             android:text=""
-            android:textColor="@color/menu_item_desc"
+            android:textColor="#17284D"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -53,17 +53,20 @@
     <CheckBox
         android:id="@+id/cb"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:button="@drawable/checkbox_background" />
+        android:theme="@style/checkBoxStyle"
+        android:button="@drawable/checkbox_background"
+     />
 
-    <View
-        android:id="@+id/view3"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/linerLayout"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/txt_elven" />
+                <View
+                    android:visibility="gone"
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/linerLayout"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/txt_elven" />
+
 </RelativeLayout>

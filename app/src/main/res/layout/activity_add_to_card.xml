@@ -398,7 +398,8 @@
             app:cardBackgroundColor="@color/tranfer_color">
 
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -410,7 +411,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="150dp">
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -418,7 +420,8 @@
                         android:background="@color/white"
                         android:orientation="vertical">
 
-                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -448,7 +451,8 @@
 
                         </RelativeLayout>
 
-                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -646,13 +650,15 @@
             app:cardBackgroundColor="@color/tranfer_color">
 
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/tranfer_color">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -661,14 +667,16 @@
                     android:orientation="vertical">
 
 
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <RelativeLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@color/white">
 
-                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/imges_timer"
                             android:layout_width="match_parent"

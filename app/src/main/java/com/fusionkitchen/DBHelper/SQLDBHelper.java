@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -209,9 +208,6 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
     public boolean Updateqtyprice(int id, int itemqty, float itemfinalamount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -220,10 +216,6 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         db.update(ITEM_TABLE_NAME, contentValues, ITEM_ID + " = ? ", new String[]{Integer.toString(id)});
         return true;
      }
-
-
-
-
 
     public ArrayList<HashMap<String, String>> getallvalue(int userid){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -251,28 +243,37 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         }
         return  userList;
 
+    }
 
-    /*    public static final String ITEM_COLUMN_ID = "_id";//0
-        public static final String ITEM_NAME = "itemname";//1
-        public static final String ITEM_ID = "itemid";//2
-        public static final String ITEM_ADDON_NAME = "itemaddonname";//3
-        public static final String ITEM_ADDON_NAME_ID = "itemaddonnameid";//4
-        public static final String ITEM_ADDON_EXTRA_ID = "itemaddonextraid";//5
-        public static final String ITEM_AMOUNT = "itemamount";//6
-        public static final String ITEM_QTY = "itemqty";//7
-        public static final String ITEM_TOTAL_AMOUNT = "itemtotalamount";//8
-        public static final String ITEM_Final_AMOUNT = "itemfinalamount";//9
-        public static final String ITEM_CATEGORY_NAME = "itemcategoryname";//10
-        public static final String ITEM_SUBCATEGORY_NAME = "itemsubcategoryname";//11*/
+    public ArrayList<String> getqtycount(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<String>();
+        Cursor res =  db.rawQuery("SELECT SUM(itemqty) AS totalqty FROM item", null );
+        res.moveToFirst();
 
-
-
+        while(res.isAfterLast() == false){
+            array_list.add(res.getString(res.getColumnIndex("totalqty")));
+            res.moveToNext();
+        }
+        return array_list;
+    }
 
 
+    public ArrayList<String> gettotalamt(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<String>();
+        Cursor res =  db.rawQuery("SELECT SUM(itemfinalamount) AS totalamt FROM item", null );
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+            array_list.add(res.getString(res.getColumnIndex("totalamt")));
+            res.moveToNext();
+        }
+        return array_list;
     }
 
 
 
 
 
-    }
+}

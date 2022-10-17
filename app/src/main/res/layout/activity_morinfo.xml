@@ -117,15 +117,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true">
 
-                    <androidx.cardview.widget.CardView xmlns:Card_View="http://schemas.android.com/apk/res-auto"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:elevation="10dp"
-                        Card_View:cardCornerRadius="5dp"
-                        Card_View:cardElevation="7dp">
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="7dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                                     android:gravity="center"
                                     android:text="Menu"
                                     android:textAllCaps="false"
-                                    android:textColor="@color/menu_txt_tr"
+                                    android:textColor="#D81B60"
                                     android:textSize="@dimen/_10sdp" />
 
 
@@ -166,7 +166,7 @@
                                     android:gravity="center"
                                     android:text="About Us"
                                     android:textAllCaps="false"
-                                    android:textColor="@color/white"
+                                    android:textColor="#000000"
                                     android:textSize="@dimen/_10sdp" />
 
                                 <androidx.appcompat.widget.AppCompatButton
@@ -194,7 +194,7 @@
                                     android:gravity="center"
                                     android:text="Reviews"
                                     android:textAllCaps="false"
-                                    android:textColor="@color/menu_txt_tr"
+                                    android:textColor="#D81B60"
                                     android:textSize="@dimen/_10sdp" />
 
                             </LinearLayout>
@@ -293,7 +293,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:padding="2dp"
                             android:text="Cuisines"
-                            android:textColor="#09b24b"
+                            android:textColor="#43A047"
                             android:textSize="@dimen/_15sdp" />
 
                         <View
@@ -336,7 +336,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:padding="2dp"
                             android:text="Location"
-                            android:textColor="#09b24b"
+                            android:textColor="#43A047"
                             android:textSize="@dimen/_15sdp" />
 
                         <View

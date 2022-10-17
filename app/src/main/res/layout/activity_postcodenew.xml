@@ -126,6 +126,7 @@
                                                 android:inputType="textVisiblePassword|textCapCharacters"
                                                 android:maxLength="10"
                                                 android:paddingLeft="@dimen/_15sdp"
+                                                android:text="Sk116tj"
                                                 android:textColor="@color/txt_ten"
                                                 android:textColorHint="#909497"
                                                 android:hint="@string/edittext_hint_post_text"
