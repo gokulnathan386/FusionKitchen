@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">'
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!-- Nested Scroll view -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bt_new">
+
+            <!-- Linear layout to contain 2 text view and button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/box"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/leftarrow" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/hindvadodara_bold"
+                        android:gravity="center"
+                        android:text="Address Setting"
+                        android:textColor="@color/txt_ten"
+                        android:textSize="20dp" />
+
+
+                </RelativeLayout>
+
+
+                <!-- Address book show-->
+                <LinearLayout
+                    android:id="@+id/address_book"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:src="@drawable/address_book_bg" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:gravity="center"
+                            android:text="Address Book"
+                            android:textColor="@color/txt_one"
+                            android:textSize="@dimen/_20sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="A new address can be added and \n existing address can be edited here"
+                            android:textColor="@color/txt_ten"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </RelativeLayout>
+
+                    <!--Strt-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/edit_type">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:backgroundTint="@color/white"
+                            android:clipToPadding="false" />
+
+
+                    </RelativeLayout>
+
+                    <!--over-->
+
+
+                </LinearLayout>
+
+
+                <!--Add Address-->
+                <LinearLayout
+                    android:id="@+id/address_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:src="@drawable/address_book_bg" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:gravity="center"
+                            android:text="Address Book"
+                            android:textColor="@color/txt_one"
+                            android:textSize="@dimen/_20sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="A new address can be added and \n existing address can be edited here"
+                            android:textColor="@color/txt_ten"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+
+
+                            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@color/white">
+
+
+                                <EditText
+                                    android:id="@+id/edit_postcode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:backgroundTint="@color/menu_line"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:hint="Post Code"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="textVisiblePassword|textCapCharacters"
+                                    android:textColor="@color/txt_one"
+                                    android:textColorHint="@color/txt_one" />
+
+                                <EditText
+                                    android:id="@+id/edit_doorno"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/edit_postcode"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:backgroundTint="@color/menu_line"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:hint="Door Number"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="textVisiblePassword|textCapCharacters"
+                                    android:textColor="@color/txt_one"
+                                    android:textColorHint="@color/txt_one" />
+
+                                <EditText
+                                    android:id="@+id/edit_town"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/edit_doorno"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:backgroundTint="@color/menu_line"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:hint="Town"
+                                    android:inputType="text"
+                                    android:textColor="@color/txt_one"
+                                    android:textColorHint="@color/txt_one" />
+
+                                <EditText
+                                    android:id="@+id/edit_street"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/edit_town"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:backgroundTint="@color/menu_line"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:hint="Street"
+                                    android:inputType="text"
+                                    android:textColor="@color/txt_one"
+                                    android:textColorHint="@color/txt_one" />
+
+
+                                <TextView
+                                    android:id="@+id/edit_saveas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/edit_street"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:fontFamily="@font/hindvadodara_semibold"
+                                    android:text="SAVE AS"
+                                    android:textColor="#66676d"
+                                    android:textSize="18dp" />
+
+
+                                <LinearLayout
+                                    android:id="@+id/edit_btns"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/edit_saveas"
+                                    android:layout_marginTop="@dimen/_10sdp">
+
+
+                                    <androidx.appcompat.widget.AppCompatButton
+                                        android:id="@+id/edit_home_button"
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginLeft="@dimen/_15sdp"
+                                        android:layout_marginRight="@dimen/_3sdp"
+                                        android:layout_marginBottom="@dimen/_30sdp"
+                                        android:layout_weight="1"
+                                        android:background="@color/card_no_delivery"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:gravity="center"
+                                        android:text="Home"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/edit_address_notxt"
+                                        android:textSize="@dimen/_15sdp" />
+
+                                    <androidx.appcompat.widget.AppCompatButton
+                                        android:id="@+id/edit_office_button"
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginLeft="@dimen/_3sdp"
+                                        android:layout_marginRight="@dimen/_3sdp"
+                                        android:layout_marginBottom="@dimen/_30sdp"
+                                        android:layout_weight="1"
+                                        android:background="@color/card_no_delivery"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:gravity="center"
+                                        android:text="Office"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/edit_address_notxt"
+                                        android:textSize="@dimen/_15sdp" />
+
+                                    <androidx.appcompat.widget.AppCompatButton
+                                        android:id="@+id/edit_other_button"
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginLeft="@dimen/_3sdp"
+                                        android:layout_marginRight="@dimen/_15sdp"
+                                        android:layout_marginBottom="@dimen/_30sdp"
+                                        android:layout_weight="1"
+                                        android:background="@color/card_no_delivery"
+                                        android:fontFamily="@font/roboto_medium"
+                                        android:gravity="center"
+                                        android:text="Other"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/edit_address_notxt"
+                                        android:textSize="@dimen/_15sdp" />
+
+
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <!--No Address-->
+                <LinearLayout
+                    android:id="@+id/no_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_100sdp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:src="@drawable/address_book_bg" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_5sdp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/hindvadodara_bold"
+                            android:gravity="center"
+                            android:text="Address Book"
+                            android:textColor="@color/txt_one"
+                            android:textSize="@dimen/_20sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/roboto_regular"
+                            android:gravity="center"
+                            android:text="You don&#8217;t have an address \non your address book."
+                            android:textColor="@color/txt_ten"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/bottom_navigation_menu"
+                android:background="@color/white"
+                app:labelVisibilityMode="labeled"
+                app:itemIconTint="#bcbbbc"
+                app:itemTextColor="#bcbbbc"
+                app:itemBackground="@color/white"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/bt_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_50sdp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/background_button"
+                android:backgroundTint="@color/welcome_button_color"
+                android:drawableRight="@drawable/addressplus"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:paddingTop="2dp"
+                android:paddingRight="2dp"
+                android:paddingBottom="2dp"
+                android:text="ADD NEW ADDRESS"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/new_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/background_button"
+                android:backgroundTint="@color/welcome_button_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="ADD NEW ADDRESS"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/update_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/background_button"
+                android:backgroundTint="@color/welcome_button_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="Save ADDRESS"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

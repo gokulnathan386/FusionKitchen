@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:id="@+id/bottomSheetContainer"
+>
+
+  <!--  <SearchView
+        android:id="@+id/post_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_bg"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:queryHint="Search by postcode"
+        android:iconifiedByDefault="false">
+
+    </SearchView>-->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/search_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_margin="5dp"
+            android:id="@+id/searchimg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:src="@drawable/menu_search" />
+
+        <EditText
+            android:id="@+id/EditText_Search_View"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text=""
+            android:textSize="15dp"
+            android:singleLine="true"
+            android:layout_marginLeft="10dp"
+            android:hint="Search by postcode"
+            android:textColorHint="#17284D"
+            android:textColor="#17284D"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </EditText>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_offer"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="Find food"
+        android:background="#1DC070"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+</LinearLayout>

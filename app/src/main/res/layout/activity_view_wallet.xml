@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:background="#F8F8FB" />
+
+        <RelativeLayout
+            android:id="@+id/clikback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/groupback" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/back"
+                android:fontFamily="@font/poppins_regular"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/backtohome"
+                android:textColor="@color/backtxtcolor"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_two_login"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+
+            <RelativeLayout
+                android:id="@+id/amt_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/wallet_notification"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/notificationbell" />
+
+                <ImageView
+                    android:id="@+id/sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/wallet_passes_app" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/amt_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/availablebalance"
+                        android:textColor="#FF204356"
+                        android:textSize="@dimen/iphone_xrxsmax111_activity_available_balance_text_view_text_size" />
+
+                    <TextView
+                        android:id="@+id/wallet_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:letterSpacing="0.04"
+                        android:text="£ 00.00"
+                        android:textColor="#FF00C070"
+                        android:textSize="@dimen/iphone_xrxsmax111_activity_text_view_text_view_text_size" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cart_clik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_two_login"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_one_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:elevation="10dp"
+                app:cardBackgroundColor="#fcfcfc"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/get_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <LinearLayout
+                        android:id="@+id/post_code_edittext_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/view3"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:id="@+id/save_card_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/credit" />
+
+                            <TextView
+                                android:id="@+id/save_card_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_2sdp"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="center"
+                                android:lineSpacingExtra="1dp"
+                                android:text="@string/savedcard"
+                                android:textColor="#FF204356"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/recharge_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/poundsterling" />
+
+                            <TextView
+                                android:id="@+id/recharg_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_2sdp"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="center"
+                                android:lineSpacingExtra="1dp"
+                                android:text="@string/recharge"
+                                android:textColor="#FF204356"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/terms_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/group_13" />
+
+                            <TextView
+                                android:id="@+id/teams_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:gravity="center"
+                                android:lineSpacingExtra="1dp"
+                                android:text="@string/walletterms"
+                                android:textColor="#FF204356"
+                                android:textSize="@dimen/_10sdp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/cart_clik"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="18dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/rlimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vw1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/report_details_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:lineSpacingExtra="5dp"
+                    android:text="@string/recenttransactions"
+                    android:textColor="#FF204356"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/wallet_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="right"
+                    android:lineSpacingExtra="6dp"
+                    android:text="@string/seeall"
+                    android:textColor="#FF276CF6"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/wallet_hide_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="right"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Hide all"
+                    android:textColor="#FF276CF6"
+                    android:textSize="15dp"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/wallet_no_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:lineSpacingExtra="6dp"
+                android:text="No history to show.\nRecharge to avail exciting offers."
+                android:textColor="#FF204356"
+                android:textSize="17dp"
+                android:visibility="gone" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wallethistoryshow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

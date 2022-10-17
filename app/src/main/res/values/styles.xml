@@ -1,0 +1,223 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorPrimaryDark">@color/app_color</item>
+        <item name="colorAccent">@color/app_color</item>
+        <item name="badgeStyle">@style/CustomBadge</item>
+
+    </style>
+
+    <style name="DialogAnimation" >
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+
+    <style name="OverlayThemeLime" parent="AppTheme">
+        <item name="colorPrimary">@color/welcome_button_color</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/welcome_button_color</item>
+    </style>
+
+
+    <style name="CustomBadge" parent="@style/Widget.MaterialComponents.Badge">
+        <item name="backgroundColor">@color/welcome_button_color</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">false</item>
+
+    </style>
+
+    <!--<item name="android:windowFullscreen">true</item>-->
+
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/popup_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/background_button</item>
+    </style>
+
+
+    <!-- menu-->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/txt_eight</item>
+        <item name="colorPrimaryDark">@color/txt_eight</item>
+        <item name="colorAccent">@color/txt_eight</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorPrimaryDark">@color/app_color</item>
+        <item name="colorAccent">@color/app_color</item>
+    </style>
+
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">15sp</item><!-- text size in menu-->
+        <!-- item size in menu-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item>
+        <item name="listPreferredItemHeightSmall">40dp</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
+
+
+        <!-- item padding left in menu-->
+        <item name="android:listPreferredItemPaddingLeft">8dp</item>
+        <item name="listPreferredItemPaddingLeft">8dp</item>
+
+        <!-- item padding right in menu-->
+        <item name="android:listPreferredItemPaddingRight">8dp</item>
+        <item name="listPreferredItemPaddingRight">8dp</item>
+
+
+    </style>
+    <!--select menu item-->
+    <style name="myCustomMenuTextAppearance">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="NavDrawerTextStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- BottomNavigationView-->
+    <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="enforceTextAppearance">true</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/bnv_tab_item_foreground</item>
+        <item name="itemRippleColor">@color/menu_icon</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationViewTextStyleinactiv</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationViewTextStyle</item>
+        <item name="itemTextColor">@color/bnv_tab_item_foreground</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
+    <style name="BottomNavigationViewTextStyle">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="BottomNavigationViewTextStyleinactiv">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+
+    <style name="timePickerOrange">
+        <item name="android:textColorPrimary">@color/welcome_button_color</item>
+        <item name="android:textColor">@color/welcome_button_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+
+
+
+    <!-- <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+         <item name="android:textColor">@color/welcome_button_color</item>
+         <item name="buttonTint">@drawable/cb_selector</item>
+     </style>-->
+
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/txt_ten</item>
+        <item name="colorControlActivated">@color/app_color</item>
+    </style>
+
+
+    <style name="MaterialDialogSheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/tranfer</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
+    </style>
+
+
+    <style name="MaterialDialogSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide</item>
+    </style>
+
+
+    <style name="mySwitchStyle" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <!-- do here for additional costumization on thumb, track background,text appearance -->
+    </style>
+
+
+    <style name="mySwitchTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="switchStyle">@style/mySwitchStyle</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlNormal">@color/colorGrey</item>
+        <item name="trackTint">@color/track_selector</item>
+    </style>
+
+
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/menu_line_sep</item>
+        <item name="colorControlActivated">@color/car_total</item>
+
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/car_total</item>
+    </style>
+
+
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">#0071BC</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:background">#0071BC</item>
+        <item name="android:textColor">@null</item>
+        <item name="android:textSize">@null</item>
+    </style>
+
+
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background"> @android:color/transparent</item>
+    </style>
+
+
+
+
+    <!--  <style name="ShapeAppearanceOverlayExtended" parent="">
+          <item name="cornerFamily">rounded</item>
+          <item name="cornerSize">500dp</item>
+      </style>-->
+
+
+    <!--  android:theme="@style/MyMaterialTheme"-->
+
+    <!--  <style name="MyMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+          &lt;!&ndash; Add attributes here &ndash;&gt;
+          <item name="colorPrimary">@color/colorPrimary</item>
+          <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+          <item name="colorAccent">@color/colorAccent</item>
+          <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
+      </style>
+      &lt;!&ndash;To fix rendering in preview &ndash;&gt;
+      <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+          <item name="android:textAllCaps">true</item>
+      </style>-->
+
+
+</resources>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/card_offer_logo"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/card_discount" />
+
+        <LinearLayout
+            android:id="@+id/offer_val"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_7sdp"
+            android:layout_toLeftOf="@+id/offer_set_lay"
+            android:layout_toRightOf="@+id/card_offer_logo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cart_offer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="GET 10 % OFF"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/cart_offer_decs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="On order above rs 10 use code fusioniiiidddddddd"
+                android:textColor="@color/txt_ten"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/offer_set_lay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cart_offer_copy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:fontFamily="@font/roboto_medium"
+                android:text="APPLY"
+                android:textColor="@color/txt_one"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/view_offer_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="View Details"
+                android:textColor="@color/txt_ten"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/offer_details_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/offer_val"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/hindvadodara_bold"
+                android:text="@string/teams"
+                android:textColor="@color/menycat_txt"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/details_offers_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:fontFamily="@font/hindvadodara_bold"
+                android:text="@string/teams"
+                android:textColor="@color/menu_txt"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

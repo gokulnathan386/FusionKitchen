@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "255012633887",
+    "project_id": "fusion-kitchen-android-track",
+    "storage_bucket": "fusion-kitchen-android-track.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255012633887:android:e153d1206fa77c49b6442a",
+        "android_client_info": {
+          "package_name": "com.fusionkitchen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255012633887-7o76riiil3rf7rk3k9ricocfcb4577jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh90T_3zdj83cH_Ah2lOcJnrRDEghBqus"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255012633887-7o76riiil3rf7rk3k9ricocfcb4577jl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

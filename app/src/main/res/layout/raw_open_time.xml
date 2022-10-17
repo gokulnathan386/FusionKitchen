@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="60dp">
+
+          <TextView
+              android:id="@+id/day"
+              android:gravity="center"
+              android:padding="10dp"
+              android:textSize="15dp"
+              android:layout_width="110dp"
+              android:textColor="@color/black"
+              android:layout_height="match_parent">
+          </TextView>
+
+
+            <TextView
+                android:id="@+id/time"
+                android:padding="10dp"
+                android:lineSpacingExtra="5dp"
+                android:gravity="center"
+                android:singleLine="false"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </TextView>
+
+</LinearLayout>
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:id="@+id/tabla_cuerpo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="1">
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape_list"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/txt_ten"
+                    android:text="wednesday"
+                    android:textAppearance="?android:attr/textAppearanceMedium">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cell_shape_list"
+                    android:gravity="center"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/txt_ten"
+                    android:text="08.00AM - 08.00 PM \n 8.00AM -08.00PM"
+                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+            </TableRow>
+
+
+        </TableLayout>
+    </RelativeLayout>
+
+</RelativeLayout>-->

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="#F8F8FB" />
+
+            <RelativeLayout
+                android:id="@+id/clikback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/groupback" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/back"
+                    android:fontFamily="@font/poppins_regular"
+                    android:lineSpacingExtra="5dp"
+                    android:text="@string/backtohome"
+                    android:textColor="@color/backtxtcolor"
+                    android:textSize="20dp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/cart_clik"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/clikback"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_one_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="#00C070"
+                    android:elevation="10dp"
+                    app:cardBackgroundColor="#00C070"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="10dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/wallettermscon"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/cart_clik"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsone"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termstwo"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsthree"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsfour"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsfive"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termssix"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsseven"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsegit"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsnin"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termsten"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/termselven"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:background="#00C070"
+                    android:backgroundTint="#00C070"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="@string/walletprivacypolicy"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/walletprivacypolicyone"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/walletprivacypolicytwo"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/walletprivacypolicythree"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="left"
+                    android:text="@string/walletprivacypolicyfour"
+                    android:textColor="#FF224355"
+                    android:textSize="15dp" />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

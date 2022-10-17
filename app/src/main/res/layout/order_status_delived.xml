@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/background_round"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/delieved_popup_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:src="@drawable/popupcancel" />
+
+
+        <ImageView
+            android:id="@+id/waiting_img"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/delived" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/hindvadodara_medium"
+            android:gravity="center_horizontal"
+            android:text="ORDER DELIVERED!"
+            android:textColor="@color/car_total"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/delieved_txtone_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textColor="@color/txt_ten"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cus_address"
+                android:background="@color/item_addon_bt">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/delived_order_again"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@color/item_addon_bt"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="Order Again"
+                    android:textAllCaps="false"
+                    android:textColor="@color/welcome_button_color"
+                    android:textSize="@dimen/_15sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/delived_view_recept"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@color/car_total"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="View Receipt"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/nav_val1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/nav_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/nav_login"
+            android:title="Login" />
+
+        <item
+            android:id="@+id/nav_myaccount"
+            android:icon="@drawable/myacco"
+            android:title="My Account" />
+
+
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/nav_notification"
+            android:title="Notifications"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_orderhistory"
+            android:icon="@drawable/nav_history"
+            android:title="Order History" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/nav_val2"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_orderstatus"
+            android:icon="@drawable/nav_ordstatus"
+            android:title="Order Status" />
+
+        <item
+            android:id="@+id/nav_address"
+            android:icon="@drawable/nav_book"
+            android:title="Address Book" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/walletmenuicon"
+            android:title="Wallet" />
+
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/nav_help"
+            android:title="Help" />
+
+        <item
+            android:id="@+id/nav_rateapp"
+            android:icon="@drawable/nav_rate"
+            android:title="Rate App" />
+
+    </group>
+    <group
+        android:id="@+id/nav_val23"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_more_hide"
+            android:icon="@drawable/ic_baseline_more_horiz_24"
+            android:title="Less" />
+        <item
+            android:id="@+id/nav_more_show"
+            android:icon="@drawable/ic_baseline_more_horiz_24"
+            android:title="More" />
+
+
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/nav_about"
+            android:title="About Us" />
+        <item
+            android:id="@+id/nav_termsconditions"
+            android:icon="@drawable/nav_trams"
+            android:title="Terms &amp; Conditions" />
+
+        <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/privacy"
+            android:title="Privacy Policy and GDPR" />
+        <item
+            android:id="@+id/nav_allergy"
+            android:icon="@drawable/nav_allergy"
+            android:title="Allergy Informations" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logouta"
+            android:title="LogOut" />
+
+        <item
+            android:id="@+id/nav_1"
+            android:title="" />
+        <item
+            android:id="@+id/nav_2"
+            android:title="" />
+        <item
+            android:id="@+id/nav_3"
+            android:title="" />
+        <item
+            android:id="@+id/nav_4"
+            android:title="" />
+    </group>
+</menu>

@@ -1,0 +1,126 @@
+<resources>
+    <color name="colorPrimary">#09B24B</color>
+    <color name="colorPrimaryDark">#09B24B</color>
+    <color name="colorAccent">#09B24B</color>
+    <color name="app_color">#09B24B</color>
+    <color name="welcome_button_color">#FF2860</color>
+    <color name="welcome_btn_color">#FF276CF6</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="dot_light_screen3">#93c6fd</color>
+    <color name="bg_screen">#D1EFD5</color>
+    <color name="welcome_bg_screen">#FBECF1</color>
+    <color name="bg_screen_card">#EFFCF2</color>
+    <color name="bg_screen_txt">#394752</color>
+    <color name="bg_screen_button">#36A849</color>
+    <color name="background">#dddddd</color>
+    <color name="txt_one">#FF2860</color>
+    <color name="txt_two">#66676D</color>
+    <color name="txt_three">#09B24B</color>
+    <color name="txt_four">#FAFAFA</color>
+    <color name="txt_five">#F28A57</color>
+    <color name="txt_six">#6A2871</color>
+    <color name="txt_seven">#36C1CA</color>
+    <color name="txt_eight">#FBFBFB</color>
+    <color name="txt_night">#FE285E</color>
+    <color name="txt_ten">#414158</color>
+    <color name="txt_elven">#EBEBEB</color>
+    <color name="post_col_das">#606060</color>
+    <color name="das_chage">#5BB56A</color>
+    <color name="das_offer">#36A749</color>
+
+    <color name="das_proorder">#FF5E00</color>
+    <color name="das_close">#FF0000</color>
+    <color name="das_open">#36A749</color>
+    <color name="das_rateing">#374955</color>
+    <color name="menu_arrow">#3a4853</color>
+
+    <color name="menu_txt">#66727F</color>
+    <color name="menu_icon">#66727F</color>
+
+    <color name="menu_txt_tr">#FF2860</color>
+    <color name="menu_icon_tr">#FF2860</color>
+
+    <color name="menu_line">#BFBFBF</color>
+
+    <color name="menu_moreinfo0">#707070</color>
+    <color name="colorGrey">#dddddd</color>
+    <color name="menu_item_line">#eaeaea</color>
+    <color name="menu_item_desc">#909090</color>
+    <color name="menu_item_add_bor">#595959</color>
+    <color name="tranfer">#00ffffff</color>
+    <color name="tranfer_color">#80000000</color>
+    <color name="das_tranfer_color">#60000000</color>
+    <color name="item_addon_bt">#ffedef</color>
+    <color name="box">#EDEDED</color>
+
+    <color name="tolcolr">#F6F6F6</color>
+    <color name="allergy_txt">#909199</color>
+    <color name="tolcoles">#f8f8f8</color>
+    <color name="card_no_delivery">#f4f4f4</color>
+    <color name="line_col">#D0D0D0</color>
+    <color name="bg_pay">#f2f6f9</color>
+    <color name="login_top_bg">#fcedf9</color>
+    <color name="signup_txt">#898992</color>
+
+    <color name="txt_blu_col">#276cf6</color>
+    <color name="edit_address_top">#f2f5fc</color>
+
+    <color name="edit_address_notxt">#c2c2c2</color>
+    <color name="edit_type">#fcedf0</color>
+
+    <color name="ord_type">#f6f7f9</color>
+    <color name="add_bg">#f7f7f7</color>
+
+    <color name="filter_buton_bg">#F1F1F1</color>
+    <color name="filter_switch">#dddfe3</color>
+    <color name="cart_couben_edit">#fcedf2</color>
+
+    <color name="colletion_txt">#204356</color>
+    <color name="car_total">#00c070</color>
+    <!-- #20191d1e-->
+    <color name="menycat_bg">#E8EBED</color>
+    <color name="menycat_txt">#204356</color>
+    <color name="menusub_bg">#f9fafb</color>
+
+    <color name="update_txt">#445963</color>
+    <color name="notnow">#d7eee4</color>
+
+    <color name="coupon_apply">#2d4e60</color>
+    <color name="menu_bg">#f5f5f5</color>
+    <color name="menucat_bg">#f9fafb</color>
+    <color name="menu_line_sep">#ebe9e9</color>
+    <color name="comt">#8d8d8d</color>
+    <color name="repet_bg">#e8fff5</color>
+    <color name="post_box">#f9f9f9</color>
+
+    <color name="info_col">#C9C9CA</color>
+    <color name="backbgcolor">#224355</color>
+    <color name="backtxtcolor">#FF224355</color>
+    <color name="mines">#d92662</color>
+    <color name="spcoloe">#00a96b</color>
+
+    <color name="btn_nextok">#276CF6</color>
+    <color name="btn_nextnotok">#BCBBBC</color>
+
+
+    <color name="forgot_error">#FF0000</color>
+
+
+    <color name="pre_mode_txt_one">#276CF6</color>
+    <color name="pre_mode_txt_two">#F3F3F3</color>
+    <color name="pre_mode_bg_one">#FFFFFF</color>
+    <color name="pre_mode_bg_two">#276CF6</color>
+
+    <color name="modeofitem_disable">#DEDDDF</color>
+    <color name="modeofitem_disable_txt">#808695</color>
+
+    <color name="unavilble_colr">#DEDDDF</color>
+    <color name="avilble_colr">#FFFFFF</color>
+    <color name="currentclick_colr">#D92662</color>
+
+    <color name="text_color_per_order">#BCBBBC</color>
+    <color name="Invalid_color_code">#D02F3E</color>
+    <color name="Invalid_color_code1">#909497</color>
+
+</resources>

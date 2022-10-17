@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/employee_popup_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tranfer_color">
+
+
+    <RelativeLayout
+        android:id="@+id/update_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/custom_loading_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/white"
+            android:src="@drawable/applyedcoupon" />
+
+
+        <LinearLayout
+            android:id="@+id/show_details_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/couponcode_popup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center_horizontal"
+                android:text="Update Available"
+                android:textColor="@color/coupon_apply"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/amountsave_popup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center_horizontal"
+                android:text="Here s an update for"
+                android:textColor="@color/car_total"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/takaway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center_horizontal"
+                android:text="With this coupon"
+                android:textColor="@color/coupon_apply"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/yay" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

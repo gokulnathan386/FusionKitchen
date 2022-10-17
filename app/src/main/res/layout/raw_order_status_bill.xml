@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linerhead"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlimg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/item_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/poppins_light"
+            android:text="1 &#215;"
+            android:textColor="@color/txt_ten"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:layout_toLeftOf="@+id/item_amt"
+            android:layout_toRightOf="@+id/item_qty"
+            android:fontFamily="@font/hindvadodara_medium"
+            android:text="Lamb Makhanni"
+            android:textColor="@color/txt_ten"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/item_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:fontFamily="@font/hindvadodara_semibold"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/txt_ten"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/item_sub_name"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_name"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_toRightOf="@+id/item_qty"
+            android:fontFamily="@font/roboto_regular"
+            android:text="With chilli "
+            android:textColor="@color/txt_ten"
+            android:textSize="10dp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

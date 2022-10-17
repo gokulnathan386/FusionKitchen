@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/_5sdp"
+    android:background="@drawable/menu_offer_one"
+    android:paddingLeft="@dimen/_5sdp"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_5sdp">
+
+
+    <TextView
+        android:id="@+id/offer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center_vertical"
+        android:text="Get 15 % off"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/offer_decs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/offer_title"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center_vertical"
+        android:text="on order above 10"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+
+</RelativeLayout>

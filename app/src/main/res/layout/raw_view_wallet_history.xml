@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/order_show1"
+    app:cardCornerRadius="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:backgroundTint="@color/white">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_log"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/list_client_logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/hederlocoplaceimg" />
+    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:layout_toLeftOf="@+id/list_total_amt"
+            android:layout_toRightOf="@+id/img_log"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/list_client_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:lineSpacingExtra="3dp"
+                android:text="Refount"
+                android:textColor="#FF204356"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/history_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="00 00 0000"
+                android:textColor="#FF000000"
+                android:textSize="10sp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/list_total_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="left"
+            android:text="+ 00.00"
+            android:textColor="#FF276CF6"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
