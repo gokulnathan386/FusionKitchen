@@ -13,16 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,9 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
-import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 
 import static android.text.Html.fromHtml;
@@ -73,7 +67,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
 
 
 
@@ -120,6 +113,11 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
             }
         }, new IntentFilter("item_possion-message"));
+
+
+
+
+
 
 
 
