@@ -62,7 +62,6 @@
             android:background="@color/menu_bg"
             android:backgroundTint="@color/menu_bg"
             android:visibility="visible">
-
         </androidx.recyclerview.widget.RecyclerView>
 
 

@@ -248,8 +248,6 @@ if(arrayListUser.size()>0){
             this.menu_addon_item_name = itemView.findViewById(R.id.menu_addon_item_name);
             this.menu_addon_item_amout = itemView.findViewById(R.id.menu_addon_item_amout);
             this.menu_addon_item_extra = itemView.findViewById(R.id.menu_addon_item_extra);
-
-
         }
     }
 

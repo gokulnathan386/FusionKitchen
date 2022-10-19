@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -17,6 +16,9 @@ import android.graphics.Color;
 import android.graphics.Rect;
 
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -33,10 +35,12 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,6 +50,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,17 +82,27 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 import com.fusionkitchen.adapter.MenuListViewAdapter;
+import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
+import com.fusionkitchen.model.moreinfo.about_us_model;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +126,7 @@ import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,8 +137,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.widget.Toast.LENGTH_LONG;
+import static androidx.recyclerview.widget.RecyclerView.*;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class Item_Menu_Activity extends AppCompatActivity {
+
+public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyCallback{
 
 
     public Context mContext = Item_Menu_Activity.this;
@@ -132,12 +152,26 @@ public class Item_Menu_Activity extends AppCompatActivity {
     LinearLayout menu_page_pop_up;
     Dialog menulistpopup;
     MenuListViewAdapter menuListViewAdapter;
+    CardView search_box_cardview;
     HttpUrl baseUrl;
     Dialog dialog_order_mode_popup;
+    Dialog info_popup,heart_popup,Coupen_popup;
+    TextView  shop_name,shop_address;
+    String strsgetAddress1,strsAddress2,strscity, strsstate, strspincd;
+    GoogleMap mMap;
+    LatLng p1 = null;
+    double p2;
+    double p3;
+
+    List<menu_item_sub_model.categoryall> jobdetails2;
+
+
     /*---------------------------check internet connection----------------------------------------------------*/
 
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
+    TextView total_amount_textview;
+    double amtfloat = 0.00;
 
     /*---------------------------Session Manager Class----------------------------------------------------*/
     // Session Manager Class
@@ -155,8 +189,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
     String authKey, fullUrl, addonlimit, nextaid, btnnext, arrayaddonextraidsingle, item_price, item_total_amt;
     LoaderTextView menu_clientname, menu_tvdesc, clent_rating, colletion_time, delivery_time, min_order_amt;
     TextView addon_item_name, addon_item_addonname, item_amt, btnClear, collection_tex, delivery_tex;
-    CardView back_card_view1, top_back_card_view, delivery_card_view2, collection_card_view3, delivery_only_view2, collection_only_view3, menu_view_card_view, menu_addon_item_view;
-    CardView top_card_search_view;
+    CardView back_card_view1, delivery_card_view2, collection_card_view3, delivery_only_view2, collection_only_view3, menu_view_card_view, menu_addon_item_view;
+    TextView top_back_card_view;
+    CardView top_card_search_view,heart_icon,shareicon,info_icon_btn,repeat_popup;
     LinearLayout header_img, collect_lener, delivery_lener, min_lener, bottom_nav, addon_extra_liner;
     RelativeLayout add_to_cart_layout;
     LinearLayout search_layout;
@@ -180,7 +215,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
     ExtendedFloatingActionButton mAddFab;
     Boolean isAllFabsVisible;
     NestedScrollView nsv;
+    //  ScrollView nsv;
     ExtendedFloatingActionButton mfab_close;
+    LinearLayout search_listview_header;
 
     /*---------------------------loaderviewlibrary----------------------------------------------------*/
     ShimmerFrameLayout mShimmerViewContainer;
@@ -246,7 +283,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
     Animation animationdown, animationup;
 
 
-    Dialog warningdialog;
+    Dialog repeatpopup;
 
     /*--------------Login details get SharedPreferences------------------*/
     SharedPreferences slogin;
@@ -279,33 +316,17 @@ public class Item_Menu_Activity extends AppCompatActivity {
     String selectedtodaytimeItem, selectedlaterdateItem, selectedlatertimeItem;
     String  mlaterdatefullUrl;
     ImageView bikeimgonlydelivery;
-    CardView mode_view2;
+    /*   CardView mode_view2;*/
 
-  /*  CardView ordermode_popup_view;
-    String metdpasfullUrl, mlaterdatefullUrl;
-
-    RelativeLayout collection_but, delivery_but, later_timing_layer;
-    TextView colli_txt, colloetion_tattime, delivery_txt, delivery_tattime, sevenday_txt;
-    GifImageView loading_imageView1, loading_imageView2;
-    LinearLayout card_change, today_time_layer, later_time_layer;
-    AppCompatButton bun_asap, bun_today, bun_later, update_mode;
-    Spinner today_time, later_date, later_time;
-    CardView mode_view2;
-
-    String selectedtodaytimeItem, selectedlaterdateItem, selectedlatertimeItem;
-
-    String todaytimestr, laterdatestr, latertimestr, activetagstr, laterdate;
-
-    ImageView bikeimgonlydelivery;
-
-
-    RelativeLayout rltop,OfferList;
-    CardView card_view;*/
-
+    TextView mode_view2;
     RecyclerView menu_item_list_view;
 
- /*------------------------------------------------------Menu Page List----------------------------------------*/
- private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
+    int pastVisibleItem, visibleItemCount, totalItemCount, currentPage = 1, mPage = 1;
+    private boolean loading = true;
+
+
+    /*------------------------------------------------------Menu Page List----------------------------------------*/
+    private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
 
 
 
@@ -363,6 +384,8 @@ public class Item_Menu_Activity extends AppCompatActivity {
         editor_extra.putString("ordermodetype", "0");
         editor_extra.commit();*/
 
+
+
         Log.e("otypelog", "" + sharedpreferences.getString("ordermodetype", null));
 
 
@@ -381,15 +404,42 @@ public class Item_Menu_Activity extends AppCompatActivity {
         Log.e("nextapi1", "" + nextaid);
         Log.e("nextapi2", "" + btnnextfir);
         Log.e("nextapi3", "" + addonlimit);
+
+
         /*---------------------------Fab show and hind view----------------------------------------------------*/
+
+
+
         nsv.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
                 Log.e("scrolviw1", "scrollX: " + scrollX);
                 Log.e("scrolviw2", "scrollY: " + scrollY);
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
-                if (400 < oldScrollY) {   //800
+
+                    /*  LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerviewitem.getLayoutManager();
+
+                        for (int i = 0; i < jobdetails2.size(); i++) {
+
+                            menu_item_sub_model.categoryall input =jobdetails2.get(i);
+
+                            Log.d("Gokulnathan",input.getId());
+                             View y = recyclerviewitem.getChildAt(Integer.parseInt(input.getId()));
+
+                            Log.d("Gokulnathan", String.valueOf(y));
+
+
+
+                         //   Log.d("Gokulnathan", String.valueOf(recyclerviewitem.getChildAt(Integer.parseInt(input.getId())).getY()));
+
+
+                        }*/
+
+
+
+                if (600< oldScrollY) {   //400
                     top_card_view.setVisibility(View.VISIBLE);
                     // Toast.makeText(getApplicationContext(), "extend", Toast.LENGTH_LONG).show();
                 } else {
@@ -401,10 +451,17 @@ public class Item_Menu_Activity extends AppCompatActivity {
                 } else {
                     mAddFab.shrink();
                 }
+
+
+
             }
         });
+
+
+
+
         mAddFab.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         menu_view_card_view.setVisibility(View.VISIBLE);
@@ -414,7 +471,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     }
                 });
         mfab_close.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mfab_close.shrink();
@@ -454,6 +511,8 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         dbHelper = new SQLDBHelper(Item_Menu_Activity.this);
         getContactsCount();
+
+
 
         SharedPreferences.Editor editor_extra = sharedpreferences.edit();
         editor_extra.putString("menuurlpath", menuurlpath);
@@ -515,6 +574,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         Checkout = findViewById(R.id.Checkout);
         btnClear = findViewById(R.id.btnClear);
+        info_icon_btn = findViewById(R.id.info_icon);
 
 
         addon_item_view = findViewById(R.id.addon_item_view);
@@ -531,35 +591,80 @@ public class Item_Menu_Activity extends AppCompatActivity {
         search_colse_bottom = findViewById(R.id.search_colse_bottom);
         menu_list_view = findViewById(R.id.menu_list_view);
         menu_page_pop_up = findViewById(R.id.menu_page_pop_up);
+        heart_icon = findViewById(R.id.heart_icon);
+        shareicon = findViewById(R.id.shareicon);
+        repeat_popup = findViewById(R.id.repeat_popup);
 
-        /*--------------------------order_mode_popup_view---------------------*/
-/*        ordermode_popup_view = findViewById(R.id.ordermode_popup_view);
-        collection_but = findViewById(R.id.collection_but);
-        delivery_but = findViewById(R.id.delivery_but);
-        colloetion_tattime = findViewById(R.id.colloetion_tattime);
-        delivery_tattime = findViewById(R.id.delivery_tattime);
-        sevenday_txt = findViewById(R.id.sevenday_txt);
-        loading_imageView1 = findViewById(R.id.loading_imageView1);
-        loading_imageView2 = findViewById(R.id.loading_imageView2);
-        card_change = findViewById(R.id.card_change);
-        today_time_layer = findViewById(R.id.today_time_layer);
-        later_time_layer = findViewById(R.id.later_time_layer);
-        bun_asap = findViewById(R.id.bun_asap);
-        bun_today = findViewById(R.id.bun_today);
-        bun_later = findViewById(R.id.bun_later);
-        update_mode = findViewById(R.id.update_mode);
-        today_time = findViewById(R.id.today_time);
-        later_date = findViewById(R.id.later_date);
-        later_time = findViewById(R.id.later_time);
-        mode_view2 = findViewById(R.id.mode_view2);
-        colli_txt = findViewById(R.id.colli_txt);
-        delivery_txt = findViewById(R.id.delivery_txt);
-        later_timing_layer = findViewById(R.id.later_timing_layer);
+        total_amount_textview = findViewById(R.id.total_amount_textview);
+        search_box_cardview = findViewById(R.id.search_box_cardview);
+
+        search_listview_header = findViewById(R.id.search_listview_header);
+        search_listview_header.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_box_cardview.setVisibility(View.VISIBLE);
+            }
+        });
+
+        heart_icon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HeartIcon();
+            }
+        });
+
+        info_icon_btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                info_popup.show();
+            }
+        });
 
 
-        bikeimgonlydelivery = findViewById(R.id.bikeimgonlydelivery);
-        mode_view2.setVisibility(View.VISIBLE);*/
+        recyclerviewitem.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+                int total = ((LinearLayoutManager)recyclerView.getLayoutManager()).getItemCount();
+                int firstVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                int lastVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+
+
+                Log.d("Gokulnathan", String.valueOf(firstVisibleItemCount + " " +total + " "+ lastVisibleItemCount));
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d("Gokulnathan","");
+            }
+
+        });
+
+
+
+        repeat_popup.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog  repeatpopup = new Dialog(Item_Menu_Activity.this);
+                repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                repeatpopup.setContentView(R.layout.repeat_popup_design);
+
+                ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
+
+
+
+                repeatpopup.show();
+                repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
+
+
+            }
+        });
 
         Log.d("backbtn",reloadback);
 
@@ -570,7 +675,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
         btnClear.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //  Toast.makeText(getApplicationContext(), "Back Click", Toast.LENGTH_LONG).show();
@@ -580,11 +685,11 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
                         item_priceadd.remove(item_priceadd.size() - 1);
-                        item_amt.setText("Total: £ " + (item_priceadd.get(item_priceadd.size() - 1)));
+                        // item_amt.setText("Total: £ " + (item_priceadd.get(item_priceadd.size() - 1)));
+
+                        item_amt.setText(" £ " + (item_priceadd.get(item_priceadd.size() - 1)));
 
                         Log.e("clraeitem_priceadd2", "" + item_priceadd);
-
-
                         Log.e("backclick", "" + aidlist);
                         Log.e("backclick2", "" + aidlist.get(aidlist.size() - 1));
                         Log.e("arrayextranameData", "" + arrayextranameData);
@@ -708,7 +813,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
         mode_view2.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mode_view2.setEnabled(false);
@@ -725,7 +830,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                 });
 
         search_colse_top.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (view != null) {
@@ -740,7 +845,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     }
                 });
         search_colse_bottom.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (view != null) {
@@ -769,7 +874,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
         confirm_code.setTransformationMethod(null);
 
         offer_back.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         menu_offer_details_view.setVisibility(View.GONE);
@@ -779,33 +884,45 @@ public class Item_Menu_Activity extends AppCompatActivity {
         total_item = findViewById(R.id.total_item);
         proceed_button = findViewById(R.id.proceed_button);
 
+
         if (cursor != 0) {
-            total_item.setText(cursor + " Items");
+
+            //total_item.setText(cursor + " Items");
+            // total_item.setText(cursor+ "");
+
+            ArrayList<String> get_qty_count = dbHelper.getqtycount();
+            total_item.setText(get_qty_count.get(0) + "");
+            Log.d("Cursor1 ", String.valueOf(get_qty_count.get(0) + ""));
+
+            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+            Double test = Double.valueOf(get_amt_count.get(0)+ "");
+            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
             collDelivery(menuurlpath);
 
         } else {
-               add_to_cart_layout.setVisibility(View.INVISIBLE);
-               menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+            add_to_cart_layout.setVisibility(View.INVISIBLE);
+            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
 
-               //Order_mode_popup();
+            //Order_mode_popup();
 
 
             SharedPreferences sharedpreferences = getSharedPreferences("PREFS_MOREINFO", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-                Log.d("More_info",sharedpreferences.getString("More_info",null));
+            Log.d("More_info",sharedpreferences.getString("More_info",null));
 
-                if(sharedpreferences.getString("More_info",null).equalsIgnoreCase("MoreInfo")){
-                   // editor.putString("More_info", "Moreinfo-popup");
-                }else{
-                   Order_mode_popup();
-                }
-                editor.commit();
+            if(sharedpreferences.getString("More_info",null).equalsIgnoreCase("MoreInfo")){
+                // editor.putString("More_info", "Moreinfo-popup");
+            }else{
+                Order_mode_popup();
+            }
+            editor.commit();
 
         }
 
         proceed_button.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (cursor != 0) {
@@ -819,7 +936,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         /*---------------------------OnClickListener----------------------------------------------------*/
         addon_extra1.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "0";
@@ -830,27 +947,36 @@ public class Item_Menu_Activity extends AppCompatActivity {
                        /* addonextrastringName = addonextrastringName + "0,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
 
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
+                        /*     addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra1.setTextColor(Color.WHITE);*/
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra1.setTextColor(Color.WHITE);
 
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+
+                        //  addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //  addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //   addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
 
 
                     }
                 });
         addon_extra2.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "1";
@@ -859,26 +985,34 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "1,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
 
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
+                        // addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+
+                        //  addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra2.setTextColor(Color.WHITE);
 
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        //  addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //   addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
                     }
                 });
         addon_extra3.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "2";
@@ -887,26 +1021,34 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "2,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
 
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
+                        // addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+
+                        //addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra3.setTextColor(Color.WHITE);
 
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        // addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //  addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
                     }
                 });
         addon_extra4.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "3";
@@ -915,27 +1057,34 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "3,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //  addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
 
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
+                        //   addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra4.setTextColor(Color.WHITE);
 
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
                     }
                 });
 
         addon_extra5.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "4";
@@ -944,26 +1093,33 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "4,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
 
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra5.setTextColor(Color.WHITE);
 
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
                     }
                 });
         addon_extra6.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "5";
@@ -972,26 +1128,33 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "5,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
 
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
+                        //  addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra6.setTextColor(Color.WHITE);
 
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        // addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra7.setTextColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
                     }
                 });
         addon_extra7.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addonextrafirsr = "6";
@@ -1000,26 +1163,33 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         editor_extra.commit();
                        /* addonextrastringName = addonextrastringName + "6,";
                         Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();*/
-                        addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.menu_arrow));
-                        addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.menu_arrow));
+                        //  addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                        addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra1.setTextColor(addon_extra1.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        //addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                        addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra2.setTextColor(addon_extra2.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                        addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra3.setTextColor(addon_extra3.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                        addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra4.setTextColor(addon_extra4.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                        addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra5.setTextColor(addon_extra5.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        // addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                        addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                        addon_extra6.setTextColor(addon_extra6.getContext().getResources().getColor(R.color.No_Less_Text_Color));
 
-                        addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.menu_arrow));
+                        //addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.No_Less_Text_Color));
+                        addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_style));
                         addon_extra7.setTextColor(Color.WHITE);
                     }
                 });
 
 
-        back_card_view1.setOnClickListener(new View.OnClickListener() {
+        back_card_view1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -1040,9 +1210,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
                     finish();
                 } else if(reloadback.equalsIgnoreCase("4")) {
-                        // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class))
-                       startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        finish();
+                    // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class))
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
 
                 }else{
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
@@ -1054,7 +1224,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
             }
         });
 
-        top_back_card_view.setOnClickListener(new View.OnClickListener() {
+        top_back_card_view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -1076,12 +1246,12 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
                 } else if (reloadback.equalsIgnoreCase("4")){
 
-                        startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        finish();
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
 
 
                 } else {
-                   //startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
+                    //startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     finish();
 
@@ -1091,7 +1261,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
         });
 
 
-        close_addon.setOnClickListener(new View.OnClickListener() {
+        close_addon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 menu_addon_item_view.setVisibility(View.GONE);
@@ -1106,7 +1276,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
         });
 
         Checkout.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -1183,7 +1353,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
         relativ_moreinfo.setOnClickListener(
-                new View.OnClickListener() {
+                new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(Item_Menu_Activity.this, Moreinfo_Activity.class);
@@ -1213,18 +1383,263 @@ public class Item_Menu_Activity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagecollectononly, new IntentFilter("collection_only"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mclasbackonly, new IntentFilter("clasback"));
 
-
-        /*---------------------------Menu Item List View----------------------------------------------------*/
-        menu_page_pop_up.setOnClickListener(new View.OnClickListener() {
+        /*---------------------------Share function----------------------------------------------------*/
+        shareicon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Menulistpopup();
+                Intent shareIntent =   new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
+                String app_url = " https://play.google.com/store/apps/details?id=com.fusionkitchen";
+                shareIntent.putExtra(Intent.EXTRA_TEXT,app_url);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        });
+
+
+        /*---------------------------Menu Item List View----------------------------------------------------*/
+        menu_page_pop_up.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Menulistpopup();
                 menulistpopup.show();
             }
         });
 
-        Menulistpopup();
 
+        Menulistpopup();
+        Show_info_popup();
+
+     /*  recyclerviewitem.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //Log.e("DY",""+dy);
+
+                int firstVisibleItemCount = ((LinearLayoutManager)recyclerviewitem.getLayoutManager()).findFirstVisibleItemPosition();
+
+                Log.e("recyclerviewitem","  "+firstVisibleItemCount);
+
+            }
+        });
+*/
+    }
+
+
+
+
+    private void Show_info_popup() {
+
+        info_popup = new Dialog(this);
+        info_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        info_popup.setContentView(R.layout.info_design);
+
+
+
+        shop_name = info_popup.findViewById(R.id.shop_name);
+        shop_address = info_popup.findViewById(R.id.shop_address);
+        RecyclerView open_hrs_review = info_popup.findViewById(R.id.open_hrs_review);
+        ImageView  direction = info_popup.findViewById(R.id.direction);
+
+        /*------------------------------------Start open time And closed time----------------------------------*/
+        // get user data from session
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("ordermode", sharedpreferences.getString("ordermodetype", null));
+        params.put("postcode", key_postcode);
+        params.put("area", key_area);
+        params.put("address_location", key_address);
+
+
+        fullUrl = menuurlpath + "/about";
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<about_us_model> call = apiService.getaboutus(fullUrl, params);
+        call.enqueue(new Callback<about_us_model>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<about_us_model> call, Response<about_us_model> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    if (response.body().getSTATUS().equalsIgnoreCase("true")) {
+                        //   about_deatils.setText(response.body().getAbout().getAboutus().replace("\n", ""));
+
+                        if (response.body().getAbout().getCuisines().size() == 0) {
+                            //    cusines_details.setText("Data not Found");
+                        } else if (response.body().getAbout().getCuisines().size() == 1) {
+                            //  cusines_details.setText(response.body().getAbout().getCuisines().get(0).getName());
+                            // clent_submenu.setText(response.body().getAbout().getCuisines().get(0).getName());
+                        } else if (response.body().getAbout().getCuisines().size() == 2) {
+                            //  cusines_details.setText(response.body().getAbout().getCuisines().get(0).getName() + response.body().getAbout().getCuisines().get(1).getName());
+                            // clent_submenu.setText(response.body().getAbout().getCuisines().get(0).getName().replace(",", " | ") + response.body().getAbout().getCuisines().get(1).getName());
+                        } else if (response.body().getAbout().getCuisines().size() == 3) {
+                            // cusines_details.setText(response.body().getAbout().getCuisines().get(0).getName() + response.body().getAbout().getCuisines().get(1).getName() + response.body().getAbout().getCuisines().get(2).getName());
+                            // clent_submenu.setText(response.body().getAbout().getCuisines().get(0).getName().replace(",", " | ") + response.body().getAbout().getCuisines().get(1).getName().replace(",", " | ") + response.body().getAbout().getCuisines().get(2).getName());
+                        } else {
+                            //  cusines_details.setText(response.body().getAbout().getCuisines().get(0).getName() + response.body().getAbout().getCuisines().get(1).getName() + response.body().getAbout().getCuisines().get(2).getName() + response.body().getAbout().getCuisines().get(3).getName());
+                            // clent_submenu.setText(response.body().getAbout().getCuisines().get(0).getName().replace(",", " | ") + response.body().getAbout().getCuisines().get(1).getName().replace(",", " | ") + response.body().getAbout().getCuisines().get(2).getName());
+                        }
+
+                        //   clent_name.setText(response.body().getAbout().getGooglemaps().getName());
+
+
+                        shop_name.setText(response.body().getAbout().getGooglemaps().getName());
+
+
+                        if (response.body().getAbout().getGooglemaps().getAddress1() != null && !response.body().getAbout().getGooglemaps().getAddress1().isEmpty()) {
+                            strsgetAddress1 = response.body().getAbout().getGooglemaps().getAddress1();
+                        } else {
+                            strsgetAddress1 = "";
+                        }
+
+                        if (response.body().getAbout().getGooglemaps().getAddress2() != null && !response.body().getAbout().getGooglemaps().getAddress2().isEmpty()) {
+                            strsAddress2 = response.body().getAbout().getGooglemaps().getAddress2();
+                        } else {
+                            strsAddress2 = "";
+                        }
+
+
+                        if (response.body().getAbout().getGooglemaps().getCity() != null && !response.body().getAbout().getGooglemaps().getCity().isEmpty()) {
+
+                            strscity = response.body().getAbout().getGooglemaps().getCity();
+                        } else {
+                            strscity = "";
+                        }
+
+                        if (response.body().getAbout().getGooglemaps().getState() != null && !response.body().getAbout().getGooglemaps().getState().isEmpty()) {
+                            strsstate = response.body().getAbout().getGooglemaps().getState();
+                        } else {
+                            strsstate = "";
+                        }
+
+                        if (response.body().getAbout().getGooglemaps().getPincode() != null && !response.body().getAbout().getGooglemaps().getPincode().isEmpty()) {
+                            strspincd = response.body().getAbout().getGooglemaps().getPincode();
+                        } else {
+                            strspincd = "";
+                        }
+
+                        shop_address.setText(strsgetAddress1.replace(",", "") + " " + strsAddress2.replace(",", "") + " " + strscity.replace(",", "") + " " + strsstate.replace(",", "") + " " + strspincd.replace(",", ""));
+
+
+                        /*---------------------Google Map------------------------*/
+
+
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.map);
+                        mapFragment.getMapAsync((OnMapReadyCallback) Item_Menu_Activity.this);
+
+                        getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+
+                        List<about_us_model.aboutdetails.openinghours> jobdetails = (response.body().getAbout().getOpeninghours());
+                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails);
+                        open_hrs_review.setHasFixedSize(true);
+                        open_hrs_review.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
+                        open_hrs_review.setAdapter(adapter);
+
+                    } else {
+                    }
+                } else {
+
+                    Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+
+            }
+
+
+            @Override
+            public void onFailure(Call<about_us_model> call, Throwable t) {
+                Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+            }
+
+
+        });
+
+
+        /*------------------------------------End open time And closed time----------------------------------*/
+
+        //   info_popup.show();
+        info_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        info_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        info_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        info_popup.getWindow().setGravity(Gravity.BOTTOM);
+
+
+    }
+
+
+    /* ------------------------Google Map--------------------------*/
+    public LatLng getLocationFromAddress(Context context, String strAddress, Dialog info_popup) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+            p2 = location.getLatitude();
+            p3 = location.getLongitude();
+            Log.e("getLatitude", "" + location.getLatitude());
+            Log.e("getLongitude", "" + location.getLongitude());
+            info_popup.findViewById(R.id.direction).setVisibility(View.VISIBLE);
+
+            info_popup.findViewById(R.id.direction).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //  Uri gmmIntentUri = Uri.parse("google.navigation:q=latLng&avoid=tf");
+                    Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", p2, p3));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            });
+
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+
+
+
+    private void HeartIcon() {
+        heart_popup = new Dialog(this);
+        heart_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        heart_popup.setContentView(R.layout.heart_popup_design);
+
+        ImageView favourite_image = heart_popup.findViewById(R.id.favourite_image);
+        AppCompatButton favourite_btn = heart_popup.findViewById(R.id.favourite_btn);
+
+        Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
+
+        favourite_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                heart_popup.dismiss();
+            }
+        });
+
+        heart_popup.show();
+        heart_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        heart_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        heart_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        heart_popup.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void Menulistpopup() {
@@ -1244,7 +1659,6 @@ public class Item_Menu_Activity extends AppCompatActivity {
         Log.d("Item_Menu_Activity",key_area);
         Log.d("Item_Menu_Activity",key_address);
 
-
         //menulistpopup.show();
         menulistpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         menulistpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -1255,44 +1669,46 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
     private void Menulistview(String menuurlpath, String ordermodetype, String key_postcode, String key_area, String key_address, Dialog menulistpopup) {
 
-            String Menu_Url_Path =  menuurlpath +"/menu";
+        String Menu_Url_Path =  menuurlpath +"/menu";
 
-            menuListViewAdapter = new MenuListViewAdapter(menu_page_listmodel,Item_Menu_Activity.this,menulistpopup);
-            RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false);
-            menu_item_list_view.setLayoutManager(manager4);
-            menu_item_list_view.setAdapter(menuListViewAdapter);
-            StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+Menu_Url_Path,
-                    new com.android.volley.Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonobject = new JSONObject(response);
-                                JSONObject getdata =jsonobject.getJSONObject("menu");
-                                JSONArray menu_list = getdata.getJSONArray("searchcategory");
+        menuListViewAdapter = new MenuListViewAdapter(menu_page_listmodel,Item_Menu_Activity.this,menulistpopup);
+        LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false);
+        menu_item_list_view.setLayoutManager(manager4);
+        menu_item_list_view.setAdapter(menuListViewAdapter);
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+Menu_Url_Path,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonobject = new JSONObject(response);
+                            JSONObject getdata =jsonobject.getJSONObject("menu");
+                            JSONArray menu_list = getdata.getJSONArray("searchcategory");
 
-                                for (int i = 0; i < menu_list.length(); i++) {
-                                    JSONObject object = menu_list.getJSONObject(i);
-                                    Menu_Page_listmodel popularlist = new Menu_Page_listmodel(
-                                            object.getString("name")
+                            for (int i = 0; i < menu_list.length(); i++) {
+                                JSONObject object = menu_list.getJSONObject(i);
+                                Menu_Page_listmodel popularlist = new Menu_Page_listmodel(
+                                        object.getString("name")
 
-                                    );
-                                    menu_page_listmodel.add(popularlist);
-                                }
+                                );
+                                menu_page_listmodel.add(popularlist);
 
-                                menuListViewAdapter.notifyDataSetChanged();
-
-                            }catch (JSONException e) {
-                                e.printStackTrace();
                             }
 
+                            menuListViewAdapter.notifyDataSetChanged();
+
+
+                        }catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    },
-                    new com.android.volley.Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                        }
-                    }){
+
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }){
 
 
             @Override
@@ -1304,10 +1720,10 @@ public class Item_Menu_Activity extends AppCompatActivity {
                 params.put("address_location",key_address);
                 return params;
             }
-            };
+        };
 
-            RequestQueue requestqueue = Volley.newRequestQueue(this);
-            requestqueue.add(stringRequest);
+        RequestQueue requestqueue = Volley.newRequestQueue(this);
+        requestqueue.add(stringRequest);
 
 
     }
@@ -1430,11 +1846,14 @@ public class Item_Menu_Activity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
             itempossion = intent.getStringExtra("itempossion");
-            //   recyclerviewitem.getLayoutManager().scrollToPosition(Integer.parseInt(itempossion));
-            //   appbar.setExpanded(false);
-            //   nsv.smoothScrollTo(0,recyclerviewitem.getTop());
-            //   recyclerviewitem.smoothScrollToPosition(Integer.parseInt(itempossion));
+            String item_postion_name = intent.getStringExtra("itempossionname");
+
+
+
+            menu_list_view.setText(item_postion_name);
             Log.e("itempossion", "" + itempossion);
+
+
             if (itempossion == null) {
                 final float y = recyclerviewitem.getChildAt(Integer.parseInt("1")).getY();
                 nsv.post(new Runnable() {
@@ -1442,6 +1861,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     public void run() {
                         nsv.fling(0);
                         nsv.smoothScrollTo(0, (int) y);
+
                     }
                 });
             } else {
@@ -2082,9 +2502,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
 
-                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
-                                                             update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
-                                                         }
+                                                        if(todaytimestr.equalsIgnoreCase("Mid Night")){
+                                                            update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
+                                                        }
 
 
 
@@ -2497,15 +2917,15 @@ public class Item_Menu_Activity extends AppCompatActivity {
                                         if (order_mode.equalsIgnoreCase("0")) {
                                             delivery_one_tex.setText("Delivery");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_delivery);
-                                         //   ordermode_popup_view.setVisibility(View.GONE);
-                                          //  mode_view2.setVisibility(View.VISIBLE);
+                                            //   ordermode_popup_view.setVisibility(View.GONE);
+                                            //  mode_view2.setVisibility(View.VISIBLE);
                                             mAddFab.setVisibility(View.VISIBLE);
 
                                         } else {
                                             delivery_one_tex.setText("Collection");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_collection);
-                                           // ordermode_popup_view.setVisibility(View.GONE);
-                                          //  mode_view2.setVisibility(View.VISIBLE);
+                                            // ordermode_popup_view.setVisibility(View.GONE);
+                                            //  mode_view2.setVisibility(View.VISIBLE);
                                             mAddFab.setVisibility(View.VISIBLE);
                                         }
 
@@ -2524,8 +2944,8 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
                     } else {
                         // dismissloading();
-                      //  ordermode_popup_view.setVisibility(View.INVISIBLE);
-                  //      mode_view2.setVisibility(View.INVISIBLE);
+                        //  ordermode_popup_view.setVisibility(View.INVISIBLE);
+                        //      mode_view2.setVisibility(View.INVISIBLE);
                         mAddFab.setVisibility(View.VISIBLE);
 
 
@@ -2611,9 +3031,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
     private void menugetitem(String menuurlpath, String menuparamesint, String str_key_postcode, String str_key_area, String str_key_address) {
         // get user data from session
 
-         if(menuparamesint==null){
-             menuparamesint = "0";
-         }
+        if(menuparamesint==null){
+            menuparamesint = "0";
+        }
 
 
         Map<String, String> params = new HashMap<String, String>();
@@ -2695,15 +3115,16 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
 
-                        List<menu_item_sub_model.categoryall> jobdetails = (response.body().getMenu().getCategoryall());
+                        jobdetails2 = (response.body().getMenu().getCategoryall());
 
 
 
-                        MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails, menuurlpath);
+                        MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
                         recyclerviewitem.setHasFixedSize(true);
                         recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         // recyclerviewitem.getLayoutManager().scrollToPosition(2);
                         recyclerviewitem.setAdapter(itemadapter);
+
 
                         List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
                         MenuserachcatAdapter menuitemadapter = new MenuserachcatAdapter(mContext, (List<menu_item_sub_model.searchcategory>) menuitemdetails);
@@ -2712,7 +3133,8 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         recyclerviewmenuitem.setAdapter(menuitemadapter);
 
 
-                             /*------------------------------Add to cart to get item details------------------------------*/
+
+                        /*------------------------------Add to cart to get item details------------------------------*/
                         intentitemdetails = getIntent();
                         if (intentitemdetails.getStringExtra("addonid") == null) {
 
@@ -2722,6 +3144,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
 
                         }
+
+
+
 
                     } else {
                         mShimmerViewContainer.stopShimmerAnimation();
@@ -2747,7 +3172,30 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         });
 
+
     }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        // Add a marker in Sydney and move the camera
+        LatLng TutorialsPoint = new LatLng(p2, p3);
+
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setScrollGesturesEnabled(true);
+        mMap.getUiSettings().setTiltGesturesEnabled(true);
+        mMap.getUiSettings().setRotateGesturesEnabled(true);
+
+        mMap.addMarker(new MarkerOptions().position(TutorialsPoint).title("Tutorialspoint.com"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(TutorialsPoint));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p2, p3), 17.0f));
+    }
+
+
     /*---------------------------check internet connection----------------------------------------------------*/
 
 
@@ -2790,7 +3238,17 @@ public class Item_Menu_Activity extends AppCompatActivity {
             //bottom_nav.setVisibility(View.VISIBLE);
             add_to_cart_layout.setVisibility(View.VISIBLE);
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
-            total_item.setText(cursor + " Items");
+            //  total_item.setText(cursor + " Items");
+            //  total_item.setText(cursor + "");
+
+            ArrayList<String> get_qty_count = dbHelper.getqtycount();
+            total_item.setText(get_qty_count.get(0) + "");
+            Log.d("Cursor2 ", String.valueOf(get_qty_count.get(0) + ""));
+
+
+            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
         }
     };
 
@@ -2967,9 +3425,11 @@ public class Item_Menu_Activity extends AppCompatActivity {
                 addonitemfirstview(ItemName, addonid, "", "", "1");
             } else {
                 if (nextaid.equalsIgnoreCase("0") && btnnextfir.equalsIgnoreCase("0")) {
-                    Checkout.setText("PROCESS");
+                    // Checkout.setText("PROCESS");
+                    Checkout.setText("Proceed");
                 } else {
-                    Checkout.setText("NEXT");
+                    //Checkout.setText("NEXT");
+                    Checkout.setText("Proceed");
                 }
                 if (addonlimit.equalsIgnoreCase("1")) {
                     Checkout.setEnabled(false);
@@ -2977,7 +3437,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     Checkout.setTextColor(Checkout.getContext().getResources().getColor(R.color.menu_arrow));
                 } else {
                     Checkout.setEnabled(true);
-                    Checkout.setBackgroundColor(Checkout.getContext().getResources().getColor(R.color.menu_txt_tr));
+                    Checkout.setBackgroundColor(Checkout.getContext().getResources().getColor(R.color.menu_text_bg));
                     Checkout.setTextColor(Checkout.getContext().getResources().getColor(R.color.white));
                 }
             }
@@ -3155,7 +3615,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     Log.e("addtotal3", "" + sum);
 
 
-                    item_amt.setText("Total: £ " + String.format("%.2f", sum));
+                    //  item_amt.setText("Total: £ " + String.format("%.2f", sum));
+
+                    item_amt.setText(" £ " + String.format("%.2f", sum));
 
                     /*String[] separateditemprice = item_amt.getText().toString().split("£");
                     separateditemprice[0] = separateditemprice[0].trim();
@@ -3213,7 +3675,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
                     double num2 = Double.parseDouble(addonidprice);//addonidprice
                     // add both number and store it to sum
                     sum = num1 - num2;
-                    item_amt.setText("Total: £ " + String.format("%.2f", sum));
+                    //   item_amt.setText("Total: £ " + String.format("%.2f", sum));
+
+                    item_amt.setText(" £ " + String.format("%.2f", sum));
 /*
                     String[] separateditemprice = item_amt.getText().toString().split("£");
                     separateditemprice[0] = separateditemprice[0].trim();
@@ -3368,20 +3832,29 @@ public class Item_Menu_Activity extends AppCompatActivity {
                  adapter.notifyDataSetChanged();*/
                     //Log.e("ITEM_LIST",""+ITEM_LIST.toString());
                     //select limt 0 0
-                    addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                    addon_extra1.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                    addon_extra2.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                    addon_extra3.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                    addon_extra4.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                    addon_extra5.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                    addon_extra6.setTextColor(getResources().getColor(R.color.menu_arrow));
-                    addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                    addon_extra7.setTextColor(getResources().getColor(R.color.menu_arrow));
+
+                    // addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                    addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra1.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    // addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                    addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra2.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    //addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                    addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra3.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    //   addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                    addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra4.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    // addon_extra4.setTextColor(getResources().getColor(R.color.menu_arrow));
+                    //addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                    addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra5.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    //addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                    addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra6.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
+                    //addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                    addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                    addon_extra7.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
 
                     Checkout.setOnClickListener(
                             new View.OnClickListener() {
@@ -3554,12 +4027,15 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         if (item_price_btn == true) {
                             item_price_btn = false;
 
-                            item_amt.setText(response.body().getDATA().getOrderitemprice());
+                            //  item_amt.setText(response.body().getDATA().getOrderitemprice());
                             String[] separateditemprice = response.body().getDATA().getOrderitemprice().split("£");
                             separateditemprice[0] = separateditemprice[0].trim();
                             separateditemprice[1] = separateditemprice[1].trim();
                             item_price = separateditemprice[1];
                             sum = Double.parseDouble(separateditemprice[1]);
+
+                            item_amt.setText(" £ "+separateditemprice[1]);
+
                             Log.e("item_price1", ": " + item_price);
 
 
@@ -3617,16 +4093,21 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         } else {
                             addon_extra1.setText("No");
                             addon_extra1.setVisibility(View.VISIBLE);
-                            addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
-                            addon_extra1.setTextColor(getResources().getColor(R.color.menu_arrow));
+                            //addon_extra1.setBackgroundColor(addon_extra1.getContext().getResources().getColor(R.color.box));
+                            //addon_extra1.setTextColor(getResources().getColor(R.color.menu_arrow));
+                            addon_extra1.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra1.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
                         if (response.body().getDATA().getAddonextra().getLessid() == null) {
                             addon_extra2.setVisibility(View.GONE);
                         } else {
                             addon_extra2.setText("Less");
                             addon_extra2.setVisibility(View.VISIBLE);
-                            addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
-                            addon_extra2.setTextColor(getResources().getColor(R.color.menu_arrow));
+                         /*   addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                            addon_extra2.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            //addon_extra2.setBackgroundColor(addon_extra2.getContext().getResources().getColor(R.color.box));
+                            addon_extra2.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra2.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
 
                         }
                         if (response.body().getDATA().getAddonextra().getHalfid() == null) {
@@ -3634,40 +4115,50 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         } else {
                             addon_extra3.setText("Half");
                             addon_extra3.setVisibility(View.VISIBLE);
-                            addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
-                            addon_extra3.setTextColor(getResources().getColor(R.color.menu_arrow));
+                         /*   addon_extra3.setBackgroundColor(addon_extra3.getContext().getResources().getColor(R.color.box));
+                            addon_extra3.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            addon_extra3.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra3.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
                         if (response.body().getDATA().getAddonextra().getOnid() == null) {
                             addon_extra4.setVisibility(View.GONE);
                         } else {
                             addon_extra4.setText("On");
                             addon_extra4.setVisibility(View.VISIBLE);
-                            addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
-                            addon_extra4.setTextColor(getResources().getColor(R.color.menu_arrow));
+                         /*   addon_extra4.setBackgroundColor(addon_extra4.getContext().getResources().getColor(R.color.box));
+                            addon_extra4.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            addon_extra4.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra4.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
                         if (response.body().getDATA().getAddonextra().getWithid() == null) {
                             addon_extra5.setVisibility(View.GONE);
                         } else {
                             addon_extra5.setText("With");
                             addon_extra5.setVisibility(View.VISIBLE);
-                            addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
-                            addon_extra5.setTextColor(getResources().getColor(R.color.menu_arrow));
+                          /*  addon_extra5.setBackgroundColor(addon_extra5.getContext().getResources().getColor(R.color.box));
+                            addon_extra5.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            addon_extra5.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra5.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
                         if (response.body().getDATA().getAddonextra().getOnBurgerid() == null) {
                             addon_extra6.setVisibility(View.GONE);
                         } else {
                             addon_extra6.setText("On Burger");
                             addon_extra6.setVisibility(View.VISIBLE);
-                            addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
-                            addon_extra6.setTextColor(getResources().getColor(R.color.menu_arrow));
+                           /* addon_extra6.setBackgroundColor(addon_extra6.getContext().getResources().getColor(R.color.box));
+                            addon_extra6.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            addon_extra6.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra6.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
                         if (response.body().getDATA().getAddonextra().getOnChipsid() == null) {
                             addon_extra7.setVisibility(View.GONE);
                         } else {
                             addon_extra7.setText("On Chips");
                             addon_extra7.setVisibility(View.VISIBLE);
-                            addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
-                            addon_extra7.setTextColor(getResources().getColor(R.color.menu_arrow));
+                        /*    addon_extra7.setBackgroundColor(addon_extra7.getContext().getResources().getColor(R.color.box));
+                            addon_extra7.setTextColor(getResources().getColor(R.color.menu_arrow));*/
+                            addon_extra7.setBackground(getResources().getDrawable(R.drawable.button_default));
+                            addon_extra7.setTextColor(getResources().getColor(R.color.No_Less_Text_Color));
                         }
 
 
@@ -3952,7 +4443,7 @@ public class Item_Menu_Activity extends AppCompatActivity {
                         Log.e("addon_latcode", ": " + response.body().getError_message());
 
 
-                       if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems, str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt, str_categoryname, str_subcategoryname)) {
+                        if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems, str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt, str_categoryname, str_subcategoryname)) {
 
 
                             Log.e("nextapi1", "" + nextaid);
@@ -3964,7 +4455,9 @@ public class Item_Menu_Activity extends AppCompatActivity {
                                     "\n" + str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + str_item_total_amt + "\n"
                                     + str_categoryname + "\n" + str_subcategoryname);
 
-                            Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
+                            Customertoastmessage();
+
                             Log.e("item_add_time4", "" + "4");//Item addon Name
 
                             getContactsCount();
@@ -3973,7 +4466,15 @@ public class Item_Menu_Activity extends AppCompatActivity {
                             //bottom_nav.setVisibility(View.VISIBLE);
                             add_to_cart_layout.setVisibility(View.VISIBLE);
                             // bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
-                            total_item.setText(cursor + " Items");
+                            ArrayList<String> get_qty_count = dbHelper.getqtycount();
+                            total_item.setText(get_qty_count.get(0) + "");
+                            // total_item.setText(cursor + "");
+                            Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
+                            // total_item.setText(cursor + " Items");
+
+                            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+                            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+                            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
                             new CountDownTimer(2000, 1000) {
 
@@ -3984,7 +4485,15 @@ public class Item_Menu_Activity extends AppCompatActivity {
                                 public void onFinish() {
                                     getContactsCount();
                                     add_to_cart_layout.setVisibility(View.VISIBLE);
-                                    total_item.setText(cursor + " Items");
+                                    ArrayList<String> get_qty_count = dbHelper.getqtycount();
+                                    total_item.setText(get_qty_count.get(0) + "");
+                                    //   total_item.setText(cursor + "");
+                                    //     Log.d("Cursor4", String.valueOf(get_qty_count.get(0) + ""));
+
+                                    ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+                                    Log.d("TotalAmount",get_amt_count.get(0)+ " ");
+                                    total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+                                    //  total_item.setText(cursor + " Items");
                                 }
                             }.start();
 
@@ -4011,38 +4520,21 @@ public class Item_Menu_Activity extends AppCompatActivity {
             }
         });
     }
-    /*---------------------------Sql Lite DataBase----------------------------------------------------*/
 
+    private void Customertoastmessage() {
 
-    /*public void persistPerson() {
+        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.custom_toast_layout));
+        TextView tv = (TextView) layout.findViewById(R.id.txtvw);
+        tv.setText("Wow! Item added Successfully");
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setDuration(LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
 
+    }
 
-        Log.e("item_add_time5", "" + ItemName);//Item addon Name
-
-        if (dbHelper.insertItem(addon_item_name.getText().toString(), ItemName, str_listItems, itemidsstr, itemexradsstr, item_price, item_qty, item_total_amt, categoryname, subcategoryname)) {
-
-
-            Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
-            Log.e("item_add_time4", "" + "4");//Item addon Name
-
-            getContactsCount();
-            menu_addon_item_view.setVisibility(View.GONE);
-            //mAddFab.setVisibility(View.VISIBLE);
-            //bottom_nav.setVisibility(View.VISIBLE);
-            add_to_cart_layout.setVisibility(View.VISIBLE);
-            bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
-            total_item.setText(cursor + " Items");
-
-
-            // dbHelper.sel DISTINCT select_list FROM table;
-        } else {
-            Toast.makeText(getApplicationContext(), "Could not Insert Item", Toast.LENGTH_SHORT).show();
-        }
-
-    }*/
-
-
-    /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     public int getContactsCount() {
         cursor = dbHelper.numberOfRows();
 
@@ -4050,7 +4542,6 @@ public class Item_Menu_Activity extends AppCompatActivity {
         //Log.e("totalitemamut12", "" + totalitemamut);
         return cursor;
     }
-
     protected void onPause() {
         super.onPause();
 
@@ -4101,8 +4592,8 @@ public class Item_Menu_Activity extends AppCompatActivity {
             } else if (reloadback.equalsIgnoreCase("3")) {
                 startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
             } else if(reloadback.equalsIgnoreCase("4")) {
-                    // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
-                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
 
             }else{
                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
@@ -4140,12 +4631,10 @@ public class Item_Menu_Activity extends AppCompatActivity {
 
         dialog_loading = new Dialog(Item_Menu_Activity.this);
         dialog_loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog_loading.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog_loading.setContentView(R.layout.custom_loading);
 
-        //...initialize the imageView form infalted layout
+
         ImageView ImageViewgif = dialog_loading.findViewById(R.id.custom_searchloader_ImageView);
 
 

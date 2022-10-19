@@ -309,7 +309,7 @@
                         android:layout_toRightOf="@+id/searchimg"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/roboto_light"
-                        android:hint="@string/menu_search"
+                        android:hint="Search by cuisines or Restaurants"
                         android:imeOptions="actionDone"
                         android:inputType="textNoSuggestions"
                         android:maxLines="1"
@@ -459,7 +459,6 @@
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
-                style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"

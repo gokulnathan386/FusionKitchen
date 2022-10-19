@@ -55,8 +55,6 @@ public class MenuserachcatAdapter extends RecyclerView.Adapter<MenuserachcatAdap
 
         holder.menu_item_name.setText(listdata[position].getName());
 
-        Log.d("Menuitemlist",listdata[position].getName());
-
 
         holder.menu_layout.setOnClickListener(new View.OnClickListener() {
             @Override

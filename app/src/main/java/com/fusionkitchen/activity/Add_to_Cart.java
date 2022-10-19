@@ -1,5 +1,6 @@
 package com.fusionkitchen.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -177,6 +178,7 @@ public class Add_to_Cart extends AppCompatActivity {
     String strItemName, straddonid, strcategoryname, strsubcategoryname, strmenuurlpath;
 
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,23 +215,6 @@ public class Add_to_Cart extends AppCompatActivity {
         user_id = (slogin.getString("login_key_cid", null));
         login_type_id = (slogin.getString("type_of_login", null));
         Log.e("ideuser_ids", "" + user_id);
-
-        /*---------------------------Session Manager Class----------------------------------------------------*/
-        /*session = new SessionManager(getApplicationContext());
-        session.checkLogin();
-*/
-
-
-
-// sharedpreferences.getString("ordermodetype", null); //0 delivery 1 collection
-        /*---------------------------Intent Value Get URL Path----------------------------------------------------*/
-/*        Intent intent = getIntent();
-        pay_type = intent.getStringExtra("pay_type");*/
-
-
-        /*---------------------------Get Payment type using SharedPreferences ----------------------------------------------------*/
-       /* SharedPreferences paymenttypesharedpreferences = getSharedPreferences(PaytypePREFERENCES, MODE_PRIVATE);
-        pay_type = (paymenttypesharedpreferences.getString("pay_type", null));*/
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
         sharedpreferences = getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
@@ -1637,7 +1622,6 @@ public class Add_to_Cart extends AppCompatActivity {
             cartamt = subamt + serviceamt;
             card_total.setText("£ " + String.format("%.2f", cartamt));*/
 
-
             // card_total.setText("£ " + Itemsubtotal);
 
             processto_pay_button.setText("Pay £ " + Itemsubtotal);
@@ -2147,6 +2131,8 @@ public class Add_to_Cart extends AppCompatActivity {
 
         fullUrl = menuurlpath + "/menu/custom_details";
 
+        Log.e("Add_to_Cart",fullUrl + " Params" + params);
+
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<chechoutvalidate_model> call = apiService.chechoutvalidate(fullUrl, params);
@@ -2180,8 +2166,6 @@ public class Add_to_Cart extends AppCompatActivity {
                             intent.putExtra("cooking_insttruction", cooking_insttruction.getText().toString());
                             intent.putExtra("addressids", addressids);
                             intent.putExtra("customerpostcode", customerpostcode);
-
-
 
                             startActivity(intent);
                         }

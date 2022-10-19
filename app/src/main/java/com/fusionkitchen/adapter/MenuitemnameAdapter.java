@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -70,6 +72,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.text.Html.fromHtml;
+import static android.widget.Toast.LENGTH_LONG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.Integer.highestOneBit;
 import static java.lang.Integer.parseInt;
 
@@ -84,6 +88,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     private String menuurlpath, fullUrl;
     String selectedlaterdateItem;
+    int clickable = 0;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
@@ -186,6 +191,117 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
+
+
+        holder.layout_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog item_view;
+                item_view = new Dialog(mContext);
+                item_view.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                item_view.setContentView(R.layout.raw_menu_single_itemview);
+                item_view.setCancelable(false);
+                item_view.setCanceledOnTouchOutside(false);
+
+                LinearLayout Add_your_comment = item_view.findViewById(R.id.Add_your_comment);
+                EditText Enter_your_comments = item_view.findViewById(R.id.Enter_your_comments);
+                TextView special_instruction =item_view.findViewById(R.id.special_instruction);
+                CardView back_btn_popup = item_view.findViewById(R.id.back_btn_popup);
+                LinearLayout plus_linearlayout = item_view.findViewById(R.id.plus_linearlayout);
+                LinearLayout add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
+                LinearLayout plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
+                TextView Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
+                LinearLayout minus_symbol =item_view.findViewById(R.id.minus_symbol);
+                LinearLayout plus_symbol = item_view.findViewById(R.id.plus_symbol);
+                TextView textview_qty = item_view.findViewById(R.id.textview_qty);
+
+                add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
+                add_to_cart_btn.setClickable(false);
+
+                Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        plus_linearlayout.setVisibility(View.GONE);
+                        plus_minus_symbol.setVisibility(View.VISIBLE);
+                        add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
+                        add_to_cart_btn.setClickable(true);
+                        clickable = 1;
+                    }
+                });
+
+
+                plus_symbol.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onClick(View v) {
+                        int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
+                        count++;
+                        textview_qty.setText("" + count);
+                    }
+                });
+
+                minus_symbol.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onClick(View v) {
+                        int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
+                        if (count == 1) {
+                            textview_qty.setText("1");
+                        } else {
+                            count -= 1;
+                            textview_qty.setText("" + count);
+                        }
+                    }
+                });
+
+
+
+                add_to_cart_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(clickable == 0){
+                            Toast.makeText(getApplicationContext(), "Btn click false", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Btn click true", Toast.LENGTH_SHORT).show();
+                            clickable = 0;
+                        }
+
+                    }
+                });
+
+                back_btn_popup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        item_view.dismiss();
+                    }
+                });
+
+                Add_your_comment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (Enter_your_comments.getVisibility() == View.GONE) {
+                            Enter_your_comments.setVisibility(View.VISIBLE);
+                            special_instruction.setText("- Special Instructions");
+                        } else {
+                            Enter_your_comments.setVisibility(View.GONE);
+                            special_instruction.setText("+ Special Instructions");
+                        }
+                    }
+                });
+
+
+                //  Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
+
+                item_view.show();
+                item_view.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                item_view.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                item_view.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                item_view.getWindow().setGravity(Gravity.BOTTOM);
+            }
+        });
+
     }
 
 
@@ -218,11 +334,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         RelativeLayout later_timing_layer =dialog.findViewById(R.id.later_timing_layer);
 
 
-
-
-
         Map<String, String> params = new HashMap<String, String>();
-
 
         metdpasfullUrl = menuurlpath + "/loadPreOrderPop";
        //ordermode_popup_view.setVisibility(View.VISIBLE);
@@ -1206,8 +1318,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 if (dbHelper.insertItem(items[position].getName(), items[position].getId(), "", "",
                                         "", items[position].getPrice(), "1", items[position].getPrice(),
                                         items[position].getPrice(), listdatum.getName(), sub.getName())) {
-                                    Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
-
+                                   // Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
+                                    Customertoastmessage(view);
 
                                     Log.d("item_add_time5- MenuitemnameAdapter",items[position].getName()+ "\n" + items[position].getId()+ "\n" +
                                             items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
@@ -1216,7 +1328,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     // Toast.makeText(mContext,dbHelper.getAllItem().toString(), Toast.LENGTH_SHORT).show();
 
                                     Intent intent = new Intent("item_successfully_custom-message");
+                               //     intent.putExtra("Qty_count",dbHelper.getqtycount());
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
 
                                 } else {
                                     Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
@@ -1247,9 +1362,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 //Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(items[position].getId()),qty,total_amt);
                                 Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(items[position].getId()),qty,total_amt);
+
+                                Intent intent = new Intent("item_successfully_custom-message");
+                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
                                 //Log.d("updatevalue", String.valueOf(updatevalue));
 
-                                Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
+                                Customertoastmessage(view);
+
+                                //Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
 
                                 //Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
 
@@ -1463,6 +1583,20 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         });
     }
 
+    private void Customertoastmessage(View view) {
+
+        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) view.findViewById(R.id.custom_toast_layout));
+        TextView tv = (TextView) layout.findViewById(R.id.txtvw);
+        tv.setText("Wow! Item added Successfully");
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setDuration(LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -1470,9 +1604,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView menu_item_name, menu_item_desc, menu_item_amout, menu_item_add;
+        public TextView menu_item_name, menu_item_desc, menu_item_amout;
         public ImageView menu_item_image;
-        CardView ordermode_popup_view;
+        CardView ordermode_popup_view,layout_logo;
+        LinearLayout menu_item_add;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -1483,6 +1618,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             this.menu_item_add = itemView.findViewById(R.id.menu_item_add);
             this.menu_item_image = itemView.findViewById(R.id.menu_item_image);
             this.ordermode_popup_view = itemView.findViewById(R.id.ordermode_popup_view);
+            this.layout_logo = itemView.findViewById(R.id.layout_logo);
 
 
         }

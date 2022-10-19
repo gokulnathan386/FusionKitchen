@@ -3,31 +3,30 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatDialog;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
-import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 
 import static android.text.Html.fromHtml;
@@ -40,16 +39,18 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private String  menuurlpath;
     Dialog dialog;
+    RecyclerView recyclerviewitem;
 
     // HashSet<String> hashSet1 = new HashSet<String>();
 
 
     // RecyclerView recyclerView;
-    public MenuItemAdapter(Context mContext, List<menu_item_sub_model.categoryall> listdata,  String menuurlpath) {
+    public MenuItemAdapter(Context mContext, List<menu_item_sub_model.categoryall> listdata,  String menuurlpath,RecyclerView recyclerviewitem) {
 
         this.mContext = mContext;
         this.listdata = listdata.toArray(new menu_item_sub_model.categoryall[0]);
         this.menuurlpath = menuurlpath;
+        this.recyclerviewitem = recyclerviewitem;
 
     }
 
@@ -66,6 +67,61 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+
+
+      /*  if (position == 1) {
+
+
+                holder.child_recyclerview.setVisibility(View.VISIBLE);
+                holder.dropdownindicator.setRotation((float) 180.0);
+
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            intent.putExtra("itempossionname",listdata[position].getName());
+            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
+            Log.d("menu_item_cat_name",""+listdata[position].getName() + " " +listdata.length);
+
+
+
+        }*//* else {
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            intent.putExtra("itempossionname",listdata[position].getName());
+            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
+            Log.d("menu_item_cat_name",""+listdata[position].getName());
+        }*/
+
+
+
+
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String itempossion = intent.getStringExtra("itempossion");
+                String item_postion_name = intent.getStringExtra("itempossionname");
+
+                if(Integer.parseInt(itempossion) == position){
+
+                    holder.child_recyclerview.setVisibility(View.VISIBLE);
+                    holder.dropdownindicator.setRotation((float) 180.0);
+
+                }
+
+
+            }
+        }, new IntentFilter("item_possion-message"));
+
+
+
+
+
+
+
+
+
         holder.mainLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,10 +135,21 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
                     holder.dropdownindicator.setRotation((float) 360.0);
                 }
 
+                Intent intent = new Intent("item_possion-message");
+                intent.putExtra("itempossion", String.valueOf(position));
+                intent.putExtra("itempossionname",listdata[position].getName());
+                LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
 
                 Log.v("getpositiponofheader", String.valueOf(position));
             }
         });
+
+
+    /*    if( 0 == position){
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        }*/
 
 
         List<menu_item_sub_model.categoryall.subcat> itemsubcatname = new ArrayList<>();
@@ -99,16 +166,29 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         holder.child_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         holder.child_recyclerview.setAdapter(menuitemnameadapter);
 
+
         itemcatname.add(listdata[position].getName());
 
+        if (position == 0) {
 
-        holder.menu_item_cat_name.setText(itemcatname.get(position));
-        holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
+            holder.menu_item_cat_name.setText(itemcatname.get(position));
+            holder.child_recyclerview.setVisibility(View.VISIBLE);
+            holder.dropdownindicator.setRotation((float) 180.0);
+
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            intent.putExtra("itempossionname",listdata[position].getName());
+            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
+            Log.d("menu_item_cat_name",""+listdata[position].getName() + " " +listdata.length);
+
+        }else{
+            holder.menu_item_cat_name.setText(itemcatname.get(position));
+            holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
+        }
+
 
 
     }
-
-
     @Override
     public int getItemCount() {
         // return listdata.length;

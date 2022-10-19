@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none"
+    android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/single_item"
+                android:layout_width="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="-20dp"
+                android:layout_height="wrap_content">
+            </ImageView>
+
+
+            <LinearLayout
+                android:padding="@dimen/_15sdp"
+                android:layout_width="match_parent"
+                android:backgroundTint="#FFFFFF"
+                android:orientation="vertical"
+                android:background="@drawable/bottom_sheet_bg"
+                android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Bolognese Parmesans - Half"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textSize="18dp"
+                        android:textColor="#17284D"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="Best Seller"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="18dp"
+                            android:textColor="#0071E3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <ImageView
+                            android:src="@drawable/star_blue"
+                            android:layout_width="18dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_height="match_parent">
+                        </ImageView>
+                    </LinearLayout>
+
+                <TextView
+                    android:text="2 x 12” Any Pizza, 10” Any Pizza, 2 Portion of Chips, Portion of Kebab Meat, Tub of Garlic, Chilli sauce and Bottle of Pop"
+                    android:fontFamily="@font/metropolis_regular"
+                    android:textSize="14dp"
+                    android:lineSpacingExtra="5dp"
+                    android:textColor="#17284D"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+
+            <LinearLayout
+                android:id="@+id/Add_your_comment"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/special_instruction"
+                    android:textColor="#828585"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginLeft="3dp"
+                    android:text="+ Special Instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/Enter_your_comments"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:visibility="gone"
+                android:textColor="#828585"
+                android:hint="Add your comments"
+                android:padding="8dp"
+                android:textColorHint="#828585"
+                android:fontFamily="@font/poppins_regular"
+                android:background="@drawable/open_time_bg"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                android:backgroundTint="@null"
+                android:layout_height="120dp">
+            </EditText>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="match_parent">
+
+            <TextView
+                android:text="£12.40"
+                android:textStyle="bold"
+                android:textColor="#17284D"
+                android:textSize="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+                <LinearLayout
+                    android:id="@+id/plus_linearlayout"
+                    android:gravity="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                  <!--  <LinearLayout
+                        android:layout_width="32dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="32dp">
+                        <TextView
+                            android:id="@+id/Enter_your_plus_symbol"
+                            android:background="@drawable/open_time_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="+"
+                            android:backgroundTint="#EFFFF7"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="18dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="#1DC070"/>
+                    </LinearLayout>-->
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/menuitemaddborder"
+                        android:backgroundTint="#effff7"
+                        android:padding="10dp"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_3sdp">
+
+                        <TextView
+                            android:id="@+id/Enter_your_plus_symbol"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/plus_addbtn"
+                            android:fontFamily="@font/hindvadodara_medium"
+                            android:textColor="@color/txt_ten"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/plus_minus_symbol"
+                android:gravity="end"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/minus_symbol"
+                    android:background="@drawable/circle_add_minis"
+                    android:layout_width="25dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="25dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="-"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_marginTop="1dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="#17284D"/>
+                </LinearLayout>
+
+            <TextView
+                android:id="@+id/textview_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="01"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/poppins_bold"
+                android:paddingRight="10dp"
+                android:textColor="#17284D" />
+
+                    <LinearLayout
+                        android:id="@+id/plus_symbol"
+                        android:background="@drawable/circle_add_minis"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="+"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:layout_marginTop="1dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textColor="#17284D"/>
+                    </LinearLayout>
+
+            </LinearLayout>
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/add_to_cart_btn"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:background="@drawable/background_favourite"
+                android:backgroundTint="@color/welcome_btn_color"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@drawable/cart_icon"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp">
+                    </ImageView>
+
+                    <TextView
+                        android:textColor="#FFFFFF"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:text="Add to Cart"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/back_btn_popup"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:foregroundGravity="center"
+                app:cardBackgroundColor="#17284D"
+                app:cardCornerRadius="150dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <ImageView
+                        android:id="@+id/backimg"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/back_btn_white" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

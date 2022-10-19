@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.fusionkitchen.R;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
@@ -27,7 +29,9 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
     int selectedposition = -1;
     Dialog menulistpopup;
 
-    public MenuListViewAdapter(List<Menu_Page_listmodel> menu_page_listmodels, Context context, Dialog menulistpopup){
+
+
+    public MenuListViewAdapter(List<Menu_Page_listmodel> menu_page_listmodels, Context context, Dialog menulistpopup ){
         this.menu_page_listmodels = menu_page_listmodels;
         this.context=context;
         this.menulistpopup = menulistpopup;
@@ -42,6 +46,25 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
     public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.menu_item_name.setText(menu_page_listmodels.get(position).getName());
+
+
+
+
+        /*if (position == 0) {
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
+            LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
+
+        } else {
+            Intent intent = new Intent("item_possion-message");
+            intent.putExtra("itempossion", String.valueOf(position));
+            intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
+            LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
+        }*/
+
+
+
 
         if(position == selectedposition){
             holder.menu_layout.setBackgroundColor(Color.parseColor("#EEF6FF"));
@@ -59,12 +82,14 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
             public void onClick(View v) {
                 Intent intent = new Intent("item_possion-message");
                 intent.putExtra("itempossion", String.valueOf(position));
+                intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
                 LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
                 selectedposition = (Integer)v.getTag();
                 notifyDataSetChanged();
                 menulistpopup.dismiss();
             }
         });
+
 
     }
 

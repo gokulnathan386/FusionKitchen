@@ -123,4 +123,8 @@
     <color name="Invalid_color_code">#D02F3E</color>
     <color name="Invalid_color_code1">#909497</color>
 
+    <color name="menu_text_bg">#0071E3</color>
+    <color name="No_Less_Text_Color">#E0467C</color>
+
+
 </resources>
