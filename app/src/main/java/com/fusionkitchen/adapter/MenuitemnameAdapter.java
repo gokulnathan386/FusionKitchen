@@ -89,6 +89,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private String menuurlpath, fullUrl;
     String selectedlaterdateItem;
     int clickable = 0;
+    Dialog item_view;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
@@ -196,112 +197,161 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.layout_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog item_view;
-                item_view = new Dialog(mContext);
-                item_view.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                item_view.setContentView(R.layout.raw_menu_single_itemview);
-                item_view.setCancelable(false);
-                item_view.setCanceledOnTouchOutside(false);
-
-                LinearLayout Add_your_comment = item_view.findViewById(R.id.Add_your_comment);
-                EditText Enter_your_comments = item_view.findViewById(R.id.Enter_your_comments);
-                TextView special_instruction =item_view.findViewById(R.id.special_instruction);
-                CardView back_btn_popup = item_view.findViewById(R.id.back_btn_popup);
-                LinearLayout plus_linearlayout = item_view.findViewById(R.id.plus_linearlayout);
-                LinearLayout add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
-                LinearLayout plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
-                TextView Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
-                LinearLayout minus_symbol =item_view.findViewById(R.id.minus_symbol);
-                LinearLayout plus_symbol = item_view.findViewById(R.id.plus_symbol);
-                TextView textview_qty = item_view.findViewById(R.id.textview_qty);
-
-                add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
-                add_to_cart_btn.setClickable(false);
-
-                Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        plus_linearlayout.setVisibility(View.GONE);
-                        plus_minus_symbol.setVisibility(View.VISIBLE);
-                        add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
-                        add_to_cart_btn.setClickable(true);
-                        clickable = 1;
-                    }
-                });
-
-
-                plus_symbol.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onClick(View v) {
-                        int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
-                        count++;
-                        textview_qty.setText("" + count);
-                    }
-                });
-
-                minus_symbol.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onClick(View v) {
-                        int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
-                        if (count == 1) {
-                            textview_qty.setText("1");
-                        } else {
-                            count -= 1;
-                            textview_qty.setText("" + count);
-                        }
-                    }
-                });
-
-
-
-                add_to_cart_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if(clickable == 0){
-                            Toast.makeText(getApplicationContext(), "Btn click false", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Btn click true", Toast.LENGTH_SHORT).show();
-                            clickable = 0;
-                        }
-
-                    }
-                });
-
-                back_btn_popup.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        item_view.dismiss();
-                    }
-                });
-
-                Add_your_comment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (Enter_your_comments.getVisibility() == View.GONE) {
-                            Enter_your_comments.setVisibility(View.VISIBLE);
-                            special_instruction.setText("- Special Instructions");
-                        } else {
-                            Enter_your_comments.setVisibility(View.GONE);
-                            special_instruction.setText("+ Special Instructions");
-                        }
-                    }
-                });
-
-
-                //  Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
-
-                item_view.show();
-                item_view.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                item_view.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                item_view.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                item_view.getWindow().setGravity(Gravity.BOTTOM);
+              Single_itemviewpup_up(items[position].getImage(),items[position].getName(),items[position].getPrice(),items[position].getDescription());
             }
         });
 
+
+
+
+    }
+
+    private void Single_itemviewpup_up(String image,String itemname,String itemprice,String description) {
+        item_view = new Dialog(mContext);
+        item_view.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        item_view.setContentView(R.layout.raw_menu_single_itemview);
+
+        item_view.setCancelable(true);
+        item_view.setCanceledOnTouchOutside(true);
+
+        LinearLayout Add_your_comment = item_view.findViewById(R.id.Add_your_comment);
+        EditText Enter_your_comments = item_view.findViewById(R.id.Enter_your_comments);
+        TextView special_instruction =item_view.findViewById(R.id.special_instruction);
+        CardView back_btn_popup = item_view.findViewById(R.id.back_btn_popup);
+        LinearLayout plus_linearlayout = item_view.findViewById(R.id.plus_linearlayout);
+        LinearLayout add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
+        LinearLayout plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
+        TextView Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
+        LinearLayout minus_symbol =item_view.findViewById(R.id.minus_symbol);
+        LinearLayout plus_symbol = item_view.findViewById(R.id.plus_symbol);
+        TextView textview_qty = item_view.findViewById(R.id.textview_qty);
+        ImageView single_item_image = item_view.findViewById(R.id.single_item_image);
+        TextView item_name_textview = item_view.findViewById(R.id.item_name_textview);
+        TextView item_price_textview = item_view.findViewById(R.id.item_price_textview);
+        TextView item_description_textview = item_view.findViewById(R.id.item_description_textview);
+
+        add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
+        add_to_cart_btn.setClickable(false);
+
+      if(image.equalsIgnoreCase("")){
+          single_item_image.setVisibility(View.GONE);
+          back_btn_popup.setVisibility(View.GONE);
+      }else{
+          Picasso.get()
+                  .load("https://fusionbucket.co.uk/img/menu/" + image)
+                  .placeholder(R.drawable.hederlocoplaceimg)
+                  .error(R.drawable.hederlocoplaceimg)
+                  .into(single_item_image);
+      }
+
+
+        item_name_textview.setText(itemname);
+
+        item_price_textview.setText("£ " +itemprice);
+
+        if(description.equalsIgnoreCase("")){
+            item_description_textview.setVisibility(View.GONE);
+        }else{
+            item_description_textview.setText(description);
+        }
+
+
+        Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                plus_linearlayout.setVisibility(View.GONE);
+                plus_minus_symbol.setVisibility(View.VISIBLE);
+                add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
+                add_to_cart_btn.setClickable(true);
+                clickable = 1;
+            }
+        });
+
+
+        plus_symbol.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
+                count++;
+                int length = String.valueOf(count).length();
+                if(length == 1){
+                    textview_qty.setText("0" + count);
+                }else{
+                    textview_qty.setText("" + count);
+                }
+
+            }
+        });
+
+        minus_symbol.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+
+                int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
+
+                if (count == 1) {
+                    textview_qty.setText("01");
+                } else {
+                    count -= 1;
+                    int length = String.valueOf(count).length();
+                    if(length == 1){
+                        textview_qty.setText("0" + count);
+                    }else{
+                        textview_qty.setText("" + count);
+                    }
+
+                }
+
+            }
+        });
+
+
+
+        add_to_cart_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(clickable == 0){
+                    Toast.makeText(getApplicationContext(), "Btn click false", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Btn click true", Toast.LENGTH_SHORT).show();
+                    clickable = 0;
+                }
+
+            }
+        });
+
+        back_btn_popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item_view.dismiss();
+            }
+        });
+
+        Add_your_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Enter_your_comments.getVisibility() == View.GONE) {
+                    Enter_your_comments.setVisibility(View.VISIBLE);
+                    special_instruction.setText("- Special Instructions");
+                } else {
+                    Enter_your_comments.setVisibility(View.GONE);
+                    special_instruction.setText("+ Special Instructions");
+                }
+            }
+        });
+
+
+        //  Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
+
+        item_view.show();
+        item_view.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        item_view.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        item_view.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        item_view.getWindow().setGravity(Gravity.BOTTOM);
     }
 
 

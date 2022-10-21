@@ -419,45 +419,26 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
 
-                    /*  LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerviewitem.getLayoutManager();
-
-                        for (int i = 0; i < jobdetails2.size(); i++) {
-
-                            menu_item_sub_model.categoryall input =jobdetails2.get(i);
-
-                            Log.d("Gokulnathan",input.getId());
-                             View y = recyclerviewitem.getChildAt(Integer.parseInt(input.getId()));
-
-                            Log.d("Gokulnathan", String.valueOf(y));
+        //        top_card_view.setVisibility(View.VISIBLE);
 
 
 
-                         //   Log.d("Gokulnathan", String.valueOf(recyclerviewitem.getChildAt(Integer.parseInt(input.getId())).getY()));
-
-
-                        }*/
-
-
-
-                if (600< oldScrollY) {   //400
-                    top_card_view.setVisibility(View.VISIBLE);
+                if ( 200 < oldScrollY) {   //400
+                     top_card_view.setVisibility(View.VISIBLE);
                     // Toast.makeText(getApplicationContext(), "extend", Toast.LENGTH_LONG).show();
                 } else {
-                    top_card_view.setVisibility(View.INVISIBLE);
+                     top_card_view.setVisibility(View.INVISIBLE);
                     //Toast.makeText(getApplicationContext(), "Non extend", Toast.LENGTH_LONG).show();
                 }
+
                 if (scrollY > oldScrollY) {
                     mAddFab.extend();
                 } else {
                     mAddFab.shrink();
                 }
 
-
-
             }
         });
-
-
 
 
         mAddFab.setOnClickListener(
@@ -630,15 +611,16 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 int firstVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                 int lastVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-
-                Log.d("Gokulnathan", String.valueOf(firstVisibleItemCount + " " +total + " "+ lastVisibleItemCount));
+                Log.d("Item_Menu_Activity_scroll", String.valueOf(firstVisibleItemCount));
 
             }
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.d("Gokulnathan","");
+            public void onScrollStateChanged(RecyclerView r, int newState) {
+                super.onScrollStateChanged(r, newState);
+
+                int firstVisibleItemCount = ((LinearLayoutManager)r.getLayoutManager()).findFirstVisibleItemPosition();
+
             }
 
         });
@@ -1849,7 +1831,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             String item_postion_name = intent.getStringExtra("itempossionname");
 
 
-
             menu_list_view.setText(item_postion_name);
             Log.e("itempossion", "" + itempossion);
 
@@ -1874,6 +1855,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     }
                 });
             }
+
+
             mfab_close.shrink();
             menu_view_card_view.setVisibility(View.GONE);
             mfab_close.setVisibility(View.GONE);
@@ -3046,10 +3029,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         params.put("address_location", str_key_address);
 
 
-        Log.e("numbers", "" + params);
+
 
 
         fullUrl = menuurlpath + "/menu";
+
+        Log.e("numbers", "" + params + " " + fullUrl);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_item_model> call = apiService.getmenuitem(fullUrl, params);
         call.enqueue(new Callback<menu_item_model>() {
@@ -3062,7 +3048,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
-
 
 //array value set textview
 
@@ -3114,9 +3099,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
-
                         jobdetails2 = (response.body().getMenu().getCategoryall());
-
 
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
@@ -3124,6 +3107,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         // recyclerviewitem.getLayoutManager().scrollToPosition(2);
                         recyclerviewitem.setAdapter(itemadapter);
+
+                       // ViewCompat.setNestedScrollingEnabled(recyclerviewitem, true);
 
 
                         List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
@@ -3141,13 +3126,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         } else {
                             //   cooking_insttructionback = intentitemdetails.getStringExtra("cooking_insttruction");
                             itemdetails();
-
-
                         }
 
-
-
-
+                        
                     } else {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);

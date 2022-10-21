@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/collapsing_toolbar"
             app:title="@string/app_name"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-    >
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
             <!--
             app:contentScrim="?attr/colorControlNormal"
            -->
