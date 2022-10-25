@@ -88,9 +88,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
         android:padding="8dp">
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/open_hrs_review"
             android:layout_marginTop="-5dp"
@@ -119,6 +118,7 @@
 
 
     <TextView
+        android:id="@+id/textview_email_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"

@@ -21,7 +21,7 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
     private Context mContext;
 
     private about_us_model.aboutdetails.openinghours[] listdata;
-    public int[] mColors = {R.drawable.cell_shape_list, R.drawable.cell_shape, R.drawable.cell_shape_list, R.drawable.cell_shape, R.drawable.cell_shape_list, R.drawable.cell_shape,R.drawable.cell_shape_list};//int or string
+    //.public int[] mColors = {R.drawable.cell_shape_list, R.drawable.cell_shape, R.drawable.cell_shape_list, R.drawable.cell_shape, R.drawable.cell_shape_list, R.drawable.cell_shape,R.drawable.cell_shape_list};//int or string
 
     // RecyclerView recyclerView;
     public MoreinfoopenhrsAdapter(Context mContext, List<about_us_model.aboutdetails.openinghours> listdata) {
@@ -39,11 +39,12 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
 
     @Override
     public void onBindViewHolder(MoreinfoopenhrsAdapter.ViewHolder holder, int position) {
-        holder.day.setBackgroundResource((mColors[position % 20]));
-        holder.time.setBackgroundResource((mColors[position % 20]));
-
+       // holder.day.setBackgroundResource((mColors[position % 20]));
+      //  holder.time.setBackgroundResource((mColors[position % 20]));
         holder.day.setText(listdata[position].getDay());
         holder.time.setText(listdata[position].getTime());
+
+
     }
 
     @Override

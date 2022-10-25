@@ -1428,9 +1428,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         shop_address = info_popup.findViewById(R.id.shop_address);
         RecyclerView open_hrs_review = info_popup.findViewById(R.id.open_hrs_review);
         ImageView  direction = info_popup.findViewById(R.id.direction);
+        TextView textview_email_id = info_popup.findViewById(R.id.textview_email_id);
 
         /*------------------------------------Start open time And closed time----------------------------------*/
         // get user data from session
+
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("ordermode", sharedpreferences.getString("ordermodetype", null));
@@ -1440,6 +1442,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
         fullUrl = menuurlpath + "/about";
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<about_us_model> call = apiService.getaboutus(fullUrl, params);
         call.enqueue(new Callback<about_us_model>() {
@@ -1450,6 +1453,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 if (statusCode == 200) {
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         //   about_deatils.setText(response.body().getAbout().getAboutus().replace("\n", ""));
+
+                        textview_email_id.setText(response.body().getAbout().getAboutEmail());
 
                         if (response.body().getAbout().getCuisines().size() == 0) {
                             //    cusines_details.setText("Data not Found");
@@ -1518,6 +1523,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         List<about_us_model.aboutdetails.openinghours> jobdetails = (response.body().getAbout().getOpeninghours());
+                        //Log.d("Item_Menu_Activity_Test", String.valueOf(jobdetails.size()));
                         MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails);
                         open_hrs_review.setHasFixedSize(true);
                         open_hrs_review.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));

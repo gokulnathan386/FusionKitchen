@@ -11,6 +11,8 @@ public class about_us_model {
     private String STATUS;
 
 
+
+
     @SerializedName("about")
     private about_us_model.aboutdetails about;
 
@@ -21,6 +23,10 @@ public class about_us_model {
     public void setSTATUS(String STATUS) {
         this.STATUS = STATUS;
     }
+
+
+
+
 
     public aboutdetails getAbout() {
         return about;
@@ -34,6 +40,10 @@ public class about_us_model {
 
         @SerializedName("aboutus")
         private String aboutus;
+
+
+        @SerializedName("about_email")
+        private String about_email;
 
 
 
@@ -56,6 +66,20 @@ public class about_us_model {
         public void setAboutus(String aboutus) {
             this.aboutus = aboutus;
         }
+
+
+
+        public String getAboutEmail() {
+            return about_email;
+        }
+
+        public void setAboutEmail(String about_email) {
+            this.about_email = about_email;
+        }
+
+
+
+
 
         public aboutdetails.googlemaps getGooglemaps() {
             return googlemaps;

@@ -72,6 +72,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.text.Html.fromHtml;
+import static android.view.View.GONE;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.Integer.highestOneBit;
@@ -138,25 +139,43 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
 
+
+
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
         sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
-
         Log.e("otypeaction", "" + sharedpreferences.getString("orderactivetag", null));
 
-        Picasso.get()
-                .load("https://fusionbucket.co.uk/img/menu/" + items[position].getImage())
-                .placeholder(R.drawable.hederlocoplaceimg)
-                .error(R.drawable.hederlocoplaceimg)
-                .into(holder.menu_item_image);
+        if(items[position].getImage().equalsIgnoreCase("")){
+            holder.layout_logo.setVisibility(GONE);
+        }else{
+            Picasso.get()
+                    .load("https://fusionbucket.co.uk/img/menu/" + items[position].getImage())
+                    .placeholder(R.drawable.hederlocoplaceimg)
+                    .error(R.drawable.hederlocoplaceimg)
+                    .into(holder.menu_item_image);
+        }
+
 
         // Log.e("sixg", "" + orderhistory.size().getName());
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
-        dbHelper = new SQLDBHelper(mContext);
-        getContactsCount();
+
+            dbHelper = new SQLDBHelper(mContext);
+            getContactsCount();
+
+        if(items[position].getAvailableTime().equalsIgnoreCase("")){
+            holder.menu_item_add.setVisibility(View.VISIBLE);
+            holder.textview_avaliable_time.setVisibility(GONE);
+        }else{
+            holder.textview_avaliable_time.setText(items[position].getAvailableTime());
+            holder.menu_item_add.setVisibility(GONE);
+        }
+
+
 
         holder.menu_item_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 //  Toast.makeText(mContext, items[position].getId(), Toast.LENGTH_LONG).show();
                 //    Toast.makeText(mContext, sub.getName(), Toast.LENGTH_LONG).show();
@@ -191,8 +210,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
             }
         });
-
-
 
         holder.layout_logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,13 +246,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         TextView item_name_textview = item_view.findViewById(R.id.item_name_textview);
         TextView item_price_textview = item_view.findViewById(R.id.item_price_textview);
         TextView item_description_textview = item_view.findViewById(R.id.item_description_textview);
+        TextView textview_avaliable_time = item_view.findViewById(R.id.textview_avaliable_time);
 
         add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
         add_to_cart_btn.setClickable(false);
 
+
+
+
       if(image.equalsIgnoreCase("")){
-          single_item_image.setVisibility(View.GONE);
-          back_btn_popup.setVisibility(View.GONE);
+          single_item_image.setVisibility(GONE);
+          back_btn_popup.setVisibility(GONE);
       }else{
           Picasso.get()
                   .load("https://fusionbucket.co.uk/img/menu/" + image)
@@ -250,7 +271,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         item_price_textview.setText("£ " +itemprice);
 
         if(description.equalsIgnoreCase("")){
-            item_description_textview.setVisibility(View.GONE);
+            item_description_textview.setVisibility(GONE);
         }else{
             item_description_textview.setText(description);
         }
@@ -259,7 +280,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                plus_linearlayout.setVisibility(View.GONE);
+                plus_linearlayout.setVisibility(GONE);
                 plus_minus_symbol.setVisibility(View.VISIBLE);
                 add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
                 add_to_cart_btn.setClickable(true);
@@ -334,11 +355,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
 
-                if (Enter_your_comments.getVisibility() == View.GONE) {
+                if (Enter_your_comments.getVisibility() == GONE) {
                     Enter_your_comments.setVisibility(View.VISIBLE);
                     special_instruction.setText("- Special Instructions");
                 } else {
-                    Enter_your_comments.setVisibility(View.GONE);
+                    Enter_your_comments.setVisibility(GONE);
                     special_instruction.setText("+ Special Instructions");
                 }
             }
@@ -451,21 +472,21 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         colloetion_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_two));
 
                                         loading_imageView1.setVisibility(View.VISIBLE);
-                                        loading_imageView2.setVisibility(View.GONE);
+                                        loading_imageView2.setVisibility(GONE);
 
                                         order_mode = "0";//Delivery
 
                                         if (response.body().getData().getDelivery().getLater_array().getStatus().equalsIgnoreCase("0")) {
-                                            sevenday_txt.setVisibility(View.GONE);
+                                            sevenday_txt.setVisibility(GONE);
                                         } else {
                                             sevenday_txt.setVisibility(View.VISIBLE);
                                             sevenday_txt.setText("Select a delivery time" + "\n" + " up to 7 days in advance");
                                         }
 
                                         if (response.body().getData().getDelivery().getStatus().equalsIgnoreCase("0")) {
-                                            card_change.setVisibility(View.GONE);
-                                            today_time_layer.setVisibility(View.GONE);
-                                            later_time_layer.setVisibility(View.GONE);
+                                            card_change.setVisibility(GONE);
+                                            today_time_layer.setVisibility(GONE);
+                                            later_time_layer.setVisibility(GONE);
                                             update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
                                             update_mode.setClickable(false);
                                             update_mode.setFocusable(false);
@@ -527,12 +548,12 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         colli_txt.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
                                         colloetion_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
 
-                                        loading_imageView1.setVisibility(View.GONE);
+                                        loading_imageView1.setVisibility(GONE);
                                         loading_imageView2.setVisibility(View.VISIBLE);
                                         order_mode = "1";//Collection
 
                                         if (response.body().getData().getCollection().getLater_array().getStatus().equalsIgnoreCase("0")) {
-                                            sevenday_txt.setVisibility(View.GONE);
+                                            sevenday_txt.setVisibility(GONE);
 
                                         } else {
                                             sevenday_txt.setVisibility(View.VISIBLE);
@@ -540,9 +561,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         }
 
                                         if (response.body().getData().getCollection().getStatus().equalsIgnoreCase("0")) {
-                                            card_change.setVisibility(View.GONE);
-                                            today_time_layer.setVisibility(View.GONE);
-                                            later_time_layer.setVisibility(View.GONE);
+                                            card_change.setVisibility(GONE);
+                                            today_time_layer.setVisibility(GONE);
+                                            later_time_layer.setVisibility(GONE);
                                             update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
                                             update_mode.setClickable(false);
                                             update_mode.setFocusable(false);
@@ -631,8 +652,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(false);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                 update_mode.setText(response.body().getData().getDelivery().getAsap().getMessage());
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
 
@@ -652,8 +673,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                                                 update_mode.setText("Deliver ASAP");
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
                                             }
@@ -673,8 +694,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(false);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                 update_mode.setText(response.body().getData().getCollection().getAsap().getMessage());
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
                                             } else {
@@ -691,8 +712,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                                                 update_mode.setText("Collection ASAP");
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
                                             }
@@ -734,8 +755,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setText(response.body().getData().getDelivery().getToday().getMessage());
 
 
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
                                             } else {
@@ -757,7 +778,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
                                                 today_time_layer.setVisibility(View.VISIBLE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
                                                 ArrayList<AdapterListData> todaytimeitem = new ArrayList<AdapterListData>();
@@ -840,8 +861,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(false);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                 update_mode.setText(response.body().getData().getCollection().getToday().getMessage());
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 dismissloading();
 
@@ -859,7 +880,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                                                 //  update_mode.setText("Collection today at " + response.body().getData().getCollection().getToday().getToday_time().get(0).getToday_time());
                                                 today_time_layer.setVisibility(View.VISIBLE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
 
@@ -940,8 +961,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(false);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                 update_mode.setText(response.body().getData().getDelivery().getLater_array().getMessage());
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
                                             } else {
@@ -958,7 +979,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setFocusable(true);
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                                                today_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(View.VISIBLE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
@@ -1005,8 +1026,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                 update_mode.setText(response.body().getData().getCollection().getLater_array().getMessage());
                                                 update_mode.setVisibility(View.VISIBLE);
-                                                today_time_layer.setVisibility(View.GONE);
-                                                later_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
                                             } else {
                                                 bun_asap.setBackgroundResource(R.drawable.background_asap);
                                                 bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
@@ -1022,7 +1043,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
 
-                                                today_time_layer.setVisibility(View.GONE);
+                                                today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(View.VISIBLE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
@@ -1154,7 +1175,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                             }
                                                         });
                                                     } else {
-                                                        later_timing_layer.setVisibility(View.GONE);
+                                                        later_timing_layer.setVisibility(GONE);
                                                         update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
                                                         update_mode.setClickable(false);
                                                         update_mode.setFocusable(false);
@@ -1658,6 +1679,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         public ImageView menu_item_image;
         CardView ordermode_popup_view,layout_logo;
         LinearLayout menu_item_add;
+        TextView textview_avaliable_time;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -1669,6 +1691,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             this.menu_item_image = itemView.findViewById(R.id.menu_item_image);
             this.ordermode_popup_view = itemView.findViewById(R.id.ordermode_popup_view);
             this.layout_logo = itemView.findViewById(R.id.layout_logo);
+            this.textview_avaliable_time = itemView.findViewById(R.id.textview_avaliable_time);
 
 
         }

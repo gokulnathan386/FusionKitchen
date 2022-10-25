@@ -32,8 +32,6 @@
                 android:text="category"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
-
         </RelativeLayout>
 
 
@@ -77,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/seller"
+                android:padding="5dp"
                 android:background="@drawable/item_bg_border1">
 
             <androidx.cardview.widget.CardView
@@ -109,7 +108,7 @@
                 android:layout_toRightOf="@+id/layout_logo"
                 android:fontFamily="@font/hindvadodara_semibold"
                 android:text="                           "
-                android:textColor="@color/txt_ten"
+                android:textColor="#17284D"
                 android:textSize="18sp" />
 
             <com.borjabravo.readmoretextview.ReadMoreTextView
@@ -124,7 +123,7 @@
                 android:layout_toRightOf="@+id/layout_logo"
                 android:fontFamily="@font/roboto_light"
                 android:gravity="left"
-                android:textColor="@color/menu_item_desc"
+                android:textColor="#17284D"
                 android:textSize="16sp"
                 app:colorClickableText="@color/app_color"
                 app:trimCollapsedText="@string/more"
@@ -133,19 +132,22 @@
                 app:trimLines="2" />
 
 
-               <!-- <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_toRightOf="@+id/layout_logo"
-                    android:fontFamily="@font/metropolis_semibold"
-                    android:text="Available at 12:00 AM-12:01 AM"
-                    android:textColor="#0071E3"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:background="#E6F3FF"
-                    android:layout_below="@+id/menu_item_desc"
-                    android:textSize="15dp" />-->
+
+                    <TextView
+                        android:id="@+id/textview_avaliable_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/metropolis_semibold"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:layout_below="@+id/menu_item_desc"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/layout_logo"
+                        android:background="@drawable/available_time_bg"
+                        android:text="Available at 12:00 AM-12:01 AM"
+                        android:textColor="#0071E3"
+                        android:textSize="12dp" />
+
 
                     <TextView
                         android:id="@+id/menu_item_amout"
@@ -286,7 +288,8 @@
         app:cardBackgroundColor="@color/tranfer_color">
 
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

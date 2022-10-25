@@ -124,6 +124,20 @@ public class menu_item_sub_model {
                 @SerializedName("item_type")
                 private String itemtype;
 
+                @SerializedName("available_time")
+                private String available_time;
+
+
+
+                public String getAvailableTime() {
+                    return available_time;
+                }
+
+                public void setAvailableTime(String available_time) {
+                    this.available_time = available_time;
+                }
+
+
 
                 public String getName() {
                     return name;
@@ -182,6 +196,10 @@ public class menu_item_sub_model {
                 public void setItemtype(String itemtype) {
                     this.itemtype = itemtype;
                 }
+
+
+
+
             }
 
 
