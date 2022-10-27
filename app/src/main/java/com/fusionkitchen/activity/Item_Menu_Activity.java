@@ -35,12 +35,10 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,7 +48,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,10 +100,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
@@ -125,8 +129,8 @@ import com.fusionkitchen.model.menu_model.search_menu_item_model;
 import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.common.collect.Multiset;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -139,10 +143,16 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static androidx.recyclerview.widget.RecyclerView.*;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyCallback{
+
+
+    private static LinkedHashSet<String> settt = new LinkedHashSet<>();
+ //   private static List<TimeSlotModel> tsm = new ArrayList<>();
+    private static List<String> time = new ArrayList<>();
+    private List<String> tt = new ArrayList<>();
+    private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
 
 
     public Context mContext = Item_Menu_Activity.this;
@@ -1414,7 +1424,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-    
+
 
     private void Show_info_popup() {
 
@@ -1523,9 +1533,134 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
-                        List<about_us_model.aboutdetails.openinghours> jobdetails = (response.body().getAbout().getOpeninghours());
+                        jobdetails6 = (response.body().getAbout().getOpeninghours());
+
+
+                        for (int ts = 0; ts < jobdetails6.size(); ts++){
+                            tt.add(jobdetails6.get(ts).getTime());
+
+
+                        }
+
+                        removeDuplicates(tt);
+                        ilter();
+
+
+
+                  /*   for (int i = 0 ; i < jobdetails6.size() ; i++ ) {
+
+                       Log.d("Key_Jobdetails","" + jobdetails6.get(i).getDay());
+                       Log.d("Vaule_Jobdetails","" + jobdetails6.get(i).getTime());
+
+                     }*/
+
+
+
+                      /*  for (int i = 0 ; i < jobdetails6.size()-1; i++ ) {
+
+                            Log.d("Key_Jobdetails","" + jobdetails6.get(i).getDay());
+                            Log.d("Vaule_Jobdetails","" + jobdetails6.get(i).getTime());
+
+                            if (jobdetails6.get(i).getTime() == jobdetails6.get(i + 1).getTime()) {
+                                Log.d("Gokulnathan","duplicate item "+ jobdetails6.get(i + 1).getTime() +" at Location"+(i+1));
+                            }else{
+                                Log.d("Gokulnathan","duplicate item");
+                            }
+
+                        }
+*/
+
+                   /*     for (int i = 0; i < jobdetails.size()-1; i++) {
+
+                            Log.d("Gokulnathan","duplicate item --->" + jobdetails.get(i).getTime() + " " +jobdetails.get(i + 1).getTime());
+
+                            if (jobdetails.get(i).getTime() == jobdetails.get(i + 1).getTime()) {
+                                Log.d("Gokulnathan","duplicate item "+ jobdetails.get(i + 1).getTime() +" at Location"+(i+1));
+                            }else{
+                                Log.d("Gokulnathan","duplicate item");
+                            }
+
+                        }*/
+
+
+
+
+
+
                         //Log.d("Item_Menu_Activity_Test", String.valueOf(jobdetails.size()));
-                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails);
+
+
+/*
+                         String[] arr = new String[10];
+
+                        Log.d("Gokulnathan","" + jobdetails.size());
+
+                        for (int i = 0; i < jobdetails.size(); i++) {
+                            arr[i] = jobdetails.get(i).getTime();
+                        }
+
+                        for (String x : arr)
+                          Log.d("Gokulnathan",x);*/
+
+
+/*
+
+                        Set<about_us_model.aboutdetails.openinghours> s = new HashSet<>();
+
+                        String[] arr = new String[10];
+
+                         Log.d("Gokulnathan","" + jobdetails6.size());
+
+                        for (int i = 0; i < jobdetails6.size(); i++) {
+                            arr[i] = jobdetails6.get(i).getTime();
+                        }
+
+
+                        for(about_us_model.aboutdetails.openinghours name : jobdetails6) {
+                            if(s.add(name) == false)
+                               // Log.d("Gokulnathan",x);
+                                System.out.println(name + "is duplicated");
+                        }
+*/
+
+
+
+
+
+
+                     /*   for (int i = 0; i < jobdetails.size()-1; i++) {
+
+                            Log.d("Gokulnathan","duplicate item --->" + jobdetails.get(i).getTime() + " " +jobdetails.get(i + 1).getTime());
+
+                            if (jobdetails.get(i).getTime() == jobdetails.get(i + 1).getTime()) {
+                                Log.d("Gokulnathan","duplicate item "+ jobdetails.get(i + 1).getTime() +" at Location"+(i+1));
+                            }else{
+                                Log.d("Gokulnathan","duplicate item");
+                            }
+
+                        }*/
+
+
+                       /* for (int i = 0; i < jobdetails.size()-1; i++) {
+
+                            Log.d("Gokulnathan","duplicate item --->" + jobdetails.get(i).getTime() + "at Location " +jobdetails.get(i + 1).getTime());
+
+
+                            for(int j=0; i<= i){
+                                  if (jobdetails.get(i).getTime() == jobdetails.get(i + 1).getTime()) {
+                                Log.d("Gokulnathan","duplicate item "+ jobdetails.get(i + 1).getTime() +" at Location"+(i+1));
+                            }else{
+                                Log.d("Gokulnathan","duplicate item");
+                            }
+                            }
+
+
+
+                        }*/
+
+
+
+                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails6);
                         open_hrs_review.setHasFixedSize(true);
                         open_hrs_review.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         open_hrs_review.setAdapter(adapter);
@@ -1557,6 +1692,89 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         info_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         info_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         info_popup.getWindow().setGravity(Gravity.BOTTOM);
+
+
+    }
+
+    private static void removeDuplicates(List<String> a)
+    {
+
+            for (int i = 0; i < a.size(); i++){
+                settt.add(a.get(i));
+                Log.d("weddddwq789aeuy",""+settt);
+            }
+
+            Iterator itr = settt.iterator();
+
+            while (itr.hasNext())
+
+            System.out.print(itr.next() + ", ");
+            System.out.println();
+
+
+            for (String s : settt)
+
+
+            time.add(s);
+            Log.d("dcfsdcfdvfvvffv",""+time.size());
+
+
+    }
+
+
+
+    private static void ilter(){
+
+        HashMap<String, String> map = new HashMap<>();
+
+      /*  Log.d("xxdsaxdaSxd","chfujadhcuais"+time.size());
+        Log.d("xxdsaxdaSxd","chfujadhcuais"+jobdetails6.size());*/
+
+        int i = 0;
+        int k = 0;
+
+        for ( i = 0; i < time.size(); ) {
+
+
+            for ( k = 0; k <jobdetails6.size(); ) {
+
+
+                if (jobdetails6.get(k).getTime().equalsIgnoreCase(time.get(i))){
+
+                 //Log.d("opopopo","kanikashanmugam"+jobdetails6.get(k).getDay());
+                  //  Log.d("opopopo","kanikashanmugam"+time.get(i));
+
+                    map.put(jobdetails6.get(k).getDay(),jobdetails6.get(k).getTime());
+
+                }
+                ++k;
+            }
+
+            i++;
+
+
+        }
+
+        HashMap<String, String> duplicatMap = new HashMap<>();
+
+        Set<Map.Entry<String, String>> entrySet = map.entrySet();
+        Iterator<Map.Entry<String, String>> iterator = entrySet.iterator();
+        while(iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if(duplicatMap.containsKey(value)) {
+                duplicatMap.put(value, duplicatMap.get(value)+", "+key);
+            } else {
+                duplicatMap.put(value, key);
+            }
+        }
+
+
+
+
+        Log.d("HASHMAP_Item"," " + duplicatMap);
 
 
     }
