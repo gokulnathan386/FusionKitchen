@@ -55,6 +55,7 @@ import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 
 import com.fusionkitchen.app.MyApplication;
+import com.fusionkitchen.model.ExamData;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -75,6 +76,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -106,6 +108,9 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
 
     private Context mContext = Moreinfo_Activity.this;
+
+    public  static HashMap<ArrayList<String>,String> stronggg = new HashMap<ArrayList<String>, String>();
+    List<ExamData> list = new ArrayList<>();
     /*---------------------------check internet connection----------------------------------------------------*/
 
     boolean isShown = false, Connection;
@@ -564,7 +569,8 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
 
                         List<about_us_model.aboutdetails.openinghours> jobdetails = (response.body().getAbout().getOpeninghours());
-                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails);
+                      //  MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails);
+                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails, stronggg, list);
                         open_hrs_review.setHasFixedSize(true);
                         open_hrs_review.setLayoutManager(new LinearLayoutManager(Moreinfo_Activity.this));
                         open_hrs_review.setAdapter(adapter);
