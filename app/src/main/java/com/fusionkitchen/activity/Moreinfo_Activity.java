@@ -569,8 +569,8 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
 
 
                         List<about_us_model.aboutdetails.openinghours> jobdetails = (response.body().getAbout().getOpeninghours());
-                      //  MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails);
-                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails, stronggg, list);
+                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails);
+                      //  MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext, jobdetails, stronggg, list);
                         open_hrs_review.setHasFixedSize(true);
                         open_hrs_review.setLayoutManager(new LinearLayoutManager(Moreinfo_Activity.this));
                         open_hrs_review.setAdapter(adapter);

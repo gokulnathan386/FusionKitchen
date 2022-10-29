@@ -1392,6 +1392,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
 
+
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagecollectononly, new IntentFilter("collection_only"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mclasbackonly, new IntentFilter("clasback"));
@@ -1442,9 +1443,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 */
     }
-
-
-
 
 
     private void Show_info_popup() {
@@ -1556,19 +1554,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
-                        for (int ts = 0; ts < jobdetails6.size(); ts++){
+                      /*  for (int ts = 0; ts < jobdetails6.size(); ts++){
                             tt.add(jobdetails6.get(ts).getTime());
                             WeekLlist.put(jobdetails6.get(ts).getDay(),jobdetails6.get(ts).getTime());
 
-                        }
-
-                     //  removeDuplicates(tt);
-                      //  ilter();
-
+                        }*/
 
                         //---------------------------------------
 
-                        for (Map.Entry<String, String> entry : WeekLlist.entrySet()) {
+                    /*    for (Map.Entry<String, String> entry : WeekLlist.entrySet()) {
                             String key = entry.getKey();
                             Object value = entry.getValue();
                             System.out.println("key" + key + "Val" + value.toString());
@@ -1693,34 +1687,62 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         List<ExamData> liaaaaatttt = new ArrayList<>();
 
+                        if (timing1!="null"){
+                            liaaaaatttt.add(new ExamData(time1,
+                                    timing1
+                            ));
 
-                        liaaaaatttt.add(new ExamData(time1,
-                                timing1
-                        ));
-                        liaaaaatttt.add(new ExamData(time2,
-                                timing2
-                        ));
+                        }
 
-                        liaaaaatttt.add(new ExamData(time3,
-                                timing3
-                        ));
+                        if (timing2!="null") {
+                            liaaaaatttt.add(new ExamData(time2,
+                                    timing2
+                            ));
+                        }
 
-                        liaaaaatttt.add(new ExamData(time4,
-                                timing4
-                        ));
 
-                        liaaaaatttt.add(new ExamData(time5,
-                                timing5
-                        ));
-                        liaaaaatttt.add(new ExamData(time6,
-                                timing6
-                        ));
-                        liaaaaatttt.add(new ExamData(time7,
-                                timing7
-                        ));
+                        if (timing3!="null"){
+                            liaaaaatttt.add(new ExamData(time3,
+                                    timing3
+                            ));
+
+                        }
+
+
+
+                        if (timing4!="null"){
+                            liaaaaatttt.add(new ExamData(time4,
+                                    timing4
+                            ));
+                        }
+
+
+                        if (timing5!="null"){
+                            liaaaaatttt.add(new ExamData(time5,
+                                    timing5
+                            ));
+                        }
+
+
+                        if (timing6 != "null") {
+
+                            liaaaaatttt.add(new ExamData(time6,
+                                    timing6
+                            ));
+                        }
+
+                        if (timing7!="null"){
+                            liaaaaatttt.add(new ExamData(time7,
+                                    timing7
+                            ));
+                        }
+*/
+
 
                         //=------------------------------------
-                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6,stronggg,liaaaaatttt);  //jobdetails6
+                     //   MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6,stronggg,liaaaaatttt);  //jobdetails6
+
+                        MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6);
                         open_hrs_review.setHasFixedSize(true);
                         open_hrs_review.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         open_hrs_review.setAdapter(adapter);
@@ -3613,6 +3635,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
+
             ItemName = intent.getStringExtra("item");//Item ID
             addonid = intent.getStringExtra("addonid");//first addonId
             categoryname = intent.getStringExtra("categoryname");
@@ -3688,8 +3711,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             item_pricesize.clear();
             //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
             addonitemfirstview(ItemName, addonid, "", "", "1");
-
-
         }
     };
     /*---------------------------MenuItemAdapter item value get addon button click----------------------------------------------------*/
@@ -3739,9 +3760,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             arrayaddonextraidsingle = intent.getStringExtra("arrayaddonextraidsingle");
             Log.e("menugetlimt33", "" + btnnext);
 
-
             // item_add_time5
-
             Log.e("addonextramessage1", "" + addonitemid);
             Log.e("addonextramessage2", "" + addonidprice);
             Log.e("addonextramessage3", "" + addonitemtype);
@@ -3789,6 +3808,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             } else {
                 addsingleextra = "";
             }
+
             selected_addon_item_view.setVisibility(View.VISIBLE);
             Log.e("arrayaddonitemid", "" + arrayaddonitemid);
             Log.e("arrayaddonextraidsingle", "" + arrayaddonextraidsingle);

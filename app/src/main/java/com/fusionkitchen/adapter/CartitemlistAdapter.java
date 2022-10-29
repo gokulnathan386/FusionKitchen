@@ -225,8 +225,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
             @Override
             public void onClick(View view) {
 
-
-
                /* if (count == 1) {
                     // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
                     holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));

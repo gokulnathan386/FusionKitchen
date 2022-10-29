@@ -246,7 +246,6 @@
                         android:background="@drawable/circle_add_minis"
                         android:layout_width="25dp"
                         android:layout_height="25dp">
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -258,7 +257,7 @@
                             android:textColor="#17284D"/>
                     </LinearLayout>
 
-            </LinearLayout>
+              </LinearLayout>
             </LinearLayout>
 
             </LinearLayout>

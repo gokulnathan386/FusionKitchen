@@ -111,8 +111,26 @@
                 android:textColor="#17284D"
                 android:textSize="18sp" />
 
+
+                <TextView
+                    android:id="@+id/menu_item_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/menu_item_name"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_toLeftOf="@+id/menu_item_add"
+                    android:layout_toRightOf="@+id/layout_logo"
+                    android:fontFamily="@font/roboto_light"
+                    android:gravity="left"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="#17284D"
+                    android:textSize="16sp"
+                    />
+
             <com.borjabravo.readmoretextview.ReadMoreTextView
-                android:id="@+id/menu_item_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/menu_item_name"
@@ -129,6 +147,7 @@
                 app:trimCollapsedText="@string/more"
                 app:trimExpandedText="@string/less"
                 app:trimLength="2"
+                android:visibility="gone"
                 app:trimLines="2" />
 
 
@@ -203,78 +222,59 @@
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_incresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/menu_item_amout"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:visibility="gone"
-                android:orientation="horizontal"
-                  >
-
-                <!--android:background="@drawable/menuitemaddborder"-->
-
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/increment_decrement_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_1sdp"
-                    android:layout_marginBottom="@dimen/_1sdp"
-                    android:background="#fff2f3">
+                    android:layout_below="@+id/menu_item_amout"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/add_to_cart_bg"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <!--android:background="@drawable/menuitemaddborder"-->
+
+                        <TextView
+                            android:id="@+id/qty_decrease_textview"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:gravity="center_horizontal"
+                            android:text="-"
+                            android:textColor="#17284d"
+                            android:textSize="23sp"
+                            android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/decrease"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:text="-"
-                        android:textColor="#17284d"
-                        android:textSize="25sp"
+                        android:id="@+id/qty_textview_number"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="#d92662"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="01"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13dp"
                         android:textStyle="bold" />
-                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/integer_number"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:freezesText="true"
-                    android:gravity="center"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:minWidth="70dp"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="01"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/poppins_bold"
-                    android:background="#d92662"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15dp" />
+                        <TextView
+                            android:id="@+id/qty_increase_textview"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:gravity="center_horizontal"
+                            android:text="+"
+                            android:textColor="#17284d"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/increase"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_1sdp"
-                    android:layout_marginRight="@dimen/_1sdp"
-                    android:layout_marginBottom="@dimen/_1sdp"
-                    android:background="#fff2f3"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="+"
-                    android:textColor="#17284d"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                </LinearLayout>
+
 
         </RelativeLayout>
 </RelativeLayout>

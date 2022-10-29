@@ -66,6 +66,8 @@ import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 
+import org.w3c.dom.Text;
+
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,7 +92,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private String menuurlpath, fullUrl;
     String selectedlaterdateItem;
     int clickable = 0;
-    Dialog item_view;
+    Dialog item_view,repeatpopup ;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
@@ -176,12 +178,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View view) {
 
-
-                //  Toast.makeText(mContext, items[position].getId(), Toast.LENGTH_LONG).show();
-                //    Toast.makeText(mContext, sub.getName(), Toast.LENGTH_LONG).show();
-                //  Toast.makeText(mContext, listdatum.getName(), Toast.LENGTH_LONG).show();
-
                 holder.menu_item_add.setEnabled(false);
+
+                holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+                holder.menu_item_add.setVisibility(GONE);
 
                 if (cursor != 0) {
                         addonitem(view,position,holder);
@@ -189,11 +189,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                         if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("1")){
                             addonitem(view,position,holder);
-
                         }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
 
                             Order_mode_popup(view,holder,position);
-
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -207,7 +205,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         }
                 }
 
-
             }
         });
 
@@ -218,8 +215,115 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
+            holder.menu_item_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Single_itemviewpup_up(items[position].getImage(),items[position].getName(),items[position].getPrice(),items[position].getDescription());
+                }
+            });
 
 
+
+        holder.qty_decrease_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                int count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+
+                if (count == 1) {
+                    holder.qty_textview_number.setText("01");
+                } else {
+                    count -= 1;
+                    int length = String.valueOf(count).length();
+                    if(length == 1){
+                        holder.qty_textview_number.setText("0" + count);
+                    }else{
+                        holder.qty_textview_number.setText("" + count);
+                    }
+
+                }
+
+            }
+        });
+
+        holder.qty_increase_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                count++;
+                int length = String.valueOf(count).length();
+
+                if(length == 1){
+
+                    repeatpopup = new Dialog(mContext);
+                    repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    repeatpopup.setContentView(R.layout.repeat_popup_design);
+
+                    ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
+                    TextView repeat_popup_textview = repeatpopup.findViewById(R.id.repeat_popup_textview);
+                    TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
+                    repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            addonitem(v,position,holder);
+                            repeatpopup.dismiss();
+                        }
+                    });
+
+                    add_more_button_textview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            repeatpopup.dismiss();
+                        }
+                    });
+
+                    repeatpopup.show();
+                    repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
+
+                    holder.qty_textview_number.setText("0" + count);
+
+                }else{
+                    holder.qty_textview_number.setText("" + count);
+                }
+
+            }
+        });
+    }
+
+    private void repeatpopup_show(View v, int position, ViewHolder holder, Context mContext) {
+
+        repeatpopup = new Dialog(mContext);
+        repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        repeatpopup.setContentView(R.layout.repeat_popup_design);
+
+        ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
+        TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
+        TextView repeat_popup_textview= repeatpopup.findViewById(R.id.repeat_popup_textview);
+        add_more_button_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatpopup.dismiss();
+            }
+        });
+
+        repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addonitem(v,position,holder);
+            }
+        });
+
+       // repeatpopup.show();
+        repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
@@ -1208,12 +1312,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     @Override
                                     public void onClick(View view) {
 
-                                        //  rltop.setVisibility(View.VISIBLE);
-                                        //   relativ_moreinfo.setVisibility(View.VISIBLE);
-                                        //  card_view.setVisibility(View.VISIBLE);
-                                        // OfferList.setVisibility(View.VISIBLE);
-                                        //   recyclerviewitem.setVisibility(View.VISIBLE);
-
                                         if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
                                             addonitem(view,position,holder);
                                             SharedPreferences.Editor editor_extra = sharedpreferences.edit();
@@ -1560,7 +1658,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                         */
 
-
                                 String ItemName = items[position].getId();
                                 Intent intent = new Intent("custom-message");
                                 intent.putExtra("item", ItemName);
@@ -1678,8 +1775,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         public TextView menu_item_name, menu_item_desc, menu_item_amout;
         public ImageView menu_item_image;
         CardView ordermode_popup_view,layout_logo;
-        LinearLayout menu_item_add;
-        TextView textview_avaliable_time;
+        LinearLayout menu_item_add,increment_decrement_layout;
+        TextView textview_avaliable_time,qty_increase_textview,qty_decrease_textview,qty_textview_number;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -1692,6 +1789,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             this.ordermode_popup_view = itemView.findViewById(R.id.ordermode_popup_view);
             this.layout_logo = itemView.findViewById(R.id.layout_logo);
             this.textview_avaliable_time = itemView.findViewById(R.id.textview_avaliable_time);
+            this.qty_increase_textview = itemView.findViewById(R.id.qty_increase_textview);
+            this.qty_decrease_textview = itemView.findViewById(R.id.qty_decrease_textview);
+            this.qty_textview_number = itemView.findViewById(R.id.qty_textview_number);
+            this.increment_decrement_layout = itemView.findViewById(R.id.increment_decrement_layout);
 
 
         }

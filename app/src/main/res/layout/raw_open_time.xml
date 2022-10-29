@@ -16,7 +16,6 @@
               android:layout_height="match_parent">
           </TextView>
 
-
             <TextView
                 android:id="@+id/time"
                 android:padding="10dp"

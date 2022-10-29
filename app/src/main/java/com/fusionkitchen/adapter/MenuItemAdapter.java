@@ -116,12 +116,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
 
 
-
-
-
-
-
-
         holder.mainLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,6 +1,7 @@
 package com.fusionkitchen.adapter;
 
 
+/*
 import android.content.Context;
 
 import android.util.Log;
@@ -53,28 +54,43 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
 //        holder.day.setBackgroundResource((mColors[position % 20]));
         //      holder.time.setBackgroundResource((mColors[position % 20]));
 
-
-
-
-
         Log.d("dcbgayhaaaagdcb",""+examdata.get(position).getDate());
 
-
         if (examdata.get(position).getDate()!="null" && examdata.get(position).getName().toString()!="[]"){
-            // holder.day.setText(examdata.get(position).getName().toString());
+
             holder.time.setText(examdata.get(position).getDate());
             holder.day.setText(examdata.get(position).getName().toString());
 
-            examdata.get(position).getDate();
+            String s = examdata.get(position).getName().toString().replace("[","");
+            String v= s.replace("]","");
+
+            holder.day.setText(v);
+
+            Log.d("Gokulnathan",v);
+
+        */
+/*   if(v.equalsIgnoreCase("Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday")){
+                holder.day.setText("Monday - Sunday");
+            }else if(v.equalsIgnoreCase("Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday")){
+                holder.day.setText("Tuesday - Sunday");
+            }else if(v.equalsIgnoreCase("Wednesday, Thursday, Friday, Saturday, Sunday")){
+                holder.day.setText("Wednesday - Sunday");
+            }else if(v.equalsIgnoreCase("Thursday, Friday, Saturday, Sunday")){
+                holder.day.setText("Thursday - Sunday");
+            }else if(v.equalsIgnoreCase("Friday, Saturday, Sunday")){
+                holder.day.setText("Friday - Sunday");
+            }else if(v.equalsIgnoreCase("Saturday, Sunday")){
+                holder.day.setText("Saturday - Sunday");
+            }else{
+                holder.day.setText(v);
+            }
+*//*
+
 
         }else{
-
             holder.time.setVisibility(View.GONE);
             holder.day.setVisibility(View.GONE);
         }
-
-
-
 
     }
 
@@ -95,8 +111,9 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
 }
 
 
+*/
 
-/*
+
 
 import android.content.Context;
 
@@ -165,4 +182,4 @@ public class MoreinfoopenhrsAdapter extends RecyclerView.Adapter<Moreinfoopenhrs
 
         }
     }
-}*/
+}
