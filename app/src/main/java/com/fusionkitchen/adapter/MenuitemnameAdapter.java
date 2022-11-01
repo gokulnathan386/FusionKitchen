@@ -2,11 +2,9 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -23,7 +21,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,13 +41,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.model.AdapterListData;
-import com.fusionkitchen.model.cart.Cartitem;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,15 +52,10 @@ import java.util.Map;
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
-import com.fusionkitchen.activity.Dashboard_Activity;
-import com.fusionkitchen.activity.Item_Menu_Activity;
-import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.addon.menu_addon_status_model;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
-
-import org.w3c.dom.Text;
 
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
@@ -77,7 +66,6 @@ import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.widget.Toast.LENGTH_LONG;
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static java.lang.Integer.highestOneBit;
 import static java.lang.Integer.parseInt;
 
 public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapter.ViewHolder> {
@@ -296,36 +284,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         });
     }
 
-    private void repeatpopup_show(View v, int position, ViewHolder holder, Context mContext) {
-
-        repeatpopup = new Dialog(mContext);
-        repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        repeatpopup.setContentView(R.layout.repeat_popup_design);
-
-        ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
-        TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
-        TextView repeat_popup_textview= repeatpopup.findViewById(R.id.repeat_popup_textview);
-        add_more_button_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                repeatpopup.dismiss();
-            }
-        });
-
-        repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addonitem(v,position,holder);
-            }
-        });
-
-       // repeatpopup.show();
-        repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
-
-    }
 
     private void Single_itemviewpup_up(String image,String itemname,String itemprice,String description) {
         item_view = new Dialog(mContext);
@@ -1538,9 +1496,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 Customertoastmessage(view);
 
-                                //Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
 
-                                //Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -1571,6 +1527,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         }
 
                     } else {
+
+
 
                         if (response.body().getError_code() == null) {
                             Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_LONG).show();
@@ -1658,13 +1616,19 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                         */
 
-                                String ItemName = items[position].getId();
-                                Intent intent = new Intent("custom-message");
-                                intent.putExtra("item", ItemName);
-                                intent.putExtra("addonid", response.body().getAddonId());
-                                intent.putExtra("categoryname", listdatum.getName());
-                                intent.putExtra("subcategoryname", sub.getName());
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+                                            String ItemName = items[position].getId();
+                                            Intent intent = new Intent("custom-message");
+                                            intent.putExtra("item", ItemName);
+                                            intent.putExtra("addonid", response.body().getAddonId());
+                                            intent.putExtra("categoryname", listdatum.getName());
+                                            intent.putExtra("subcategoryname", sub.getName());
+                                            intent.putExtra("item_price_amt",items[position].getPrice());
+                                            Log.d("Item_Amount_Test_adapter",items[position].getPrice());
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
 
 
                                      /*   int  userList = dbHelper.GetUserByUserId(parseInt(items[position].getId()));

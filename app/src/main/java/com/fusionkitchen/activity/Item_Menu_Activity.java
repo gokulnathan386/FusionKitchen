@@ -142,37 +142,19 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static androidx.recyclerview.widget.RecyclerView.*;
+import static java.lang.Integer.parseInt;
 
 
 public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyCallback{
 
 
-    HashMap<String, String> WeekLlist = new HashMap<String, String>();
-    HashMap<ArrayList<String>, String> stronggg = new HashMap<ArrayList<String>, String>();
-    String timing1 = null;
-    String timing2 = null;
-    String timing3 = null;
-    String timing4 = null;
-    String timing5 = null;
-    String timing6 = null;
-    String timing7 = null;
 
-    ArrayList<String> time1 = new ArrayList<>();
-    ArrayList<String> time2 = new ArrayList<>();
-    ArrayList<String> time3 = new ArrayList<>();
-    ArrayList<String> time4 = new ArrayList<>();
-    ArrayList<String> time5 = new ArrayList<>();
-    ArrayList<String> time6 = new ArrayList<>();
-    ArrayList<String> time7 = new ArrayList<>();
+    String updateqty;
+    String updatefinalamt;
+    String item_price_amt;
 
 
 
-
-
-    private static LinkedHashSet<String> settt = new LinkedHashSet<>();
- //   private static List<TimeSlotModel> tsm = new ArrayList<>();
-    private static List<String> time = new ArrayList<>();
-    private List<String> tt = new ArrayList<>();
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
 
 
@@ -1383,6 +1365,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
         LocalBroadcastManager.getInstance(this).registerReceiver(addonmMessageReceiver, new IntentFilter("addon_extra-message"));
+
         LocalBroadcastManager.getInstance(this).registerReceiver(addonbtnnextid, new IntentFilter("addon_btn-nextid"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mitemsuccessMessageReceiver, new IntentFilter("item_successfully_custom-message"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagepromooff, new IntentFilter("custom-message-promooffer"));
@@ -3639,78 +3622,198 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             ItemName = intent.getStringExtra("item");//Item ID
             addonid = intent.getStringExtra("addonid");//first addonId
             categoryname = intent.getStringExtra("categoryname");
+            item_price_amt = intent.getStringExtra("item_price_amt");
             subcategoryname = intent.getStringExtra("subcategoryname");
 
-            addonitemarrayextraData = "";
-            addonitemid = "";
-            selected_addon_item_view.setVisibility(View.GONE);
+            Log.d("Item_Amount_Test_Activity"," " + item_price_amt);
 
-            item_price_btn = true;
+            int userList = dbHelper.GetUserByUserId(parseInt(ItemName));
 
-
-            Log.e("nextapi1", "" + nextaid);
-            Log.e("nextapi2", "" + btnnextfir);
-            Log.e("nextapi3", "" + addonlimit);
-
-            Log.e("addbuttonclick1", "" + ItemName);
-            Log.e("addbuttonclick2", "" + addonid);
-            Log.e("addbuttonclick3", "" + categoryname);
-            Log.e("addbuttonclick4", "" + subcategoryname);
+           // ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(ItemName));
 
 
-            SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-            editor_extra.putString("addon_extra", "");
-            editor_extra.commit();
+
+            if(userList == 0){
+
+
+                addonitemarrayextraData = "";
+                addonitemid = "";
+                selected_addon_item_view.setVisibility(View.GONE);
+
+                item_price_btn = true;
+
+
+                Log.e("nextapi1", "" + nextaid);
+                Log.e("nextapi2", "" + btnnextfir);
+                Log.e("nextapi3", "" + addonlimit);
+
+                Log.e("addbuttonclick1", "" + ItemName);
+                Log.e("addbuttonclick2", "" + addonid);
+                Log.e("addbuttonclick3", "" + categoryname);
+                Log.e("addbuttonclick4", "" + subcategoryname);
+
+
+                SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                editor_extra.putString("addon_extra", "");
+                editor_extra.commit();
 
 
 //add adddon id in array
 
-            aidlist = new ArrayList<String>();
-            aidlist.clear();
+                aidlist = new ArrayList<String>();
+                aidlist.clear();
 
 
-            //Item Name
-            listItems = new ArrayList<String>();
-            listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
-            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-            selected_addon_item_view.setAdapter(adapter);
+                //Item Name
+                listItems = new ArrayList<String>();
+                listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
+                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                selected_addon_item_view.setAdapter(adapter);
 
 
-            arrayextranameDataadd = new ArrayList<String>();
-            arrayextranameDataadd.clear();
-            arrayextranameDataaddsize = new ArrayList<Integer>();
-            arrayextranameDataaddsize.clear();
+                arrayextranameDataadd = new ArrayList<String>();
+                arrayextranameDataadd.clear();
+                arrayextranameDataaddsize = new ArrayList<Integer>();
+                arrayextranameDataaddsize.clear();
 
 
-            listItemsidssize = new ArrayList<Integer>();
-            listItemsidssize.clear();
-            arrayaddonitemidadd = new ArrayList<>();
-            arrayaddonitemidadd.clear();
+                listItemsidssize = new ArrayList<Integer>();
+                listItemsidssize.clear();
+                arrayaddonitemidadd = new ArrayList<>();
+                arrayaddonitemidadd.clear();
 
 
-            arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
-            arrayaddonextraidsingleaddsize.clear();
-            arrayaddonextraidsingleadd = new ArrayList<>();
-            arrayaddonextraidsingleadd.clear();
+                arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
+                arrayaddonextraidsingleaddsize.clear();
+                arrayaddonextraidsingleadd = new ArrayList<>();
+                arrayaddonextraidsingleadd.clear();
 
-            //Item Id
-            listItemsids = new ArrayList<String>();
-            listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-            adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
+                //Item Id
+                listItemsids = new ArrayList<String>();
+                listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+                adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
 
-            //Item Extra Addon
-            listItemsexraids = new ArrayList<String>();
-            listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-            adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
+                //Item Extra Addon
+                listItemsexraids = new ArrayList<String>();
+                listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+                adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
 
 
-            item_priceadd = new ArrayList<String>();
-            item_priceadd.clear();
+                item_priceadd = new ArrayList<String>();
+                item_priceadd.clear();
 
-            item_pricesize = new ArrayList<>();
-            item_pricesize.clear();
-            //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
-            addonitemfirstview(ItemName, addonid, "", "", "1");
+                item_pricesize = new ArrayList<>();
+                item_pricesize.clear();
+                //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
+
+                addonitemfirstview(ItemName, addonid, "", "", "1");
+
+
+            }else {
+
+               /* addonitemarrayextraData = "";
+                addonitemid = "";
+                selected_addon_item_view.setVisibility(View.GONE);
+
+                item_price_btn = true;
+
+
+                Log.e("nextapi1", "" + nextaid);
+                Log.e("nextapi2", "" + btnnextfir);
+                Log.e("nextapi3", "" + addonlimit);
+
+                Log.e("addbuttonclick1", "" + ItemName);
+                Log.e("addbuttonclick2", "" + addonid);
+                Log.e("addbuttonclick3", "" + categoryname);
+                Log.e("addbuttonclick4", "" + subcategoryname);
+
+
+                SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                editor_extra.putString("addon_extra", "");
+                editor_extra.commit();
+
+
+//add adddon id in array
+
+                aidlist = new ArrayList<String>();
+                aidlist.clear();
+
+
+                //Item Name
+                listItems = new ArrayList<String>();
+                listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
+                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                selected_addon_item_view.setAdapter(adapter);
+
+
+                arrayextranameDataadd = new ArrayList<String>();
+                arrayextranameDataadd.clear();
+                arrayextranameDataaddsize = new ArrayList<Integer>();
+                arrayextranameDataaddsize.clear();
+
+
+                listItemsidssize = new ArrayList<Integer>();
+                listItemsidssize.clear();
+                arrayaddonitemidadd = new ArrayList<>();
+                arrayaddonitemidadd.clear();
+
+
+                arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
+                arrayaddonextraidsingleaddsize.clear();
+                arrayaddonextraidsingleadd = new ArrayList<>();
+                arrayaddonextraidsingleadd.clear();
+
+                //Item Id
+                listItemsids = new ArrayList<String>();
+                listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+                adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
+
+                //Item Extra Addon
+                listItemsexraids = new ArrayList<String>();
+                listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+                adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
+
+
+                item_priceadd = new ArrayList<String>();
+                item_priceadd.clear();
+
+                item_pricesize = new ArrayList<>();
+                item_pricesize.clear();
+                //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
+
+                addonitemfirstview(ItemName, addonid, "", "", "1");
+*/
+
+
+                ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(ItemName));
+
+
+
+                for (int i=0;i<qtypice.size();i++)
+                {
+                    HashMap<String, String> hashmap= qtypice.get(i);
+
+                     updateqty = hashmap.get("qty");
+                     updatefinalamt = hashmap.get("itemfinalamt");
+                }
+
+                int database_qty =  Math.round(Float.parseFloat(updateqty));
+
+
+                int qty  = database_qty + 1;
+
+                String price =item_price_amt;
+
+                Log.d("Item_Price_Amout"," " + price);
+
+                float total_amt = Float.parseFloat(price) * qty;
+
+                Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(ItemName),qty,total_amt);
+
+
+
+            }
+
         }
     };
     /*---------------------------MenuItemAdapter item value get addon button click----------------------------------------------------*/
@@ -3771,22 +3874,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             Log.e("addonextramessage8", "" + arrayaddonextraidsingle);
 
 
-            /*listItemsids.add(arrayaddonitemid);
-            adapterids.notifyDataSetChanged();
-            itemidsstr = listItemsids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-
-            listItemsexraids.add(arrayaddonextraidsingle);
-            adapterexraids.notifyDataSetChanged();
-            itemexradsstr = listItemsexraids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-
-
-
-
-
-
-*/
-
-
             Log.e("addonextramessage40", "" + listItemsexraids);
             Log.e("addonextramessage41", "" + itemexradsstr);
 
@@ -3828,26 +3915,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             Log.e("addonitemid4", "" + addonitemid);
             Log.e("addonitemid5", "" + addonitemarrayextraData);
 
-        /*    s = new StringBuilder(100);
-            s.append(addonitemid);
-            Log.e("sappend", "" + s);*/
-           /* if (nextaid.equalsIgnoreCase("0")) {
-                if (btnnext.equalsIgnoreCase("0")) {
-
-                } else {
-                    addonitemviewrepet(ItemName, btnnext, addonitemid, addonitemarrayextraData);
-                }
-            } else {
-                addonitemviewrepet(ItemName, nextaid, addonitemid, addonitemarrayextraData);
-            }*/
-
-
-          /*  addonextraitemstringName = addonextraitemstringName + addonitemid;
-            Toast.makeText(getApplicationContext(), addonextraitemstringName, Toast.LENGTH_LONG).show();*/
-            // Log.e("aal", "" + addonitemposition);
-            //  addonextrastringName = addonextrastringName + addonextrafirsr + ",";
-            // Toast.makeText(getApplicationContext(), addonextrastringName, Toast.LENGTH_LONG).show();
-
             Log.e("addonval", "" + addonitemid);
             // Log.e("addonva2", "" + addonextrastringName);
             Log.e("addonva3", "" + addonidprice);
@@ -3880,8 +3947,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 */
 
                 arrayextranameDataadd.add(arrayextranameData);
-                arrayaddonitemidadd.add(arrayaddonitemid);
+                arrayaddonitemidadd.add(arrayaddonitemid);    // addons id store in database
                 arrayaddonextraidsingleadd.add(arrayaddonextraidsingle);
+
+                Log.d("add_on_popup",arrayextranameDataadd +  "----> " +arrayaddonitemidadd+ "-----> " + arrayaddonextraidsingleadd);
 
                 Log.e("firsttime1", "" + arrayextranameData);
                 Log.e("firsttime2", "" + arrayextranameDataadd);
@@ -3978,24 +4047,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     //   item_amt.setText("Total: £ " + String.format("%.2f", sum));
 
                     item_amt.setText(" £ " + String.format("%.2f", sum));
-/*
-                    String[] separateditemprice = item_amt.getText().toString().split("£");
-                    separateditemprice[0] = separateditemprice[0].trim();
-                    separateditemprice[1] = separateditemprice[1].trim();
-                    item_price = separateditemprice[1];
 
-                    item_priceadd.remove(item_price);
-                    Log.e("item_price9", "" + item_priceadd);
-                    Log.e("item_price61", "" + item_price);*/
 
                 }
-             /*   StringBuilder sb = new StringBuilder(addonextrastringName);
-                sb.deleteCharAt(Integer.parseInt(addonitemposition));
-                String result = sb.toString();
-                Log.e("ooooresult",""+result);*/
+
             }
             // Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
-
             addonitemnext("1");
 
         }
@@ -4068,7 +4125,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         Log.e("idvalue1", "" + itemexradsstr); // addon extra id
                         Log.e("idvalue2", "" + itemidsstr);//ok addon extra item id
                         Log.e("idvalue3", "" + ItemName);//ok addon item id
-                        Log.e("idvalue4", "" + listItemsids);//array
+                        Log.e("idvalue4-addonitemnextif", "" + listItemsids);//array
                         Log.e("idvalue5", "" + addon_item_name.getText().toString());//Item name
                         Log.e("idvalue6", "" + String.format("%.2f", sum));//total amt
                         Log.e("idvalue7", "" + item_price);//Item amt
@@ -4108,7 +4165,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             Log.e("idvalue1", "" + itemexradsstr);//addon extra id
                             Log.e("idvalue2", "" + itemidsstr);//addon extra item id
                             Log.e("idvalue3", "" + ItemName);//ok addon item id
-                            Log.e("idvalue4", "" + listItemsids);//array
+                            Log.e("idvalue4-addonitemnextelse", "" + listItemsids);//array
 
                             Log.e("idvalue5", "" + addon_item_name.getText().toString());//Item Name
                             Log.e("idvalue6", "" + String.format("%.2f", sum));//total amt
@@ -4165,18 +4222,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     }
                                     mLastClickTime = SystemClock.elapsedRealtime();
 
-                                    //   Toast.makeText(getApplicationContext(), "Test - 2", Toast.LENGTH_LONG).show();
-
-
-                                   /* listItemsids.add(addonitemid);
-                                    adapterids.notifyDataSetChanged();
-                                    itemidsstr = listItemsids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-
-
-                                    listItemsexraids.add(addonitemarrayextraData);
-                                    adapterexraids.notifyDataSetChanged();
-                                    itemexradsstr = listItemsexraids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-*/
 
                                     if (nextaid.equalsIgnoreCase("0")) {
                                         if (btnnextfir.equalsIgnoreCase("0")) {
@@ -4198,7 +4243,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             Log.e("idvalue1", "" + itemexradsstr); // addon extra id
                                             Log.e("idvalue2", "" + itemidsstr);//ok addon extra item id
                                             Log.e("idvalue3", "" + ItemName);//ok addon item id
-                                            Log.e("idvalue4", "" + listItemsids);//array
+                                            Log.e("idvalue4-0", "" + listItemsids);//array
                                             Log.e("idvalue5", "" + addon_item_name.getText().toString());//Item name
                                             Log.e("idvalue6", "" + String.format("%.2f", sum));//total amt
                                             Log.e("idvalue7", "" + item_price);//Item amt
@@ -4263,15 +4308,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         Log.e("item_ps1", "" + item_priceadd);
 
-      /*  if (backnum.equalsIgnoreCase("2")) {
-            arrayextranameDataaddsize.remove(arrayextranameDataaddsize.size() - 1);
-            arrayextranameDataaddsize.remove(arrayextranameDataaddsize.size() - 1);
-        }*/
-       /* if (arrayextranameDataaddsize.size() == 1) {
-            listItems.clear();
-            selected_addon_item_view.setVisibility(View.GONE);
-        }*/
-
         Log.e("arrayexDataaddsize1", "" + arrayextranameDataaddsize.size());
         Log.e("arrayexDataaddsize3", "" + (arrayextranameDataaddsize.size() - 1));
         Log.e("arrayexDataaddsize", "" + arrayextranameDataaddsize);
@@ -4282,20 +4318,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         Log.e("addonextramessage93", "" + listItemsexraids);
         Log.e("addonextramessage94", "" + itemexradsstr);
 
-
-        // String joined2 = String.join(",", arrayextranameDataadd);
-      /*  Log.e("arrayextraadd1", "" + arrayextranameDataadd);
-        arrayextranameDataaddsize.add(arrayextranameDataadd.size());
-        Log.e("arrayexDataaddsize", "" + arrayextranameDataaddsize);
-        arrayextranameDataadd.clear();*/
-
-        /* arrayextranameDataaddsize.add(arrayextranameDataadd.size());
-        Log.e("arrayexDataaddsize", "" + arrayextranameDataaddsize);
-        arrayextranameDataadd.clear();*/
-
-        //  HashMap<String, String> user = session.getUserDetails();
-        // authKey = user.get(SessionManager.KEY_phpsessid);
         fullUrl = menuurlpath + "/menu" + "/addons";
+
+        Log.d("params+gokul",fullUrl + "----->" +params);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_addons_model> call = apiService.addonslist(fullUrl, params);
         Log.e("for1", ": " + ItemName);
@@ -4472,6 +4498,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                         Log.e("menuaddonitnth", "" + menuaddonitemadapter.toString().length());
+
                         //  listItem = response.body().getDATA().getSelecteditem().toArray(new menu_addons_model.dataval.selecteditemlist[0]);
 
 //                        Log.e("listItemlenth", "" + listItem.length);
@@ -4709,7 +4736,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     /*-----------------------Final Addon suucess--------------------------------*/
 
-    private void addon_sucess_add(String str_addon_item_name, String str_ItemName, String str_str_listItems, String str_itemidsstr, String str_itemexradsstr, String str_item_price, String strqtys, String str_item_total_amt, String str_ordertype, String str_categoryname, String str_subcategoryname) {
+    private void addon_sucess_add(String str_addon_item_name, String str_ItemName, String str_str_listItems,
+                                  String str_itemidsstr, String str_itemexradsstr, String str_item_price, String strqtys,
+                                  String str_item_total_amt, String str_ordertype, String str_categoryname, String str_subcategoryname) {
+
         // get user data from session
         Log.e("str_itemidsstr", "" + str_itemidsstr);
         Log.e("str_itemexradsstr", "" + str_itemexradsstr);
@@ -4743,7 +4773,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         Log.e("addon_latcode", ": " + response.body().getError_message());
 
 
-                        if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems, str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt, str_categoryname, str_subcategoryname)) {
+                        if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems,
+                                str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt,
+                                str_categoryname, str_subcategoryname)) {
 
 
                             Log.e("nextapi1", "" + nextaid);
@@ -4751,8 +4783,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             Log.e("nextapi3", "" + addonlimit);
 
 
-                            Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + str_ItemName + "\n" + str_str_listItems +
-                                    "\n" + str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + str_item_total_amt + "\n"
+                            Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
+                                    "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + str_item_total_amt + "\n"
                                     + str_categoryname + "\n" + str_subcategoryname);
 
                             // Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
@@ -4761,6 +4793,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             Log.e("item_add_time4", "" + "4");//Item addon Name
 
                             getContactsCount();
+
                             menu_addon_item_view.setVisibility(View.GONE);
                             mAddFab.setVisibility(View.VISIBLE);
                             //bottom_nav.setVisibility(View.VISIBLE);

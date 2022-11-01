@@ -346,7 +346,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                 @Override
                                 public void onResponse(Call<menu_addon_status_model> call, Response<menu_addon_status_model> response) {
                                     //response.headers().get("Set-Cookie");
-                                   // Log.d("gokulnathan", String.valueOf(response));
                                     int statusCode = response.code();
                                     if (statusCode == 200) {
                                         Log.e("statusfor1", ": " + response.body().getStatus());
