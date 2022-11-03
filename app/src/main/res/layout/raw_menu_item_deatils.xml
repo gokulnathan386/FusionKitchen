@@ -180,23 +180,6 @@
                         android:textColor="@color/txt_ten"
                         android:textSize="20sp" />
 
-             <!--   <TextView
-                    android:id="@+id/menu_item_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/menu_item_amout"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:background="@drawable/menuitemaddborder"
-                    android:drawableRight="@drawable/ic_baseline_add_24"
-                    android:drawablePadding="@dimen/_2sdp"
-                    android:fontFamily="@font/hindvadodara_medium"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:text="ADD"
-                    android:textColor="@color/txt_ten"
-                    android:textSize="20sp" />-->
 
                 <LinearLayout
                     android:id="@+id/menu_item_add"

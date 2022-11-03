@@ -934,38 +934,13 @@ public class Add_to_Cart extends AppCompatActivity {
 
         dbHelper = new SQLDBHelper(Add_to_Cart.this);
 
-        //  ArrayList<Cartitem> allContacts = dbHelper.listContacts();
-        // ArrayList<Contacts> allContacts = (ArrayList<Contacts>) dbHelper.getAllItem();
+
         contactView = findViewById(R.id.myContactList);
 
 
 
         subcategory_printer();
-/*
 
-        dbHelper = new SQLDBHelper(Add_to_Cart.this);
-      //  ArrayList<Cartitem> allContacts = dbHelper.listContacts();
-        // ArrayList<Contacts> allContacts = (ArrayList<Contacts>) dbHelper.getAllItem();
-        contactView = findViewById(R.id.myContactList);
-        ArrayList<Cartitem> allContacts = dbHelper.listContacts();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Add_to_Cart.this);
-        contactView.setLayoutManager(linearLayoutManager);
-        Log.e("allContacts", "" + allContacts.size() + "one");
-        if (allContacts.size() >= 4) {
-            ViewGroup.LayoutParams params = contactView.getLayoutParams();
-            params.height = 1200;
-            contactView.setLayoutParams(params);
-        } else {
-            contactView.getLayoutParams().height = WRAP_CONTENT;
-        }
-        subcategory_printer();
-       */
-/* CartitemlistAdapter mAdapter = new CartitemlistAdapter(Add_to_Cart.this, allContacts, menuurlpath);
-        contactView.setAdapter(mAdapter);*//*
-        if (allContacts.size() == 0) {
-            finish();
-        }
-*/
         /*--------------Login store SharedPreferences------------------*/
         //  CheckLogin();
         /*---------------------------addressAdapter item update----------------------------------------------------*/

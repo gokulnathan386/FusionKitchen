@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.model.AdapterListData;
+import com.fusionkitchen.model.cart.Cartitem;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.squareup.picasso.Picasso;
@@ -79,13 +80,16 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     private String menuurlpath, fullUrl;
     String selectedlaterdateItem;
-    int clickable = 0;
+    int clickable = 0,count;
     Dialog item_view,repeatpopup ;
+    int length;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
 
     private static long mLastClickTime = 0;
+    String removeqty,removefinalamt;
+
 
 
     SharedPreferences sharedpreferences;
@@ -214,19 +218,22 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         holder.qty_decrease_textview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
 
-                int count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
+                    Decreasepriceqty(view,items[position].getId());
                     holder.qty_textview_number.setText("01");
                 } else {
                     count -= 1;
-                    int length = String.valueOf(count).length();
+                    length = String.valueOf(count).length();
                     if(length == 1){
+                        Decreasepriceqty(view,items[position].getId());
                         holder.qty_textview_number.setText("0" + count);
                     }else{
+                        Decreasepriceqty(view,items[position].getId());
                         holder.qty_textview_number.setText("" + count);
                     }
 
@@ -239,49 +246,38 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
 
-                int count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
-                count++;
-                int length = String.valueOf(count).length();
-
-                if(length == 1){
-
-                    repeatpopup = new Dialog(mContext);
-                    repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    repeatpopup.setContentView(R.layout.repeat_popup_design);
-
-                    ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
-                    TextView repeat_popup_textview = repeatpopup.findViewById(R.id.repeat_popup_textview);
-                    TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
-                    repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            addonitem(v,position,holder);
-                            repeatpopup.dismiss();
-                        }
-                    });
-
-                    add_more_button_textview.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            repeatpopup.dismiss();
-                        }
-                    });
-
-                    repeatpopup.show();
-                    repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                    repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                    repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
-
-                    holder.qty_textview_number.setText("0" + count);
-
-                }else{
-                    holder.qty_textview_number.setText("" + count);
-                }
-
+                 addonitem(v,position,holder);
             }
         });
+    }
+
+    private void Decreasepriceqty(View view, String id) {
+
+        ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+
+        for (int i=0;i<qtypice.size();i++)
+        {
+            HashMap<String, String> hashmap= qtypice.get(i);
+
+            removeqty = hashmap.get("qty");
+            removefinalamt = hashmap.get("itemaddontotalamt");
+        }
+
+        int database_qty =  Math.round(Float.parseFloat(removeqty));
+
+        int qty  = database_qty - 1;
+
+        //String price = item_price;
+
+        String price  = removefinalamt;
+
+        float total_amt = Float.parseFloat(price) * qty;
+        Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+
+        Intent intent = new Intent("item_successfully_custom-message");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
     }
 
 
@@ -856,20 +852,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                 }
 
-                                              /*  String[] todaytimeitem = new String[response.body().getData().getDelivery().getToday().getToday_time().size()];
-
-                                                for (int i = 0; i < response.body().getData().getDelivery().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time();
-
-                                                }*/
-
-                                              /*  String[] todaytimeitem = new String[response.body().getData().getDelivery().getToday().getToday_time().size()];
-                                                for (int i = 0; i < response.body().getData().getDelivery().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time_string();
-
-                                                }*/
 
                                                 ArrayAdapter<AdapterListData> todaytimeadapter;
                                                 todaytimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, todaytimeitem);
@@ -958,11 +940,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                 }
 
-                                               /* String[] todaytimeitem = new String[response.body().getData().getCollection().getToday().getToday_time().size()];
-                                                for (int i = 0; i < response.body().getData().getCollection().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getCollection().getToday().getToday_time().get(i).getToday_time();
-                                                }*/
                                                 ArrayAdapter<AdapterListData> todaytimeadapter;
                                                 todaytimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, todaytimeitem);
                                                 //setting adapter to spinner
@@ -1179,16 +1156,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         }
 
 
-
-                                                      /*
-                                                        String[] latertimeitem = new String[response.body().getData().getLater_time().size()];
-                                                        for (int i = 0; i < response.body().getData().getLater_time().size(); i++) {
-                                                            //Storing names to string array
-                                                            latertimeitem[i] = response.body().getData().getLater_time().get(i).getLater_time();
-                                                        }*/
-
-                                                        //response.body().getData().getLater_time().get(i).getLater_time_string()
-
                                                         ArrayAdapter<AdapterListData> latertimeadapter;
                                                         latertimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, latertimeitem);
                                                         //setting adapter to spinner
@@ -1199,13 +1166,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                                                                 AdapterListData  latertime = (AdapterListData)parent.getItemAtPosition(position);
-
-
-                                                              /*  update_mode.setText("Collection today at " + todaytime.today_time);
-                                                                todaytimestr = todaytime.today_time;
-                                                                todaytimestring = todaytime.today_time_string;*/
-
-                                                                //  selectedlatertimeItem = parent.getItemAtPosition(position).toString();
 
 
                                                                 if (ordermodeing.equalsIgnoreCase("0")) {
@@ -1363,7 +1323,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         cursor = dbHelper.numberOfRows();
 
         Log.e("c", "" + cursor);
-        //Log.e("totalitemamut12", "" + totalitemamut);
         return cursor;
 
     }
@@ -1371,10 +1330,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private void addonitem(View view, int position, ViewHolder holder) {
         loadingshow();
         holder.menu_item_add.setEnabled(true);
-        //  Toast.makeText(mContext, items[position].getId(), Toast.LENGTH_LONG).show();
-        //    Toast.makeText(mContext, sub.getName(), Toast.LENGTH_LONG).show();
-        //  Toast.makeText(mContext, listdatum.getName(), Toast.LENGTH_LONG).show();
-
 
         Map<String, String> params = new HashMap<String, String>();
 
@@ -1402,6 +1357,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         }
 
         fullUrl = menuurlpath + "/menu" + "/itemadd";
+
+        Log.d("item_add_params-URL","Full URL "+ fullUrl+ "Params"  + params);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_addon_status_model> call = apiService.menuaddon(fullUrl, params);
 
@@ -1430,7 +1388,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     Log.e("statusfor1", ": " + response.body().getStatus());
                     Log.e("statusfor2", ": " + response.body().getError_code());
 
-
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
                         if (response.body().getError_code().equalsIgnoreCase("0")) {
@@ -1445,14 +1402,13 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 if (dbHelper.insertItem(items[position].getName(), items[position].getId(), "", "",
                                         "", items[position].getPrice(), "1", items[position].getPrice(),
                                         items[position].getPrice(), listdatum.getName(), sub.getName())) {
-                                   // Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
+
                                     Customertoastmessage(view);
 
                                     Log.d("item_add_time5- MenuitemnameAdapter",items[position].getName()+ "\n" + items[position].getId()+ "\n" +
                                             items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
                                     );
 
-                                    // Toast.makeText(mContext,dbHelper.getAllItem().toString(), Toast.LENGTH_SHORT).show();
 
                                     Intent intent = new Intent("item_successfully_custom-message");
                                //     intent.putExtra("Qty_count",dbHelper.getqtycount());
@@ -1466,68 +1422,25 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                             }else{
 
-                                ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(items[position].getId()));
+                                count = Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                                count++;
+                                length = String.valueOf(count).length();
 
-
-                                for (int i=0;i<qtypice.size();i++)
-                                {
-                                    HashMap<String, String> hashmap= qtypice.get(i);
-
-                                    updateqty = hashmap.get("qty");
-                                    updatefinalamt = hashmap.get("itemfinalamt");
+                                if (length == 1) {
+                                    updateqtyandprice(view,items[position].getId(),items[position].getPrice());
+                                    holder.qty_textview_number.setText("0" + count);
+                                }else{
+                                    updateqtyandprice(view,items[position].getId(),items[position].getPrice());
+                                    holder.qty_textview_number.setText("" + count);
                                 }
-
-                                int database_qty =  Math.round(Float.parseFloat(updateqty));
-
-
-                                int qty  = database_qty + 1;
-
-                                String price = items[position].getPrice();
-
-                                float total_amt = Float.parseFloat(price) * qty;
-
-
-                                //Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(items[position].getId()),qty,total_amt);
-                                Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(items[position].getId()),qty,total_amt);
-
-                                Intent intent = new Intent("item_successfully_custom-message");
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                                //Log.d("updatevalue", String.valueOf(updatevalue));
-
-                                Customertoastmessage(view);
-
 
 
                             }
 
-/*
-                              if (dbHelper.insertItem(items[position].getName(), items[position].getId(), "", "",
-                                            "", items[position].getPrice(), "1", items[position].getPrice(),
-                                            items[position].getPrice(), listdatum.getName(), sub.getName())) {
-                                             Toast.makeText(mContext, "Item Added Successfully", Toast.LENGTH_SHORT).show();
 
-
-                                             Log.d("item_add_time5- MenuitemnameAdapter",items[position].getName()+ "\n" + items[position].getId()+ "\n" +
-                                                     items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
-                                                     );
-
-                                           // Toast.makeText(mContext,dbHelper.getAllItem().toString(), Toast.LENGTH_SHORT).show();
-
-                                            Intent intent = new Intent("item_successfully_custom-message");
-                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-                                        } else {
-                                            Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
-                                        }
-*/
-
-
-
-                            //  Toast.makeText(mContext, "Added additem() Successfully", LENGTH_LONG);
                         }
 
                     } else {
-
 
 
                         if (response.body().getError_code() == null) {
@@ -1554,140 +1467,87 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 hideloading();
 
-                                        /*
+                                int check_user_data = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
 
-                                        int  userList = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
+                                if(check_user_data == 0){
 
+                                    String ItemName = items[position].getId();
+                                    Intent intent = new Intent("custom-message");
+                                    intent.putExtra("item", ItemName);
+                                    intent.putExtra("addonid", response.body().getAddonId());
+                                    intent.putExtra("categoryname", listdatum.getName());
+                                    intent.putExtra("subcategoryname", sub.getName());
+                                    intent.putExtra("item_price_amt", items[position].getPrice());
+                                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-                                        if(userList == 0){
+                                }else {
 
-                                            String ItemName = items[position].getId();
-                                            Intent intent = new Intent("custom-message");
-                                            intent.putExtra("item", ItemName);
-                                            intent.putExtra("addonid", response.body().getAddonId());
-                                            intent.putExtra("categoryname", listdatum.getName());
-                                            intent.putExtra("subcategoryname", sub.getName());
-                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                                    repeatpopup = new Dialog(mContext);
+                                    repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    repeatpopup.setContentView(R.layout.repeat_popup_design);
 
+                                    ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
+                                    TextView repeat_popup_textview = repeatpopup.findViewById(R.id.repeat_popup_textview);
+                                    TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
+                                    TextView item_description_textview = repeatpopup.findViewById(R.id.item_description_textview);
 
-                                        }else{
+                                    //item_description_textview.setText(items[position].getDescription());
 
+                                    repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                            String ItemName = items[position].getId();
-                                            Intent intent = new Intent("custom-message");
-                                            intent.putExtra("item", ItemName);
-                                            intent.putExtra("addonid", response.body().getAddonId());
-                                            intent.putExtra("categoryname", listdatum.getName());
-                                            intent.putExtra("subcategoryname", sub.getName());
+                                            count = Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                                            count++;
+                                            length = String.valueOf(count).length();
 
+                                            if (length == 1) {
 
-                                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(items[position].getId()));
+                                                String ItemName = items[position].getId();
+                                                Intent intent = new Intent("custom-message");
+                                                intent.putExtra("item", ItemName);
+                                                intent.putExtra("addonid", response.body().getAddonId());
+                                                intent.putExtra("categoryname", listdatum.getName());
+                                                intent.putExtra("subcategoryname", sub.getName());
+                                                intent.putExtra("item_price_amt", items[position].getPrice());
+                                                intent.putExtra("item_description", items[position].getDescription());
+                                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                                                repeatpopup.dismiss();
+                                                holder.qty_textview_number.setText("0" + count);
 
-                                            for (int i=0;i<qtypice.size();i++)
-                                            {
-                                                HashMap<String, String> hashmap= qtypice.get(i);
-
-                                                updateqty = hashmap.get("qty");
-                                                updatefinalamt = hashmap.get("itemfinalamt");
+                                            } else {
+                                                String ItemName = items[position].getId();
+                                                Intent intent = new Intent("custom-message");
+                                                intent.putExtra("item", ItemName);
+                                                intent.putExtra("addonid", response.body().getAddonId());
+                                                intent.putExtra("categoryname", listdatum.getName());
+                                                intent.putExtra("subcategoryname", sub.getName());
+                                                intent.putExtra("item_price_amt", items[position].getPrice());
+                                                intent.putExtra("item_description", items[position].getDescription());
+                                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                                                repeatpopup.dismiss();
+                                                holder.qty_textview_number.setText("" + count);
                                             }
-
-                                            int database_qty =  Math.round(Float.parseFloat(updateqty));
-
-
-                                            int qty  = database_qty + 1;
-
-                                            String price = items[position].getPrice();
-
-                                            float total_amt = Float.parseFloat(price) * qty;
-
-
-                                            Log.d("intent", String.valueOf(qty));
-                                            Log.d("intent", String.valueOf(total_amt));
-
-
-
-
-                                          Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(items[position].getId()),qty,total_amt);
-
-
-
                                         }
 
 
-                                        */
+                                    });
 
-
-
-                                            String ItemName = items[position].getId();
-                                            Intent intent = new Intent("custom-message");
-                                            intent.putExtra("item", ItemName);
-                                            intent.putExtra("addonid", response.body().getAddonId());
-                                            intent.putExtra("categoryname", listdatum.getName());
-                                            intent.putExtra("subcategoryname", sub.getName());
-                                            intent.putExtra("item_price_amt",items[position].getPrice());
-                                            Log.d("Item_Amount_Test_adapter",items[position].getPrice());
-                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-
-
-
-                                     /*   int  userList = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
-
-
-                                        ArrayList<HashMap<String, String>> qtypice = dbHelper.getallvalue(parseInt(items[position].getId()));
-
-
-                                        for (int i=0;i<qtypice.size();i++)
-                                        {
-                                            HashMap<String, String> hashmap= qtypice.get(i);
-
-                                            String ITEM_COLUMN_ID = hashmap.get("ITEM_COLUMN_ID");
-                                            String ITEM_NAME = hashmap.get("ITEM_NAME");
-                                            String ITEM_ID = hashmap.get("ITEM_ID");
-                                            ITEM_ADDON_NAME1 = hashmap.get("ITEM_ADDON_NAME");
-                                            String ITEM_ADDON_NAME_ID = hashmap.get("ITEM_ADDON_NAME_ID");
-                                            String ITEM_ADDON_EXTRA_ID = hashmap.get("ITEM_ADDON_EXTRA_ID");
-                                            String ITEM_AMOUNT = hashmap.get("ITEM_AMOUNT");
-                                            String ITEM_QTY = hashmap.get("ITEM_QTY");
-                                            String ITEM_TOTAL_AMOUNT = hashmap.get("ITEM_TOTAL_AMOUNT");
-                                            String ITEM_Final_AMOUNT = hashmap.get("ITEM_Final_AMOUNT");
-                                            String ITEM_CATEGORY_NAME = hashmap.get("ITEM_TOTAL_AMOUNT");
-                                            String ITEM_SUBCATEGORY_NAME = hashmap.get("ITEM_Final_AMOUNT");
-
-
-                                            Log.d("sqlitedata",""+ITEM_COLUMN_ID);
-                                            Log.d("sqlitedata",""+ITEM_NAME);
-                                            Log.d("sqlitedata",""+ITEM_ID);
-                                            Log.d("sqlitedata->",""+ITEM_ADDON_NAME1);
-                                            Log.d("sqlitedata",""+ITEM_ADDON_NAME_ID);
-                                            Log.d("sqlitedata",""+ITEM_ADDON_EXTRA_ID);
-                                            Log.d("sqlitedata",""+ITEM_AMOUNT);
-                                            Log.d("sqlitedata->",""+ITEM_QTY);
-                                            Log.d("sqlitedata",""+ITEM_TOTAL_AMOUNT);
-                                            Log.d("sqlitedata",""+ITEM_Final_AMOUNT);
-                                            Log.d("sqlitedata",""+ITEM_CATEGORY_NAME);
-                                            Log.d("sqlitedata",""+ITEM_SUBCATEGORY_NAME);
-
+                                    add_more_button_textview.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            repeatpopup.dismiss();
                                         }
+                                    });
 
+                                    repeatpopup.show();
+                                    repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                    repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                                    repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
 
-                                        if(userList == 0){
+                                }
 
-                                            String ItemName = items[position].getId();
-                                            Intent intent = new Intent("custom-message");
-                                            intent.putExtra("item", ItemName);
-                                            intent.putExtra("addonid", response.body().getAddonId());
-                                            intent.putExtra("categoryname", listdatum.getName());
-                                            intent.putExtra("subcategoryname", sub.getName());
-                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-
-                                        }else if(ITEM_ADDON_NAME1.equalsIgnoreCase()) {
-
-
-
-                                        }
-*/
 
                             } else {
                                 Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
@@ -1695,7 +1555,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             }
                         }
 
-                        //   Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -1713,6 +1572,35 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void updateqtyandprice(View view, String user_id, String item_price) {
+
+
+        ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(user_id));
+
+        for (int i=0;i<qtypice.size();i++)
+        {
+            HashMap<String, String> hashmap= qtypice.get(i);
+
+            updateqty = hashmap.get("qty");
+            updatefinalamt = hashmap.get("itemaddontotalamt");
+        }
+
+        int database_qty =  Math.round(Float.parseFloat(updateqty));
+
+        int qty  = database_qty + 1;
+
+        //String price = item_price;
+
+        String price  = updatefinalamt;
+
+        float total_amt = Float.parseFloat(price) * qty;
+        Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(user_id),qty,total_amt);
+
+        Intent intent = new Intent("item_successfully_custom-message");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        Customertoastmessage(view);
     }
 
     private void Customertoastmessage(View view) {
@@ -1849,7 +1737,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
             } else if (codes.equalsIgnoreCase("201")) {
                 update.setText("Collection");
-
 
                 update.setOnClickListener(new View.OnClickListener() {
                     @Override

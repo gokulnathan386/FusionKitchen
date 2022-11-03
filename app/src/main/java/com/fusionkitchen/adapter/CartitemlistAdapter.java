@@ -110,9 +110,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
     public void onBindViewHolder(CartitemlistAdapter.ViewHolder holder, int position) {
         final Cartitem contacts = listContacts.get(position);
 
-
-
-
         if (subcategory_printers.equalsIgnoreCase("enable")) {
             if (contacts.getCategoryname().equalsIgnoreCase(contacts.getSubcategoryname())) {
                 holder.tvName.setText(contacts.getName());
@@ -126,13 +123,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         holder.tvitem_addon_name.setText(contacts.getDesc());
         holder.tvinteger_number.setText(contacts.getQty());
         holder.tvitem_total.setText(contacts.getFinalamt());
-
-    /*    int totalPrice = 0;
-        for (int i = 0; i<listContacts.size(); i++)
-        {
-            totalPrice += listContacts.get(i).getAmount();
-        }*/
-
 
         if (holder.tvinteger_number.getText().toString().equalsIgnoreCase("1")) {
             // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
@@ -157,7 +147,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                   editor_extra.putString("pop_up_show","2");
                   editor_extra.commit();
               }
-
                 SharedPreferences.Editor editor = sharedpreferences1.edit();
                 editor.putString("More_info", "MoreInfo");
                 editor.commit();
@@ -205,6 +194,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                     //Toast.makeText(context, "Item Deleted", Toast.LENGTH_LONG).show();
                 } else {
+                    Log.d("mins_castitemAdapter","Test");
                     num3 = Double.parseDouble(holder.tvitem_total.getText().toString());
                     num4 = Double.parseDouble(contacts.getAmount());
                     smines = num3 - num4;
@@ -221,34 +211,11 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                 }
             }
         });
+
         holder.tvincrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               /* if (count == 1) {
-                    // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
-                    holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
-                } else {
-                    //  holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.minus_item));
-                    holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.minus_item));
-                }
-
-                count = Integer.parseInt(holder.tvinteger_number.getText().toString());
-                count++;
-                holder.tvinteger_number.setText(String.valueOf(count));
-                num1 = Double.parseDouble(holder.tvitem_total.getText().toString());
-                num2 = Double.parseDouble(contacts.getAmount());
-                sum = num1 + num2;
-                holder.tvitem_total.setText(String.format("%.2f", sum));
-                Log.e("num1", "" + num1);
-                Log.e("num2", "" + num2);
-
-                Intent intent = new Intent("update_itemqty");
-                intent.putExtra("ItemId", contacts.getId());
-                intent.putExtra("Itemqty", holder.tvinteger_number.getText().toString());
-                intent.putExtra("Itemamount", holder.tvitem_total.getText().toString());
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                totalcount();*/
                 Log.e("contactsdec", "" + contacts.getDesc());
                 if (!contacts.getDesc().isEmpty()) {
                     // Toast.makeText(context, "On Click", Toast.LENGTH_LONG).show();
@@ -324,15 +291,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                             }
 
 
-
-                       /*
-                            params.put("time", sharedpreferences.getString("ordertodattime", null) + sharedpreferences.getString("orderlatertime", null));
-                            params.put("id", contacts.getItemid());
-                            params.put("ordermode", butordertype);
-                            params.put("activetab", sharedpreferences.getString("orderactivetag", null));
-                            params.put("dates", sharedpreferences.getString("orderlaterdate", null));
-                            params.put("date_string",sharedpreferences.getString("todaytimestring", null) + sharedpreferences.getString("latertimestring", null));
-*/
                             fullUrladdon = menuurlpath + "/menu" + "/itemadd";
 
                             ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -432,7 +390,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                     }
 
 
-
                                                     count = Integer.parseInt(holder.tvinteger_number.getText().toString());
                                                     count++;
                                                     holder.tvinteger_number.setText(String.valueOf(count));
@@ -493,7 +450,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
                                             takaway_status.setText("Delivery Closed");
                                             takaway_status_dec.setText(response.body().getError_message().getMsg());
-
 
                                             update.setText("Collection");
                                             browse.setText("Cancel");

@@ -149,7 +149,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-    String updateqty;
+    String updateqty,description;
     String updatefinalamt;
     String item_price_amt;
 
@@ -1537,193 +1537,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
-                      /*  for (int ts = 0; ts < jobdetails6.size(); ts++){
-                            tt.add(jobdetails6.get(ts).getTime());
-                            WeekLlist.put(jobdetails6.get(ts).getDay(),jobdetails6.get(ts).getTime());
-
-                        }*/
-
-                        //---------------------------------------
-
-                    /*    for (Map.Entry<String, String> entry : WeekLlist.entrySet()) {
-                            String key = entry.getKey();
-                            Object value = entry.getValue();
-                            System.out.println("key" + key + "Val" + value.toString());
-
-
-                            if (timing1 ==null || timing1.equals(value.toString())){
-                                timing1 = value.toString();
-                                continue;
-                            }
-
-                            if (timing2 ==null || timing2.equals(value.toString())){
-                                timing2 = value.toString();
-                                continue;
-                            }
-
-                            if (timing3 ==null || timing3.equals(value.toString())){
-                                timing3 = value.toString();
-                                continue;
-                            }
-
-                            if (timing4 ==null || timing4.equals(value.toString())){
-                                timing4 = value.toString();
-                                continue;
-                            }
-
-                            if (timing5 ==null || timing5.equals(value.toString())){
-                                timing5 = value.toString();
-                                continue;
-                            }
-
-                            if (timing6 ==null || timing6.equals(value.toString())){
-                                timing6 = value.toString();
-                                continue;
-                            }
-
-                            if (timing7 ==null || timing7.equals(value.toString())){
-                                timing7 = value.toString();
-
-                            }
-
-
-                        }
-
-                        for (Map.Entry<String, String> entry : WeekLlist.entrySet()) {
-                            String key = entry.getKey();
-                            Object value = entry.getValue();
-
-                            if (timing1!=null && timing1.equals(value.toString())){
-                                time1.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing2!=null && timing2.equals(value.toString())){
-                                time2.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing3!=null && timing3.equals(value.toString())){
-                                time3.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing4!=null && timing4.equals(value.toString())){
-                                time4.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing5!=null && timing5.equals(value.toString())){
-                                time5.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing6!=null && timing6.equals(value.toString())){
-                                time6.add(key);
-
-
-                                continue;
-                            }
-
-                            if (timing7!=null && timing7.equals(value.toString())){
-                                time7.add(key);
-
-
-                                // continue;
-                            }
-                        }
-
-                        Comparator<String> comparator = new Comparator<String>() {
-
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @Override
-                            public int compare(String day1, String day2) {
-                                return Integer.compare(DayOfWeek.valueOf(day1.toUpperCase()).getValue(),
-                                        DayOfWeek.valueOf(day2.toUpperCase()).getValue());
-                            }
-                        };
-
-                        Collections.sort(time1, comparator);
-
-                        stronggg.put(time1,timing1);
-                        stronggg.put(time2,timing2);
-                        stronggg.put(time3,timing3);
-                        stronggg.put(time4,timing4);
-                        stronggg.put(time5,timing5);
-                        stronggg.put(time6,timing6);
-                        stronggg.put(time7,timing7);
-
-
-                        Log.d("Weekdays", String.valueOf(stronggg));
-
-
-
-                        List<ExamData> liaaaaatttt = new ArrayList<>();
-
-                        if (timing1!="null"){
-                            liaaaaatttt.add(new ExamData(time1,
-                                    timing1
-                            ));
-
-                        }
-
-                        if (timing2!="null") {
-                            liaaaaatttt.add(new ExamData(time2,
-                                    timing2
-                            ));
-                        }
-
-
-                        if (timing3!="null"){
-                            liaaaaatttt.add(new ExamData(time3,
-                                    timing3
-                            ));
-
-                        }
-
-
-
-                        if (timing4!="null"){
-                            liaaaaatttt.add(new ExamData(time4,
-                                    timing4
-                            ));
-                        }
-
-
-                        if (timing5!="null"){
-                            liaaaaatttt.add(new ExamData(time5,
-                                    timing5
-                            ));
-                        }
-
-
-                        if (timing6 != "null") {
-
-                            liaaaaatttt.add(new ExamData(time6,
-                                    timing6
-                            ));
-                        }
-
-                        if (timing7!="null"){
-                            liaaaaatttt.add(new ExamData(time7,
-                                    timing7
-                            ));
-                        }
-*/
-
-
-                        //=------------------------------------
-                     //   MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6,stronggg,liaaaaatttt);  //jobdetails6
 
                         MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6);
                         open_hrs_review.setHasFixedSize(true);
@@ -1761,103 +1574,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     }
-
-  /*  private static void removeDuplicates(List<String> a)
-    {
-
-            for (int i = 0; i < a.size(); i++){
-                settt.add(a.get(i));
-                Log.d("weddddwq789aeuy",""+settt);
-            }
-
-            Iterator itr = settt.iterator();
-
-            while (itr.hasNext())
-
-            System.out.print(itr.next() + ", ");
-            System.out.println();
-
-
-            for (String s : settt)
-
-
-            time.add(s);
-            Log.d("dcfsdcfdvfvvffv",""+time.size());
-
-
-    }
-*/
-
-/*
-    private static void ilter(){
-
-        HashMap<String, String> map = new HashMap<>();
-
-      *//*  Log.d("xxdsaxdaSxd","chfujadhcuais"+time.size());
-        Log.d("xxdsaxdaSxd","chfujadhcuais"+jobdetails6.size());*//*
-
-        int i = 0;
-        int k = 0;
-
-        for ( i = 0; i < time.size(); ) {
-
-
-            for ( k = 0; k <jobdetails6.size(); ) {
-
-
-                if (jobdetails6.get(k).getTime().equalsIgnoreCase(time.get(i))){
-
-                 //Log.d("opopopo","Test"+jobdetails6.get(k).getDay());
-                  //  Log.d("opopopo","Test"+time.get(i));
-
-                    map.put(jobdetails6.get(k).getDay(),jobdetails6.get(k).getTime());
-
-                }
-                ++k;
-            }
-
-            i++;
-
-        }
-
-        HashMap<String, String> duplicatMap = new HashMap<>();
-
-        Set<Map.Entry<String, String>> entrySet = map.entrySet();
-        Iterator<Map.Entry<String, String>> iterator = entrySet.iterator();
-        while(iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            String key = entry.getKey();
-            String value = entry.getValue();
-
-            if(duplicatMap.containsKey(value)) {
-                duplicatMap.put(value, duplicatMap.get(value)+", "+key);
-            } else {
-                duplicatMap.put(value, key);
-            }
-        }
-
-
-
-        Log.d("ValueduplicatMap---->"," " + duplicatMap);
-
-
-        String days = "";
-        for(Map.Entry<String, String> entry: duplicatMap.entrySet()) {
-
-            days = entry.getValue();
-            String[] arrSplit = days.split(", ");
-
-            for (int h=0; h < arrSplit.length; h++)
-            {
-                System.out.println("The key for value --> " +  " " + " is " +arrSplit[h]);
-
-            }
-
-
-        }
-
-
-    }*/
 
     /* ------------------------Google Map--------------------------*/
     public LatLng getLocationFromAddress(Context context, String strAddress, Dialog info_popup) {
@@ -3624,8 +3340,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             categoryname = intent.getStringExtra("categoryname");
             item_price_amt = intent.getStringExtra("item_price_amt");
             subcategoryname = intent.getStringExtra("subcategoryname");
+            description = intent.getStringExtra("item_description");
 
-            Log.d("Item_Amount_Test_Activity"," " + item_price_amt);
+
+
+            Log.d("Item_Amount_Test_Activity","Item_id----->" + ItemName + "Addon_id--->"+ addonid +
+                                                                        "CategoryName----->"+categoryname+"itemPrice---->"+item_price_amt
+                    + "subcategoryname--------->"+subcategoryname + " description--------->" + description);
 
             int userList = dbHelper.GetUserByUserId(parseInt(ItemName));
 
@@ -3711,90 +3432,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             }else {
 
-               /* addonitemarrayextraData = "";
-                addonitemid = "";
-                selected_addon_item_view.setVisibility(View.GONE);
-
-                item_price_btn = true;
-
-
-                Log.e("nextapi1", "" + nextaid);
-                Log.e("nextapi2", "" + btnnextfir);
-                Log.e("nextapi3", "" + addonlimit);
-
-                Log.e("addbuttonclick1", "" + ItemName);
-                Log.e("addbuttonclick2", "" + addonid);
-                Log.e("addbuttonclick3", "" + categoryname);
-                Log.e("addbuttonclick4", "" + subcategoryname);
-
-
-                SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-                editor_extra.putString("addon_extra", "");
-                editor_extra.commit();
-
-
-//add adddon id in array
-
-                aidlist = new ArrayList<String>();
-                aidlist.clear();
-
-
-                //Item Name
-                listItems = new ArrayList<String>();
-                listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
-                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-                selected_addon_item_view.setAdapter(adapter);
-
-
-                arrayextranameDataadd = new ArrayList<String>();
-                arrayextranameDataadd.clear();
-                arrayextranameDataaddsize = new ArrayList<Integer>();
-                arrayextranameDataaddsize.clear();
-
-
-                listItemsidssize = new ArrayList<Integer>();
-                listItemsidssize.clear();
-                arrayaddonitemidadd = new ArrayList<>();
-                arrayaddonitemidadd.clear();
-
-
-                arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
-                arrayaddonextraidsingleaddsize.clear();
-                arrayaddonextraidsingleadd = new ArrayList<>();
-                arrayaddonextraidsingleadd.clear();
-
-                //Item Id
-                listItemsids = new ArrayList<String>();
-                listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-                adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
-
-                //Item Extra Addon
-                listItemsexraids = new ArrayList<String>();
-                listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-                adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
-
-
-                item_priceadd = new ArrayList<String>();
-                item_priceadd.clear();
-
-                item_pricesize = new ArrayList<>();
-                item_pricesize.clear();
-                //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
-
-                addonitemfirstview(ItemName, addonid, "", "", "1");
-*/
-
-
-                ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtyprice(parseInt(ItemName));
-
-
+                ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(parseInt(ItemName));
 
                 for (int i=0;i<qtypice.size();i++)
                 {
                     HashMap<String, String> hashmap= qtypice.get(i);
-
-                     updateqty = hashmap.get("qty");
-                     updatefinalamt = hashmap.get("itemfinalamt");
+                    updateqty = hashmap.get("qty");
+                    updatefinalamt = hashmap.get("itemaddontotalamt");
                 }
 
                 int database_qty =  Math.round(Float.parseFloat(updateqty));
@@ -3802,14 +3446,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 int qty  = database_qty + 1;
 
-                String price =item_price_amt;
+                //String price =item_price_amt;
+                 String price1 = updatefinalamt;
 
-                Log.d("Item_Price_Amout"," " + price);
+                 Log.d("Item_Price_Amout"," " + price1);
 
-                float total_amt = Float.parseFloat(price) * qty;
+                float total_amt = Float.parseFloat(price1) * qty;
 
                 Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(ItemName),qty,total_amt);
-
 
 
             }
@@ -4784,7 +4428,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                             Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
-                                    "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + str_item_total_amt + "\n"
+                                    "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + " -----> "+ str_item_total_amt + "\n" + "--->"
+                                    + str_item_total_amt + "\n"
                                     + str_categoryname + "\n" + str_subcategoryname);
 
                             // Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
