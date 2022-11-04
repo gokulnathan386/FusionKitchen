@@ -37,11 +37,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.AdapterListData;
-import com.fusionkitchen.model.cart.Cartitem;
+import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.squareup.picasso.Picasso;
@@ -58,6 +65,11 @@ import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.HttpUrl;
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,18 +91,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private Dialog dialog;
 
     private String menuurlpath, fullUrl;
-    String selectedlaterdateItem;
+    String selectedlaterdateItem,item_user_add_name;
     int clickable = 0,count;
     Dialog item_view,repeatpopup ;
     int length;
+    HttpUrl baseUrl;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
 
     private static long mLastClickTime = 0;
     String removeqty,removefinalamt;
-
-
 
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs_extra";
@@ -113,7 +124,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         this.items = items.toArray(new menu_item_sub_model.categoryall.subcat.items[0]);
         this.mContext = mContext;
         this.menuurlpath = menuurlpath;
-
         this.sub = sub;
         this.listdatum = listdatum;
     }
@@ -129,6 +139,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        baseUrl  =ApiClient.getInstance().getClient().baseUrl();
+
         holder.menu_item_name.setText(items[position].getName());
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
@@ -156,14 +168,31 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             dbHelper = new SQLDBHelper(mContext);
             getContactsCount();
 
-        if(items[position].getAvailableTime().equalsIgnoreCase("")){
+
+         //   Log.d("Availableitme",items[position].getAvailableTime());
+
+         if(items[position].getAvailableTime().equalsIgnoreCase("")){
             holder.menu_item_add.setVisibility(View.VISIBLE);
             holder.textview_avaliable_time.setVisibility(GONE);
-        }else{
-            holder.textview_avaliable_time.setText(items[position].getAvailableTime());
-            holder.menu_item_add.setVisibility(GONE);
-        }
+            }else{
+                holder.textview_avaliable_time.setText(items[position].getAvailableTime());
+                holder.menu_item_add.setVisibility(GONE);
+            }
 
+
+             if(items[position].getBestseller().equalsIgnoreCase("true")){
+                 holder.bestseller_musttry_textview.setText("Best Seller");
+                 holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.star_blue);
+                 holder.seller_header.setBackgroundColor(Color.parseColor("#E6F3FE"));
+             }else if(items[position].getMusttry().equalsIgnoreCase("true")){
+                 holder.bestseller_musttry_textview.setText("Must Try");
+                 holder.seller_header.setBackgroundColor(Color.parseColor("#FFF2F3"));
+                 holder.bestseller_musttry_textview.setTextColor(Color.parseColor("#E0467C"));
+                 holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.thumbs_up_icon);
+             }else{
+                 holder.seller_header.setVisibility(GONE);
+                 holder.menu_item_list.setBackgroundResource(R.drawable.item_bg_border2);
+             }
 
 
         holder.menu_item_add.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +207,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 if (cursor != 0) {
                         addonitem(view,position,holder);
                 } else {
-
                         if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("1")){
                             addonitem(view,position,holder);
                         }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
@@ -190,10 +218,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     holder.menu_item_add.setEnabled(true);
                                 }
                             }, 4000);
-
                         }else{
                             addonitem(view,position,holder);
-
                         }
                 }
 
@@ -203,14 +229,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.layout_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Single_itemviewpup_up(items[position].getImage(),items[position].getName(),items[position].getPrice(),items[position].getDescription());
+
+              Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
             }
         });
+
 
             holder.menu_item_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Single_itemviewpup_up(items[position].getImage(),items[position].getName(),items[position].getPrice(),items[position].getDescription());
+                    Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
+
                 }
             });
 
@@ -221,7 +250,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View view) {
 
 
-                count= Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
                     Decreasepriceqty(view,items[position].getId());
@@ -281,7 +310,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     }
 
 
-    private void Single_itemviewpup_up(String image,String itemname,String itemprice,String description) {
+    private void Single_itemviewpup_up(String item_id,String menu_url,Context context) {
+
         item_view = new Dialog(mContext);
         item_view.requestWindowFeature(Window.FEATURE_NO_TITLE);
         item_view.setContentView(R.layout.raw_menu_single_itemview);
@@ -309,10 +339,50 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
         add_to_cart_btn.setClickable(false);
 
+        Log.d("BaseURL--->"," "+baseUrl+menu_url+"/getitemdetail");
+
+        //Single Item API Integration
+
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+menu_url+"/getitemdetail",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONObject jsonobject = new JSONObject(response);
+
+                            //JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
+
+
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+
+                    }
+                }){
+
+           @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("item_id",item_id);
+                return params;
+            }
+        };
+
+        RequestQueue requestqueue = Volley.newRequestQueue(context);
+        requestqueue.add(stringRequest);
 
 
 
-      if(image.equalsIgnoreCase("")){
+     /* if(image.equalsIgnoreCase("")){
           single_item_image.setVisibility(GONE);
           back_btn_popup.setVisibility(GONE);
       }else{
@@ -332,7 +402,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             item_description_textview.setVisibility(GONE);
         }else{
             item_description_textview.setText(description);
-        }
+        }*/
 
 
         Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
@@ -1286,9 +1356,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
-
-
-
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -1469,6 +1536,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 int check_user_data = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
 
+
+
                                 if(check_user_data == 0){
 
                                     String ItemName = items[position].getId();
@@ -1482,6 +1551,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 }else {
 
+
+
+                                    ArrayList<HashMap<String, String>> item_addon = dbHelper.GetUserdetails(parseInt(items[position].getId()));
+
+                                    for (int i=0;i<item_addon.size();i++)
+                                    {
+                                        HashMap<String, String> hashmap= item_addon.get(i);
+                                       // updateqty = hashmap.get("qty");
+                                         item_user_add_name = hashmap.get("ITEM_ADDON_NAME");
+
+                                    }
                                     repeatpopup = new Dialog(mContext);
                                     repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                     repeatpopup.setContentView(R.layout.repeat_popup_design);
@@ -1490,8 +1570,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     TextView repeat_popup_textview = repeatpopup.findViewById(R.id.repeat_popup_textview);
                                     TextView add_more_button_textview = repeatpopup.findViewById(R.id.add_more_button_textview);
                                     TextView item_description_textview = repeatpopup.findViewById(R.id.item_description_textview);
-
-                                    //item_description_textview.setText(items[position].getDescription());
+                                    item_description_textview.setText(item_user_add_name);
 
                                     repeat_popup_textview.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -1500,6 +1579,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             count = Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
                                             count++;
                                             length = String.valueOf(count).length();
+
+
 
                                             if (length == 1) {
 
@@ -1625,15 +1706,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView menu_item_name, menu_item_desc, menu_item_amout;
-        public ImageView menu_item_image;
+        public ImageView menu_item_image,bestseller_musttry_drawable;
         CardView ordermode_popup_view,layout_logo;
         LinearLayout menu_item_add,increment_decrement_layout;
         TextView textview_avaliable_time,qty_increase_textview,qty_decrease_textview,qty_textview_number;
+        TextView bestseller_musttry_textview;
+        LinearLayout seller_header;
+        RelativeLayout menu_item_list;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.menu_item_name = itemView.findViewById(R.id.menu_item_name);
-
             this.menu_item_desc = itemView.findViewById(R.id.menu_item_desc);
             this.menu_item_amout = itemView.findViewById(R.id.menu_item_amout);
             this.menu_item_add = itemView.findViewById(R.id.menu_item_add);
@@ -1645,6 +1728,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             this.qty_decrease_textview = itemView.findViewById(R.id.qty_decrease_textview);
             this.qty_textview_number = itemView.findViewById(R.id.qty_textview_number);
             this.increment_decrement_layout = itemView.findViewById(R.id.increment_decrement_layout);
+            this.bestseller_musttry_textview = itemView.findViewById(R.id.bestseller_musttry_textview);
+            this.bestseller_musttry_drawable = itemView.findViewById(R.id.bestseller_musttry_drawable);
+            this.seller_header = itemView.findViewById(R.id.seller_header);
+            this.menu_item_list = itemView.findViewById(R.id.menu_item_list);
 
 
         }

@@ -505,53 +505,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         });
 
 
-/*        String zipCode = "ab251hx";
-        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
-
-        System.out.println("The zip code is: " + zipCode);
-        System.out.println(String.format("Is the above zip code valid? " + zipCode.matches(regex)));
-
-        Log.e("zip code", " The zip code is: " + zipCode);
-        Log.e("zip code", " Is the above zip code valid? " + zipCode.matches(regex));//.matches(regex));*/
-        /*imageViewlogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PrefManager prefManager = new PrefManager(getApplicationContext());
-                // make first time launch TRUE
-                prefManager.setFirstTimeLaunch(true);
-                startActivity(new Intent(Postcode_Activity.this, Splash_Activity.class));
-                finish();
-            }
-        }); post_code_edittext.setCursorVisible(true);*/
-
         /*---------------------------Navigation Menu----------------------------------------------------*/
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-       /* ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        toggle.setDrawerIndicatorEnabled(false);
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.menu_item, getApplicationContext().getTheme());
-        toggle.setHomeAsUpIndicator(drawable);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (drawer.isDrawerVisible(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                } else {
-                    drawer.openDrawer(GravityCompat.START);
-                }
-            }
-        });*/
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer,
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-
-        // toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.car_total));
-//        toggle.getDrawerArrowDrawable().setBarThickness(8.0f);
-//        toggle.getDrawerArrowDrawable().setBarLength(60.0f);
-//        toggle.getDrawerArrowDrawable().setGapSize(7.0f);
 
         toggle.getDrawerArrowDrawable().setBarThickness(0);
         toggle.getDrawerArrowDrawable().setBarLength(0);
@@ -584,11 +544,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         hideItem();
 
-        /*
-        nav_header_name = header.findViewById(R.id.nav_header_name);
-        nav_header_name.setText("Customer Name");
-        AppCompatTextView versioncoding = findViewById(R.id.versioncoding);
-        versioncoding.setText(versionName);*/
+
 
         nav_header_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -752,6 +708,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
                         }catch (JSONException e) {
                             e.printStackTrace();
+                            hideloading();
                         }
 
                     }
@@ -760,6 +717,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        hideloading();
                     }
                 }){
 

@@ -128,6 +128,31 @@ public class menu_item_sub_model {
                 private String available_time;
 
 
+                @SerializedName("best_seller")
+                private String best_seller;
+
+                @SerializedName("must_try")
+                private String must_try;
+
+
+
+                public String getBestseller() {
+                    return best_seller;
+                }
+
+                public void setBestseller(String best_seller) {
+                    this.best_seller = best_seller;
+                }
+
+
+                public String getMusttry() {
+                    return must_try;
+                }
+
+                public void setMusttry(String must_try) {
+                    this.must_try = must_try;
+                }
+
 
                 public String getAvailableTime() {
                     return available_time;

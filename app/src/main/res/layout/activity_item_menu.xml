@@ -2071,17 +2071,6 @@
                                 android:layout_height="wrap_content">
 
 
-                                <!--    <TextView
-                                        android:id="@+id/addon_item_name"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="@dimen/_10sdp"
-                                        android:layout_marginTop="@dimen/_10sdp"
-                                        android:fontFamily="@font/hindvadodara_medium"
-                                        android:text=""
-                                        android:textColor="@color/menu_arrow"
-                                        android:textSize="@dimen/_13sdp" />-->
-
                                 <TextView
                                     android:id="@+id/addon_item_addonname"
                                     android:layout_width="wrap_content"
@@ -2100,13 +2089,6 @@
                                 android:background="#EEF6FF"
                                 android:layout_height="wrap_content">
 
-                                <!-- <GridView
-                                     android:layout_margin="13dp"
-                                     android:id="@+id/selected_addon_item_view"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="150dp"
-                                     android:scrollbars="none"
-                                     android:numColumns="2" />-->
 
                                 <GridView
                                     android:layout_margin="13dp"

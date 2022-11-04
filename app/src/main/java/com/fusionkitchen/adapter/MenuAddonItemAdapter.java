@@ -74,28 +74,12 @@ public class MenuAddonItemAdapter extends RecyclerView.Adapter<MenuAddonItemAdap
     public void onBindViewHolder(MenuAddonItemAdapter.ViewHolder holder, int position) {
 
 
-/*
-if(arrayListUser.size()>0){
-    arrayListUser.remove(position);
-}
-        if(arrayextraListUser.size()>0){
-            arrayextraListUser.remove(position);
-        }
-        if(arrayextraname.size()>0){
-            arrayextraname.remove(position);
-        }
-*/
-
-/*
-        Log.e("arraylistsize1", "" + arrayListUser.size());
-        Log.e("arraylistsize2", "" + arrayextraListUser.size());
-        Log.e("arraylistsize3", "" + arrayextraname.size());*/
 
         final menu_addons_model.dataval.addonitemslist student = listdata[position];//new add
 
         holder.checkBox.setChecked(student.student);//new add
 
-        // Log.e("listdatapossion", "" +listdata[position]);
+
 
         holder.menu_addon_item_name.setText(fromHtml(listdata[position].getName().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_addon_item_amout.setText(listdata[position].getPrice());
@@ -105,25 +89,8 @@ if(arrayListUser.size()>0){
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
-   /*     Log.e("getBtnnext", "" + listdata[position].getBtnnext());
-
-        Log.e("checkprintall1", "" + arrayData);
-        Log.e("checkprintall2", "" + listdata[position].getItemprice());
-        Log.e("checkprintall3", "" + arrayextraData);
-        Log.e("checkprintall4", "" + listdata[position].getBtnnext());
-        Log.e("checkprintall5", "" + listdata[position].getName());
-        Log.e("checkprintall6", "" + listdata[position].getItemid());
-        Log.e("checkprintall7", "" + holder.menu_addon_item_extra.getText().toString());
-*/
 
 
-        //  holder.checkBox.setChecked(listdata[position].getSelected());
-        //holder.checkBox.setTag(position);
-
-
-      /*  if (holder.menu_addon_item_extra.getText().toString().equalsIgnoreCase("22")){
-            holder.menu_addon_item_extra.setVisibility(View.GONE);
-        }*/
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,23 +180,6 @@ if(arrayListUser.size()>0){
         });
     }
 
-/*
-    private void removeAt(int position) {
-
-        arrayListUser.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, arrayListUser.size());
-
-        arrayextraListUser.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, arrayextraListUser.size());
-
-        arrayextraname.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, arrayextraname.size());
-    }
-*/
-
 
     @Override
     public int getItemCount() {
@@ -255,21 +205,10 @@ if(arrayListUser.size()>0){
     public void loadingshow() {
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(mContext)
                 .load(R.drawable.loading)
@@ -277,11 +216,10 @@ if(arrayListUser.size()>0){
                 .centerCrop()
                 .into(gifImageView);
 
-        //...finaly show it
+
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
     public void hideloading() {
         dialog.dismiss();
     }

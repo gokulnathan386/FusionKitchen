@@ -40,7 +40,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/seller"
+                android:id="@+id/seller_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_bg_border"
@@ -49,6 +49,7 @@
                 android:padding="2dp">
 
                 <TextView
+                    android:id="@+id/bestseller_musttry_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
@@ -60,11 +61,12 @@
                 </TextView>
 
                 <ImageView
+                    android:id="@+id/bestseller_musttry_drawable"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="1dp"
-                    android:src="@drawable/star_blue">
+                     >
                 </ImageView>
 
             </LinearLayout>
@@ -72,9 +74,10 @@
 
 
             <RelativeLayout
+                android:id="@+id/menu_item_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/seller"
+                android:layout_below="@+id/seller_header"
                 android:padding="5dp"
                 android:background="@drawable/item_bg_border1">
 

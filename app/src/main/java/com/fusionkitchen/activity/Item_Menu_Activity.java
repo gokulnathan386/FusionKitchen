@@ -2467,20 +2467,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                 }
 
-                                              /*  String[] todaytimeitem = new String[response.body().getData().getDelivery().getToday().getToday_time().size()];
-
-                                                for (int i = 0; i < response.body().getData().getDelivery().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time();
-
-                                                }*/
-
-                                              /*  String[] todaytimeitem = new String[response.body().getData().getDelivery().getToday().getToday_time().size()];
-                                                for (int i = 0; i < response.body().getData().getDelivery().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time_string();
-
-                                                }*/
 
                                                 ArrayAdapter<AdapterListData> todaytimeadapter;
                                                 todaytimeadapter = new ArrayAdapter<AdapterListData>(getApplicationContext(), android.R.layout.simple_list_item_1, todaytimeitem);
@@ -2579,19 +2565,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                     ));
 
                                                 }
-
-/*
-                                                response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time_string(),
-                                                        response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time(),
-                                                        response.body().getData().getDelivery().getToday().getToday_time().get(i).gettoday_label()*/
-
-
-                                               /* String[] todaytimeitem = new String[response.body().getData().getCollection().getToday().getToday_time().size()];
-                                                for (int i = 0; i < response.body().getData().getCollection().getToday().getToday_time().size(); i++) {
-                                                    //Storing names to string array
-                                                    todaytimeitem[i] = response.body().getData().getCollection().getToday().getToday_time().get(i).getToday_time();
-                                                }*/
-
                                                 ArrayAdapter<AdapterListData> todaytimeadapter;
                                                 todaytimeadapter = new ArrayAdapter<AdapterListData>(getApplicationContext(), android.R.layout.simple_list_item_1, todaytimeitem);
                                                 //setting adapter to spinner
@@ -3455,7 +3428,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(ItemName),qty,total_amt);
 
-
             }
 
         }
@@ -3543,11 +3515,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             selected_addon_item_view.setVisibility(View.VISIBLE);
             Log.e("arrayaddonitemid", "" + arrayaddonitemid);
             Log.e("arrayaddonextraidsingle", "" + arrayaddonextraidsingle);
-           /* listItems.add(arrayextranameData);
-            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item,listItems);
-            selected_addon_item_view.setAdapter(adapter);*/
-            //  getlimt3
-            //  Log.e("addonitemposition", "" + addonitemposition);
+
             Log.e("itemides1", "" + addonlimit);
             Log.e("itemides2", "" + nextaid);
             Log.e("itemides3", "" + btnnext);
@@ -3710,28 +3678,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             // addonitemview(ItemName, nextaid, addonitemid, addonitemarrayextraData);
             addonitemfirstview(ItemName, nextaid, addonitemid, addonitemarrayextraData, "1");
         } else {
-/*
-
-            listItemsids.add(addonitemid);
-            adapterids.notifyDataSetChanged();
-            itemidsstr = listItemsids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-
-            listItemsexraids.add(addonitemarrayextraData);
-            adapterexraids.notifyDataSetChanged();
-            itemexradsstr = listItemsexraids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-
-*/
-
 
             if (addonlimit.equalsIgnoreCase("1")) {
-               /* listItemsids.add(addonitemid);
-                adapterids.notifyDataSetChanged();
-                itemidsstr = listItemsids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-                listItemsexraids.add(addonitemarrayextraData);
-                adapterexraids.notifyDataSetChanged();
-                itemexradsstr = listItemsexraids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-*///se            lect limt 1
-
 
                 Log.e("additem1", "" + addonitemid);
                 Log.e("additem2", "" + listItemsids);
@@ -3742,21 +3690,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     //btnnextfir
                     if (btnnextfir.equalsIgnoreCase("0")) {
                         //Error show removed me 10-08-2021
-                       /* listItemsids.add(addonitemid);
-                        adapterids.notifyDataSetChanged();
-                        itemidsstr = listItemsids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
 
-                        listItemsexraids.add(addonitemarrayextraData);
-                        adapterexraids.notifyDataSetChanged();
-                        itemexradsstr = listItemsexraids.toString().replace("[", "").replace("]", "").replace(" ", "").trim();
-*/
 
                         str_listItems = listItems.toString().replace("[", "").replace("]", "").replace("  ", "").replace(", ", ",").trim();//addon item extrtra call
 
                         item_total_amt = String.format("%.2f", sum);
-                        //  Toast.makeText(getApplicationContext(), listItemsids.toString(), Toast.LENGTH_LONG).show();
-                        //limt 1 and next + btn 0 to call add to call method
-                        // Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_LONG).show();
 
                         //  persistPerson();
                         if (itemidsstr == null || itemexradsstr == null) {

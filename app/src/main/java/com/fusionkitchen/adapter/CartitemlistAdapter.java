@@ -472,7 +472,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                     }
 
 
-
                                                     count = Integer.parseInt(holder.tvinteger_number.getText().toString());
                                                     count++;
                                                     holder.tvinteger_number.setText(String.valueOf(count));
