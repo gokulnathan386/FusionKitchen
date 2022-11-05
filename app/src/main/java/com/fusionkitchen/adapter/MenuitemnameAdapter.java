@@ -96,6 +96,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     Dialog item_view,repeatpopup ;
     int length;
     HttpUrl baseUrl;
+    String id_item,item_name,item_image,item_description,item_price;
+    String item_count_increment_decrement;
+
+
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
@@ -153,6 +157,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         if(items[position].getImage().equalsIgnoreCase("")){
             holder.layout_logo.setVisibility(GONE);
+
         }else{
             Picasso.get()
                     .load("https://fusionbucket.co.uk/img/menu/" + items[position].getImage())
@@ -229,7 +234,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.layout_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              loadingshow();
               Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
             }
         });
@@ -238,6 +243,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             holder.menu_item_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    loadingshow();
                     Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
 
                 }
@@ -339,31 +345,74 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
         add_to_cart_btn.setClickable(false);
 
-        Log.d("BaseURL--->"," "+baseUrl+menu_url+"/getitemdetail");
 
-        //Single Item API Integration
 
+        //start Single Item API Integration
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+menu_url+"/getitemdetail",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
 
-                            JSONObject jsonobject = new JSONObject(response);
+                             JSONObject jsonobject = new JSONObject(response);
+                             String check_status =  jsonobject.getString("status");
 
-                            //JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
+                             hideloading();
 
+                             if(check_status.equalsIgnoreCase("true")){
+
+                                 JSONObject single_item_data = jsonobject.getJSONObject("data");
+
+                                 id_item =  single_item_data.getString("id");
+                                 item_name = single_item_data.getString("name");
+                                 item_image = single_item_data.getString("image");
+                                 item_description = single_item_data.getString("description");
+                                 item_price =  single_item_data.getString("price");
+
+                                if(item_image.equalsIgnoreCase("")){
+
+                                    single_item_image.setVisibility(GONE);
+                                    back_btn_popup.setVisibility(GONE);
+
+                                }else{
+
+                                     Picasso.get()
+                                    .load("https://fusionbucket.co.uk/img/menu/" + item_image)
+                                    .placeholder(R.drawable.hederlocoplaceimg)
+                                    .error(R.drawable.hederlocoplaceimg)
+                                    .into(single_item_image);
+
+                                }
+
+
+                                    item_name_textview.setText(item_name);
+
+                                    item_price_textview.setText("£ " +item_price);
+
+                                    if(item_description.equalsIgnoreCase("")){
+
+                                        item_description_textview.setVisibility(GONE);
+
+                                    }else{
+
+                                        item_description_textview.setText(item_description);
+
+                                    }
+                             }
 
                         }catch (JSONException e) {
+
+                            hideloading();
+
                             e.printStackTrace();
 
                         }
-
                     }
                 },
                 new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
                         error.printStackTrace();
 
                     }
@@ -380,30 +429,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         RequestQueue requestqueue = Volley.newRequestQueue(context);
         requestqueue.add(stringRequest);
 
-
-
-     /* if(image.equalsIgnoreCase("")){
-          single_item_image.setVisibility(GONE);
-          back_btn_popup.setVisibility(GONE);
-      }else{
-          Picasso.get()
-                  .load("https://fusionbucket.co.uk/img/menu/" + image)
-                  .placeholder(R.drawable.hederlocoplaceimg)
-                  .error(R.drawable.hederlocoplaceimg)
-                  .into(single_item_image);
-      }
-
-
-        item_name_textview.setText(itemname);
-
-        item_price_textview.setText("£ " +itemprice);
-
-        if(description.equalsIgnoreCase("")){
-            item_description_textview.setVisibility(GONE);
-        }else{
-            item_description_textview.setText(description);
-        }*/
-
+        //End Single Item API Integration
 
         Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -425,9 +451,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 count++;
                 int length = String.valueOf(count).length();
                 if(length == 1){
+
                     textview_qty.setText("0" + count);
+                    item_count_increment_decrement = "0"+count;
+
                 }else{
+
                     textview_qty.setText("" + count);
+                    item_count_increment_decrement = ""+count;
+
                 }
 
             }
@@ -446,9 +478,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     count -= 1;
                     int length = String.valueOf(count).length();
                     if(length == 1){
+
                         textview_qty.setText("0" + count);
+                        item_count_increment_decrement = "0"+count;
+
                     }else{
+
                         textview_qty.setText("" + count);
+                        item_count_increment_decrement = ""+count;
+
                     }
 
                 }
