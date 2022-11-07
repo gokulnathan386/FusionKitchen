@@ -37,7 +37,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -46,9 +45,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.AdapterListData;
-import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.squareup.picasso.Picasso;
@@ -65,7 +62,6 @@ import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,6 +85,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     private menu_item_sub_model.categoryall.subcat.items[] items;
     private Dialog dialog;
+    String getqtysqlite_value,getamtsqlite_value;
 
     private String menuurlpath, fullUrl;
     String selectedlaterdateItem,item_user_add_name;
@@ -99,6 +96,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String id_item,item_name,item_image,item_description,item_price;
     String item_count_increment_decrement;
 
+    //ArrayList<HashMap<String, String>> item_getID =null;
 
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
@@ -121,6 +119,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String todaytimestr, laterdatestr, latertimestr, activetagstr, laterdate;
     String order_mode,todaytimestring;
     String addonitemtype,latertimestring;
+    ArrayList<String> allContacts;
 
     // RecyclerView recyclerView;
     public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub, menu_item_sub_model.categoryall listdatum) {
@@ -148,6 +147,39 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.menu_item_name.setText(items[position].getName());
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
+        dbHelper = new SQLDBHelper(mContext);
+
+
+
+
+
+                allContacts = dbHelper.getitemlist();
+
+
+                for (int k = 0; k<allContacts.size();k++){
+
+                    if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
+
+                        ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(Integer.parseInt(items[position].getId()));
+
+
+                        for (int i=0;i<qtypice.size();i++) {
+
+                             HashMap<String, String> hashmap= qtypice.get(i);
+
+                             getqtysqlite_value = hashmap.get("qty");
+                             getamtsqlite_value = hashmap.get("itemaddontotalamt");
+                        }
+
+                        holder.menu_item_add.setVisibility(GONE);
+                        holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+
+                        holder.qty_textview_number.setText(getqtysqlite_value);
+
+
+                    }
+
+            }
 
 
 
@@ -170,33 +202,43 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         // Log.e("sixg", "" + orderhistory.size().getName());
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
 
-            dbHelper = new SQLDBHelper(mContext);
+
             getContactsCount();
 
 
          //   Log.d("Availableitme",items[position].getAvailableTime());
 
          if(items[position].getAvailableTime().equalsIgnoreCase("")){
+
             holder.menu_item_add.setVisibility(View.VISIBLE);
             holder.textview_avaliable_time.setVisibility(GONE);
+
             }else{
+
                 holder.textview_avaliable_time.setText(items[position].getAvailableTime());
                 holder.menu_item_add.setVisibility(GONE);
+
             }
 
 
              if(items[position].getBestseller().equalsIgnoreCase("true")){
+
                  holder.bestseller_musttry_textview.setText("Best Seller");
                  holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.star_blue);
                  holder.seller_header.setBackgroundColor(Color.parseColor("#E6F3FE"));
+
              }else if(items[position].getMusttry().equalsIgnoreCase("true")){
+
                  holder.bestseller_musttry_textview.setText("Must Try");
                  holder.seller_header.setBackgroundColor(Color.parseColor("#FFF2F3"));
                  holder.bestseller_musttry_textview.setTextColor(Color.parseColor("#E0467C"));
                  holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.thumbs_up_icon);
+
              }else{
+
                  holder.seller_header.setVisibility(GONE);
                  holder.menu_item_list.setBackgroundResource(R.drawable.item_bg_border2);
+
              }
 
 
@@ -235,7 +277,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
               loadingshow();
-              Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
+              Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext,holder,position);
             }
         });
 
@@ -244,7 +286,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 @Override
                 public void onClick(View v) {
                     loadingshow();
-                    Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext);
+                    Single_itemviewpup_up(items[position].getId(),menuurlpath,mContext,holder,position);
 
                 }
             });
@@ -282,6 +324,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View v) {
 
                  addonitem(v,position,holder);
+
             }
         });
     }
@@ -316,7 +359,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     }
 
 
-    private void Single_itemviewpup_up(String item_id,String menu_url,Context context) {
+    private void Single_itemviewpup_up(String item_id, String menu_url, Context context, ViewHolder holder, int position) {
+
 
         item_view = new Dialog(mContext);
         item_view.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -333,6 +377,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         LinearLayout add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
         LinearLayout plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
         TextView Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
+        LinearLayout plus_symbol_linearlayout = item_view.findViewById(R.id.plus_symbol_linearlayout);
         LinearLayout minus_symbol =item_view.findViewById(R.id.minus_symbol);
         LinearLayout plus_symbol = item_view.findViewById(R.id.plus_symbol);
         TextView textview_qty = item_view.findViewById(R.id.textview_qty);
@@ -431,7 +476,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         //End Single Item API Integration
 
-        Enter_your_plus_symbol.setOnClickListener(new View.OnClickListener() {
+        plus_symbol_linearlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 plus_linearlayout.setVisibility(GONE);
@@ -447,20 +492,25 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
+               /* int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
                 count++;
                 int length = String.valueOf(count).length();
                 if(length == 1){
 
+
                     textview_qty.setText("0" + count);
+
                     item_count_increment_decrement = "0"+count;
 
                 }else{
 
                     textview_qty.setText("" + count);
+
                     item_count_increment_decrement = ""+count;
 
-                }
+                }*/
+
+                addonitem(v,position,holder);
 
             }
         });
@@ -473,23 +523,29 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
 
                 if (count == 1) {
+                    Decreasepriceqty(v,item_id);
                     textview_qty.setText("01");
                 } else {
                     count -= 1;
                     int length = String.valueOf(count).length();
                     if(length == 1){
-
+                        Decreasepriceqty(v,item_id);
                         textview_qty.setText("0" + count);
+
                         item_count_increment_decrement = "0"+count;
 
                     }else{
-
+                        Decreasepriceqty(v,item_id);
                         textview_qty.setText("" + count);
+
                         item_count_increment_decrement = ""+count;
 
                     }
 
                 }
+
+
+
 
             }
         });

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import com.fusionkitchen.model.cart.Cartitem;
 public class SQLDBHelper extends SQLiteOpenHelper {
 
     ArrayList<Cartitem> storeContacts;
+    ArrayList<String> item_data;
 
     public static final String DATABASE_NAME = "SQLiteExample.db";
     private static final int DATABASE_VERSION = 7;
@@ -136,8 +138,13 @@ public class SQLDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Cartitem> listContacts() {
         String sql = "select * from " + ITEM_TABLE_NAME;
+
+
+
         SQLiteDatabase db = this.getReadableDatabase();
         storeContacts = new ArrayList<>();
+
+
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             do {
@@ -317,6 +324,30 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return userList;
 
 
+    }
+
+
+
+    public ArrayList<String>  getitemlist() {
+
+        String sql = "select * from " + ITEM_TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        item_data = new ArrayList<>();
+
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                String itemid = cursor.getString(2);
+
+                item_data.add(itemid);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return item_data;
     }
 
 }

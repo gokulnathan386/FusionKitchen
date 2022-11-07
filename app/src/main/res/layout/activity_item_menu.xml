@@ -37,6 +37,7 @@
                     shimmer:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                     <ImageView
+                        android:background="@drawable/restimage"
                         android:id="@+id/restaurants_image"
                         android:layout_width="match_parent"
                         android:layout_height="150dp">
@@ -46,7 +47,6 @@
                         android:id="@+id/header_img"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/accent"
                         android:orientation="vertical"
                         android:paddingTop="16dp">
 
@@ -1591,7 +1591,15 @@
                         android:nestedScrollingEnabled="false"
                         android:visibility="visible" />
 
+                  <!--  tools:listitem="@layout/raw_menu_catag_details"-->
 
+
+             <!--       <ProgressBar
+                        android:id="@+id/idPBLoading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+-->
 
                     <LinearLayout
                         android:id="@+id/search_layout"

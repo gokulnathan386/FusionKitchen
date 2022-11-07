@@ -83,6 +83,7 @@ import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.ExamData;
+import com.fusionkitchen.model.cart.Cartitem;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
@@ -600,7 +601,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-
+/*
         recyclerviewitem.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -622,31 +623,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             }
 
-        });
-
-
-
-      /*  repeat_popup.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Dialog  repeatpopup = new Dialog(Item_Menu_Activity.this);
-                repeatpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                repeatpopup.setContentView(R.layout.repeat_popup_design);
-
-                ImageView repeat_gif = repeatpopup.findViewById(R.id.repeat_gif);
-
-
-
-                repeatpopup.show();
-                repeatpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                repeatpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                repeatpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                repeatpopup.getWindow().setGravity(Gravity.BOTTOM);
-
-
-            }
         });*/
+
+
 
         Log.d("backbtn",reloadback);
 
@@ -3087,6 +3066,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
                         jobdetails2 = (response.body().getMenu().getCategoryall());
+
+
 
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);

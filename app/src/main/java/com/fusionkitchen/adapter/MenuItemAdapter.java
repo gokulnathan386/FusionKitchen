@@ -180,8 +180,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
         }
 
-
-
     }
     @Override
     public int getItemCount() {
