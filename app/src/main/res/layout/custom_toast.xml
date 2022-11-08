@@ -10,8 +10,9 @@
     android:padding="10dp"
     android:paddingRight="10dp"
     android:background="#1DC070">
+
     <ImageView
-        android:src="@drawable/star_blue"
+        android:src="@drawable/cartview"
         android:layout_width="35dp"
         android:layout_marginLeft="10dp"
         android:layout_height="35dp"
@@ -25,4 +26,5 @@
         android:fontFamily="@font/metropolis_semibold"
         android:textStyle="bold"
         android:textSize="15dp" />
+
 </LinearLayout>

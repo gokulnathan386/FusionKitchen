@@ -91,13 +91,32 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String selectedlaterdateItem,item_user_add_name;
     int clickable = 0,count;
     Dialog item_view,repeatpopup ;
+    int  item_view_dismiss = 0;
     int length;
     HttpUrl baseUrl;
     String id_item,item_name,item_image,item_description,item_price;
-    String item_count_increment_decrement;
+    String item_count_increment_decrement,item_bestseller,item_musttry;
 
-    //ArrayList<HashMap<String, String>> item_getID =null;
-
+    LinearLayout Add_your_comment;
+    EditText Enter_your_comments;
+    TextView special_instruction;
+    CardView back_btn_popup;
+    LinearLayout plus_linearlayout ;
+    LinearLayout add_to_cart_btn;
+    LinearLayout plus_minus_symbol;
+    TextView Enter_your_plus_symbol;
+    LinearLayout plus_symbol_linearlayout;
+    LinearLayout minus_symbol;
+    LinearLayout plus_symbol;
+    TextView textview_qty;
+    ImageView single_item_image;
+    TextView item_name_textview;
+    TextView item_price_textview ;
+    TextView item_description_textview ;
+    TextView textview_avaliable_time;
+    TextView single_item_bestseller_musttry;
+    LinearLayout best_must_linear_layout;
+    ImageView star_imageview;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
@@ -120,7 +139,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String order_mode,todaytimestring;
     String addonitemtype,latertimestring;
     ArrayList<String> allContacts;
-
+    String single_itemqty, single_itemamt;
     // RecyclerView recyclerView;
     public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub, menu_item_sub_model.categoryall listdatum) {
 
@@ -142,6 +161,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
         baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
         holder.menu_item_name.setText(items[position].getName());
@@ -251,6 +271,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 holder.increment_decrement_layout.setVisibility(View.VISIBLE);
                 holder.menu_item_add.setVisibility(GONE);
 
+                item_view_dismiss = 0;
+
                 if (cursor != 0) {
                         addonitem(view,position,holder);
                 } else {
@@ -298,7 +320,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View view) {
 
 
-                count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                Decreasepriceqty(view,items[position].getId(),holder);
+
+              /*  count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
                     Decreasepriceqty(view,items[position].getId());
@@ -314,7 +338,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         holder.qty_textview_number.setText("" + count);
                     }
 
-                }
+                }*/
 
             }
         });
@@ -322,14 +346,35 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.qty_increase_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                 item_view_dismiss = 0;
                  addonitem(v,position,holder);
 
             }
         });
     }
 
-    private void Decreasepriceqty(View view, String id) {
+    private void Decreasepriceqty(View view, String id,ViewHolder holder) {
+
+
+
+               count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
+
+                if (count == 1) {
+                    holder.qty_textview_number.setText("01");
+                    textview_qty.setText("01");
+                } else {
+                    count -= 1;
+                    length = String.valueOf(count).length();
+                    if(length == 1){
+                        holder.qty_textview_number.setText("0" + count);
+                        textview_qty.setText("0" + count);
+                    }else{
+                        holder.qty_textview_number.setText("" + count);
+                        textview_qty.setText("0" + count);
+                    }
+
+                }
+
 
         ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
 
@@ -369,27 +414,29 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         item_view.setCancelable(true);
         item_view.setCanceledOnTouchOutside(true);
 
-        LinearLayout Add_your_comment = item_view.findViewById(R.id.Add_your_comment);
-        EditText Enter_your_comments = item_view.findViewById(R.id.Enter_your_comments);
-        TextView special_instruction =item_view.findViewById(R.id.special_instruction);
-        CardView back_btn_popup = item_view.findViewById(R.id.back_btn_popup);
-        LinearLayout plus_linearlayout = item_view.findViewById(R.id.plus_linearlayout);
-        LinearLayout add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
-        LinearLayout plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
-        TextView Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
-        LinearLayout plus_symbol_linearlayout = item_view.findViewById(R.id.plus_symbol_linearlayout);
-        LinearLayout minus_symbol =item_view.findViewById(R.id.minus_symbol);
-        LinearLayout plus_symbol = item_view.findViewById(R.id.plus_symbol);
-        TextView textview_qty = item_view.findViewById(R.id.textview_qty);
-        ImageView single_item_image = item_view.findViewById(R.id.single_item_image);
-        TextView item_name_textview = item_view.findViewById(R.id.item_name_textview);
-        TextView item_price_textview = item_view.findViewById(R.id.item_price_textview);
-        TextView item_description_textview = item_view.findViewById(R.id.item_description_textview);
-        TextView textview_avaliable_time = item_view.findViewById(R.id.textview_avaliable_time);
+         Add_your_comment = item_view.findViewById(R.id.Add_your_comment);
+         Enter_your_comments = item_view.findViewById(R.id.Enter_your_comments);
+         special_instruction =item_view.findViewById(R.id.special_instruction);
+         back_btn_popup = item_view.findViewById(R.id.back_btn_popup);
+         plus_linearlayout = item_view.findViewById(R.id.plus_linearlayout);
+         add_to_cart_btn = item_view.findViewById(R.id.add_to_cart_btn);
+         plus_minus_symbol = item_view.findViewById(R.id.plus_minus_symbol);
+         Enter_your_plus_symbol = item_view.findViewById(R.id.Enter_your_plus_symbol);
+         plus_symbol_linearlayout = item_view.findViewById(R.id.plus_symbol_linearlayout);
+         minus_symbol =item_view.findViewById(R.id.minus_symbol);
+         plus_symbol = item_view.findViewById(R.id.plus_symbol);
+         textview_qty = (TextView) item_view.findViewById(R.id.textview_qty);
+         single_item_image = item_view.findViewById(R.id.single_item_image);
+         item_name_textview = item_view.findViewById(R.id.item_name_textview);
+         item_price_textview = item_view.findViewById(R.id.item_price_textview);
+         item_description_textview = item_view.findViewById(R.id.item_description_textview);
+         textview_avaliable_time = item_view.findViewById(R.id.textview_avaliable_time);
+         single_item_bestseller_musttry = item_view.findViewById(R.id.single_item_bestseller_musttry);
+         best_must_linear_layout = item_view.findViewById(R.id.best_must_linear_layout);
+         star_imageview = item_view.findViewById(R.id.star_imageview);
 
-        add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
-        add_to_cart_btn.setClickable(false);
-
+         add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
+         add_to_cart_btn.setClickable(false);
 
 
         //start Single Item API Integration
@@ -413,6 +460,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                  item_image = single_item_data.getString("image");
                                  item_description = single_item_data.getString("description");
                                  item_price =  single_item_data.getString("price");
+                                 item_bestseller =  single_item_data.getString("best_seller");
+                                 item_musttry =  single_item_data.getString("must_try");
+
 
                                 if(item_image.equalsIgnoreCase("")){
 
@@ -443,6 +493,29 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         item_description_textview.setText(item_description);
 
                                     }
+
+
+
+
+                                 if(item_bestseller.equalsIgnoreCase("true")){
+
+                                     single_item_bestseller_musttry.setText("Best Seller");
+                                     star_imageview.setBackgroundResource(R.drawable.star_blue);
+                                     single_item_bestseller_musttry.setTextColor(Color.parseColor("#0071E3"));
+
+                                 }else if(item_musttry .equalsIgnoreCase("true")){
+
+                                     single_item_bestseller_musttry.setText("Must Try");
+                                     single_item_bestseller_musttry.setTextColor(Color.parseColor("#E0467C"));
+                                     star_imageview.setBackgroundResource(R.drawable.thumbs_up_icon);
+
+                                 }else{
+
+                                     best_must_linear_layout.setVisibility(GONE);
+
+                                 }
+
+
                              }
 
                         }catch (JSONException e) {
@@ -474,16 +547,75 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         RequestQueue requestqueue = Volley.newRequestQueue(context);
         requestqueue.add(stringRequest);
 
+
+
+
+
+        allContacts = dbHelper.getitemlist();
+
+        for (int k = 0; k<allContacts.size();k++){
+
+            if(allContacts.get(k).equalsIgnoreCase(item_id)){
+
+                Log.d("Qty_itemIdTest---",allContacts.get(k)+"========"+item_id);
+
+                ArrayList<HashMap<String, String>> single_item_id = dbHelper.Getqtypriceaddon(Integer.parseInt(item_id));
+
+                for (int i=0;i<single_item_id.size();i++) {
+
+                    HashMap<String, String> hashmap1= single_item_id.get(i);
+
+                    single_itemqty = hashmap1.get("qty");
+                    single_itemamt = hashmap1.get("itemaddontotalamt");
+
+                }
+
+                textview_qty.setText(single_itemqty);
+                plus_linearlayout.setVisibility(GONE);
+                plus_minus_symbol.setVisibility(View.VISIBLE);
+
+            }
+
+        }
+
+
         //End Single Item API Integration
 
         plus_symbol_linearlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 plus_linearlayout.setVisibility(GONE);
                 plus_minus_symbol.setVisibility(View.VISIBLE);
                 add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
                 add_to_cart_btn.setClickable(true);
                 clickable = 1;
+
+           //     holder.menu_item_add.setEnabled(false);
+
+
+                item_view_dismiss = 1;
+
+                if (cursor != 0) {
+                    addonitem(v,position,holder);
+                } else {
+                    if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("1")){
+                        addonitem(v,position,holder);
+                    }else if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
+
+                        Order_mode_popup(v,holder,position);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.menu_item_add.setEnabled(true);
+                            }
+                        }, 4000);
+                    }else{
+                        addonitem(v,position,holder);
+                    }
+                }
+
+
             }
         });
 
@@ -492,24 +624,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-               /* int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
-                count++;
-                int length = String.valueOf(count).length();
-                if(length == 1){
-
-
-                    textview_qty.setText("0" + count);
-
-                    item_count_increment_decrement = "0"+count;
-
-                }else{
-
-                    textview_qty.setText("" + count);
-
-                    item_count_increment_decrement = ""+count;
-
-                }*/
-
+                item_view_dismiss = 1;
                 addonitem(v,position,holder);
 
             }
@@ -520,31 +635,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
 
-                int count= Integer.parseInt(String.valueOf(textview_qty.getText()));
-
-                if (count == 1) {
-                    Decreasepriceqty(v,item_id);
-                    textview_qty.setText("01");
-                } else {
-                    count -= 1;
-                    int length = String.valueOf(count).length();
-                    if(length == 1){
-                        Decreasepriceqty(v,item_id);
-                        textview_qty.setText("0" + count);
-
-                        item_count_increment_decrement = "0"+count;
-
-                    }else{
-                        Decreasepriceqty(v,item_id);
-                        textview_qty.setText("" + count);
-
-                        item_count_increment_decrement = ""+count;
-
-                    }
-
-                }
-
-
+                Decreasepriceqty(v,item_id,holder);
 
 
             }
@@ -1549,6 +1640,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     Log.e("statusfor1", ": " + response.body().getStatus());
                     Log.e("statusfor2", ": " + response.body().getError_code());
 
+
+
+                    holder.menu_item_add.setVisibility(GONE);
+                    holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
                         if (response.body().getError_code().equalsIgnoreCase("0")) {
@@ -1556,6 +1652,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
                             int  userList = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
+
 
                             if(userList == 0){
 
@@ -1578,7 +1675,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
                                 } else {
+
                                     Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
+
                                 }
 
                             }else{
@@ -1588,11 +1687,26 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 length = String.valueOf(count).length();
 
                                 if (length == 1) {
+
                                     updateqtyandprice(view,items[position].getId(),items[position].getPrice());
                                     holder.qty_textview_number.setText("0" + count);
+
+                                    if(item_view_dismiss == 1){
+                                        textview_qty.setText("0" + count);
+                                    }
+
+
                                 }else{
+
                                     updateqtyandprice(view,items[position].getId(),items[position].getPrice());
                                     holder.qty_textview_number.setText("" + count);
+
+                                    if(item_view_dismiss == 1){
+                                        textview_qty.setText("" + count);
+                                    }
+
+
+
                                 }
 
 
@@ -1602,7 +1716,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         }
 
                     } else {
-
 
                         if (response.body().getError_code() == null) {
                             Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_LONG).show();
@@ -1630,9 +1743,13 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 int check_user_data = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
 
-
-
                                 if(check_user_data == 0){
+
+                                    if(item_view_dismiss == 1){
+
+                                        item_view.dismiss();
+
+                                    }
 
                                     String ItemName = items[position].getId();
                                     Intent intent = new Intent("custom-message");
@@ -1644,8 +1761,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                                 }else {
-
-
 
                                     ArrayList<HashMap<String, String>> item_addon = dbHelper.GetUserdetails(parseInt(items[position].getId()));
 
@@ -1690,6 +1805,12 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 repeatpopup.dismiss();
                                                 holder.qty_textview_number.setText("0" + count);
 
+                                                if(item_view_dismiss == 1){
+
+                                                    textview_qty.setText("0" + count);
+                                                }
+
+
                                             } else {
                                                 String ItemName = items[position].getId();
                                                 Intent intent = new Intent("custom-message");
@@ -1702,6 +1823,12 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
                                                 repeatpopup.dismiss();
                                                 holder.qty_textview_number.setText("" + count);
+
+                                                if(item_view_dismiss == 1){
+
+                                                    textview_qty.setText("" + count);
+                                                }
+
                                             }
                                         }
 

@@ -37,11 +37,43 @@
                     shimmer:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                     <ImageView
-                        android:background="@drawable/restimage"
+                        android:scaleType="centerCrop"
                         android:id="@+id/restaurants_image"
                         android:layout_width="match_parent"
                         android:layout_height="150dp">
+
                     </ImageView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="80dp"
+                        android:gravity="end"
+                        android:layout_height="20dp">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_height="20dp">
+
+                        <TextView
+                            android:id="@+id/client_openstatus"
+                            android:gravity="center"
+                            android:text="PRE ORDER"
+                            android:textSize="8dp"
+                            android:padding="3dp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <!--android:background="@drawable/restimage"-->
 
                     <LinearLayout
                         android:id="@+id/header_img"
@@ -421,11 +453,19 @@
                             android:layout_weight="4"
                             android:orientation="horizontal">
 
+                          <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_gravity="start"
+                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:layout_weight="1">
+
 
                             <LinearLayout
                                 android:id="@+id/collect_lener"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
+                                android:gravity="center_vertical"
                                 android:layout_gravity="start"
                                 android:layout_marginLeft="@dimen/_3sdp"
                                 android:layout_weight="1">
@@ -449,6 +489,8 @@
                                     android:textColor="@color/das_rateing"
                                     android:textSize="15sp" />
 
+
+                            </LinearLayout>
 
                                 <ImageView
                                     android:layout_width="20dp"

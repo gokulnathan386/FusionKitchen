@@ -90,6 +90,18 @@ public class menu_item_model {
         private String delivery;
 
 
+        @SerializedName("client_image")
+        private String client_image;
+
+
+        public String getClienImage() {
+            return client_image;
+        }
+
+        public void setClientImage(String client_image) {
+            this.client_image = client_image;
+        }
+
         public String getClientName() {
             return clientName;
         }

@@ -130,6 +130,7 @@ import com.fusionkitchen.model.menu_model.search_menu_item_model;
 import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -309,7 +310,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     CardView menu_offer_details_view;
     AppCompatButton confirm_code, confirm_copy_button;
     TextView details_offers_show;
-    ImageView offer_back, search_colse_top, search_colse_bottom;
+    ImageView offer_back, search_colse_top, search_colse_bottom,restaurants_image;
     String promocode, itempossion, onlinecode, onlinedate, onlinesymbol, onlinepaytypess, onlinety, cooking_insttructionback;
 
     private long mLastClickTime = 0;
@@ -407,8 +408,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         /*---------------------------Fab show and hind view----------------------------------------------------*/
 
-
-
         nsv.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -421,8 +420,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         //        top_card_view.setVisibility(View.VISIBLE);
 
 
-
-                if (400 < oldScrollY) {   //400
+                if (39 < oldScrollY) {   //400
                      top_card_view.setVisibility(View.VISIBLE);
                     // Toast.makeText(getApplicationContext(), "extend", Toast.LENGTH_LONG).show();
                 } else {
@@ -578,6 +576,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         cooking_time_textview = findViewById(R.id.cooking_time_textview);
 
         delivery_collection_textview = findViewById(R.id.delivery_collection_textview);
+
+
+        restaurants_image  = findViewById(R.id.restaurants_image);
 
         search_listview_header = findViewById(R.id.search_listview_header);
         search_listview_header.setOnClickListener(new OnClickListener() {
@@ -3031,6 +3032,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         List<menu_item_model.all_topbanner> clientdetails = (response.body().getTopbanner());
                         menu_item_model.all_topbanner[] listdata = clientdetails.toArray(new menu_item_model.all_topbanner[0]);
                         menu_clientname.setText(listdata[0].getClientName());
+
+
+                        Picasso.get()
+                                .load(listdata[0].getClienImage())
+                                .placeholder(R.drawable.hederlocoplaceimg)
+                                .error(R.drawable.hederlocoplaceimg)
+                                .into(restaurants_image);
 
 //client item
                         if (listdata[0].getCuisinename().size() == 0) {
