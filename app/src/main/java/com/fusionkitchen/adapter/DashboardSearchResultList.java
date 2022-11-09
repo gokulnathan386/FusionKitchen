@@ -210,39 +210,6 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
         }
 
 
-      /*  if (listdata[position].getStatus().equalsIgnoreCase("0")) {
-            holder.client_openstatus.setText("CLOSED");
-            holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
-        } else if (listdata[position].getStatus().equalsIgnoreCase("1")) {
-            holder.client_openstatus.setText(listdata[position].getOrdernow());
-            holder.client_openstatus.setBackgroundResource(R.drawable.open_background);
-        } else {
-            holder.client_openstatus.setText("CLOSED");
-            holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
-        }*/
-
-/*        if (listdata[position].getStatus().equalsIgnoreCase("0")) {
-            holder.client_openstatus.setText(listdata[position].getPreorder());
-
-            if (holder.client_openstatus.getText().toString().equalsIgnoreCase("Pre-Order")) {
-                holder.client_openstatus.setBackgroundResource(R.drawable.preorder_background);
-            } else {
-                holder.client_openstatus.setText("CLOSED");
-                holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
-            }
-        } else if (listdata[position].getStatus().equalsIgnoreCase("1")) {
-            holder.client_openstatus.setText(listdata[position].getOrdernow());
-            holder.client_openstatus.setBackgroundResource(R.drawable.open_background);
-        } else {
-            holder.client_openstatus.setText("closed");
-            holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
-        }*/
-
-//set offer set
-
-        //holder.use_code_discount.onlinediscount.get(0).getDiscount_code();
-
-
 
        if (myofferData.size() == 0) { //online offer
             if (offerData.size() == 0) { //offer
@@ -383,8 +350,12 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
 
                     Intent intent = new Intent("custom-message-menuurlpath");
                     intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
-                    Log.d("menupath",listdata[position].getMenuurlpath());
+                    intent.putExtra("client_id", listdata[position].getClientID());
+
+                    Log.d("menupath&clientid",listdata[position].getMenuurlpath() + " ==== " + listdata[position].getClientID());
+
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
 
 
 /*

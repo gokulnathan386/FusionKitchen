@@ -149,16 +149,12 @@ import static java.lang.Integer.parseInt;
 
 public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyCallback{
 
-
-
     String updateqty,description;
     String updatefinalamt;
     String item_price_amt;
     TextView delivery_collection_textview,cooking_time_textview;
-
-
+    TextView restaurants_status;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
-
 
     public Context mContext = Item_Menu_Activity.this;
     private Dialog dialog,dialog_loading;
@@ -202,7 +198,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     /*---------------------------XML ID Call----------------------------------------------------*/
     String authKey, fullUrl, addonlimit, nextaid, btnnext, arrayaddonextraidsingle, item_price, item_total_amt;
-    LoaderTextView menu_clientname, menu_tvdesc, clent_rating, colletion_time, delivery_time, min_order_amt;
+    LoaderTextView menu_clientname, menu_tvdesc, clent_rating,  min_order_amt,miles_textview,delicery_collection_time;
     TextView addon_item_name, addon_item_addonname, item_amt, btnClear, collection_tex, delivery_tex;
     CardView back_card_view1, delivery_card_view2, collection_card_view3, delivery_only_view2, collection_only_view3, menu_view_card_view, menu_addon_item_view;
     TextView top_back_card_view;
@@ -335,6 +331,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     TextView mode_view2;
     RecyclerView menu_item_list_view;
+    String key_lat,key_lon;
 
     int pastVisibleItem, visibleItemCount, totalItemCount, currentPage = 1, mPage = 1;
     private boolean loading = true;
@@ -342,8 +339,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
     private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -380,6 +375,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         key_postcode = (sharedptcode.getString("KEY_postcode", null));
         key_area = (sharedptcode.getString("KEY_area", null));
         key_address = (sharedptcode.getString("KEY_address", null));
+        key_lat = (sharedptcode.getString("KEY_lat", null));
+        key_lon = (sharedptcode.getString("KEY_lon", null));
 
 
         Log.e("localstore6", "" + key_postcode);
@@ -417,15 +414,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
 
-        //        top_card_view.setVisibility(View.VISIBLE);
-
-
                 if (39 < oldScrollY) {   //400
                      top_card_view.setVisibility(View.VISIBLE);
-                    // Toast.makeText(getApplicationContext(), "extend", Toast.LENGTH_LONG).show();
                 } else {
                      top_card_view.setVisibility(View.INVISIBLE);
-                    //Toast.makeText(getApplicationContext(), "Non extend", Toast.LENGTH_LONG).show();
                 }
 
                 if (scrollY > oldScrollY) {
@@ -448,6 +440,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         mfab_close.extend();
                     }
                 });
+
         mfab_close.setOnClickListener(
                 new OnClickListener() {
                     @Override
@@ -516,8 +509,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         header_img = findViewById(R.id.header_img);
         menu_tvdesc = findViewById(R.id.menu_tvdesc);
         clent_rating = findViewById(R.id.clent_rating);
-        colletion_time = findViewById(R.id.colletion_time);
-        delivery_time = findViewById(R.id.delivery_time);
         min_order_amt = findViewById(R.id.min_order_amt);
         collect_lener = findViewById(R.id.collect_lener);
         delivery_lener = findViewById(R.id.delivery_lener);
@@ -527,6 +518,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         recyclerviewitem = findViewById(R.id.recyclerviewitem);
         ViewCompat.setNestedScrollingEnabled(recyclerviewOffers, false);
         recyclerviewOffers.setNestedScrollingEnabled(false);
+
+
+        restaurants_status = findViewById(R.id.restaurants_status);
+        delicery_collection_time = findViewById(R.id.delicery_collection_time);
 
         menu_view_card_view = findViewById(R.id.menu_view_card_view);
         recyclerviewmenuitem = findViewById(R.id.recyclerviewmenuitem);
@@ -554,6 +549,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         addon_item_view = findViewById(R.id.addon_item_view);
         selected_addon_item_view = findViewById(R.id.selected_addon_item_view);
+        miles_textview = findViewById(R.id. miles_textview);
 
         selected_addon_item_view.setVisibility(View.GONE);
         animationdown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
@@ -591,16 +587,25 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         heart_icon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                HeartIcon();
+
+             //   HeartIcon(user_id);
+
+                 HeartIcon();
+
             }
         });
 
         info_icon_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 info_popup.show();
+
             }
         });
+
+
+
 
 /*
         recyclerviewitem.addOnScrollListener(new OnScrollListener() {
@@ -865,7 +870,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         } else {
             add_to_cart_layout.setVisibility(View.INVISIBLE);
-            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
             //Order_mode_popup();
 
@@ -894,7 +899,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
                     }
                 });
-
 
         /*---------------------------OnClickListener----------------------------------------------------*/
         addon_extra1.setOnClickListener(
@@ -1338,6 +1342,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagepromooff, new IntentFilter("custom-message-promooffer"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageonlineoff, new IntentFilter("custom-message-onlineoffer"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageitempossion, new IntentFilter("item_possion-message"));
+
+
         /*---------------------------loaderviewlibrary----------------------------------------------------*/
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
@@ -1346,6 +1352,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessagecollectononly, new IntentFilter("collection_only"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mclasbackonly, new IntentFilter("clasback"));
+
+
 
         /*---------------------------Share function----------------------------------------------------*/
         shareicon.setOnClickListener(new OnClickListener() {
@@ -1392,7 +1400,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
         });
 */
+
+
+
+
+
+
+
+
     }
+
+
+
 
 
     private void Show_info_popup() {
@@ -1419,7 +1438,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         params.put("postcode", key_postcode);
         params.put("area", key_area);
         params.put("address_location", key_address);
-
+        params.put("lat", key_lat);
+        params.put("lng", key_lon);
 
         fullUrl = menuurlpath + "/about";
 
@@ -1600,6 +1620,48 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         favourite_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+               /* StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"addfavroitelist",
+                        new com.android.volley.Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonobject = new JSONObject(response);
+                                    JSONObject getdata =jsonobject.getJSONObject("status");
+
+
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new com.android.volley.Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                            }
+                        }){
+
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> params = new HashMap<>();
+                        params.put("user_id",ordermodetype);
+                        params.put("path",);
+                        params.put("client_id",);
+                        return params;
+                    }
+                };
+
+                RequestQueue requestqueue = Volley.newRequestQueue(Item_Menu_Activity.this);
+                requestqueue.add(stringRequest);
+
+*/
+
+
                 heart_popup.dismiss();
             }
         });
@@ -1726,6 +1788,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     };
 
 
+
+
+
     private TextWatcher mDateEntryWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1777,7 +1842,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             mShimmerViewContainer.setVisibility(View.VISIBLE);
             mShimmerViewContainer.startShimmerAnimation();
 
-            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
             Log.e("ordertypevalue", "" + sharedpreferences.getString("ordermodetype", null));
 
 
@@ -1896,6 +1961,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
+
+
+
+
+
     /*---------------------------get order mode coll delivery----------------------------------------------------*/
     private void collDelivery(String smenuurlpath) {
         fullUrl = smenuurlpath + "/collDelivery";
@@ -1923,7 +1993,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                                 editor_extra.putString("ordermodetype", "0");
                                 editor_extra.commit();
-                                menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                             } else {
@@ -1935,7 +2005,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                                     editor_extra.putString("ordermodetype", "0");
                                     editor_extra.commit();
-                                    menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                    menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                                 } else if (sharedpreferences.getString("ordermodetype", null).equalsIgnoreCase("1")) {
@@ -1946,7 +2016,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                                     editor_extra.putString("ordermodetype", "1");
                                     editor_extra.commit();
-                                    menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                    menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                                 }
@@ -1960,7 +2030,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                             editor_extra.putString("ordermodetype", "1");
                             editor_extra.commit();
-                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                         } else if (response.body().getData().getDelivery().equalsIgnoreCase("0") && response.body().getData().getCollection().equalsIgnoreCase("")) {
@@ -1971,7 +2041,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                             editor_extra.putString("ordermodetype", "0");
                             editor_extra.commit();
-                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                         } else if (response.body().getData().getDelivery().equalsIgnoreCase("") && response.body().getData().getCollection().equalsIgnoreCase("")) {
@@ -1981,7 +2051,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             SharedPreferences.Editor editor_extra = sharedpreferences.edit();
                             editor_extra.putString("ordermodetype", "0");
                             editor_extra.commit();
-                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 
                         }
@@ -2123,6 +2193,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         }
 
                                         if (response.body().getData().getDelivery().getStatus().equalsIgnoreCase("0")) {
+
                                             card_change.setVisibility(View.GONE);
                                             today_time_layer.setVisibility(View.GONE);
                                             later_time_layer.setVisibility(View.GONE);
@@ -2135,6 +2206,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             update_mode.setText("Takeaway Closed for Delivery");
                                             update_mode.setVisibility(View.VISIBLE);
                                             dismissloading();
+
                                         } else {
 
                                             card_change.setVisibility(View.VISIBLE);
@@ -2171,6 +2243,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 }, 1000);
                                             }
                                         }
+
                                     }
                                 });
 
@@ -2861,8 +2934,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             delivery_one_tex.setText("Delivery");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_delivery);
 
-                                            delivery_collection_textview.setText("Delivery");
-                                            cooking_time_textview.setText(response.body().getData().getDelivery().getCooking_time());
+                                        /*    delivery_collection_textview.setText("Delivery");
+                                            cooking_time_textview.setText(response.body().getData().getDelivery().getCooking_time());*/
 
                                             mAddFab.setVisibility(View.VISIBLE);
 
@@ -2870,13 +2943,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             delivery_one_tex.setText("Collection");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_collection);
 
-                                            delivery_collection_textview.setText("Collection");
-                                            cooking_time_textview.setText(response.body().getData().getCollection().getCooking_time());
+                                   /*         delivery_collection_textview.setText("Collection");
+                                            cooking_time_textview.setText(response.body().getData().getCollection().getCooking_time());*/
 
                                             mAddFab.setVisibility(View.VISIBLE);
                                         }
 
-                                        menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                        menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
                                         Log.e("order_mode_details1", "" + order_mode);
                                         Log.e("order_mode_details2", "" + activetagstr);
                                         Log.e("order_mode_details3", "" + todaytimestr);
@@ -2899,7 +2972,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         mAddFab.setVisibility(View.VISIBLE);
 
 
-                        menugetitem(menuurlpath, "0", key_postcode, key_area, key_address);//menu item call api
+                        menugetitem(menuurlpath, "0", key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
                     }
 
@@ -2978,7 +3051,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     }
 
     /*---------------------Get Item in menu----------------------------*/
-    private void menugetitem(String menuurlpath, String menuparamesint, String str_key_postcode, String str_key_area, String str_key_address) {
+    private void menugetitem(String menuurlpath, String menuparamesint, String str_key_postcode, String str_key_area, String str_key_address,String latvalue,String lonvalue) {
         // get user data from session
 
         if(menuparamesint==null){
@@ -2994,10 +3067,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         params.put("postcode", str_key_postcode);
         params.put("area", str_key_area);
         params.put("address_location", str_key_address);
-
-
-
-
+        params.put("lat", latvalue);
+        params.put("lng", lonvalue);
 
         fullUrl = menuurlpath + "/menu";
 
@@ -3012,6 +3083,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
                 if (statusCode == 200) {
+
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
@@ -3020,8 +3092,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         menu_clientname.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         menu_tvdesc.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                        colletion_time.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                        delivery_time.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        miles_textview.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        delicery_collection_time.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         min_order_amt.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
 
                         menu_clientname.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -3031,8 +3103,36 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         //client name
                         List<menu_item_model.all_topbanner> clientdetails = (response.body().getTopbanner());
                         menu_item_model.all_topbanner[] listdata = clientdetails.toArray(new menu_item_model.all_topbanner[0]);
-                        menu_clientname.setText(listdata[0].getClientName());
 
+                        menu_clientname.setText(listdata[0].getClientName());
+                        miles_textview.setText(listdata[0].getmiles() + " Miles");
+
+                        restaurants_status.setText(listdata[0].gettakeawaystatus());
+
+
+                        if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Closed")) {
+
+                            restaurants_status.setText("CLOSED");
+                            restaurants_status.setBackgroundResource(R.drawable.close_background);
+
+                        } else if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Preorder")) {
+
+                            restaurants_status.setText("PRE-ORDER");
+                            restaurants_status.setBackgroundResource(R.drawable.preorder_background);
+
+                        } else if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Order Now")) {
+
+                            restaurants_status.setText("Order Now");
+                            restaurants_status.setBackgroundResource(R.drawable.open_background);
+
+                        } else {
+
+                            restaurants_status.setText("CLOSED");
+                            restaurants_status.setBackgroundResource(R.drawable.close_background);
+
+                        }
+
+                        delicery_collection_time.setText("20-30 min");
 
                         Picasso.get()
                                 .load(listdata[0].getClienImage())
@@ -3053,21 +3153,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             menu_tvdesc.setText(listdata[0].getCuisinename().get(0).getCuisine() + " , " + listdata[0].getCuisinename().get(1).getCuisine() + " , " + listdata[0].getCuisinename().get(2).getCuisine());
                         }
 
-                        if (listdata[0].getCollection_time() != null) {
-                            colletion_time.setText(listdata[0].getCollection_time());
-                        } else {
-                            collect_lener.setVisibility(View.GONE);
-                        }
-                        if (listdata[0].getDelivery_time() != null) {
-                            delivery_time.setText(listdata[0].getDelivery_time());
-                        } else {
-                            delivery_lener.setVisibility(View.GONE);
-                        }
-                        if (listdata[0].getMinorder() != null) {
-                            min_order_amt.setText("Min.order £ " + listdata[0].getMinorder());
-                        } else {
-                            min_lener.setVisibility(View.GONE);
-                        }
 
                         //   tvdesc
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;

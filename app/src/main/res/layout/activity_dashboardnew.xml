@@ -50,117 +50,47 @@
                         android:src="@drawable/left_arrow" />
 
                 </LinearLayout>
- <!--               <LinearLayout
+
+
+              <LinearLayout
                     android:id="@+id/change_postcode"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:background="@drawable/background_text_email"
                     android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:src="@drawable/locationpost" />
-
-                    <TextView
-                        android:id="@+id/url_postcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/_1sdp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/post_col_das"
-                        android:textSize="@dimen/_13sdp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:scaleType="centerCrop"
-                        android:text="Change"
-                        android:textColor="@color/das_chage"
-                        android:textSize="@dimen/_12sdp" />
-
-                </LinearLayout>
-
-
-
-                <LinearLayout
-                    android:id="@+id/show_offer_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:background="@drawable/background_text_email"
-                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_5sdp"
-                        android:src="@drawable/discount" />
+                        android:src="@drawable/location_icon" />
+
+                    <TextView
+                        android:id="@+id/url_postcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text=""
+                        android:layout_marginTop="2dp"
+                        android:textColor="#2C2C2E"
+                        android:textSize="@dimen/_13sdp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_regular"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_medium"
                         android:gravity="center"
-                        android:text="OFF  "
-                        android:textColor="@color/post_col_das"
-                        android:textSize="@dimen/_13sdp" />
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:scaleType="centerCrop"
+                        android:text="Change"
+                        android:layout_marginTop="2dp"
+                        android:textColor="#89898B"
+                        android:textSize="@dimen/_10sdp" />
 
-                </LinearLayout>-->
-
-
-                              <LinearLayout
-                                    android:id="@+id/change_postcode"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="40dp"
-                                    android:orientation="horizontal">
-
-                                    <ImageView
-                                        android:layout_width="20dp"
-                                        android:layout_height="20dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:src="@drawable/location_icon" />
-
-                                    <TextView
-                                        android:id="@+id/url_postcode"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginLeft="5dp"
-                                        android:fontFamily="@font/poppins_bold"
-                                        android:gravity="center"
-                                        android:text=""
-                                        android:layout_marginTop="2dp"
-                                        android:textColor="#2C2C2E"
-                                        android:textSize="@dimen/_13sdp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginRight="@dimen/_5sdp"
-                                        android:fontFamily="@font/poppins_medium"
-                                        android:gravity="center"
-                                        android:paddingLeft="@dimen/_10sdp"
-                                        android:scaleType="centerCrop"
-                                        android:text="Change"
-                                        android:layout_marginTop="2dp"
-                                        android:textColor="#89898B"
-                                        android:textSize="@dimen/_10sdp" />
-
-                                </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -177,14 +107,14 @@
                         android:layout_marginRight="1dp"
                         android:gravity="center">
 
-                        <!--android:background="@drawable/image_rounded-->"
-
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/filter_icon" />
+
                     </LinearLayout>
+
                     <ImageView
                         android:visibility="gone"
                         android:layout_width="30dp"
@@ -210,35 +140,6 @@
 
                 </LinearLayout>
 
-          <!--    <LinearLayout
-                    android:id="@+id/show_offer_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                 >
-
-                  &lt;!&ndash;android:background="@drawable/background_text_email"&ndash;&gt;
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:src="@drawable/discount" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:gravity="center"
-                        android:text="OFF  "
-                        android:textColor="@color/post_col_das"
-                        android:textSize="@dimen/_13sdp" />
-
-                </LinearLayout>-->
 
                 <LinearLayout
                    android:visibility="gone"
@@ -417,16 +318,6 @@
 
                 </LinearLayout>
 
-
-               <!-- <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/Enter_your_RecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:layout_marginBottom="5dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="horizontal" />-->
 
                    <include
                         android:layout_below="@+id/Enter_your_RecyclerView"

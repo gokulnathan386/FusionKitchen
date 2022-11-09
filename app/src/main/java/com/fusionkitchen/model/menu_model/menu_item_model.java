@@ -93,6 +93,31 @@ public class menu_item_model {
         @SerializedName("client_image")
         private String client_image;
 
+        @SerializedName("miles")
+        private String miles;
+
+        @SerializedName("take_away_status")
+        private String take_away_status;
+
+
+
+        public String getmiles() {
+            return miles;
+        }
+
+        public void setmiles(String miles) {
+            this.miles = miles;
+        }
+
+
+        public String gettakeawaystatus() {
+            return take_away_status;
+        }
+
+        public void settakeawaystatus(String take_away_status) {
+            this.take_away_status = take_away_status;
+        }
+
 
         public String getClienImage() {
             return client_image;

@@ -319,6 +319,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View view) {
 
+                item_view_dismiss = 0;
 
                 Decreasepriceqty(view,items[position].getId(),holder);
 
@@ -361,16 +362,28 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 if (count == 1) {
                     holder.qty_textview_number.setText("01");
-                    textview_qty.setText("01");
+                    if(item_view_dismiss == 1){
+                        textview_qty.setText("01");
+                    }
+
                 } else {
                     count -= 1;
                     length = String.valueOf(count).length();
                     if(length == 1){
                         holder.qty_textview_number.setText("0" + count);
-                        textview_qty.setText("0" + count);
+
+                        if(item_view_dismiss == 1){
+                            textview_qty.setText("0" + count);
+                        }
+
+
                     }else{
                         holder.qty_textview_number.setText("" + count);
-                        textview_qty.setText("0" + count);
+
+                        if(item_view_dismiss == 1){
+                            textview_qty.setText("" + count);
+                        }
+
                     }
 
                 }
@@ -634,7 +647,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-
+                item_view_dismiss = 1;
                 Decreasepriceqty(v,item_id,holder);
 
 
