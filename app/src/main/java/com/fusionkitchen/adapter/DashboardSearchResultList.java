@@ -50,8 +50,7 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
     String offertypeone, offertypetwo;
     // public String[] mColors = {"#3F51B5", "#FF9800", "#009688", "#673AB7"};
 
-    SharedPreferences sharedpreferences;
-    public static final String MyPREFERENCESMENU = "MyPrefs_menu";
+    public static final String Favourite_data = "favourite_store_data";
     private long mLastClickTime = 0;
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
@@ -348,7 +347,17 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
                 mLastClickTime = SystemClock.elapsedRealtime();
 
 
-                    Intent intent = new Intent("custom-message-menuurlpath");
+
+
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences(Favourite_data,MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("menuurlpath", listdata[position].getMenuurlpath());
+                myEdit.putInt("client_id", Integer.parseInt(listdata[position].getClientID()));
+                myEdit.commit();
+
+
+
+                Intent intent = new Intent("custom-message-menuurlpath");
                     intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
                     intent.putExtra("client_id", listdata[position].getClientID());
 
@@ -357,23 +366,6 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
-
-/*
-                if(listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("closed")){
-                }else{
-*/
-
-
-                //Toast.makeText(view.getContext(), "click on item: " + listdata[position].getId(), Toast.LENGTH_LONG).show();
-             /*   Intent intent = new Intent(mContext, Item_Menu_Activity.class);
-                intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
-
-                mContext.startActivity(intent);*/
-
-             /*   //get intent values
-                Intent intent = getIntent();
-                orderid = intent.getStringExtra("orderid");
-                str_iid = intent.getStringExtra("iid");*/
             }
         });
 

@@ -101,6 +101,9 @@ public class menu_item_model {
 
 
 
+
+
+
         public String getmiles() {
             return miles;
         }
@@ -222,6 +225,8 @@ public class menu_item_model {
                 this.cuisine = cuisine;
             }
         }
+
+
     }
 
 

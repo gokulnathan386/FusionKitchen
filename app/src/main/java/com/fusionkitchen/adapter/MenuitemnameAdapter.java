@@ -661,11 +661,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View v) {
 
                 if(clickable == 0){
-                    Toast.makeText(getApplicationContext(), "Btn click false", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Btn click false", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getApplicationContext(), "Btn click true", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Btn click true", Toast.LENGTH_SHORT).show();
                     clickable = 0;
                 }
+
+                item_view.dismiss();
+
 
             }
         });

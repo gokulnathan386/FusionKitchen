@@ -59,7 +59,7 @@
                             android:id="@+id/restaurants_status"
                             android:gravity="center"
                             android:text="PRE ORDER"
-                            android:textSize="8dp"
+                            android:textSize="10dp"
                             android:padding="3dp"
                             android:textColor="@color/white"
                             android:fontFamily="@font/poppins_semibold"
@@ -157,7 +157,6 @@
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:src="@drawable/menu_delivery" />
 
-
                                     <TextView
                                         android:id="@+id/delivery_one_tex"
                                         android:layout_width="wrap_content"
@@ -245,12 +244,11 @@
                                         android:id="@+id/heart_icon"
                                         android:layout_width="40dp"
                                         android:layout_height="40dp"
-                                        app:cardBackgroundColor="#e0467c"
                                         android:layout_marginRight="10dp"
                                         android:foregroundGravity="center"
                                         app:cardCornerRadius="150dp">
 
-                                        <!--app:cardBackgroundColor="#e0467c"-->
+                                  <!--      app:cardBackgroundColor="#e0467c"-->
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"

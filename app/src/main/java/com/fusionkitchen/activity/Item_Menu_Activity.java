@@ -130,6 +130,8 @@ import com.fusionkitchen.model.menu_model.search_menu_item_model;
 import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -173,6 +175,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     LatLng p1 = null;
     double p2;
     double p3;
+    Boolean check_favourite_boolean;
+
+    String menu_favourite_path;
+    int favourite_client;
 
     List<menu_item_sub_model.categoryall> jobdetails2;
 
@@ -388,6 +394,31 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         /*-----------------Fab-----------------*/
         appbar = findViewById(R.id.appbar);
+
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+
+                int ScrollRange =   scrollRange + verticalOffset;
+
+                if(20 < ScrollRange){
+                    top_card_view.setVisibility(View.INVISIBLE);
+                }else{
+                    top_card_view.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
+
+
         mAddFab.shrink();
         nsv = findViewById(R.id.nsv);
 
@@ -413,12 +444,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("scrolviw2", "scrollY: " + scrollY);
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
-
+/*
                 if (39 < oldScrollY) {   //400
                      top_card_view.setVisibility(View.VISIBLE);
                 } else {
                      top_card_view.setVisibility(View.INVISIBLE);
-                }
+                }*/
 
                 if (scrollY > oldScrollY) {
                     mAddFab.extend();
@@ -566,6 +597,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         shareicon = findViewById(R.id.shareicon);
       //  repeat_popup = findViewById(R.id.repeat_popup);
 
+
         total_amount_textview = findViewById(R.id.total_amount_textview);
         search_box_cardview = findViewById(R.id.search_box_cardview);
 
@@ -576,6 +608,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         restaurants_image  = findViewById(R.id.restaurants_image);
 
+        delivery_one_tex = findViewById(R.id.delivery_one_tex);
+        bikeimgonlydelivery = findViewById(R.id.bikeimgonlydelivery);
+        mode_view2 = findViewById(R.id.mode_view2);
+
         search_listview_header = findViewById(R.id.search_listview_header);
         search_listview_header.setOnClickListener(new OnClickListener() {
             @Override
@@ -584,13 +620,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
+
+
         heart_icon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-             //   HeartIcon(user_id);
-
                  HeartIcon();
+
 
             }
         });
@@ -606,6 +643,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
+        if(user_id.equalsIgnoreCase("")){
+
+            heart_icon.setVisibility(GONE);
+
+        }else{
+
+            heart_icon.setVisibility(VISIBLE);
+
+            SharedPreferences getclient_id = getSharedPreferences("favourite_store_data", MODE_PRIVATE);
+            menu_favourite_path = getclient_id.getString("menuurlpath", null);
+            favourite_client = getclient_id.getInt("client_id", 0);
+            showFavourite(user_id,favourite_client);
+
+
+        }
 
 /*
         recyclerviewitem.addOnScrollListener(new OnScrollListener() {
@@ -636,9 +688,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         Log.d("backbtn",reloadback);
 
 
-        delivery_one_tex = findViewById(R.id.delivery_one_tex);
-        bikeimgonlydelivery = findViewById(R.id.bikeimgonlydelivery);
-        mode_view2 = findViewById(R.id.mode_view2);
+
 
 
         btnClear.setOnClickListener(
@@ -1401,17 +1451,69 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 */
 
+    }
+
+    private void showFavourite(String user_id, int favourite_client) {
 
 
 
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"showFavourite",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
+
+
+                        try {
+
+                            JSONObject jsonobject = new JSONObject(response);
+
+                            String favourite_check_status = jsonobject.getString("status");
+
+                            if(favourite_check_status.equalsIgnoreCase("true")){
+
+                                     check_favourite_boolean = jsonobject.getBoolean("favourite");
+
+                                     if(check_favourite_boolean == true){
+                                         //heart_icon.setBackgroundColor(Color.parseColor("#464747"));
+                                         ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#e0467c"));
+                                     }
+
+                            }else{
+
+                                heart_icon.setBackgroundColor(Color.parseColor("#464747"));
+                            }
+
+                        }catch (JSONException e) {
+
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }){
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("user_id",user_id);
+                params.put("client_id", String.valueOf(favourite_client));
+                return params;
+            }
+        };
+
+        RequestQueue requestqueue = Volley.newRequestQueue(Item_Menu_Activity.this);
+        requestqueue.add(stringRequest);
 
 
 
     }
-
-
-
 
 
     private void Show_info_popup() {
@@ -1608,6 +1710,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     private void HeartIcon() {
+
         heart_popup = new Dialog(this);
         heart_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
         heart_popup.setContentView(R.layout.heart_popup_design);
@@ -1621,18 +1724,43 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
 
+                String clientId = String.valueOf(favourite_client);
 
-
-               /* StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"addfavroitelist",
+                StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"addfavroitelist",
                         new com.android.volley.Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+
+
                                 try {
+
                                     JSONObject jsonobject = new JSONObject(response);
-                                    JSONObject getdata =jsonobject.getJSONObject("status");
+
+                                    String check_status = jsonobject.getString("status");
+
+
+                                    if(check_status.equalsIgnoreCase("true")){
+
+                                        String check_msg = jsonobject.getString("data");
+
+                                        Log.d("Favourite","" + check_msg);
+
+                                        if(check_msg.equalsIgnoreCase("insert successfully")){
+
+                                            ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#e0467c"));
+
+                                        }else{
+
+                                            ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                                        }
+
+
+                                    }
 
 
                                 }catch (JSONException e) {
+
                                     e.printStackTrace();
                                 }
 
@@ -1649,18 +1777,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String,String> params = new HashMap<>();
-                        params.put("user_id",ordermodetype);
-                        params.put("path",);
-                        params.put("client_id",);
+                        params.put("user_id",user_id);
+                        params.put("path",menu_favourite_path);
+                        params.put("client_id",clientId);
                         return params;
                     }
                 };
 
                 RequestQueue requestqueue = Volley.newRequestQueue(Item_Menu_Activity.this);
                 requestqueue.add(stringRequest);
-
-*/
-
 
                 heart_popup.dismiss();
             }
@@ -1682,7 +1807,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         menu_item_list_view = menulistpopup.findViewById(R.id.menu_item_list_view);
 
 
-        Menulistview(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,menulistpopup);
+        Menulistview(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,menulistpopup,key_lat,key_lon);
 
         Log.d("Item_Menu_Activity",menuurlpath);
         Log.d("Item_Menu_Activity",""+sharedpreferences.getString("ordermodetype", null));
@@ -1698,7 +1823,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-    private void Menulistview(String menuurlpath, String ordermodetype, String key_postcode, String key_area, String key_address, Dialog menulistpopup) {
+    private void Menulistview(String menuurlpath, String ordermodetype, String key_postcode, String key_area, String key_address, Dialog menulistpopup, String menu_lat, String menu_lon) {
 
         String Menu_Url_Path =  menuurlpath +"/menu";
 
@@ -1711,6 +1836,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     @Override
                     public void onResponse(String response) {
                         try {
+
                             JSONObject jsonobject = new JSONObject(response);
                             JSONObject getdata =jsonobject.getJSONObject("menu");
                             JSONArray menu_list = getdata.getJSONArray("searchcategory");
@@ -1749,6 +1875,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 params.put("postcode",key_postcode);
                 params.put("area",key_area);
                 params.put("address_location",key_address);
+                params.put("lat",menu_lat);
+                params.put("lng",menu_lon);
                 return params;
             }
         };
@@ -3015,7 +3143,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onResponse(Call<offer_code_model> call, Response<offer_code_model> response) {
                 //response.headers().get("Set-Cookie");
+
                 int statusCode = response.code();
+
+                Log.e("menu_offer", new Gson().toJson(response.body()));
+
                 if (statusCode == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
