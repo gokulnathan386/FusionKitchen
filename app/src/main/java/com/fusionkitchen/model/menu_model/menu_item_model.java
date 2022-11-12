@@ -100,9 +100,17 @@ public class menu_item_model {
         private String take_away_status;
 
 
+        @SerializedName("images")
+        private Images images;
 
 
+        public Images getImages() {
+            return images;
+        }
 
+        public void setImages(Images images) {
+            this.images = images;
+        }
 
         public String getmiles() {
             return miles;
@@ -223,6 +231,31 @@ public class menu_item_model {
 
             public void setCuisine(String cuisine) {
                 this.cuisine = cuisine;
+            }
+        }
+
+
+        public class Images {
+            private String repeat;
+            private String delivery;
+            private String walking;
+            public String getRepeat() {
+                return repeat;
+            }
+            public void setRepeat(String repeat) {
+                this.repeat = repeat;
+            }
+            public String getDeliveryimage() {
+                return delivery;
+            }
+            public void setDeliveryimage(String delivery1) {
+                this.delivery = delivery1;
+            }
+            public String getWalking() {
+                return walking;
+            }
+            public void setWalking(String walking) {
+                this.walking = walking;
             }
         }
 

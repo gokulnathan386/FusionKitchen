@@ -340,18 +340,19 @@
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:visibility="gone"
-                                android:id="@+id/collection_and_delivery"
+                                android:id="@+id/offer_gif"
+                                android:background="#F4F5F5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent">
-                            </ImageView>
 
+                            </ImageView>
+<!--
                             <pl.droidsonroids.gif.GifImageView
                                 android:id="@+id/offer_gif"
                                 android:layout_width="50dp"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                />
+                                />-->
 
                             <!-- android:src="@drawable/test"-->
 
@@ -366,7 +367,7 @@
 
                             <TextView
                                 android:id="@+id/delivery_collection_textview"
-                                android:text="Delivery"
+                                android:text=""
                                 android:textColor="#17284D"
                                 android:fontFamily="@font/poppins_bold"
                                 android:textSize="15dp"
@@ -379,7 +380,7 @@
                                 android:textSize="12dp"
                                 android:textColor="#17284D"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="Tomorrow (20 - 40 Mins)"
+                                android:text=""
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                             </TextView>

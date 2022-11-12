@@ -816,6 +816,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_favorite).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_address).setVisible(true);
@@ -829,7 +830,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(false);
-
+            navigationView.getMenu().findItem(R.id.nav_favorite).setVisible(false);
 
             navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(false);
@@ -1115,7 +1116,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.nav_myaccount) {
             startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
             drawer.closeDrawers();
-        } else if (id == R.id.nav_address) {
+        } else if(id == R.id.nav_favorite) {
+            startActivity(new Intent(getApplicationContext(),Favourite_Activity.class));
+            drawer.closeDrawers();
+        }else if (id == R.id.nav_address) {
             startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
             drawer.closeDrawers();
         } else if (id == R.id.nav_wallet) {

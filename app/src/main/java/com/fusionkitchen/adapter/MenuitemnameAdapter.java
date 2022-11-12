@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.text.Html.fromHtml;
 
 import androidx.annotation.RequiresApi;
@@ -82,6 +83,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private static Context mContext;
     private final menu_item_sub_model.categoryall.subcat sub;
     private final menu_item_sub_model.categoryall listdatum;
+    public static final String PREORDERPREFERENCES = "pre_order_popup";
+    String menu_time_update;
 
     private menu_item_sub_model.categoryall.subcat.items[] items;
     private Dialog dialog;
@@ -117,14 +120,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     TextView single_item_bestseller_musttry;
     LinearLayout best_must_linear_layout;
     ImageView star_imageview;
-
+    String menu_collection_tattime,menu_delivery_tattime;
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private SQLDBHelper dbHelper;
 
     private static long mLastClickTime = 0;
     String removeqty,removefinalamt;
 
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedpreferences,order_popup_data;
     public static final String MyPREFERENCES = "MyPrefs_extra";
 
     ArrayList<String> arr = new ArrayList<String>();
@@ -169,7 +172,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
         dbHelper = new SQLDBHelper(mContext);
 
-
+        order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
 
 
@@ -204,7 +207,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
-        sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
+        sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         Log.e("otypeaction", "" + sharedpreferences.getString("orderactivetag", null));
 
         if(items[position].getImage().equalsIgnoreCase("")){
@@ -757,6 +760,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
 
 
+
+                        menu_delivery_tattime = response.body().getData().getDelivery().getCooking_time();
+                        menu_collection_tattime = response.body().getData().getCollection().getCooking_time();
+
+
                         if (!response.body().getData().getDelivery().getStatus().equalsIgnoreCase("0")) {
                             loading();
                             new Handler().postDelayed(new Runnable() {
@@ -1002,6 +1010,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                                                 update_mode.setText("Deliver ASAP");
+
+                                                menu_time_update = "Deliver " + menu_delivery_tattime;
+
                                                 today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
@@ -1041,6 +1052,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                                                 update_mode.setText("Collection ASAP");
+
+                                                menu_time_update = "Collection " + menu_collection_tattime;
+
                                                 today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
@@ -1144,8 +1158,12 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
 
+                                                        menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
+
+                                                            menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
                                                         }
 
                                                     /*    update_mode.setText("Deliver today at " + selectedtodaytimeItem);
@@ -1224,10 +1242,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         AdapterListData  todaytime = (AdapterListData)parent.getItemAtPosition(position);
                                                         //  Toast.makeText(getApplicationContext(),todaytime.today_time_string, Toast.LENGTH_LONG).show();
                                                         update_mode.setText("Collection "+todaytime.label+" at " + todaytime.today_time);
+
+                                                        menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
+
                                                         todaytimestr = todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
+
+                                                            menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
                                                         }
                                                         update_mode.setVisibility(View.VISIBLE);
                                                     } // to close the onItemSelected
@@ -1445,7 +1468,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                                     update_mode.setFocusable(true);
                                                                     update_mode.setEnabled(true);
                                                                     update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
                                                                     update_mode.setText("Deliver " +laterdates+ " at " +latertime.today_time);
+
+                                                                    menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
+
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
@@ -1456,7 +1483,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                                     update_mode.setFocusable(true);
                                                                     update_mode.setEnabled(true);
                                                                     update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
                                                                     update_mode.setText("Collection " +laterdates+ " at " + latertime.today_time);
+
+                                                                    menu_time_update = "Collection "+ laterdates+" at " + latertime.today_time;
+
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
@@ -1519,6 +1550,37 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         editor_extra.putString("todaytimestring",todaytimestring);
                                         editor_extra.putString("latertimestring",latertimestring);
                                         editor_extra.commit();
+
+
+
+                                        if (order_mode.equalsIgnoreCase("0")) {
+
+                                            SharedPreferences.Editor pop_up_details = order_popup_data.edit();
+                                            pop_up_details.putString("Pre_order_collection_delivery", "Delivery");
+                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.commit();
+
+                                            Intent intent = new Intent("Pre_order_pop_up_update");
+                                            intent.putExtra("Pre_order_collection_delivery","Delivery");
+                                            intent.putExtra("Pre_order_menu_time_update",menu_time_update);
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+                                        }else{
+
+
+                                            SharedPreferences.Editor pop_up_details = order_popup_data.edit();
+                                            pop_up_details.putString("Pre_order_collection_delivery", "Collection");
+                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.commit();
+
+
+                                            Intent intent = new Intent("Pre_order_pop_up_update");
+                                            intent.putExtra("Pre_order_collection_delivery","Collection");
+                                            intent.putExtra("Pre_order_menu_time_update",menu_time_update);
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                                        }
 
                                       //  menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
                                         Log.e("order_mode_details1", "" + order_mode);

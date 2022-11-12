@@ -4,10 +4,12 @@
     <group
         android:id="@+id/nav_val1"
         android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/nav_home"
             android:title="Home" />
+
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/nav_login"
@@ -18,12 +20,18 @@
             android:icon="@drawable/myacco"
             android:title="My Account" />
 
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/favorite_icon"
+            android:title="Favorite" />
+
 
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/nav_notification"
             android:title="Notifications"
             android:visible="false" />
+
         <item
             android:id="@+id/nav_orderhistory"
             android:icon="@drawable/nav_history"
