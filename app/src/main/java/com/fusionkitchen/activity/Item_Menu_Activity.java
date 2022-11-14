@@ -47,6 +47,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -159,6 +160,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     TextView delivery_collection_textview,cooking_time_textview;
     TextView restaurants_status;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
+    int K = 2;
 
     public Context mContext = Item_Menu_Activity.this;
     private Dialog dialog,dialog_loading;
@@ -185,7 +187,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     int favourite_client;
     String delivery_image,repeat_image,collection_image;
 
-    List<menu_item_sub_model.categoryall> jobdetails2;
+    List<menu_item_sub_model.categoryall> jobdetails2 = new ArrayList<>();
+
+    List<menu_item_sub_model.categoryall> pageloader;
 
     ImageView offer_gif;
 
@@ -346,6 +350,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     int pastVisibleItem, visibleItemCount, totalItemCount, currentPage = 1, mPage = 1;
     private boolean loading = true;
 
+    int page = 0, limit = 2;
+    ProgressBar loadingPB;
+
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
     private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
@@ -450,6 +457,30 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("scrolviw2", "scrollY: " + scrollY);
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
+                Log.e("redrtt", ": " + v.getChildAt(0).getMeasuredHeight());
+                Log.e("kjlkjlkjl", ": " + v.getMeasuredHeight());
+
+                int t = scrollY - 7 ;
+                int verticalScrollableHeight = v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight();
+
+                if (t == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                   Log.d("Scrollview_data----->","if");
+                    loadingPB.setVisibility(View.VISIBLE);
+                    getDataFromAPI(page, limit);
+                  //  menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);
+
+                }
+
+
+
+
+
+                Log.d("Scrollview_data----->"," " + verticalScrollableHeight);
+                Log.d("Scrollview_dataY----->"," " + scrollY);
+
+            //    Log.d("Laoderdata","" + pageloader.size());
+               // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
+
 /*
                 if (39 < oldScrollY) {   //400
                      top_card_view.setVisibility(View.VISIBLE);
@@ -462,6 +493,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 } else {
                     mAddFab.shrink();
                 }
+
+
 
             }
         });
@@ -603,6 +636,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         menu_page_pop_up = findViewById(R.id.menu_page_pop_up);
         heart_icon = findViewById(R.id.heart_icon);
         shareicon = findViewById(R.id.shareicon);
+        loadingPB = findViewById(R.id.idPBLoading);
       //  repeat_popup = findViewById(R.id.repeat_popup);
 
 
@@ -664,8 +698,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         }
 
-/*
-        recyclerviewitem.addOnScrollListener(new OnScrollListener() {
+   /*recyclerviewitem.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -686,15 +719,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             }
 
-        });*/
-
+        });
+*/
 
 
         Log.d("backbtn",reloadback);
-
-
-
-
 
 
         btnClear.setOnClickListener(
@@ -1485,7 +1514,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    private void getDataFromAPI(int page, int limit) {
 
+        loadingPB.setVisibility(View.GONE);
+
+    }
 
 
     public BroadcastReceiver mPreOrderpopup = new BroadcastReceiver() {
@@ -3430,7 +3463,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
-                        jobdetails2 = (response.body().getMenu().getCategoryall());
+                        //jobdetails2 = (response.body().getMenu().getCategoryall());
+
+                        jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
+                        jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
+
+                        pageloader = (response.body().getMenu().getCategoryall());
 
 
 
