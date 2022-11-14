@@ -3469,9 +3469,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
 
                         pageloader = (response.body().getMenu().getCategoryall());
-
-
-
                         
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
