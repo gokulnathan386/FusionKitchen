@@ -801,6 +801,7 @@ public class Dashboard_Activity extends AppCompatActivity {
             //   Log.e("params", new Gson().toJson(response.body()));
 
                 if (statusCode == 200) {
+
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);

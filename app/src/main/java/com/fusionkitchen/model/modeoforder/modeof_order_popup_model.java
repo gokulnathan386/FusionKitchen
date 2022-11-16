@@ -135,6 +135,8 @@ public class modeof_order_popup_model {
                 @SerializedName("message")
                 private String message;
 
+                @SerializedName("asap_time_string")
+                private String asap_time_string;
 
                 public String getStatus() {
                     return status;
@@ -159,6 +161,16 @@ public class modeof_order_popup_model {
                 public void setMessage(String message) {
                     this.message = message;
                 }
+
+
+                public String getAsapTimeString() {
+                    return asap_time_string;
+                }
+
+                public void setAsapTimeString(String asap_time_string) {
+                    this.asap_time_string = asap_time_string;
+                }
+
             }
 
 
@@ -360,6 +372,11 @@ public class modeof_order_popup_model {
                 @SerializedName("message")
                 private String message;
 
+                @SerializedName("asap_time_string")
+                private String asap_time_string;
+
+
+
 
                 public String getStatus() {
                     return status;
@@ -382,7 +399,21 @@ public class modeof_order_popup_model {
                 }
 
                 public void setMessage(String message) {
+
                     this.message = message;
+
+                }
+
+                public String getAsapTimeString() {
+
+                    return asap_time_string;
+
+                }
+
+                public void setAsapTimeString(String asap_time_string) {
+
+                    this.asap_time_string = asap_time_string;
+
                 }
 
 

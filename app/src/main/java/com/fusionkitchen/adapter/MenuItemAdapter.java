@@ -181,10 +181,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         }
 
     }
+    @SuppressLint("LogNotTimber")
     @Override
     public int getItemCount() {
         return listdata.length;
-      //  return 2;
 
     }
 

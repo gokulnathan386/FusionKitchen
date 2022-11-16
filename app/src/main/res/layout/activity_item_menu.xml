@@ -790,6 +790,18 @@
                                         android:layoutAnimation="@anim/layout_animation"
                                         android:nestedScrollingEnabled="false" />
 
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/recyclerviewcommon"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:clipToPadding="false"
+                                        android:isScrollContainer="false"
+                                        android:layoutAnimation="@anim/layout_animation"
+                                        android:nestedScrollingEnabled="false"
+                                        android:paddingLeft="15dp"
+                                        />
+
                                 </LinearLayout>
                             </HorizontalScrollView>
                         </RelativeLayout>
@@ -1657,12 +1669,13 @@
                   <!--  tools:listitem="@layout/raw_menu_catag_details"-->
 
 
-             <!--       <ProgressBar
+                   <ProgressBar
                         android:id="@+id/idPBLoading"
+                       android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
--->
+
 
                     <LinearLayout
                         android:id="@+id/search_layout"

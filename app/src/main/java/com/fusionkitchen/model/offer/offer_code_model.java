@@ -10,7 +10,6 @@ import com.fusionkitchen.model.addon.menu_addons_model;
 public class offer_code_model {
 
 
-    //AccountResultModel
     @SerializedName("status")
     private String status;
 
@@ -46,6 +45,10 @@ public class offer_code_model {
         private List<offer_list_model_details.discountcode> discountcode;
 
 
+
+        @SerializedName("commoncoupon")
+        private List<offer_list_model_details.commoncoupon> commoncoupon;
+
         public List<offer_list_model_details.discountcode> getDiscountcode() {
             return discountcode;
         }
@@ -62,6 +65,18 @@ public class offer_code_model {
         public void setPromocode(List<offer_list_model_details.promocode> promocode) {
             this.promocode = promocode;
         }
+
+
+
+        public List<offer_list_model_details.commoncoupon> getCommonCoupon() {
+            return commoncoupon;
+        }
+
+        public void setCommonCoupon(List<offer_list_model_details.commoncoupon> commoncoupon) {
+            this.commoncoupon = commoncoupon;
+        }
+
+
     }
 
 

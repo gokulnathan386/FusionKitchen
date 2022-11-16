@@ -80,11 +80,10 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 import com.fusionkitchen.adapter.MenuListViewAdapter;
+import com.fusionkitchen.adapter.Menucommoncouponadapter;
 import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
-import com.fusionkitchen.model.ExamData;
-import com.fusionkitchen.model.cart.Cartitem;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
@@ -103,16 +102,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
@@ -132,9 +125,7 @@ import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,7 +133,6 @@ import org.json.JSONObject;
 
 import okhttp3.HttpUrl;
 import pl.droidsonroids.gif.GifImageView;
-import pl.droidsonroids.gif.GifTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -159,6 +149,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     String item_price_amt;
     TextView delivery_collection_textview,cooking_time_textview;
     TextView restaurants_status;
+    RecyclerView recyclerviewcommon;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
     int K = 2;
 
@@ -192,6 +183,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     List<menu_item_sub_model.categoryall> pageloader;
 
     ImageView offer_gif;
+    String asap_time_string;
 
 
     /*---------------------------check internet connection----------------------------------------------------*/
@@ -246,8 +238,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     /*---------------------------loaderviewlibrary----------------------------------------------------*/
     ShimmerFrameLayout mShimmerViewContainer;
     StringBuffer stringName_str, addonextraitemstringName_str;
-    String addonextrastringName = "";
-    String addonextraitemstringName = "";
+
     String categoryname;
     String subcategoryname;
     String ItemName;
@@ -266,7 +257,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     ArrayAdapter<String> adapter;
     ArrayList<String> aidlist;
     String str_listItems = "";
-    String item_qty = "1";
+    String offermenustr= "";
 
     int checkval;
 
@@ -457,32 +448,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("scrolviw2", "scrollY: " + scrollY);
                 Log.e("scrolviw3", "oldScrollX: " + oldScrollX);
                 Log.e("scrolviw4", "oldScrollY: " + oldScrollY);
-                Log.e("redrtt", ": " + v.getChildAt(0).getMeasuredHeight());
-                Log.e("kjlkjlkjl", ": " + v.getMeasuredHeight());
-
-                int t = scrollY - 7 ;
-                int verticalScrollableHeight = v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight();
-
-                if (t == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                   Log.d("Scrollview_data----->","if");
-                    loadingPB.setVisibility(View.VISIBLE);
-                    getDataFromAPI(page, limit);
-                  //  menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);
-
-                }
-
-
-
-
-
-                Log.d("Scrollview_data----->"," " + verticalScrollableHeight);
-                Log.d("Scrollview_dataY----->"," " + scrollY);
-
-            //    Log.d("Laoderdata","" + pageloader.size());
-               // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
 /*
-                if (39 < oldScrollY) {   //400
+               if (39 < oldScrollY) {   //400
                      top_card_view.setVisibility(View.VISIBLE);
                 } else {
                      top_card_view.setVisibility(View.INVISIBLE);
@@ -586,6 +554,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         recyclerviewOffers = findViewById(R.id.recyclerviewOffers);
         recyclerviewpromo = findViewById(R.id.recyclerviewpromo);
         recyclerviewitem = findViewById(R.id.recyclerviewitem);
+        recyclerviewcommon = findViewById(R.id.recyclerviewcommon);
         ViewCompat.setNestedScrollingEnabled(recyclerviewOffers, false);
         recyclerviewOffers.setNestedScrollingEnabled(false);
 
@@ -681,8 +650,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 
 
+     /*   user_id != null && !user_id.isEmpty()*/
 
-        if(user_id.equalsIgnoreCase("")){
+     if(user_id.equalsIgnoreCase("")){
 
             heart_icon.setVisibility(GONE);
 
@@ -694,7 +664,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             menu_favourite_path = getclient_id.getString("menuurlpath", null);
             favourite_client = getclient_id.getInt("client_id", 0);
             showFavourite(user_id,favourite_client);
-
 
         }
 
@@ -1514,10 +1483,38 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-    private void getDataFromAPI(int page, int limit) {
+    private void getDataFromAPI() {
 
-        loadingPB.setVisibility(View.GONE);
+    //    loadingPB.setVisibility(View.GONE);
 
+     /*   jobdetails2.clear();
+
+         K = K + 2;
+
+
+
+
+        Log.d("LoopdataK-->",""+ K);
+
+
+        for(int L = 0; L <= K;L++){
+
+           // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);
+
+            jobdetails2.add(pageloader.get(L));
+
+          Log.d("Loopdata-->",""+ pageloader.get(L));
+
+        }
+
+        MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
+        recyclerviewitem.setHasFixedSize(true);
+        recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
+        // recyclerviewitem.getLayoutManager().scrollToPosition(2);
+        recyclerviewitem.setAdapter(itemadapter);
+*/
+
+        Log.d("Gokulnathan","Test---->");
     }
 
 
@@ -2614,10 +2611,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 later_time_layer.setVisibility(View.GONE);
                                                 update_mode.setVisibility(View.VISIBLE);
 
-
-
-
-
                                                 dismissloading();
 
                                             } else {
@@ -2646,6 +2639,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                 delivery_collection_textview.setText("Delivery");
                                                 cooking_time_textview.setText(menu_time_update);
+
+                                                asap_time_string = response.body().getData().getDelivery().getAsap().getAsapTimeString();
+
+                                                offermenustr =  response.body().getData().getDelivery().getAsap().getAsapTimeString();
+
 
                                                 dismissloading();
                                             }
@@ -2693,6 +2691,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                 delivery_collection_textview.setText("Collection");
                                                 cooking_time_textview.setText(menu_time_update);
+
+                                                asap_time_string = response.body().getData().getCollection().getAsap().getAsapTimeString();
+
+                                                offermenustr =  response.body().getData().getCollection().getAsap().getAsapTimeString();
+
 
                                                 dismissloading();
                                             }
@@ -2792,6 +2795,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
+
+                                                        offermenustr = todaytimestring;
 
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
 
@@ -2893,6 +2898,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                         todaytimestr = todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
+
+                                                        offermenustr = todaytimestring;
 
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
@@ -3134,6 +3141,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
+
+                                                                    offermenustr = latertimestring;
+
                                                                     dismissloading();
                                                                 } else {
                                                                     update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
@@ -3153,6 +3163,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
+
+                                                                    offermenustr =latertimestring;
+
                                                                     dismissloading();
                                                                 }
                                                             } // to close the onItemSelected
@@ -3206,9 +3219,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         editor_extra.putString("orderlatertime", latertimestr);
                                         editor_extra.putString("todaytimestring",todaytimestring);
                                         editor_extra.putString("latertimestring",latertimestring);
+                                        editor_extra.putString("Asaptimestring",asap_time_string);
                                         editor_extra.putString("pop_up_show","1");
+                                        editor_extra.putString("asaptodaylaterstring",offermenustr);
                                         editor_extra.commit();
-
 
 
                                         if (order_mode.equalsIgnoreCase("0")) {
@@ -3246,6 +3260,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         }
 
                                         menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
+                                        menu_offer(menuurlpath, "0", "0");
+
                                         Log.e("order_mode_details1", "" + order_mode);
                                         Log.e("order_mode_details2", "" + activetagstr);
                                         Log.e("order_mode_details3", "" + todaytimestr);
@@ -3297,12 +3313,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     /*---------------------------Offer RecyclerView ----------------------------------------------------*/
     private void menu_offer(String menuurlpath, String paymentmode, String ordermodeoffer) {
         // get user data from session
+
+        SharedPreferences time_string_offer = getSharedPreferences("MyPrefs_extra",MODE_PRIVATE);
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("path", menuurlpath);
         params.put("payment_mode", paymentmode);
         params.put("ordermode", ordermodeoffer);
+        params.put("order_time",offermenustr);
 
-        Log.d("menu_offer", String.valueOf(params));
+
+
+        Log.d("menu_offer---->", String.valueOf(params));
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<offer_code_model> call = apiService.offershow(params);
@@ -3333,13 +3355,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewpromo.setItemAnimator(new DefaultItemAnimator());
                         recyclerviewpromo.setAdapter(adapterpromo);
 
+//Common Coupen Code
+
+                        Menucommoncouponadapter adaptercommon = new Menucommoncouponadapter(mContext, response.body().getDiscount_list().getDiscountcode(), response.body().getDiscount_list().getPromocode());
+                        recyclerviewcommon.setHasFixedSize(true);
+                        recyclerviewcommon.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+                        recyclerviewcommon.setItemAnimator(new DefaultItemAnimator());
+                        recyclerviewcommon.setAdapter(adaptercommon);
+
+
 
                     }
                 } else {
                     Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
             }
-
 
             @Override
             public void onFailure(Call<offer_code_model> call, Throwable t) {
@@ -3463,13 +3493,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
-                        //jobdetails2 = (response.body().getMenu().getCategoryall());
+                         jobdetails2 = (response.body().getMenu().getCategoryall());
 
-                        jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
-                        jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
+                      /*   jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
+                         jobdetails2.add(response.body().getMenu().getCategoryall().get(1));*/
 
-                        pageloader = (response.body().getMenu().getCategoryall());
-                        
+                       // pageloader = (response.body().getMenu().getCategoryall());
+
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
                         recyclerviewitem.setHasFixedSize(true);
@@ -3477,7 +3507,25 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         // recyclerviewitem.getLayoutManager().scrollToPosition(2);
                         recyclerviewitem.setAdapter(itemadapter);
 
-                       // ViewCompat.setNestedScrollingEnabled(recyclerviewitem, true);
+
+/*
+
+                        new CountDownTimer(20000, 2000) {
+
+                            public void onTick(long millisUntilFinished) {
+
+                                Log.d("Gokulnathan","" + millisUntilFinished / 2000);
+
+                            }
+
+                            public void onFinish() {
+
+                                Log.d("Gokulnathan","Done");
+                            }
+                        }.start();
+*/
+
+
 
 
                         List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
@@ -4633,7 +4681,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         searchfullUrl = menuurlpath + "/menu" + "/searchAPI";
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<search_menu_item_model> call = apiService.search_menu_item(searchfullUrl, params);
-        Log.e("searchapikey", "" + params);
+        Log.e("searchapikey", "" + params + " " + searchfullUrl);
         call.enqueue(new Callback<search_menu_item_model>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override

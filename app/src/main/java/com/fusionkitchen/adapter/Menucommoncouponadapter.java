@@ -2,7 +2,6 @@ package com.fusionkitchen.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -12,29 +11,27 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
 import com.fusionkitchen.model.offer.offer_list_model_details;
 
-public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.ViewHolder> {
+import java.util.List;
+
+public class Menucommoncouponadapter extends RecyclerView.Adapter<MenupromoAdapter.ViewHolder> {
     private offer_list_model_details.discountcode[] listdata;
     private offer_list_model_details.promocode[] promocode;
 
     private Context mContext;
     Dialog offer_popup,Coupen_popup;
-   // public int[] mColors = {R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two};//int or string
+    // public int[] mColors = {R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two};//int or string
 
     // RecyclerView recyclerView;
-    public MenupromoAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode) {
+    public Menucommoncouponadapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode) {
         this.listdata = listdata.toArray(new offer_list_model_details.discountcode[0]);
         this.promocode = promocode.toArray(new offer_list_model_details.promocode[0]);
         this.mContext = mContext;
@@ -55,7 +52,7 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
 
         final offer_list_model_details.promocode myListData = promocode[position];
 
-    //    holder.relativeLayout.setBackgroundResource((mColors[position % 20]));
+        //    holder.relativeLayout.setBackgroundResource((mColors[position % 20]));
 
         if (promocode[position].getType().equalsIgnoreCase("0")) {
             holder.offer_title.setText("GET " + promocode[position].getDiscount() + " % OFF");
@@ -174,7 +171,7 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
 
     @Override
     public int getItemCount() {
-        return promocode.length;
+        return listdata.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
