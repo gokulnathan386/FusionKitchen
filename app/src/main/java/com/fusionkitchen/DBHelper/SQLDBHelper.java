@@ -35,7 +35,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     public static final String ITEM_AMOUNT = "itemamount";//6
     public static final String ITEM_QTY = "itemqty";//7
     public static final String ITEM_TOTAL_AMOUNT = "itemtotalamount";//8
-    public static final String ITEM_Final_AMOUNT = "itemfinalamount";//9
+    public static final String ITEM_Final_AMOUNT = "itemfinalamount";//9   //Amount--->
     public static final String ITEM_CATEGORY_NAME = "itemcategoryname";//10
     public static final String ITEM_SUBCATEGORY_NAME = "itemsubcategoryname";//11
 

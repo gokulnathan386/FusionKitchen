@@ -84,6 +84,7 @@ import com.fusionkitchen.adapter.Menucommoncouponadapter;
 import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
+import com.fusionkitchen.model.home_model.serachgetshop_modal;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
@@ -184,7 +185,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     ImageView offer_gif;
     String asap_time_string;
-
+    String Menu_Restaurant_Client_Id;
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
@@ -659,7 +660,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         }else{
 
             heart_icon.setVisibility(VISIBLE);
-
             SharedPreferences getclient_id = getSharedPreferences("favourite_store_data", MODE_PRIVATE);
             menu_favourite_path = getclient_id.getString("menuurlpath", null);
             favourite_client = getclient_id.getInt("client_id", 0);
@@ -924,7 +924,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         } else {
             add_to_cart_layout.setVisibility(View.INVISIBLE);
-            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
+           // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
             //Order_mode_popup();
 
@@ -1491,9 +1491,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
          K = K + 2;
 
-
-
-
         Log.d("LoopdataK-->",""+ K);
 
 
@@ -1514,7 +1511,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         recyclerviewitem.setAdapter(itemadapter);
 */
 
-        Log.d("Gokulnathan","Test---->");
+
     }
 
 
@@ -1549,8 +1546,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-
 
                         try {
 
@@ -2293,12 +2288,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     public void Order_mode_popup() {
 
 
-
-
         SharedPreferences.Editor editor_extra = sharedpreferences.edit();
         editor_extra.putString("pop_up_show","2");
         editor_extra.commit();
-
         dialog_order_mode_popup = new Dialog(this);
         dialog_order_mode_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -3259,7 +3251,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                         }
 
-                                        menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
                                         menu_offer(menuurlpath, "0", "0");
 
                                         Log.e("order_mode_details1", "" + order_mode);
@@ -3270,6 +3261,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                                         mode_view2.setEnabled(true);
+                                        menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
                                         dialog_order_mode_popup.dismiss();
                                     }
@@ -3341,15 +3333,22 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 if (statusCode == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
+
 //Online Offer
-                        MenuOfferAdapter adapter = new MenuOfferAdapter(mContext, response.body().getDiscount_list().getDiscountcode(), response.body().getDiscount_list().getPromocode());
+                        MenuOfferAdapter adapter = new MenuOfferAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),
+                                response.body().getDiscount_list().getPromocode(),response.body().getDiscount_list().getCommoncoupon(),
+                                cooking_insttructionback,favourite_client,menuurlpath);
+
                         recyclerviewOffers.setHasFixedSize(true);
                         recyclerviewOffers.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                         recyclerviewOffers.setItemAnimator(new DefaultItemAnimator());
                         recyclerviewOffers.setAdapter(adapter);
 
 //Promo Code
-                        MenupromoAdapter adapterpromo = new MenupromoAdapter(mContext, response.body().getDiscount_list().getDiscountcode(), response.body().getDiscount_list().getPromocode());
+                        MenupromoAdapter adapterpromo = new MenupromoAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),
+                                   response.body().getDiscount_list().getPromocode(),response.body().getDiscount_list().getCommoncoupon(),
+                                cooking_insttructionback,favourite_client,menuurlpath);
+
                         recyclerviewpromo.setHasFixedSize(true);
                         recyclerviewpromo.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                         recyclerviewpromo.setItemAnimator(new DefaultItemAnimator());
@@ -3357,7 +3356,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 //Common Coupen Code
 
-                        Menucommoncouponadapter adaptercommon = new Menucommoncouponadapter(mContext, response.body().getDiscount_list().getDiscountcode(), response.body().getDiscount_list().getPromocode());
+                        Menucommoncouponadapter adaptercommon = new Menucommoncouponadapter(mContext, response.body().getDiscount_list().getDiscountcode(),
+                                  response.body().getDiscount_list().getPromocode(),response.body().getDiscount_list().getCommoncoupon(),
+                                cooking_insttructionback,favourite_client,menuurlpath);
+
                         recyclerviewcommon.setHasFixedSize(true);
                         recyclerviewcommon.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                         recyclerviewcommon.setItemAnimator(new DefaultItemAnimator());
@@ -3437,6 +3439,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         menu_clientname.setText(listdata[0].getClientName());
                         miles_textview.setText(listdata[0].getmiles() + " Miles");
 
+                        Menu_Restaurant_Client_Id  = listdata[0].getclient_id();
+
                         restaurants_status.setText(listdata[0].gettakeawaystatus());
 
 
@@ -3493,10 +3497,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
-                         jobdetails2 = (response.body().getMenu().getCategoryall());
+                       //  jobdetails2 = (response.body().getMenu().getCategoryall());
 
-                      /*   jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
-                         jobdetails2.add(response.body().getMenu().getCategoryall().get(1));*/
+                         jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
+                         jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
+                         jobdetails2.add(response.body().getMenu().getCategoryall().get(2));
 
                        // pageloader = (response.body().getMenu().getCategoryall());
 
@@ -4109,6 +4114,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         } else {
                             addon_sucess_add(addon_item_name.getText().toString(), ItemName, str_listItems, itemidsstr, itemexradsstr, item_price, "1", item_total_amt, sharedpreferences.getString("ordermodetype", null), categoryname, subcategoryname);
                         }
+
                         //addon_sucess_add(addon_item_name.getText().toString(), ItemName, str_listItems, itemidsstr, itemexradsstr, item_price, "1", item_total_amt, sharedpreferences.getString("ordermodetype", null), categoryname, subcategoryname);
                         Log.e("item_add_time1", "" + "1");//Item addon Name
                         Log.e("idvalue1", "" + itemexradsstr); // addon extra id
@@ -4675,13 +4681,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", words);
         params.put("ordermode", ordertype);
+        params.put("client_id",Menu_Restaurant_Client_Id);
 
-       /* HashMap<String, String> user = session.getUserDetails();
-        authKey = user.get(SessionManager.KEY_phpsessid);*/
-        searchfullUrl = menuurlpath + "/menu" + "/searchAPI";
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<search_menu_item_model> call = apiService.search_menu_item(searchfullUrl, params);
+        Call<search_menu_item_model> call = apiService.search_menu_item(params);
+
         Log.e("searchapikey", "" + params + " " + searchfullUrl);
+
         call.enqueue(new Callback<search_menu_item_model>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -4692,7 +4698,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 if (statusCode == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         searchrecyclerviewitem.setVisibility(View.VISIBLE);
-
                         List<search_menu_item_model.data> searchitemname = (response.body().getData());
                         SearchItemAdapter searchitemadapter = new SearchItemAdapter(mContext, (List<search_menu_item_model.data>) searchitemname, sharedpreferences.getString("ordermodetype", null), menuurlpath);
                         searchrecyclerviewitem.setHasFixedSize(true);
@@ -4702,10 +4707,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                     } else {
                         //  searchitemname.clear();
-
                         recyclerviewitem.setVisibility(View.VISIBLE);
                         search_layout.setVisibility(View.GONE);
-
                         // Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                     }
                 } else {

@@ -127,7 +127,6 @@ public class offer_list_model_details {
 
     public class commoncoupon {
 
-
         @SerializedName("discount_code")
         private String discount_code;
 

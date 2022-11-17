@@ -67,12 +67,11 @@ public class offer_code_model {
         }
 
 
-
-        public List<offer_list_model_details.commoncoupon> getCommonCoupon() {
+        public List<offer_list_model_details.commoncoupon> getCommoncoupon() {
             return commoncoupon;
         }
 
-        public void setCommonCoupon(List<offer_list_model_details.commoncoupon> commoncoupon) {
+        public void setCommoncoupon(List<offer_list_model_details.commoncoupon> commoncoupon) {
             this.commoncoupon = commoncoupon;
         }
 

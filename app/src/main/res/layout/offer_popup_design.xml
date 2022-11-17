@@ -42,6 +42,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/offer_code_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"

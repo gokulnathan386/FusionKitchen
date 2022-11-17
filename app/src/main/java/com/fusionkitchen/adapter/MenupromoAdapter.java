@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,22 +23,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import com.bumptech.glide.Glide;
+import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.Add_to_Cart;
 import com.fusionkitchen.model.offer.offer_list_model_details;
 
 public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.ViewHolder> {
     private offer_list_model_details.discountcode[] listdata;
     private offer_list_model_details.promocode[] promocode;
+    private  offer_list_model_details.commoncoupon[] commoncoupon;
 
     private Context mContext;
     Dialog offer_popup,Coupen_popup;
+    String cooking_insttructionback;
+    private SQLDBHelper dbHelper;
+    int cursor;
+    int Client_id;
+    String menuurlpath;
+
    // public int[] mColors = {R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two};//int or string
 
     // RecyclerView recyclerView;
-    public MenupromoAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode) {
+    public MenupromoAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode,
+                            List<offer_list_model_details.commoncoupon> commoncoupon,String cooking_insttructionback,int client_id,String menuurlpath) {
         this.listdata = listdata.toArray(new offer_list_model_details.discountcode[0]);
         this.promocode = promocode.toArray(new offer_list_model_details.promocode[0]);
+        this.commoncoupon = commoncoupon.toArray(new offer_list_model_details.commoncoupon[0]);
         this.mContext = mContext;
+        this.cooking_insttructionback = cooking_insttructionback;
+        this.Client_id =client_id;
+        this.menuurlpath = menuurlpath;
 
     }
 
@@ -55,14 +70,17 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
 
         final offer_list_model_details.promocode myListData = promocode[position];
 
+        dbHelper = new SQLDBHelper(mContext);
+        getContactsCount();
+
     //    holder.relativeLayout.setBackgroundResource((mColors[position % 20]));
 
         if (promocode[position].getType().equalsIgnoreCase("0")) {
             holder.offer_title.setText("GET " + promocode[position].getDiscount() + " % OFF");
-            holder.offer_decs.setText("");
+            holder.offer_decs.setText("Use Code " +promocode[position].getFree());
         } else {
             holder.offer_title.setText("GET £ " + promocode[position].getDiscount() + " OFF");
-            holder.offer_decs.setText("");
+            holder.offer_decs.setText("Use Code " +promocode[position].getFree());
         }
 
 /*
@@ -89,6 +107,7 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                 TextView details_offers_show = offer_popup.findViewById(R.id.details_offers_show);
                 TextView TextView_Offer  = offer_popup.findViewById(R.id.TextView_Offer);
                 LinearLayout description = offer_popup.findViewById(R.id.description);
+                TextView offer_code_textview = offer_popup.findViewById(R.id.offer_code_textview);
                 //  menu_offer_details_view.setVisibility(View.VISIBLE);
                 //confirm_code.setText(promocode[position].getFree());
 
@@ -107,7 +126,9 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                         Coupen_popup.setContentView(R.layout.coupon_popup_design);
                         ImageView imageView = Coupen_popup.findViewById(R.id.imageview);
                         TextView   add_more_button_textview = Coupen_popup.findViewById(R.id.add_more_button_textview);
+                        TextView check_out_btn = Coupen_popup.findViewById(R.id.check_out_btn);
                         Glide.with(mContext).load(R.drawable.offer_gif).into(imageView);
+
 
                         add_more_button_textview.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -115,6 +136,18 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                                 Coupen_popup.dismiss();
                             }
                         });
+
+                        check_out_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (cursor != 0) {
+                                    Intent intent = new Intent(mContext, Add_to_Cart.class);
+                                    intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                                    mContext.startActivity(intent);
+                                }
+                            }
+                        });
+
 
                         Coupen_popup.show();
                         Coupen_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -142,6 +175,9 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                 });
 
                 TextView_Offer.setText(promocode[position].getDiscount()+"% OFF");
+
+                offer_code_textview.setText(promocode[position].getFree());
+
                 details_offers_show.setText("Promo Code applicable on all orders." + "\n"
                         + "Offer will be applicable on your first order only." + "\n"
                         + "Offer is valid only for this particular restaurant/takeaway." + "\n"
@@ -169,6 +205,12 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
         });
 
 
+    }
+
+    private int getContactsCount() {
+        cursor = dbHelper.numberOfRows();
+        Log.e("c", "" + cursor);
+        return cursor;
     }
 
 

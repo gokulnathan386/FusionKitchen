@@ -268,10 +268,15 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<submitfeedback_model> submitfeedback(@FieldMap Map<String, String> params);
 
-
+/*
     @POST("/{fullUrl}")
     @FormUrlEncoded
-    Call<search_menu_item_model> search_menu_item(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
+    Call<search_menu_item_model> search_menu_item(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);*/
+
+
+    @POST("/menu/searchAPI")
+    @FormUrlEncoded
+    Call<search_menu_item_model> search_menu_item(@FieldMap Map<String, String> params);
 
 
     @POST("/{fullUrl}")

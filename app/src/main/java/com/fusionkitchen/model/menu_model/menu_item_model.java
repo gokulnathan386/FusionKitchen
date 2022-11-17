@@ -103,6 +103,17 @@ public class menu_item_model {
         @SerializedName("images")
         private Images images;
 
+        @SerializedName("client_id")
+        private String client_id;
+
+        public String getclient_id() {
+            return client_id;
+        }
+
+        public void setclient_id(String client_id) {
+            this.client_id = client_id;
+        }
+
 
         public Images getImages() {
             return images;
