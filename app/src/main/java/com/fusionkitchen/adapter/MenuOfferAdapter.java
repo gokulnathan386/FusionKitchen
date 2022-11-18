@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.DBHelper.SQLDBHelper;
+import com.fusionkitchen.activity.Add_to_Cart;
 import com.fusionkitchen.activity.Payment_method_Activity;
 import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.cart.coupon_valid_model;
@@ -50,6 +52,7 @@ import com.fusionkitchen.model.menu_model.menu_offer_model;
 import com.fusionkitchen.model.offer.offer_list_model_details;
 import com.fusionkitchen.model.order_history.ordhistorys_list_model;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +61,8 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.ViewHolder> {
     private offer_list_model_details.discountcode[] listdata;
@@ -70,7 +75,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
     private SQLDBHelper dbHelper;
     int cursor;
     int Client_id;
-    String menuurlpath;
+    String menuurlpath,fullUrl;
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs_extra";
 
@@ -109,7 +114,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         dbHelper = new SQLDBHelper(mContext);
         getContactsCount();
 
-        sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
 
 
@@ -133,24 +138,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         }
 
 
-      /*  holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                Intent intent = new Intent("custom-message-onlineoffer");
-                intent.putExtra("onlinecode", listdata[position].getFree());
-                intent.putExtra("symbolstype", listdata[position].getType());
-                intent.putExtra("paymenttype", listdata[position].getPayment_details());
-                intent.putExtra("mintype", listdata[position].getMin_order());
-                intent.putExtra("ordertyp", listdata[position].getOrder_type());
-                intent.putExtra("datetype", listdata[position].getValid_date());
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-
-            }
-        });*/
-
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,51 +153,47 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                 TextView view_offer_details  = offer_popup.findViewById(R.id.view_offer_details);
                 LinearLayout description = offer_popup.findViewById(R.id.description);
                 TextView offer_code_textview = offer_popup.findViewById(R.id.offer_code_textview);
-
                 AppCompatButton offer_promo_btn = offer_popup.findViewById(R.id.offer_promo_btn);
+                TextView offer_apply_textview = offer_popup.findViewById(R.id.offer_apply_textview);
+                EditText offerapplied_edittext = offer_popup.findViewById(R.id.offerapplied_edittext);
+
+                offer_apply_textview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getContactsCount();
+
+                        ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+
+                        if (cursor != 0) {
+                            String sub_amount = get_amt_count.get(0);
+                            couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",offerapplied_edittext.getText().toString(),
+                                    sub_amount,offer_popup,sharedpreferences.getString("asaptodaylaterstring", null));
+                        }else{
+                            Toast.makeText(mContext,"Please Add the one Item",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
                 offer_promo_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        offer_popup.dismiss();
-
+                        getContactsCount();
 
                         ArrayList<String> get_amt_count = dbHelper.gettotalamt();
 
-                        Log.d("get_amt_count---->"," " + get_amt_count);
+                       // Double test = Double.valueOf(get_amt_count.get(0)+ "");
+               /*         total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));*/
 
                         if (cursor != 0) {
-                            //couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",listdata[position].getFree(), subtotal);
+                            String sub_amount = get_amt_count.get(0);
+                            couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",listdata[position].getFree(),
+                                       sub_amount,offer_popup,sharedpreferences.getString("asaptodaylaterstring", null));
                         }else{
-                            Toast.makeText(mContext,"Please Add Value",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Please Add the one Item",Toast.LENGTH_SHORT).show();
                         }
-
-
-
-
-
-                        Coupen_popup = new Dialog(mContext);
-                        Coupen_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        Coupen_popup.setContentView(R.layout.coupon_popup_design);
-                        ImageView imageView = Coupen_popup.findViewById(R.id.imageview);
-                        TextView   add_more_button_textview = Coupen_popup.findViewById(R.id.add_more_button_textview);
-                        Glide.with(mContext).load(R.drawable.offer_gif).into(imageView);
-
-                        add_more_button_textview.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Coupen_popup.dismiss();
-                            }
-                        });
-
-
-
-                        Coupen_popup.show();
-                        Coupen_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                        Coupen_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        Coupen_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                        Coupen_popup.getWindow().setGravity(Gravity.BOTTOM);
-
 
                     }
                 });
@@ -250,9 +233,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                 } else {
                     onlinety = "This coupon code is applicable for both delivery & collection orders.";
                 }
-                //  menu_offer_details_view.setVisibility(View.VISIBLE);
-
-                //     confirm_code.setText(listdata[position].getFree());
 
                 details_offers_show.setText("Coupon code applicable only on orders above £" + listdata[position].getMin_order() + "\n"
                         + "Offer is valid only for this particular takeaway/restaurant." + "\n"
@@ -263,18 +243,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                         + onlinepaytypess + "\n"
                         + "Others T & C's may also apply.");
 
-            /*    confirm_copy_button.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                menu_offer_details_view.setVisibility(View.GONE);
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("label", onlinecode);
-                                clipboard.setPrimaryClip(clip);
-                            }
-                        });*/
-
-                //Glide.with(this).load(R.drawable.delivery_in_cycle).into(favourite_image);
                 offer_popup.show();
                 offer_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 offer_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -289,19 +257,21 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
     }
 
-    private void couponcodevalidate() {
+    private void couponcodevalidate(String menuurlpath, int client_id, String ordermodetype, String payment_mode,
+                                    String use_code, String sub_amount, Dialog offer_popup, String dtatstring) {
 
-/*
+        offer_popup.dismiss();
+
         Map<String, String> params = new HashMap<String, String>();
-        params.put("cid", usercid);
-        params.put("ordermode", ordermode);
-        params.put("paymenttype", paymenttype);
-        params.put("code", code);
-        params.put("subtotal", subtotal);
+        params.put("cid", String.valueOf(client_id));
+        params.put("ordermode", ordermodetype);
+        params.put("paymenttype", payment_mode);
+        params.put("code", use_code);
+        params.put("subtotal", sub_amount);
+        params.put("order_time",dtatstring);
 
 
-        Log.d("coupencode","User->"+usercid + "ordermode->"+  ordermode +"paymenttype->"+ paymenttype + "code->"+code +"subtotsl->"+subtotal);
-
+        Log.d("coupencode","User->"+client_id + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+use_code +"subtotsl->"+sub_amount);
 
         fullUrl = menuurlpath + "/menu/couponAPI";
 
@@ -309,100 +279,85 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         Call<coupon_valid_model> call = apiService.getcouponvalid(fullUrl, params);
 
         Log.e("paramsval", "" + params);
+
         call.enqueue(new Callback<coupon_valid_model>() {
             @Override
             public void onResponse(Call<coupon_valid_model> call, Response<coupon_valid_model> response) {
                 int statusCode = response.code();
 
+
                 if (statusCode == 200) {
 
+                   // Log.e("Success======", new Gson().toJson(response.body()));
+                    String offer_msg =  response.body().getMsg();
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
-*/
-/*
-                        card_coupon_code.setText(cardoffertitle);
-                        card_offer_item_view.setVisibility(View.GONE);
 
-                        txt_apply_coupon.setVisibility(View.GONE);
-                        txt_remove_coupon.setVisibility(View.VISIBLE);
-
-                        select_coupon_layout.setClickable(false);
-                        amt_discount_rel1.setVisibility(View.VISIBLE);
+                       String discount =  response.body().getDiscount();
+                       String code =  response.body().getCode();
+                       String discription =  response.body().getDiscription();
+                       String type  = response.body().getType();
+                       String total =  response.body().getTotal();
 
 
-                        card_total.setText(response.body().getTotal());
-                        coupon_amt_dis.setText(response.body().getDiscount());
+                        SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
+                        SharedPreferences.Editor offerEdit = sharedPreferences.edit();
+                        offerEdit.putString("offer_total_amount", total);
+                        offerEdit.putString("offer_discount", discount);
+                        offerEdit.putString("offer_code", code);
+                        offerEdit.putString("offer_applied","1");
+                        offerEdit.commit();
 
 
-                        serviceDelCharge(menuurlpath, order_type_number, Sub_total.getText().toString(), payment_type_number, customerpostcode);
+                        Coupen_popup = new Dialog(mContext);
+                        Coupen_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        Coupen_popup.setContentView(R.layout.coupon_popup_design);
+                        ImageView imageView = Coupen_popup.findViewById(R.id.imageview);
+                        TextView   add_more_button_textview = Coupen_popup.findViewById(R.id.add_more_button_textview);
+                        Glide.with(mContext).load(R.drawable.offer_gif).into(imageView);
+                        TextView offer_amount_mins  = Coupen_popup.findViewById(R.id.offer_amount_mins);
+                        TextView applied_code = Coupen_popup.findViewById(R.id.applied_code);
+                        TextView check_out_btn = Coupen_popup.findViewById(R.id.check_out_btn);
 
-                        Log.d("servercharge",""+menuurlpath);
-                        Log.d("servercharge",""+order_type_number);
-                        Log.d("servercharge",""+Sub_total.getText().toString());
-                        Log.d("servercharge",""+payment_type_number);
-                        Log.d("servercharge",""+customerpostcode);
+                        offer_amount_mins.setText("£"+ discount);
+                        applied_code.setText(code + " Applied");
 
+                        add_more_button_textview.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Coupen_popup.dismiss();
+                            }
+                        });
 
-                        coupon_Discription = response.body().getDiscription();
-                        coupon_type = response.body().getType();
-                        coupon_discount = response.body().getDiscount();
+                        check_out_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                        Log.e("servicetotal", "" + coupon_discount);
-
-                        Log.e("card_total", "" + card_total.getText().toString());
-
-
-                        card_offer_popup_view.setVisibility(View.VISIBLE);
-                        custom_loading_imageView = findViewById(R.id.custom_loading_imageView);
-                        couponcode_popup = findViewById(R.id.couponcode_popup);
-                        amountsave_popup = findViewById(R.id.amountsave_popup);
-
-
-                        couponcode_popup.setText("' " + card_coupon_code.getText().toString() + " applied" + " '");
-                        amountsave_popup.setText("You saved £ " + response.body().getDiscount());
-
-                        custom_loading_imageView.setVisibility(View.VISIBLE);*//*
-
-
-
-                      */
-/*  new CountDownTimer(3000, 1000) {
-                            public void onTick(long millisUntilFinished) {
+                                if (cursor != 0) {
+                                    Intent intent = new Intent(mContext, Add_to_Cart.class);
+                                    intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                                    mContext.startActivity(intent);
+                                }
 
                             }
+                        });
 
-                            public void onFinish() {
-                                custom_loading_imageView.setVisibility(View.GONE);
-                                new CountDownTimer(1000, 1000) {
-                                    public void onTick(long millisUntilFinished) {
-                                    }
+                        Coupen_popup.show();
+                        Coupen_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        Coupen_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        Coupen_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        Coupen_popup.getWindow().setGravity(Gravity.BOTTOM);
 
-                                    public void onFinish() {
-                                        card_offer_popup_view.setVisibility(View.GONE);
-                                    }
-                                }.start();
-                            }
-                        }.start();
-*//*
+                    }else{
 
-
-                    } else {
-                        card_offer_item_view.setVisibility(View.GONE);
-                        final View coordinatorLayoutView = findViewById(R.id.snackbarPosition);
-                        final Snackbar snackbar = Snackbar.make(coordinatorLayoutView, "", 5000);
-                        View customSnackView = getLayoutInflater().inflate(R.layout.custom_snackbar_view, null);
-                        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
-                        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
-                        snackbarLayout.setPadding(0, 0, 0, 0);
-                        TextView textView1 = customSnackView.findViewById(R.id.textView1);
-                        textView1.setText(response.body().getMsg().replaceAll("\\<.*?\\>", ""));
-                        snackbarLayout.addView(customSnackView, 0);
-                        snackbar.show();
+                        Toast.makeText(mContext, offer_msg, Toast.LENGTH_LONG).show();
                     }
+
                 } else {
-                    // loader.dismiss();
-                    Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                    Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -410,16 +365,12 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
             public void onFailure(Call<coupon_valid_model> call, Throwable t) {
 
                 Log.e("Tro", "" + t);
-                // loader.dismiss();
-                Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
             }
 
         });
-*/
 
     }
-
-
 
 
 

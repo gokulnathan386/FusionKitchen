@@ -84,7 +84,6 @@ import com.fusionkitchen.adapter.Menucommoncouponadapter;
 import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
-import com.fusionkitchen.model.home_model.serachgetshop_modal;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
@@ -344,6 +343,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     int page = 0, limit = 2;
     ProgressBar loadingPB;
+    SharedPreferences sharedpre_offer_details;
 
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
@@ -387,6 +387,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         key_address = (sharedptcode.getString("KEY_address", null));
         key_lat = (sharedptcode.getString("KEY_lat", null));
         key_lon = (sharedptcode.getString("KEY_lon", null));
+
+
+        /*--------------------------offer page save data local ------------------------*/
+        sharedpre_offer_details = getSharedPreferences("Offer_applied", MODE_PRIVATE);
 
 
         Log.e("localstore6", "" + key_postcode);
@@ -916,8 +920,23 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             Log.d("Cursor1 ", String.valueOf(get_qty_count.get(0) + ""));
 
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-            Double test = Double.valueOf(get_amt_count.get(0)+ "");
             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+
+           /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                int total_amt = Integer.parseInt(get_amt_count.get(0));
+                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+
+                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+
+            }else{
+
+                Log.d("Offer_page_total--->1"," " + "Not Applied");
+
+            }
+
+*/
             Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
             collDelivery(menuurlpath);
@@ -3384,6 +3403,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     /*---------------------Get Item in menu----------------------------*/
     private void menugetitem(String menuurlpath, String menuparamesint, String str_key_postcode, String str_key_area, String str_key_address,String latvalue,String lonvalue) {
+
+
+
         // get user data from session
 
         if(menuparamesint==null){
@@ -3497,11 +3519,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());// item view list
 
-                       //  jobdetails2 = (response.body().getMenu().getCategoryall());
+                         jobdetails2 = (response.body().getMenu().getCategoryall());
 
-                         jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
+                        /* jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
                          jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
-                         jobdetails2.add(response.body().getMenu().getCategoryall().get(2));
+                         jobdetails2.add(response.body().getMenu().getCategoryall().get(2));*/
 
                        // pageloader = (response.body().getMenu().getCategoryall());
 
@@ -3651,7 +3673,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
-            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
+
+          /*  if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                int total_amt = Integer.parseInt(get_amt_count.get(0));
+                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+
+                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+
+            }else{
+
+                Log.d("Offer_page_total--->1"," " + "Not Applied");
+
+            }*/
+
         }
     };
 
@@ -4802,6 +4838,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
                             Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
+                           /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                                int total_amt = Integer.parseInt(get_amt_count.get(0));
+                                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+
+                                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+
+                            }else{
+
+                                Log.d("Offer_page_total--->1"," " + "Not Applied");
+
+                            }*/
+
+
                             new CountDownTimer(2000, 1000) {
 
                                 public void onTick(long millisUntilFinished) {
@@ -4820,6 +4871,22 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     Log.d("TotalAmount",get_amt_count.get(0)+ " ");
                                     total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
                                     //  total_item.setText(cursor + " Items");
+
+                                   /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                                        int total_amt = Integer.parseInt(get_amt_count.get(0));
+                                        int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+
+                                        Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+
+                                    }else{
+
+                                        Log.d("Offer_page_total--->1"," " + "Not Applied");
+
+                                    }
+*/
+
                                 }
                             }.start();
 
@@ -4870,7 +4937,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     }
     protected void onPause() {
         super.onPause();
-
         LocalBroadcastManager.getInstance(Item_Menu_Activity.this).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(Item_Menu_Activity.this).unregisterReceiver(addonmMessageReceiver);
         LocalBroadcastManager.getInstance(Item_Menu_Activity.this).unregisterReceiver(addonbtnnextid);

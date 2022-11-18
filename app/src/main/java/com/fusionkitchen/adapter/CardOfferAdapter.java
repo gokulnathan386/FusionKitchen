@@ -64,10 +64,6 @@ public class CardOfferAdapter extends RecyclerView.Adapter<CardOfferAdapter.View
                 holder.cart_offer_copy.setEnabled(false);
                 Intent intent = new Intent("card_offer-message");
                 intent.putExtra("cardoffertitle", listdata[position].getFree());
-               /* intent.putExtra("cardoffertype", listdata[position].getType());
-                intent.putExtra("cardofferdiscountamt", listdata[position].getDiscount());
-                intent.putExtra("cardofferminorder", listdata[position].getMin_order());*/
-
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 

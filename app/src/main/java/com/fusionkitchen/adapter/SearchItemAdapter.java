@@ -1284,10 +1284,6 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
 
                                         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-
-
-
-
                                     } else {
                                         Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
                                     }

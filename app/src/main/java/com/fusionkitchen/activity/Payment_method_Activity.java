@@ -76,6 +76,7 @@ import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.model.paymentmethod.order_payment_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.gson.Gson;
 
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
@@ -158,6 +159,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
     boolean show_discoutss;
     String token,apikey;
+    String asap_todat_laterstr;
 
 
 
@@ -200,6 +202,7 @@ public class Payment_method_Activity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
 
         menuurlpath = sharedpreferences.getString("menuurlpath", null);
+        asap_todat_laterstr = sharedpreferences.getString("Asaptimestring",null);
 
         /*---------------------------Session Manager Class----------------------------------------------------*/
       /*  session = new SessionManager(getApplicationContext());
@@ -596,6 +599,7 @@ public class Payment_method_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 cardoffertitle = editcoubon.getText().toString();
+
                 couponcodevalidate(menuurlpath, user_id, order_type_number, payment_type_number, cardoffertitle, Sub_total.getText().toString());
 
             }
@@ -1007,6 +1011,8 @@ public class Payment_method_Activity extends AppCompatActivity {
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
 
+                Log.e("offer-checkout--->", new Gson().toJson(response.body()));
+
                 if (statusCode == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
@@ -1084,9 +1090,10 @@ public class Payment_method_Activity extends AppCompatActivity {
         params.put("paymenttype", paymenttype);
         params.put("code", code);
         params.put("subtotal", subtotal);
+        params.put("order_time",asap_todat_laterstr);
 
-
-        Log.d("coupencode","User->"+usercid + "ordermode->"+  ordermode +"paymenttype->"+ paymenttype + "code->"+code +"subtotsl->"+subtotal);
+        Log.d("coupencode","User->"+usercid + "ordermode->"+  ordermode +"paymenttype->"+ paymenttype
+                + "code->"+code +"subtotsl->"+subtotal+"asap_todat_laterstr"+asap_todat_laterstr);
 
 
        /* HashMap<String, String> user = session.getUserDetails();

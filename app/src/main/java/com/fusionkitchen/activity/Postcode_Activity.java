@@ -770,41 +770,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
 
-/*        if (login_status != null && !login_status.equals("")) {
-//login Successfully
-          //  layout1.setVisibility(View.INVISIBLE);
-          //  layout2.setVisibility(View.VISIBLE);
-
-
-
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(true);
-
-            navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_address).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(true);
-
-
-        } else {
-//login not Successfully
-          //  layout1.setVisibility(View.VISIBLE);
-           // layout2.setVisibility(View.INVISIBLE);
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(false);
-
-
-            navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_address).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(false);
-
-
-        }*/
-
-
         if (login_status.equalsIgnoreCase("true")) {
             bottomNav.setVisibility(View.VISIBLE);
         } else {
@@ -821,7 +786,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_address).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(true);
-
 
         } else {
 //login not Successfully
@@ -886,27 +850,20 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                          apiversionname = response.body().getVersion().get(0).getVersion();
                         if (!versionName.equalsIgnoreCase(apiversionname)) {
                             url = response.body().getVersion().get(0).getApp_url();
-                           /* Postcode_Activity.ViewDialog alert = new Postcode_Activity.ViewDialog();
-                            alert.showDialog(Postcode_Activity.this, url);*/
+
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
                                      showPopup(url);
-                                     //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
                                 }
                             }, 200);
                         }
 
 
-                     /*   url = response.body().getUrl();
-                        Postcode_Activity.ViewDialog alert = new Postcode_Activity.ViewDialog();
-                        alert.showDialog(Postcode_Activity.this, "Update Available", "A new version of the app is available.\n Would you like to update them now?", url);
-               */
-
                     }
                 } else {
 
                     Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                    // Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -915,7 +872,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             public void onFailure(Call<version_code_modal> call, Throwable t) {
 
                 Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
             }
 
 
