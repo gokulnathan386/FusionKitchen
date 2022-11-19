@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -90,6 +91,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
+    SharedPreferences sharedpre_offer_details;
 
     /*---------------------------Back Button Click----------------------------------------------------*/
     ImageView back;
@@ -187,6 +189,9 @@ public class Payment_method_Activity extends AppCompatActivity {
         }
 
 
+        sharedpre_offer_details = getSharedPreferences("Offer_applied", MODE_PRIVATE);
+
+
         /*---------------------------Back Button Click----------------------------------------------------*/
         //Back Boutton Click
         back = findViewById(R.id.back);
@@ -249,9 +254,6 @@ public class Payment_method_Activity extends AppCompatActivity {
         services_info = findViewById(R.id.services_info);
         service_txt_info = findViewById(R.id.service_txt_info);
 
-
-
-
         /*---------------------------Intent Value Get URL Path----------------------------------------------------*/
         Intent intent = getIntent();
         pay_amount = intent.getStringExtra("pay_amount");
@@ -260,11 +262,6 @@ public class Payment_method_Activity extends AppCompatActivity {
         addressids = intent.getStringExtra("addressids");
         customerpostcode = intent.getStringExtra("customerpostcode");
 
-       /* if (intent.getStringExtra("customerpostcode") == null) {
-            customerpostcode = "";
-        } else {
-            customerpostcode = intent.getStringExtra("customerpostcode");
-        }*/
 
         Log.e("customerpostcode", "" + customerpostcode);
 
@@ -583,6 +580,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                 coupon_Discription = "no";
                 coupon_type = "no";
                 coupon_discount = "no";
+
             }
         });
 
@@ -598,9 +596,11 @@ public class Payment_method_Activity extends AppCompatActivity {
         apply_coupon_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cardoffertitle = editcoubon.getText().toString();
 
-                couponcodevalidate(menuurlpath, user_id, order_type_number, payment_type_number, cardoffertitle, Sub_total.getText().toString());
+                cardoffertitle = editcoubon.getText().toString();
+                couponcodevalidate(menuurlpath, user_id, order_type_number, payment_type_number,
+                        cardoffertitle, Sub_total.getText().toString());
+
 
             }
         });
@@ -616,10 +616,6 @@ public class Payment_method_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                // pay_amount,order_type_number
-
-                //   show_discoutss
                 if (payment_type_number.equalsIgnoreCase("")) {
                     Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), "Please select payment mode", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -743,6 +739,25 @@ public class Payment_method_Activity extends AppCompatActivity {
         });
 
         button_place.setClickable(false);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+                    String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+                    String offer_code = sharedpre_offer_details.getString("offer_code", null);
+                    cardoffertitle = offer_code;
+
+                    couponcodevalidate(menuurlpath, user_id, order_type_number, payment_type_number,
+                            cardoffertitle, Sub_total.getText().toString());
+
+                }
+
+            }
+        }, 3000);
+
+
     }
 
     /*---------------------------Payment type showing----------------------------------------------------*/
@@ -1077,8 +1092,6 @@ public class Payment_method_Activity extends AppCompatActivity {
         });
     }
 
-
-
     /*  ------------------------------COUPON AMOUNT IN CART PAGE CALCULATION-------------------------*/
 
     private void couponcodevalidate(final String menuurlpath, String usercid, String ordermode, String paymenttype, String code, String subtotal) {
@@ -1094,6 +1107,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
         Log.d("coupencode","User->"+usercid + "ordermode->"+  ordermode +"paymenttype->"+ paymenttype
                 + "code->"+code +"subtotsl->"+subtotal+"asap_todat_laterstr"+asap_todat_laterstr);
+
 
 
        /* HashMap<String, String> user = session.getUserDetails();
@@ -1130,7 +1144,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                         card_total.setText(response.body().getTotal());
                         coupon_amt_dis.setText(response.body().getDiscount());
 
-
                         serviceDelCharge(menuurlpath, order_type_number, Sub_total.getText().toString(), payment_type_number, customerpostcode);
 
                         Log.d("servercharge",""+menuurlpath);
@@ -1148,11 +1161,6 @@ public class Payment_method_Activity extends AppCompatActivity {
 
                         Log.e("card_total", "" + card_total.getText().toString());
 
-                     /*   final View coordinatorLayoutView = findViewById(R.id.snackbarPosition);
-
-                        showPopup(response.body().getDiscount(), card_coupon_code.getText().toString());
-
-*/
                         card_offer_popup_view.setVisibility(View.VISIBLE);
                         custom_loading_imageView = findViewById(R.id.custom_loading_imageView);
                         couponcode_popup = findViewById(R.id.couponcode_popup);
@@ -1164,6 +1172,44 @@ public class Payment_method_Activity extends AppCompatActivity {
 
                         custom_loading_imageView.setVisibility(View.VISIBLE);
 
+
+
+                   /*     if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+
+                            new Handler().postDelayed(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
+                                    SharedPreferences.Editor offerEdit = sharedPreferences.edit();
+                                    offerEdit.putString("offer_applied","0");
+                                    offerEdit.commit();
+
+                                }
+                            },   43200);
+
+
+                        }else{
+                            new CountDownTimer(3000, 1000) {
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                public void onFinish() {
+                                    custom_loading_imageView.setVisibility(View.GONE);
+                                    new CountDownTimer(1000, 1000) {
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        public void onFinish() {
+                                            card_offer_popup_view.setVisibility(View.GONE);
+                                        }
+                                    }.start();
+                                }
+                            }.start();
+                        }*/
 
                         new CountDownTimer(3000, 1000) {
                             public void onTick(long millisUntilFinished) {

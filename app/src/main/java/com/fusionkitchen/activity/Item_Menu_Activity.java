@@ -84,6 +84,7 @@ import com.fusionkitchen.adapter.Menucommoncouponadapter;
 import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
+import com.fusionkitchen.model.cart.coupon_valid_model;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
@@ -545,6 +546,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
         user_id = (slogin.getString("login_key_cid", null));
 
+        if (slogin.getString("login_key_cid", null) != null) {
+            user_id = (slogin.getString("login_key_cid", null));
+        } else {
+            user_id = "0";
+        }
+
         /*---------------------------XML ID Call----------------------------------------------------*/
         menu_clientname = findViewById(R.id.menu_clientname);
         back_card_view1 = findViewById(R.id.back_card_view1);
@@ -655,9 +662,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-     /*   user_id != null && !user_id.isEmpty()*/
 
-     if(user_id.equalsIgnoreCase("")){
+
+     if(user_id.equalsIgnoreCase("0")){
 
             heart_icon.setVisibility(GONE);
 
@@ -912,9 +919,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         if (cursor != 0) {
 
-            //total_item.setText(cursor + " Items");
-            // total_item.setText(cursor+ "");
-
             ArrayList<String> get_qty_count = dbHelper.getqtycount();
             total_item.setText(get_qty_count.get(0) + "");
             Log.d("Cursor1 ", String.valueOf(get_qty_count.get(0) + ""));
@@ -922,12 +926,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
 
-           /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
-                int total_amt = Integer.parseInt(get_amt_count.get(0));
-                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+                String  sub_amount = get_amt_count.get(0);
+                String  offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+               couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                        sharedpre_offer_details.getString("offer_code",null),
+                        sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
 
 
             }else{
@@ -936,14 +942,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             }
 
-*/
-            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
             collDelivery(menuurlpath);
 
         } else {
             add_to_cart_layout.setVisibility(View.INVISIBLE);
-           // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
+            menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
             //Order_mode_popup();
 
@@ -1416,6 +1420,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageonlineoff, new IntentFilter("custom-message-onlineoffer"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageitempossion, new IntentFilter("item_possion-message"));
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_item_count_update, new IntentFilter("total_count_Update"));
+
 
         /*---------------------------loaderviewlibrary----------------------------------------------------*/
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -1454,6 +1460,16 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         Menulistpopup();
         Show_info_popup();
+
+
+          if (cursor == 0){
+
+              SharedPreferences clear_data = getSharedPreferences("Offer_applied", Context.MODE_PRIVATE);
+              SharedPreferences.Editor myEdit = clear_data.edit();
+              myEdit.putString("offer_applied","0");
+              myEdit.commit();
+
+          }
 
      /*  recyclerviewitem.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -1498,6 +1514,103 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
+
+
+    }
+
+
+    public BroadcastReceiver mtotal_item_count_update = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+
+
+                ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+                String sub_amount = get_amt_count.get(0);
+
+
+            couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                    sharedpre_offer_details.getString("offer_code",null),
+                    sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+
+
+        }
+    };
+
+    private void couponcodevalidate(String menuurlpath, int favourite_client, String ordermodetype,
+                                    String payment_mode, String offer_code, String sub_amount, String asaptodaylaterstring) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("cid", String.valueOf(favourite_client));
+        params.put("ordermode", ordermodetype);
+        params.put("paymenttype", payment_mode);
+        params.put("code", offer_code);
+        params.put("subtotal", sub_amount);
+        params.put("order_time",asaptodaylaterstring);
+
+
+        Log.d("coupencode","User->"+favourite_client + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+offer_code +"subtotsl->"+sub_amount);
+
+        fullUrl = menuurlpath + "/menu/couponAPI";
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<coupon_valid_model> call = apiService.getcouponvalid(fullUrl, params);
+
+        Log.e("paramsval", "" + params);
+
+        call.enqueue(new Callback<coupon_valid_model>() {
+            @Override
+            public void onResponse(Call<coupon_valid_model> call, Response<coupon_valid_model> response) {
+                int statusCode = response.code();
+
+
+                if (statusCode == 200) {
+
+                    // Log.e("Success======", new Gson().toJson(response.body()));
+                    String offer_msg =  response.body().getMsg();
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        String discount =  response.body().getDiscount();
+                        String code =  response.body().getCode();
+                        String discription =  response.body().getDiscription();
+                        String type  = response.body().getType();
+                        String total =  response.body().getTotal();
+
+                        total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(total + "")));
+
+
+
+
+                        Log.d("MenuPage===coupencode","discount--->" + discount + "code -----> " + code + "discription-----> "  + discription + "type----> " + type + " total ----->"+ total);
+
+                        SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
+                        SharedPreferences.Editor offerEdit = sharedPreferences.edit();
+                        offerEdit.putString("offer_total_amount", total);
+                        offerEdit.putString("offer_code", code);
+                        offerEdit.commit();
+
+                    }else{
+
+                        Toast.makeText(mContext, offer_msg, Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+
+                    Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<coupon_valid_model> call, Throwable t) {
+
+                Log.e("Tro", "" + t);
+
+            }
+
+        });
+
 
 
     }
@@ -3674,19 +3787,22 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
 
-          /*  if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
-                int total_amt = Integer.parseInt(get_amt_count.get(0));
-                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+                String sub_amount = get_amt_count.get(0);
+                String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+                couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                        sharedpre_offer_details.getString("offer_code",null),
+                        sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
 
 
             }else{
 
-                Log.d("Offer_page_total--->1"," " + "Not Applied");
+                Log.d("Offer_page_total--->2"," " + "Not Applied");
 
-            }*/
+            }
 
         }
     };
@@ -3859,6 +3975,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 item_pricesize = new ArrayList<>();
                 item_pricesize.clear();
+
                 //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
 
                 addonitemfirstview(ItemName, addonid, "", "", "1");
@@ -3877,17 +3994,37 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 int database_qty =  Math.round(Float.parseFloat(updateqty));
 
-
                 int qty  = database_qty + 1;
 
-                //String price =item_price_amt;
                  String price1 = updatefinalamt;
-
-                 Log.d("Item_Price_Amout"," " + price1);
 
                 float total_amt = Float.parseFloat(price1) * qty;
 
                 Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(ItemName),qty,total_amt);
+
+                ArrayList<String> get_qty_count = dbHelper.getqtycount();
+                total_item.setText(get_qty_count.get(0) + "");
+
+                ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+                total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+
+                if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                    String  sub_amount = get_amt_count.get(0);
+                    String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+
+                    couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                            sharedpre_offer_details.getString("offer_code",null),
+                            sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+
+
+                }else{
+
+                    Log.d("Offer_page_total--->3"," " + "Not Applied");
+
+                }
+
+
 
             }
 
@@ -4816,7 +4953,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     + str_item_total_amt + "\n"
                                     + str_categoryname + "\n" + str_subcategoryname);
 
-                            // Toast.makeText(getApplicationContext(), "Item Added Successfully", Toast.LENGTH_SHORT).show();
                             Customertoastmessage();
 
                             Log.e("item_add_time4", "" + "4");//Item addon Name
@@ -4825,32 +4961,31 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                             menu_addon_item_view.setVisibility(View.GONE);
                             mAddFab.setVisibility(View.VISIBLE);
-                            //bottom_nav.setVisibility(View.VISIBLE);
                             add_to_cart_layout.setVisibility(View.VISIBLE);
-                            // bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
                             total_item.setText(get_qty_count.get(0) + "");
-                            // total_item.setText(cursor + "");
                             Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
-                            // total_item.setText(cursor + " Items");
 
                             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
                             total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
                             Log.d("TotalAmount",get_amt_count.get(0)+ " ");
 
-                           /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+                            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
-                                int total_amt = Integer.parseInt(get_amt_count.get(0));
-                                int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+                                String  sub_amount = get_amt_count.get(0);
+                                String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-                                Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+                                couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                                        sharedpre_offer_details.getString("offer_code",null),
+                                        sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
 
 
                             }else{
 
-                                Log.d("Offer_page_total--->1"," " + "Not Applied");
+                                Log.d("Offer_page_total--->3"," " + "Not Applied");
 
-                            }*/
+                            }
 
 
                             new CountDownTimer(2000, 1000) {
@@ -4864,34 +4999,32 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     add_to_cart_layout.setVisibility(View.VISIBLE);
                                     ArrayList<String> get_qty_count = dbHelper.getqtycount();
                                     total_item.setText(get_qty_count.get(0) + "");
-                                    //   total_item.setText(cursor + "");
-                                    //     Log.d("Cursor4", String.valueOf(get_qty_count.get(0) + ""));
 
                                     ArrayList<String> get_amt_count = dbHelper.gettotalamt();
                                     Log.d("TotalAmount",get_amt_count.get(0)+ " ");
                                     total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
                                     //  total_item.setText(cursor + " Items");
 
-                                   /* if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+                                    if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
-                                        int total_amt = Integer.parseInt(get_amt_count.get(0));
-                                        int offer_amt = Integer.parseInt(sharedpre_offer_details.getString("offer_total_amount",null));
+                                        String sub_amount = get_amt_count.get(0);
+                                        String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-                                        Log.d("Offer_page_total--->1"," " + total_amt + "=======" + offer_amt);
+
+                                        couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                                                sharedpre_offer_details.getString("offer_code",null),
+                                                sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
 
 
                                     }else{
 
-                                        Log.d("Offer_page_total--->1"," " + "Not Applied");
+                                        Log.d("Offer_page_total--->4"," " + "Not Applied");
 
                                     }
-*/
 
                                 }
                             }.start();
 
-
-                            // dbHelper.sel DISTINCT select_list FROM table;
                         } else {
                             Toast.makeText(getApplicationContext(), "Could not Insert Item", Toast.LENGTH_SHORT).show();
                         }

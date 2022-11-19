@@ -245,7 +245,6 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                         String type  = response.body().getType();
                         String total =  response.body().getTotal();
 
-
                         SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
                         SharedPreferences.Editor offerEdit = sharedPreferences.edit();
                         offerEdit.putString("offer_total_amount", total);
@@ -253,6 +252,10 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
                         offerEdit.putString("offer_code", code);
                         offerEdit.putString("offer_applied","1");
                         offerEdit.commit();
+
+
+                        Intent intent = new Intent("total_count_Update");
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                         Coupen_popup = new Dialog(mContext);
                         Coupen_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);

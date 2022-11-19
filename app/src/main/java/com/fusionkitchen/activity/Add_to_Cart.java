@@ -93,6 +93,7 @@ public class Add_to_Cart extends AppCompatActivity {
     private Context mContext = Add_to_Cart.this;
     private Dialog dialog;
     private long mLastClickTime = 0;
+    SharedPreferences sharedpre_offer_details;
 
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
@@ -212,6 +213,7 @@ public class Add_to_Cart extends AppCompatActivity {
 
         /*--------------Login details get SharedPreferences------------------*/
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+        sharedpre_offer_details = getSharedPreferences("Offer_applied", MODE_PRIVATE);
         user_id = (slogin.getString("login_key_cid", null));
         login_type_id = (slogin.getString("type_of_login", null));
         Log.e("ideuser_ids", "" + user_id);
@@ -226,11 +228,14 @@ public class Add_to_Cart extends AppCompatActivity {
 
         but_order_type = sharedpreferences.getString("ordermodetype", null);
 
-/*
+    /* if (cursor == 0){
 
-        CheckLogin();
-        subcategory_printer();
-*/
+            SharedPreferences clear_data = getSharedPreferences("Offer_applied", Context.MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = clear_data.edit();
+            myEdit.putString("offer_applied","0");
+            myEdit.commit();
+
+        }*/
 
         Log.e("but_order_type", "" + but_order_type);
 
@@ -250,8 +255,6 @@ public class Add_to_Cart extends AppCompatActivity {
         delivery_pay_button = findViewById(R.id.delivery_pay_button);
 
         address_add_popup_close = findViewById(R.id.address_add_popup_close);
-       /* collection_btn = findViewById(R.id.collection_btn);
-        delivery_btn = findViewById(R.id.delivery_btn);*/
 
         extr_amt_rel_layout = findViewById(R.id.extr_amt_rel_layout);
         service_txt = findViewById(R.id.service_txt);
@@ -1587,21 +1590,28 @@ public class Add_to_Cart extends AppCompatActivity {
     public BroadcastReceiver mitemupdatesubtotal = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
+
             Itemsubtotal = intent.getStringExtra("Itemsubtotal");
 
             Sub_total.setText("£ " + Itemsubtotal);
 
-           /* subamt = Double.parseDouble(Itemsubtotal);
-            serviceamt = Double.parseDouble(service_total.getText().toString());
-            cartamt = subamt + serviceamt;
-            card_total.setText("£ " + String.format("%.2f", cartamt));*/
-
-            // card_total.setText("£ " + Itemsubtotal);
-
-            processto_pay_button.setText("Pay £ " + Itemsubtotal);
-            delivery_pay_button.setText("Pay £ " + Itemsubtotal);
+           // processto_pay_button.setText("Pay £ " + Itemsubtotal);
+            //delivery_pay_button.setText("Pay £ " + Itemsubtotal);
             totalcardamt = Itemsubtotal;
+
+
+            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+                processto_pay_button.setText("Pay £ " + offer_amt);
+                delivery_pay_button.setText("Pay £ " + offer_amt);
+
+            }else{
+
+                processto_pay_button.setText("Pay £ " + Itemsubtotal);
+                delivery_pay_button.setText("Pay £ " + Itemsubtotal);
+
+            }
 
 
         }

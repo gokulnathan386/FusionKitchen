@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -246,6 +247,11 @@ public class Menucommoncouponadapter extends RecyclerView.Adapter<Menucommoncoup
                         offerEdit.putString("offer_code", code);
                         offerEdit.putString("offer_applied","1");
                         offerEdit.commit();
+
+
+
+                        Intent intent = new Intent("total_count_Update");
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
 

@@ -174,8 +174,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
-
-
                 allContacts = dbHelper.getitemlist();
 
 
@@ -569,7 +567,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         allContacts = dbHelper.getitemlist();
 
-        for (int k = 0; k<allContacts.size();k++){
+        for (int k = 0; k< allContacts.size();k++){
 
             if(allContacts.get(k).equalsIgnoreCase(item_id)){
 

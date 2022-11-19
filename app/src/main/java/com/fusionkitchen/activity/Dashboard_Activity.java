@@ -359,14 +359,28 @@ public class Dashboard_Activity extends AppCompatActivity {
                             intent.putExtra("activity_details", "myfavourite");
                             startActivity(intent);
                         }*/
-                        if (user_id != null && !user_id.isEmpty()) {
+
+                        if(user_id.equalsIgnoreCase("0")){
+
+                            Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
+                            intent_account.putExtra("activity_details", "myaccount");
+                            startActivity(intent_account);
+
+                        }else{
+
+                            Intent intentcard = new Intent(getApplicationContext(), MyAccount_Activity.class);
+                            startActivity(intentcard);
+
+                        }
+
+                        /*if (user_id != null && !user_id.isEmpty()) {
                             Intent intentcard = new Intent(getApplicationContext(), MyAccount_Activity.class);
                             startActivity(intentcard);
                         } else {
                             Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
                             intent_account.putExtra("activity_details", "myaccount");
                             startActivity(intent_account);
-                        }
+                        }*/
                         break;
                 }
                 return true;
@@ -750,12 +764,6 @@ public class Dashboard_Activity extends AppCompatActivity {
 
 
             if (!sharedpreferences.getString("menuurlpath", null).equalsIgnoreCase(menuurlpath) && cursor != 0) {
-
-
-
-
-               /* Dashboard_Activity.ViewwarningDialog alert = new Dashboard_Activity.ViewwarningDialog();
-                alert.showwarningDialog(Dashboard_Activity.this);*/
 
                 clear_list_layout.setVisibility(View.VISIBLE);
 

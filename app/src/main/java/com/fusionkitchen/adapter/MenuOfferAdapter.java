@@ -86,6 +86,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
     // RecyclerView recyclerView;
     public MenuOfferAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode,
                             List<offer_list_model_details.commoncoupon> commoncoupon,String cooking_insttructionback,int client_id,String menuurlpath) {
+
         this.listdata = listdata.toArray(new offer_list_model_details.discountcode[0]);
         this.promocode = promocode.toArray(new offer_list_model_details.promocode[0]);
         this.commoncoupon = commoncoupon.toArray(new offer_list_model_details.commoncoupon[0]);
@@ -107,9 +108,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-
-
 
         dbHelper = new SQLDBHelper(mContext);
         getContactsCount();
@@ -170,6 +168,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                             couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",offerapplied_edittext.getText().toString(),
                                     sub_amount,offer_popup,sharedpreferences.getString("asaptodaylaterstring", null));
                         }else{
+
                             Toast.makeText(mContext,"Please Add the one Item",Toast.LENGTH_SHORT).show();
                         }
 
@@ -260,6 +259,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
     private void couponcodevalidate(String menuurlpath, int client_id, String ordermodetype, String payment_mode,
                                     String use_code, String sub_amount, Dialog offer_popup, String dtatstring) {
 
+
+
         offer_popup.dismiss();
 
         Map<String, String> params = new HashMap<String, String>();
@@ -293,7 +294,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
-
                        String discount =  response.body().getDiscount();
                        String code =  response.body().getCode();
                        String discription =  response.body().getDiscription();
@@ -308,6 +308,10 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                         offerEdit.putString("offer_code", code);
                         offerEdit.putString("offer_applied","1");
                         offerEdit.commit();
+
+
+                        Intent intent = new Intent("total_count_Update");
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
                         Coupen_popup = new Dialog(mContext);
