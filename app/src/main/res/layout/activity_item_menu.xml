@@ -776,6 +776,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
                                         android:clipToPadding="false"
+                                        android:scrollbars="horizontal"
                                         android:layoutAnimation="@anim/layout_animation"
                                         android:nestedScrollingEnabled="false"
                                         android:paddingLeft="15dp" />
@@ -786,9 +787,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
                                         android:clipToPadding="false"
-                                        android:isScrollContainer="false"
+                                        android:scrollbars="horizontal"
                                         android:layoutAnimation="@anim/layout_animation"
-                                        android:nestedScrollingEnabled="false" />
+                                         />
 
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/recyclerviewcommon"
@@ -803,7 +804,10 @@
                                         />
 
                                 </LinearLayout>
+
+
                             </HorizontalScrollView>
+
                         </RelativeLayout>
 
                     </LinearLayout>

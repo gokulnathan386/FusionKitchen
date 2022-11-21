@@ -85,11 +85,13 @@ import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.cart.coupon_valid_model;
+import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.fusionkitchen.model.moreinfo.about_us_model;
+import com.fusionkitchen.model.offer_singe_List;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -174,6 +176,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     Boolean check_favourite_boolean;
 
     String menu_time_update;
+    String data_de_cl;
+    String  de_cl_time;
 
     String menu_favourite_path;
     int favourite_client;
@@ -193,7 +197,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     Internet_connection_checking int_chk;
     TextView total_amount_textview;
     double amtfloat = 0.00;
-
+    SharedPreferences sh;
     /*---------------------------addon extra add shared prferances----------------------------------------------------*/
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs_extra";
@@ -345,6 +349,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     int page = 0, limit = 2;
     ProgressBar loadingPB;
     SharedPreferences sharedpre_offer_details;
+    List<offer_singe_List>  offer_single_list = new ArrayList<>();
+
 
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
@@ -1463,7 +1469,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
           if (cursor == 0){
-
               SharedPreferences clear_data = getSharedPreferences("Offer_applied", Context.MODE_PRIVATE);
               SharedPreferences.Editor myEdit = clear_data.edit();
               myEdit.putString("offer_applied","0");
@@ -1491,29 +1496,32 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 */
 
 
-         SharedPreferences sh = getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
+            sh = getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
 
-         String data_de_cl = sh.getString("Pre_order_collection_delivery", "");
-         String  de_cl_time = sh.getString("Pre_order_menu_time_update", "");
+            data_de_cl = sh.getString("Pre_order_collection_delivery", "");
+            de_cl_time = sh.getString("Pre_order_menu_time_update", "");
 
-        delivery_collection_textview.setText(data_de_cl);
-        cooking_time_textview.setText(de_cl_time);
+            delivery_collection_textview.setText(data_de_cl);
+            cooking_time_textview.setText(de_cl_time);
 
-        if(data_de_cl.equalsIgnoreCase("Delivery")){
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
 
-            Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
+                    if(data_de_cl.equalsIgnoreCase("Delivery")){
 
-        }else{
+                        Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
 
-            Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
+                    }else{
 
-        }
+                        Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
+                    }
 
-          //  Log.d("Menu_page_list_data","" + data_de_cl + de_cl_time);
+                }
+            }, 3000);
 
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
+           LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
 
 
     }
@@ -1525,8 +1533,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-                ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-                String sub_amount = get_amt_count.get(0);
+            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+            String sub_amount = get_amt_count.get(0);
 
 
             couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
@@ -1549,7 +1557,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         params.put("order_time",asaptodaylaterstring);
 
 
-        Log.d("coupencode","User->"+favourite_client + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+offer_code +"subtotsl->"+sub_amount);
+        Log.d("coupencode","User->"+favourite_client + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+offer_code +"subtotsl->"+sub_amount + "Asap_today_later-->"+asaptodaylaterstring);
 
         fullUrl = menuurlpath + "/menu/couponAPI";
 
@@ -1578,8 +1586,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         String total =  response.body().getTotal();
 
                         total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(total + "")));
-
-
 
 
                         Log.d("MenuPage===coupencode","discount--->" + discount + "code -----> " + code + "discription-----> "  + discription + "type----> " + type + " total ----->"+ total);
@@ -1644,6 +1650,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 */
 
 
+/*
+
+      if(sharedpreferences.getString("ordermodetype",null).equalsIgnoreCase("0")) {
+
+           Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
+
+        }else{
+
+          Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
+
+        }
+*/
+
+
+
     }
 
 
@@ -1655,6 +1676,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             delivery_collection_textview.setText(delivery_collection);
             cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
+
 
             if(delivery_collection.equalsIgnoreCase("Delivery")){
 
@@ -3349,6 +3371,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         editor_extra.commit();
 
 
+
                                         if (order_mode.equalsIgnoreCase("0")) {
 
                                             delivery_one_tex.setText("Delivery");
@@ -3466,18 +3489,68 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
 
+
+
+                        for(int i = 0; i<response.body().getDiscount_list().getPromocode().size(); i++ ){
+
+                            offer_single_list.add(new offer_singe_List(response.body().getDiscount_list().getPromocode().get(i).getFree(),
+                                    response.body().getDiscount_list().getPromocode().get(i).getType(),
+                                    response.body().getDiscount_list().getPromocode().get(i).getDiscount(),
+                                    "",
+                                    "",
+                                    "",
+                                    ""));
+
+                        }
+
+                    for(int j = 0; j<response.body().getDiscount_list().getDiscountcode().size(); j++ ){
+
+                            offer_single_list.add( new offer_singe_List(
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getFree(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getType(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getDiscount(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getPayment_details(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getMin_order(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getOrder_type(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getValid_date()));
+
+
+
+                        }
+
+
+
+                       for(int k = 0; k<response.body().getDiscount_list().getCommoncoupon().size(); k++ ){
+
+                            offer_single_list.add( new offer_singe_List(
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDiscountCode(),
+                                    "",
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDiscount(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getMin_Order(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getPaymentDetails(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDescription(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getValidDate()));
+
+
+                        }
+
+                       Log.d("OfferListdata---->",""  + offer_single_list.size());
+
+
+
 //Online Offer
                         MenuOfferAdapter adapter = new MenuOfferAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),
                                 response.body().getDiscount_list().getPromocode(),response.body().getDiscount_list().getCommoncoupon(),
-                                cooking_insttructionback,favourite_client,menuurlpath);
+                                cooking_insttructionback,favourite_client,menuurlpath,offer_single_list);
 
                         recyclerviewOffers.setHasFixedSize(true);
                         recyclerviewOffers.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                         recyclerviewOffers.setItemAnimator(new DefaultItemAnimator());
                         recyclerviewOffers.setAdapter(adapter);
 
+
 //Promo Code
-                        MenupromoAdapter adapterpromo = new MenupromoAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),
+                      MenupromoAdapter adapterpromo = new MenupromoAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),
                                    response.body().getDiscount_list().getPromocode(),response.body().getDiscount_list().getCommoncoupon(),
                                 cooking_insttructionback,favourite_client,menuurlpath);
 
@@ -3496,6 +3569,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewcommon.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                         recyclerviewcommon.setItemAnimator(new DefaultItemAnimator());
                         recyclerviewcommon.setAdapter(adaptercommon);
+
+
 
 
 
@@ -3646,26 +3721,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         // recyclerviewitem.getLayoutManager().scrollToPosition(2);
                         recyclerviewitem.setAdapter(itemadapter);
-
-
-/*
-
-                        new CountDownTimer(20000, 2000) {
-
-                            public void onTick(long millisUntilFinished) {
-
-                                Log.d("Gokulnathan","" + millisUntilFinished / 2000);
-
-                            }
-
-                            public void onFinish() {
-
-                                Log.d("Gokulnathan","Done");
-                            }
-                        }.start();
-*/
-
-
 
 
                         List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
@@ -4488,7 +4543,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         fullUrl = menuurlpath + "/menu" + "/addons";
 
-        Log.d("params+gokul",fullUrl + "----->" +params);
+        Log.d("params",fullUrl + "----->" +params);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_addons_model> call = apiService.addonslist(fullUrl, params);
@@ -4869,6 +4924,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 int statusCode = response.code();
                 Log.e("rscode", ": " + response.code());
                 if (statusCode == 200) {
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         searchrecyclerviewitem.setVisibility(View.VISIBLE);
                         List<search_menu_item_model.data> searchitemname = (response.body().getData());

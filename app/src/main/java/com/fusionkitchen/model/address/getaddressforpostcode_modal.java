@@ -12,7 +12,8 @@ public class getaddressforpostcode_modal {
     @SerializedName("address")
     private getaddressforpostcode_modal.address address;
 
-
+    @SerializedName("error_message")
+    private String error_message;
 
 
     public String getStatus() {
@@ -21,6 +22,15 @@ public class getaddressforpostcode_modal {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    public String geterror_message() {
+        return error_message;
+    }
+
+    public void seterror_message(String error_message) {
+        this.error_message = error_message;
     }
 
 

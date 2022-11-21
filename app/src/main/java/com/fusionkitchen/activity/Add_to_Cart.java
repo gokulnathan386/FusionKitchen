@@ -52,9 +52,16 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.addon.menu_addon_status_model;
+import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.orderstatus.orderstatus_model;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -80,6 +87,10 @@ import com.fusionkitchen.model.myaccount.get_account_modal;
 import com.fusionkitchen.model.myaccount.update_account_modal;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -187,9 +198,6 @@ public class Add_to_Cart extends AppCompatActivity {
         getTheme().applyStyle(R.style.OverlayThemeLime, true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContentView(R.layout.activity_add_to_card);
-
-
-
 
         /*---------------------------hind actionbar----------------------------------------------------*/
         ActionBar actionBar = getSupportActionBar();
@@ -373,17 +381,25 @@ public class Add_to_Cart extends AppCompatActivity {
         edit_postcode.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
+
+
+
             }
 
+            @SuppressLint("LongLogTag")
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
+
+
+
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                Log.e("lenth", "" + s.length());
+
 
                 edit_postcode.setOnKeyListener(new View.OnKeyListener() {
 
@@ -396,7 +412,6 @@ public class Add_to_Cart extends AppCompatActivity {
                             keyDel = 0;
                         }
                         return false;
-
 
                     }
                 });
@@ -1280,7 +1295,10 @@ public class Add_to_Cart extends AppCompatActivity {
 
     private void validatezip(String zipcodesp) {
 
+        Log.d("Post-Code---->","" + zipcodesp);
+
         str_postcode_seperate = zipcodesp;
+
         if (str_postcode_seperate.length() == 5) {
             str_postcode_seperate_str = str_postcode_seperate.substring(0, 2) + " " + str_postcode_seperate.substring(2);
         } else if (str_postcode_seperate.length() == 6) {
@@ -1291,9 +1309,8 @@ public class Add_to_Cart extends AppCompatActivity {
             str_postcode_seperate_str = str_postcode_seperate;
         }
         // edit_postcode.setText(str_postcode_seperate_str.toUpperCase());
-        Log.e("edit_postcode", "" + str_postcode_seperate_str.toUpperCase());
-
         getaddressforpostcode(str_postcode_seperate_str.toUpperCase());
+        Log.d("Post-Codecall---->","" + zipcodesp);
 
     }
 
@@ -1910,7 +1927,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
             }
 
-
         }
 
     }
@@ -1919,22 +1935,24 @@ public class Add_to_Cart extends AppCompatActivity {
     //get api values
     private void getaddressforpostcode(final String post_code) {
 
-
         //final ProgressDialog loader = ProgressDialog.show(Add_to_Cart.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("postcode", post_code);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<getaddressforpostcode_modal> call = apiService.getaddressforpostcode(params);
 
-        Log.e("apippostcode", "" + params);
         call.enqueue(new Callback<getaddressforpostcode_modal>() {
             @Override
             public void onResponse(Call<getaddressforpostcode_modal> call, Response<getaddressforpostcode_modal> response) {
+
                 int statusCode = response.code();
-                /*Get Login Good Response...*/
+
                 if (statusCode == 200) {
 
                     // loader.dismiss();
+
+                    String error_msg =  response.body().geterror_message();
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
 
@@ -1943,12 +1961,18 @@ public class Add_to_Cart extends AppCompatActivity {
                         edit_town.setText(response.body().getAddress().getTown());
 
                         edit_postcode.setText(post_code);
+
                         keyDel = 1;
+
+                        Log.d("apippostcode","street---"  + response.body().getAddress().getStreet() +
+                                "Town---" + response.body().getAddress().getTown()+ " PostCode---" +response.body().getAddress().getPostcode() + "manule" + post_code  );
+
+                    }else{
+                        Toast.makeText(Add_to_Cart.this,error_msg,Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
 
-                    // loader.dismiss();
                     Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
 
                 }
@@ -1959,11 +1983,11 @@ public class Add_to_Cart extends AppCompatActivity {
 
                 Log.e("Tro", "" + t);
 
-                // loader.dismiss();
                 Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
             }
 
         });
+
 
     }
 

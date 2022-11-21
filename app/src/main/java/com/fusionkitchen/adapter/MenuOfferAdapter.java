@@ -36,6 +36,7 @@ import com.fusionkitchen.activity.Payment_method_Activity;
 import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.cart.coupon_valid_model;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
+import com.fusionkitchen.model.offer_singe_List;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.gms.common.data.DataHolder;
@@ -68,6 +69,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
     private offer_list_model_details.discountcode[] listdata;
     private offer_list_model_details.promocode[] promocode;
     private  offer_list_model_details.commoncoupon[] commoncoupon;
+    List<offer_singe_List> offer_singe_list;
     private Context mContext;
     String onlinepaytypess,onlinety;
     Dialog offer_popup,Coupen_popup;
@@ -79,13 +81,9 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs_extra";
 
-
-
-    // public int[] mColors = {R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two, R.drawable.menu_offer_one, R.drawable.menu_offer_two};//int or string
-
-    // RecyclerView recyclerView;
     public MenuOfferAdapter(Context mContext, List<offer_list_model_details.discountcode> listdata, List<offer_list_model_details.promocode> promocode,
-                            List<offer_list_model_details.commoncoupon> commoncoupon,String cooking_insttructionback,int client_id,String menuurlpath) {
+                            List<offer_list_model_details.commoncoupon> commoncoupon,String cooking_insttructionback,
+                            int client_id,String menuurlpath,List<offer_singe_List> offer_singe_list) {
 
         this.listdata = listdata.toArray(new offer_list_model_details.discountcode[0]);
         this.promocode = promocode.toArray(new offer_list_model_details.promocode[0]);
@@ -94,6 +92,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         this.cooking_insttructionback = cooking_insttructionback;
         this.Client_id = client_id;
         this.menuurlpath = menuurlpath;
+        this.offer_singe_list=offer_singe_list;
 
     }
 
@@ -112,12 +111,11 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         dbHelper = new SQLDBHelper(mContext);
         getContactsCount();
 
+
+       // Log.d("Offer_Single_List--->",offer_singe_list.get(position).getFree());
+
         sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
-
-
-
-       // holder.relativeLayout.setBackgroundResource((mColors[position % 20]));
 
         if (listdata[position].getType().equalsIgnoreCase("0")) {
            /* holder.offer_title.setText("GET " + listdata[position].getDiscount() + " % OFF");

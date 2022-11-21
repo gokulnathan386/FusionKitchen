@@ -207,7 +207,7 @@ public class Payment_method_Activity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
 
         menuurlpath = sharedpreferences.getString("menuurlpath", null);
-        asap_todat_laterstr = sharedpreferences.getString("Asaptimestring",null);
+        asap_todat_laterstr = sharedpreferences.getString("asaptodaylaterstring",null);
 
         /*---------------------------Session Manager Class----------------------------------------------------*/
       /*  session = new SessionManager(getApplicationContext());
@@ -580,6 +580,18 @@ public class Payment_method_Activity extends AppCompatActivity {
                 coupon_Discription = "no";
                 coupon_type = "no";
                 coupon_discount = "no";
+
+
+                /*---------------------------------start remove offer coupon code--------------------------------*/
+
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
+                SharedPreferences.Editor offerEdit = sharedPreferences.edit();
+                offerEdit.putString("offer_applied","0");
+                offerEdit.commit();
+
+                /*---------------------------------End remove offer coupon code--------------------------------*/
+
+
 
             }
         });
@@ -1117,7 +1129,7 @@ public class Payment_method_Activity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<coupon_valid_model> call = apiService.getcouponvalid(fullUrl, params);
 
-        Log.e("paramsval", "" + params);
+        Log.e("paramsval", "" + params + " " + fullUrl);
         call.enqueue(new Callback<coupon_valid_model>() {
             @Override
             public void onResponse(Call<coupon_valid_model> call, Response<coupon_valid_model> response) {
@@ -1161,7 +1173,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
                         Log.e("card_total", "" + card_total.getText().toString());
 
-                        card_offer_popup_view.setVisibility(View.VISIBLE);
+                        //card_offer_popup_view.setVisibility(View.VISIBLE);
                         custom_loading_imageView = findViewById(R.id.custom_loading_imageView);
                         couponcode_popup = findViewById(R.id.couponcode_popup);
                         amountsave_popup = findViewById(R.id.amountsave_popup);
@@ -1174,7 +1186,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
 
 
-                   /*     if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+                        if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
 
                             new Handler().postDelayed(new Runnable()
@@ -1192,6 +1204,9 @@ public class Payment_method_Activity extends AppCompatActivity {
 
 
                         }else{
+
+                            card_offer_popup_view.setVisibility(View.VISIBLE);
+
                             new CountDownTimer(3000, 1000) {
                                 public void onTick(long millisUntilFinished) {
 
@@ -1209,9 +1224,9 @@ public class Payment_method_Activity extends AppCompatActivity {
                                     }.start();
                                 }
                             }.start();
-                        }*/
+                        }
 
-                        new CountDownTimer(3000, 1000) {
+                     /*   new CountDownTimer(3000, 1000) {
                             public void onTick(long millisUntilFinished) {
 
                             }
@@ -1227,7 +1242,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                                     }
                                 }.start();
                             }
-                        }.start();
+                        }.start();*/
 
 
                     } else {

@@ -88,6 +88,8 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
 
         final offer_list_model_details.promocode myListData = promocode[position];
 
+        Log.d("Offercodesize-->","" + promocode.length);
+
         dbHelper = new SQLDBHelper(mContext);
         getContactsCount();
 
@@ -333,6 +335,7 @@ public class MenupromoAdapter extends RecyclerView.Adapter<MenupromoAdapter.View
 
     @Override
     public int getItemCount() {
+        Log.d("Menupromocod0e","" + promocode.length);
         return promocode.length;
     }
 
