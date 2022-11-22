@@ -360,8 +360,7 @@ public class Dashboard_Activity extends AppCompatActivity {
                             startActivity(intent);
                         }*/
 
-                        if(user_id.equalsIgnoreCase("0")){
-
+                        if(user_id.equalsIgnoreCase("0") || user_id.isEmpty()){
                             Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
                             intent_account.putExtra("activity_details", "myaccount");
                             startActivity(intent_account);
@@ -381,6 +380,7 @@ public class Dashboard_Activity extends AppCompatActivity {
                             intent_account.putExtra("activity_details", "myaccount");
                             startActivity(intent_account);
                         }*/
+
                         break;
                 }
                 return true;

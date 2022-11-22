@@ -112,27 +112,64 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         getContactsCount();
 
 
-       // Log.d("Offer_Single_List--->",offer_singe_list.get(position).getFree());
-
         sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
 
-        if (listdata[position].getType().equalsIgnoreCase("0")) {
-           /* holder.offer_title.setText("GET " + listdata[position].getDiscount() + " % OFF");
-            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*/
+        if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("1")){
+
+            if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
+                holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");
+                holder.offer_decs.setText("Use Code " +offer_singe_list.get(position).getFree());
+            } else {
+                holder.offer_title.setText("GET £ " + offer_singe_list.get(position).getDiscount()+ " OFF");
+                holder.offer_decs.setText("Use Code " +offer_singe_list.get(position).getFree());
+            }
+
+        }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("2")){
+
+            if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
+                holder.offer_title.setText(offer_singe_list.get(position).getDiscount() + " % OFF");
+                holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
+
+            } else {
+                holder.offer_title.setText(offer_singe_list.get(position).getDiscount() + " OFF");
+                holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
+
+            }
+
+
+        }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("3")){
+
+            if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
+                holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");
+                holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
+            } else {
+                holder.offer_title.setText("GET £ " + commoncoupon[position].getDiscount() + " OFF");
+                holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
+            }
+
+
+        }
+
+
+
+        /*  if (listdata[position].getType().equalsIgnoreCase("0")) {
+           *//* holder.offer_title.setText("GET " + listdata[position].getDiscount() + " % OFF");
+            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*//*
             holder.offer_title.setText(listdata[position].getDiscount() + " % OFF");
            // holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());
 
             holder.offer_decs.setText("Use Code " + listdata[position].getFree());
         } else {
-            /*holder.offer_title.setText("GET £ " + listdata[position].getDiscount() + " OFF");
-            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*/
+            *//*holder.offer_title.setText("GET £ " + listdata[position].getDiscount() + " OFF");
+            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*//*
             holder.offer_title.setText(listdata[position].getDiscount() + " OFF");
           //  holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());
 
             holder.offer_decs.setText("Use Code " + listdata[position].getFree());
         }
 
+*/
 
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +218,9 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
                         ArrayList<String> get_amt_count = dbHelper.gettotalamt();
 
-                       // Double test = Double.valueOf(get_amt_count.get(0)+ "");
-               /*         total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));*/
-
                         if (cursor != 0) {
                             String sub_amount = get_amt_count.get(0);
-                            couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",listdata[position].getFree(),
+                            couponcodevalidate(menuurlpath,Client_id,sharedpreferences.getString("ordermodetype", null),"1",offer_singe_list.get(position).getFree(),
                                        sub_amount,offer_popup,sharedpreferences.getString("asaptodaylaterstring", null));
                         }else{
                             Toast.makeText(mContext,"Please Add the one Item",Toast.LENGTH_SHORT).show();
@@ -195,10 +229,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                     }
                 });
 
-                TextView_Offer.setText(listdata[position].getDiscount()+"% OFF");
 
-
-                offer_code_textview.setText(listdata[position].getFree());
 
 
                 view_offer_details.setOnClickListener(new View.OnClickListener() {
@@ -215,30 +246,60 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                     }
                 });
 
-                if (listdata[position].getPayment_details().equalsIgnoreCase("0")) {
-                    onlinepaytypess = "Applicable only cash payments.";
-                } else if (listdata[position].getPayment_details().equalsIgnoreCase("1")) {
-                    onlinepaytypess = "Applicable only card payments.";
-                } else {
-                    onlinepaytypess = "Applicable both cash and card payments.";
-                }
 
-                if (listdata[position].getOrder_type().equalsIgnoreCase("0")) {
-                    onlinety = "This coupon code is applicable only for delivery orders.";
-                } else if (listdata[position].getOrder_type().equalsIgnoreCase("1")) {
-                    onlinety = "This coupon code is applicable only for collection orders.";
-                } else {
-                    onlinety = "This coupon code is applicable for both delivery & collection orders.";
-                }
 
-                details_offers_show.setText("Coupon code applicable only on orders above £" + listdata[position].getMin_order() + "\n"
-                        + "Offer is valid only for this particular takeaway/restaurant." + "\n"
-                        + "No maximum limit to apply the coupon code." + "\n"
-                        + "Apply the coupon code at the time of checkout." + "\n"
-                        + "Offer valid only till " + listdata[position].getValid_date() + "\n"
-                        + onlinety + "\n"
-                        + onlinepaytypess + "\n"
-                        + "Others T & C's may also apply.");
+                if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("1")){
+
+                    TextView_Offer.setText(offer_singe_list.get(position).getDiscount()+"% OFF");
+
+                    offer_code_textview.setText(offer_singe_list.get(position).getFree());
+
+                    details_offers_show.setText("Promo Code applicable on all orders." + "\n"
+                            + "Offer will be applicable on your first order only." + "\n"
+                            + "Offer is valid only for this particular restaurant/takeaway." + "\n"
+                            + "Apply the promo code at the checkout." + "\n"
+                            + "Other T & C may also apply.");
+
+                }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("2")){
+
+
+                    TextView_Offer.setText(offer_singe_list.get(position).getDiscount()+"% OFF");
+                    offer_code_textview.setText(offer_singe_list.get(position).getFree());
+
+
+                    if (offer_singe_list.get(position).getPayment_details().equalsIgnoreCase("0")) {
+                        onlinepaytypess = "Applicable only cash payments.";
+                    } else if (offer_singe_list.get(position).getPayment_details().equalsIgnoreCase("1")) {
+                        onlinepaytypess = "Applicable only card payments.";
+                    } else {
+                        onlinepaytypess = "Applicable both cash and card payments.";
+                    }
+
+                    if (offer_singe_list.get(position).getOrder_type().equalsIgnoreCase("0")) {
+                        onlinety = "This coupon code is applicable only for delivery orders.";
+                    } else if (offer_singe_list.get(position).getOrder_type().equalsIgnoreCase("1")) {
+                        onlinety = "This coupon code is applicable only for collection orders.";
+                    } else {
+                        onlinety = "This coupon code is applicable for both delivery & collection orders.";
+                    }
+
+                    details_offers_show.setText("Coupon code applicable only on orders above £" + offer_singe_list.get(position).getMin_order() + "\n"
+                            + "Offer is valid only for this particular takeaway/restaurant." + "\n"
+                            + "No maximum limit to apply the coupon code." + "\n"
+                            + "Apply the coupon code at the time of checkout." + "\n"
+                            + "Offer valid only till " + offer_singe_list.get(position).getValid_date() + "\n"
+                            + onlinety + "\n"
+                            + onlinepaytypess + "\n"
+                            + "Others T & C's may also apply.");
+
+
+                }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("3")){
+
+                    TextView_Offer.setText(offer_singe_list.get(position).getDiscount()+"% OFF");
+                    offer_code_textview.setText(offer_singe_list.get(position).getFree());
+                    details_offers_show.setText(offer_singe_list.get(position).getDescription());
+
+                }
 
                 offer_popup.show();
                 offer_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -246,9 +307,9 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                 offer_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 offer_popup.getWindow().setGravity(Gravity.BOTTOM);
 
-
             }
         });
+
 
 
 
@@ -256,7 +317,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
     private void couponcodevalidate(String menuurlpath, int client_id, String ordermodetype, String payment_mode,
                                     String use_code, String sub_amount, Dialog offer_popup, String dtatstring) {
-
 
 
         offer_popup.dismiss();
@@ -387,7 +447,9 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
     @Override
     public int getItemCount() {
-        return listdata.length;
+    //    return listdata.length;
+
+        return offer_singe_list.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

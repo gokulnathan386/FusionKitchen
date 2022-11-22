@@ -70,30 +70,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
 
 
-      /*  if (position == 1) {
-
-
-                holder.child_recyclerview.setVisibility(View.VISIBLE);
-                holder.dropdownindicator.setRotation((float) 180.0);
-
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            intent.putExtra("itempossionname",listdata[position].getName());
-            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
-            Log.d("menu_item_cat_name",""+listdata[position].getName() + " " +listdata.length);
-
-
-
-        }*//* else {
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            intent.putExtra("itempossionname",listdata[position].getName());
-            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
-            Log.d("menu_item_cat_name",""+listdata[position].getName());
-        }*/
-
-
-
 
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {

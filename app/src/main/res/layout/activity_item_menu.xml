@@ -346,15 +346,7 @@
                                 android:layout_height="match_parent">
 
                             </ImageView>
-<!--
-                            <pl.droidsonroids.gif.GifImageView
-                                android:id="@+id/offer_gif"
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                />-->
 
-                            <!-- android:src="@drawable/test"-->
 
                         </LinearLayout>
 
@@ -759,10 +751,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerviewOffers"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:clipToPadding="false"
+                                android:scrollbars="horizontal"
+                                android:layoutAnimation="@anim/layout_animation"
+                                android:nestedScrollingEnabled="false"
+                                android:paddingLeft="15dp" />
+
+
                             <HorizontalScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:scrollbars="none"
+                                android:visibility="gone"
                                 shimmer:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                                 <LinearLayout
@@ -771,7 +777,7 @@
                                     android:orientation="horizontal">
 
                                     <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/recyclerviewOffers"
+                                        android:id="@+id/recyclerviewOffers1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"

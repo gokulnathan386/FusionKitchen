@@ -404,8 +404,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         int qty  = database_qty - 1;
 
-        //String price = item_price;
-
         String price  = removefinalamt;
 
         float total_amt = Float.parseFloat(price) * qty;
