@@ -32,26 +32,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
-                    shimmer:contentScrim="@color/app_color"
                     shimmer:expandedTitleMargin="5dp"
+                    shimmer:contentScrim="#FFFFFF"
                     shimmer:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                   <!-- shimmer:contentScrim="@color/app_color"-->
 
                     <ImageView
                         android:scaleType="centerCrop"
                         android:id="@+id/restaurants_image"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp">
+                        android:layout_height="180dp">
 
                     </ImageView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_marginTop="80dp"
+                        android:layout_marginTop="110dp"
                         android:gravity="end"
                         android:layout_height="20dp">
 
                     <LinearLayout
-                        android:layout_width="70dp"
+                        android:layout_width="80dp"
                         android:layout_marginRight="10dp"
                         android:layout_height="20dp">
 
@@ -216,30 +218,6 @@
                                     android:layout_weight="1"
                                     android:gravity="end">
 
-                               <!--     <androidx.cardview.widget.CardView
-                                        android:id="@+id/repeat_popup"
-                                        android:layout_width="40dp"
-                                        android:layout_height="40dp"
-                                        android:layout_marginRight="10dp"
-                                        android:foregroundGravity="center"
-                                        app:cardCornerRadius="150dp">
-
-                                        &lt;!&ndash;app:cardBackgroundColor="#e0467c"&ndash;&gt;
-
-                                        <RelativeLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center">
-                                            <ImageView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:src="@drawable/like_icon" />
-                                        </RelativeLayout>
-
-                                    </androidx.cardview.widget.CardView>
--->
-
-
                                     <androidx.cardview.widget.CardView
                                         android:id="@+id/heart_icon"
                                         android:layout_width="40dp"
@@ -247,8 +225,6 @@
                                         android:layout_marginRight="10dp"
                                         android:foregroundGravity="center"
                                         app:cardCornerRadius="150dp">
-
-                                  <!--      app:cardBackgroundColor="#e0467c"-->
 
                                         <RelativeLayout
                                             android:layout_width="wrap_content"
@@ -321,7 +297,7 @@
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_marginTop="110dp"
+                        android:layout_marginTop="150dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -912,7 +888,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="No Value Menu"
+                            android:text="Menu"
                             android:textColor="#1DC070"
                             android:textSize="15dp"
                             android:drawablePadding="8dp"

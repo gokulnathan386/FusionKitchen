@@ -45,7 +45,7 @@
 
     <color name="menu_moreinfo0">#707070</color>
     <color name="colorGrey">#dddddd</color>
-    <color name="menu_item_line">#eaeaea</color>
+    <color name="menu_item_line">#f5f5f5</color>
     <color name="menu_item_desc">#909090</color>
     <color name="menu_item_add_bor">#595959</color>
     <color name="tranfer">#00ffffff</color>
@@ -88,7 +88,7 @@
 
     <color name="coupon_apply">#2d4e60</color>
     <color name="menu_bg">#f5f5f5</color>
-    <color name="menucat_bg">#f9fafb</color>
+    <color name="menucat_bg">#FFFFFF</color>
     <color name="menu_line_sep">#ebe9e9</color>
     <color name="comt">#8d8d8d</color>
     <color name="repet_bg">#e8fff5</color>

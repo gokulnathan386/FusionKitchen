@@ -135,7 +135,6 @@ public class menu_item_sub_model {
                 private String must_try;
 
 
-
                 public String getBestseller() {
                     return best_seller;
                 }

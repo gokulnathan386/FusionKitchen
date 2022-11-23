@@ -1,4 +1,4 @@
-package com.fusionkitchen.model;
+package com.fusionkitchen.model.offer;
 
 import java.util.List;
 

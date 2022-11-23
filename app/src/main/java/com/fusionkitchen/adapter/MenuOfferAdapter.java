@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,48 +15,28 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.activity.Add_to_Cart;
-import com.fusionkitchen.activity.Payment_method_Activity;
-import com.fusionkitchen.activity.Postcode_Activity;
 import com.fusionkitchen.model.cart.coupon_valid_model;
-import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
-import com.fusionkitchen.model.offer_singe_List;
+import com.fusionkitchen.model.offer.offer_singe_List;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
-import com.google.android.gms.common.data.DataHolder;
-import com.google.android.gms.common.util.ArrayUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fusionkitchen.R;
-import com.fusionkitchen.model.menu_model.menu_offer_model;
 import com.fusionkitchen.model.offer.offer_list_model_details;
-import com.fusionkitchen.model.order_history.ordhistorys_list_model;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,6 +96,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
         if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("1")){
 
+            //=======================promo code=========================//
+
             if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
                 holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");
                 holder.offer_decs.setText("Use Code " +offer_singe_list.get(position).getFree());
@@ -126,6 +107,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
             }
 
         }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("2")){
+
+            //==========================coupon code ========================//
 
             if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
                 holder.offer_title.setText(offer_singe_list.get(position).getDiscount() + " % OFF");
@@ -139,6 +122,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
 
         }else if(offer_singe_list.get(position).getPromo_coupon_common_Id().equalsIgnoreCase("3")){
+
+            //==========================common Code ========================//
 
             if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
                 holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");

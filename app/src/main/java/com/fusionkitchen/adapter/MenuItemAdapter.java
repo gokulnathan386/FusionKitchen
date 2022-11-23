@@ -69,10 +69,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-
-
-
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+          /* LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
@@ -86,9 +83,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
                 }
 
-
             }
-        }, new IntentFilter("item_possion-message"));
+        }, new IntentFilter("item_possion-message"));*/
 
 
 
@@ -115,13 +111,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         });
 
 
-    /*    if( 0 == position){
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-        }*/
-
-
         List<menu_item_sub_model.categoryall.subcat> itemsubcatname = new ArrayList<>();
 
         for (int j = 0; j < listdata[position].getSubcat().size(); j++) {
@@ -139,7 +128,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
         itemcatname.add(listdata[position].getName());
 
-        if (position == 0) {
+       /* if (position == 0) {
 
             holder.menu_item_cat_name.setText(itemcatname.get(position));
             holder.child_recyclerview.setVisibility(View.VISIBLE);
@@ -154,7 +143,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         }else{
             holder.menu_item_cat_name.setText(itemcatname.get(position));
             holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
-        }
+        }*/
+
+        holder.menu_item_cat_name.setText(itemcatname.get(position));
+        holder.child_recyclerview.setVisibility(View.GONE);
 
     }
     @SuppressLint("LogNotTimber")

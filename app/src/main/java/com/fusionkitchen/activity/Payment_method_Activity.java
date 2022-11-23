@@ -1,26 +1,20 @@
 package com.fusionkitchen.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.assist.AssistStructure;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,19 +23,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -49,30 +38,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.fusionkitchen.app.MyApplication;
+import com.fusionkitchen.model.offer.offer_singe_List;
 import com.fusionkitchen.model.paymentgatway.appkey;
 import com.fusionkitchen.model.wallet.wallet_walletbutton_model;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.CardOfferAdapter;
 import com.fusionkitchen.adapter.CardPromoAdapter;
 import com.fusionkitchen.check_internet.Internet_connection_checking;
 import com.fusionkitchen.model.cart.coupon_valid_model;
 import com.fusionkitchen.model.cart.serviceDelCharge_model;
-import com.fusionkitchen.model.checkout.chechoutvalidate_model;
 import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.model.paymentmethod.order_payment_model;
 import com.fusionkitchen.rest.ApiClient;
@@ -92,6 +80,8 @@ public class Payment_method_Activity extends AppCompatActivity {
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
     SharedPreferences sharedpre_offer_details;
+
+    List<offer_singe_List> menu_offer_list_payment = new ArrayList<>();
 
     /*---------------------------Back Button Click----------------------------------------------------*/
     ImageView back;
@@ -208,6 +198,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
         menuurlpath = sharedpreferences.getString("menuurlpath", null);
         asap_todat_laterstr = sharedpreferences.getString("asaptodaylaterstring",null);
+
 
         /*---------------------------Session Manager Class----------------------------------------------------*/
       /*  session = new SessionManager(getApplicationContext());
@@ -590,8 +581,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                 offerEdit.commit();
 
                 /*---------------------------------End remove offer coupon code--------------------------------*/
-
-
 
             }
         });
@@ -1017,13 +1006,172 @@ public class Payment_method_Activity extends AppCompatActivity {
     private void menu_offer(String menuurlpath, String paymentmode, String ordermodeoffer) {
 
 
-        // get user data from session
         Map<String, String> params = new HashMap<String, String>();
+        params.put("path", menuurlpath);
+        params.put("payment_mode", paymentmode);
+        params.put("ordermode", ordermodeoffer);
+        params.put("order_time",asap_todat_laterstr);
+
+
+        menupathurls ="/apionlinediscount";
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<offer_code_model> call = apiService.offershowmethod(params);
+        Log.e("paramscart", "" + params);
+        Log.e("paramscart", "" + menupathurls);
+        call.enqueue(new Callback<offer_code_model>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<offer_code_model> call, Response<offer_code_model> response) {
+                int statusCode = response.code();
+
+                Log.e("offer-checkout--->", new Gson().toJson(response.body()) + " " + statusCode);
+
+                if (statusCode == 200) {
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        menu_offer_list_payment.clear();
+
+                        coupon_showing_layout.setVisibility(View.VISIBLE);
+                        no_offers.setVisibility(View.GONE);
+                        ok_offers.setVisibility(View.VISIBLE);
+                        show_discoutss = true;
+
+                        for(int i = 0; i<response.body().getDiscount_list().getPromocode().size(); i++ ){
+
+                            menu_offer_list_payment.add(new offer_singe_List(
+                                    "1",
+                                    response.body().getDiscount_list().getPromocode().get(i).getFree(),
+                                    response.body().getDiscount_list().getPromocode().get(i).getType(),
+                                    response.body().getDiscount_list().getPromocode().get(i).getDiscount(),
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    ""));
+                        }
+
+
+                        for(int j = 0; j<response.body().getDiscount_list().getDiscountcode().size(); j++ ){
+
+                            menu_offer_list_payment.add( new offer_singe_List(
+                                    "2",
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getFree(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getType(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getDiscount(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getPayment_details(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getMin_order(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getOrder_type(),
+                                    response.body().getDiscount_list().getDiscountcode().get(j).getValid_date(),
+                                    ""));
+                        }
+
+                        for(int k = 0; k<response.body().getDiscount_list().getCommoncoupon().size(); k++ ){
+
+                            menu_offer_list_payment.add( new offer_singe_List(
+                                    "3",
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDiscountCode(),
+                                    response.body().getDiscount_list().getDiscountcode().get(k).getType(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDiscount(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getPaymentDetails(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getMin_Order(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getOrderType(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getValidDate(),
+                                    response.body().getDiscount_list().getCommoncoupon().get(k).getDescription()));
+
+                        }
+
+                        adapter = new CardOfferAdapter(mContext, response.body().getDiscount_list().getDiscountcode(),menu_offer_list_payment);
+                        recyclerviewOffers.setHasFixedSize(true);
+                        recyclerviewOffers.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                        recyclerviewOffers.setItemAnimator(new DefaultItemAnimator());
+                        recyclerviewOffers.setAdapter(adapter);
+
+                        if (adapter.getItemCount() == 0) {
+                            recyclerviewOffers.setVisibility(View.GONE);
+                        } else {
+
+                            recyclerviewOffers.setVisibility(View.VISIBLE);
+
+                        }
+
+                    }else{
+
+                        show_discoutss = false;
+                        coupon_showing_layout.setVisibility(View.GONE);
+                        no_offers.setVisibility(View.VISIBLE);
+                        ok_offers.setVisibility(View.GONE);
+
+                    }
+
+                  /*  if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        coupon_showing_layout.setVisibility(View.VISIBLE);
+                        no_offers.setVisibility(View.GONE);
+                        ok_offers.setVisibility(View.VISIBLE);
+                        show_discoutss = true;
+
+                        adapter = new CardOfferAdapter(mContext, response.body().getDiscount_list().getDiscountcode());
+                        recyclerviewOffers.setHasFixedSize(true);
+                        recyclerviewOffers.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                        recyclerviewOffers.setItemAnimator(new DefaultItemAnimator());
+                        recyclerviewOffers.setAdapter(adapter);
+
+                        if (adapter.getItemCount() == 0) {
+                            recyclerviewOffers.setVisibility(View.GONE);
+                        } else {
+
+                            recyclerviewOffers.setVisibility(View.VISIBLE);
+
+                        }
+
+                        Log.e("recyclerviewOffers1", "" + response.body().getDiscount_list().getDiscountcode().size());
+                        adapterpromo = new CardPromoAdapter(mContext, response.body().getDiscount_list().getPromocode());
+                        recyclerviewpromo.setHasFixedSize(true);
+                        recyclerviewpromo.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                        recyclerviewpromo.setItemAnimator(new DefaultItemAnimator());
+                        recyclerviewpromo.setAdapter(adapterpromo);
+
+                        if (adapterpromo.getItemCount() == 0) {
+                            recyclerviewpromo.setVisibility(View.GONE);
+                        } else {
+                            recyclerviewpromo.setVisibility(View.VISIBLE);
+                        }
+
+                        Log.e("recyclerviewOffers2", "" + adapterpromo.getItemCount());
+
+                    } else {
+
+                        show_discoutss = false;
+                        coupon_showing_layout.setVisibility(View.GONE);
+                        no_offers.setVisibility(View.VISIBLE);
+                        ok_offers.setVisibility(View.GONE);
+                    }*/
+
+                } else {
+
+                    Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<offer_code_model> call, Throwable t) {
+
+                Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+
+/*        Map<String, String> params = new HashMap<String, String>();
         params.put("payment_mode", paymentmode);
         params.put("ordermode", ordermodeoffer);
 
 
         menupathurls = menuurlpath + "/apipayment";
+
+        Log.d("Nathan--->","" + menupathurls);
 
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1074,11 +1222,9 @@ public class Payment_method_Activity extends AppCompatActivity {
                             recyclerviewpromo.setVisibility(View.GONE);
                         } else {
                             recyclerviewpromo.setVisibility(View.VISIBLE);
-
                         }
 
                         Log.e("recyclerviewOffers2", "" + adapterpromo.getItemCount());
-
 
                     } else {
 
@@ -1086,7 +1232,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                         coupon_showing_layout.setVisibility(View.GONE);
                         no_offers.setVisibility(View.VISIBLE);
                         ok_offers.setVisibility(View.GONE);
-                        // Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), "Discount not available today", Snackbar.LENGTH_LONG).show();
                     }
                 } else {
 
@@ -1099,16 +1244,16 @@ public class Payment_method_Activity extends AppCompatActivity {
             public void onFailure(Call<offer_code_model> call, Throwable t) {
 
                 Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
     }
 
     /*  ------------------------------COUPON AMOUNT IN CART PAGE CALCULATION-------------------------*/
 
-    private void couponcodevalidate(final String menuurlpath, String usercid, String ordermode, String paymenttype, String code, String subtotal) {
+    private void couponcodevalidate(final String menuurlpath, String usercid,
+                                    String ordermode, String paymenttype,
+                                    String code, String subtotal) {
 
-        //final ProgressDialog loader = ProgressDialog.show(Add_to_Cart.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("cid", usercid);
         params.put("ordermode", ordermode);
@@ -1117,13 +1262,14 @@ public class Payment_method_Activity extends AppCompatActivity {
         params.put("subtotal", subtotal);
         params.put("order_time",asap_todat_laterstr);
 
-        Log.d("coupencode","User->"+usercid + "ordermode->"+  ordermode +"paymenttype->"+ paymenttype
-                + "code->"+code +"subtotsl->"+subtotal+"asap_todat_laterstr"+asap_todat_laterstr);
+        Log.d("coupencode","client_Id->"+usercid +
+                                   "ordermode->"+ ordermode +
+                                    "paymenttype->"+ paymenttype
+                                     + "code->"+code +
+                                       "subtotsl->"+subtotal+
+                                      "Order_time"+asap_todat_laterstr);
 
 
-
-       /* HashMap<String, String> user = session.getUserDetails();
-        authKey = user.get(SessionManager.KEY_phpsessid);*/
         fullUrl = menuurlpath + "/menu/couponAPI";
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1137,10 +1283,7 @@ public class Payment_method_Activity extends AppCompatActivity {
 
                 if (statusCode == 200) {
 
-                    // loader.dismiss();
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
-
-                        //  Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), response.body().getDiscount(), Snackbar.LENGTH_LONG).show();
 
 
                         card_coupon_code.setText(cardoffertitle);
@@ -1216,6 +1359,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                                     custom_loading_imageView.setVisibility(View.GONE);
                                     new CountDownTimer(1000, 1000) {
                                         public void onTick(long millisUntilFinished) {
+
                                         }
 
                                         public void onFinish() {
@@ -1260,7 +1404,6 @@ public class Payment_method_Activity extends AppCompatActivity {
                         snackbar.show();
                     }
                 } else {
-                    // loader.dismiss();
                     Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -1269,7 +1412,6 @@ public class Payment_method_Activity extends AppCompatActivity {
             public void onFailure(Call<coupon_valid_model> call, Throwable t) {
 
                 Log.e("Tro", "" + t);
-                // loader.dismiss();
                 Snackbar.make(Payment_method_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
             }
 

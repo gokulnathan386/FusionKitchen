@@ -80,18 +80,16 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 import com.fusionkitchen.adapter.MenuListViewAdapter;
-import com.fusionkitchen.adapter.Menucommoncouponadapter;
 import com.fusionkitchen.adapter.MoreinfoopenhrsAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.cart.coupon_valid_model;
-import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import com.fusionkitchen.model.menu_model.collDelivery_model;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.fusionkitchen.model.moreinfo.about_us_model;
-import com.fusionkitchen.model.offer_singe_List;
+import com.fusionkitchen.model.offer.offer_singe_List;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -115,7 +113,6 @@ import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.MenuAddonItemAdapter;
 import com.fusionkitchen.adapter.MenuItemAdapter;
 import com.fusionkitchen.adapter.MenuOfferAdapter;
-import com.fusionkitchen.adapter.MenupromoAdapter;
 import com.fusionkitchen.adapter.MenuserachcatAdapter;
 import com.fusionkitchen.adapter.SearchItemAdapter;
 import com.fusionkitchen.check_internet.Internet_connection_checking;
@@ -153,6 +150,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     TextView delivery_collection_textview,cooking_time_textview;
     TextView restaurants_status;
     RecyclerView recyclerviewcommon;
+    int Show_favourite_list;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
     int K = 2;
 
@@ -350,7 +348,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     ProgressBar loadingPB;
     SharedPreferences sharedpre_offer_details;
     List<offer_singe_List>  offer_single_list = new ArrayList<>();
-
 
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
@@ -1544,21 +1541,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 */
 
 
-/*
-
-      if(sharedpreferences.getString("ordermodetype",null).equalsIgnoreCase("0")) {
-
-           Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
-
-        }else{
-
-          Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
-
-        }
-*/
-
-
-
     }
 
 
@@ -1574,11 +1556,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             if(delivery_collection.equalsIgnoreCase("Delivery")){
 
-                Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
+                Glide.with(getApplicationContext()).load(delivery_image).into(offer_gif);
 
             }else{
 
-                Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
+                Glide.with(getApplicationContext()).load(collection_image).into(offer_gif);
 
             }
 
@@ -1587,8 +1569,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     private void showFavourite(String user_id, int favourite_client) {
-
-
 
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"showFavourite",
                 new com.android.volley.Response.Listener<String>() {
@@ -1608,6 +1588,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                      if(check_favourite_boolean == true){
 
                                          ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#e0467c"));
+
                                      }
 
                             }else{
@@ -1838,8 +1819,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         return p1;
     }
 
-
-
     private void HeartIcon(String menu_Restaurant_name) {
 
         String clientId = String.valueOf(favourite_client);
@@ -1866,10 +1845,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 if(check_msg.equalsIgnoreCase("insert successfully")){
 
                                     ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#e0467c"));
+                                    Show_favourite_list = 1;
 
                                 }else{
 
                                     ((CardView) heart_icon).setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                                    Show_favourite_list = 2;
 
                                 }
 
@@ -1913,9 +1894,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         ImageView favourite_image = heart_popup.findViewById(R.id.favourite_image);
         AppCompatButton favourite_btn = heart_popup.findViewById(R.id.favourite_btn);
         TextView restaurants_textview = heart_popup.findViewById(R.id.restaurants_textview);
+        TextView  fav_textview_add_remove = heart_popup.findViewById(R.id.fav_textview_add_remove);
+
         restaurants_textview.setText(menu_Restaurant_name);
 
         Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
+
+        if(Show_favourite_list == 1){
+            fav_textview_add_remove.setText("Remove from your favourite list");
+        }else{
+            fav_textview_add_remove.setText("Added to your favourite list");
+        }
+
 
         favourite_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3619,7 +3609,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewitem.setHasFixedSize(true);
                         recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
                         // recyclerviewitem.getLayoutManager().scrollToPosition(2);
-
                         recyclerviewitem.setAdapter(itemadapter);
 
 
