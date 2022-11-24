@@ -2,8 +2,10 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -85,6 +87,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private final menu_item_sub_model.categoryall listdatum;
     public static final String PREORDERPREFERENCES = "pre_order_popup";
     String menu_time_update;
+    ViewHolder textvisiable;
 
     private menu_item_sub_model.categoryall.subcat.items[] items;
     private Dialog dialog;
@@ -167,6 +170,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
+       textvisiable =  holder;
+
         holder.menu_item_name.setText(items[position].getName());
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
@@ -246,14 +251,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                  holder.bestseller_musttry_textview.setText("Best Seller");
                  holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.star_blue);
-                 holder.seller_header.setBackgroundColor(Color.parseColor("#E6F3FE"));
+                 holder.seller_header.setBackgroundResource(R.drawable.item_bg_border);
 
              }else if(items[position].getMusttry().equalsIgnoreCase("true")){
 
                  holder.bestseller_musttry_textview.setText("Must Try");
-                 holder.seller_header.setBackgroundColor(Color.parseColor("#FFF2F3"));
                  holder.bestseller_musttry_textview.setTextColor(Color.parseColor("#E0467C"));
                  holder.bestseller_musttry_drawable.setBackgroundResource(R.drawable.thumbs_up_icon);
+                 holder.seller_header.setBackgroundResource(R.drawable.item_bg_border_thumbs);
 
              }else{
 
@@ -269,8 +274,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 holder.menu_item_add.setEnabled(false);
 
-                holder.increment_decrement_layout.setVisibility(View.VISIBLE);
-                holder.menu_item_add.setVisibility(GONE);
+               // holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+              //  holder.menu_item_add.setVisibility(GONE);
 
                 item_view_dismiss = 0;
 
@@ -324,24 +329,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 Decreasepriceqty(view,items[position].getId(),holder);
 
-              /*  count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
-
-                if (count == 1) {
-                    Decreasepriceqty(view,items[position].getId());
-                    holder.qty_textview_number.setText("01");
-                } else {
-                    count -= 1;
-                    length = String.valueOf(count).length();
-                    if(length == 1){
-                        Decreasepriceqty(view,items[position].getId());
-                        holder.qty_textview_number.setText("0" + count);
-                    }else{
-                        Decreasepriceqty(view,items[position].getId());
-                        holder.qty_textview_number.setText("" + count);
-                    }
-
-                }*/
-
             }
         });
 
@@ -353,45 +340,127 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
             }
         });
+
+      //  LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(maddon_btn_enable_adapter, new IntentFilter("add_on_btn_enable_adapter"));
+
     }
 
+
+   /* public BroadcastReceiver maddon_btn_enable_adapter = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String item_id = intent.getStringExtra("item_id_activity");
+            Log.d("Adapter_Id_name","" + item_id);
+
+            textvisiable.menu_item_add.setVisibility(GONE);
+            textvisiable.increment_decrement_layout.setVisibility(View.VISIBLE);
+
+        }
+    };
+*/
     private void Decreasepriceqty(View view, String id,ViewHolder holder) {
 
 
-
-               count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
+                count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
+
                     holder.qty_textview_number.setText("01");
                     if(item_view_dismiss == 1){
                         textview_qty.setText("01");
-                    }
+                     }
+
+
+                        ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+                            for (int i=0;i<qtypice.size();i++)
+                            {
+                                HashMap<String, String> hashmap= qtypice.get(i);
+
+                                removeqty = hashmap.get("qty");
+                                removefinalamt = hashmap.get("itemaddontotalamt");
+                            }
+
+                                int database_qty =  Math.round(Float.parseFloat(removeqty));
+
+                                int qty  = database_qty - 1;
+
+                                String price  = removefinalamt;
+
+                                float total_amt = Float.parseFloat(price) * qty;
+                                Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+
+                                Intent intent = new Intent("item_successfully_custom-message");
+                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                 } else {
+
                     count -= 1;
                     length = String.valueOf(count).length();
-                    if(length == 1){
-                        holder.qty_textview_number.setText("0" + count);
 
+                    if(length == 1){
+
+                        holder.qty_textview_number.setText("0" + count);
                         if(item_view_dismiss == 1){
                             textview_qty.setText("0" + count);
                         }
 
 
-                    }else{
-                        holder.qty_textview_number.setText("" + count);
+                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+                            for (int i=0;i<qtypice.size();i++)
+                            {
+                                HashMap<String, String> hashmap= qtypice.get(i);
 
+                                removeqty = hashmap.get("qty");
+                                removefinalamt = hashmap.get("itemaddontotalamt");
+                            }
+
+                            int database_qty =  Math.round(Float.parseFloat(removeqty));
+
+                            int qty  = database_qty - 1;
+
+                            String price  = removefinalamt;
+
+                            float total_amt = Float.parseFloat(price) * qty;
+                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+
+                            Intent intent = new Intent("item_successfully_custom-message");
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                    }else{
+
+                        holder.qty_textview_number.setText("" + count);
                         if(item_view_dismiss == 1){
                             textview_qty.setText("" + count);
                         }
+
+                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+                            for (int i=0;i<qtypice.size();i++)
+                            {
+                                HashMap<String, String> hashmap= qtypice.get(i);
+
+                                removeqty = hashmap.get("qty");
+                                removefinalamt = hashmap.get("itemaddontotalamt");
+                            }
+
+                            int database_qty =  Math.round(Float.parseFloat(removeqty));
+
+                            int qty  = database_qty - 1;
+
+                            String price  = removefinalamt;
+
+                            float total_amt = Float.parseFloat(price) * qty;
+                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+
+                            Intent intent = new Intent("item_successfully_custom-message");
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                     }
 
                 }
 
-
+/*
         ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
-
         for (int i=0;i<qtypice.size();i++)
         {
             HashMap<String, String> hashmap= qtypice.get(i);
@@ -410,7 +479,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
 
         Intent intent = new Intent("item_successfully_custom-message");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
 
 
     }
@@ -648,7 +717,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View v) {
                 item_view_dismiss = 1;
                 Decreasepriceqty(v,item_id,holder);
-
 
             }
         });
@@ -1716,8 +1784,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
 
-                    holder.menu_item_add.setVisibility(GONE);
-                    holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+                 /*   holder.menu_item_add.setVisibility(GONE);
+                    holder.increment_decrement_layout.setVisibility(View.VISIBLE);*/
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
@@ -1741,6 +1809,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
                                     );
 
+
+                                    holder.menu_item_add.setVisibility(GONE);
+                                    holder.increment_decrement_layout.setVisibility(View.VISIBLE);
 
                                     Intent intent = new Intent("item_successfully_custom-message");
                                //     intent.putExtra("Qty_count",dbHelper.getqtycount());
@@ -1862,8 +1933,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             count = Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
                                             count++;
                                             length = String.valueOf(count).length();
-
-
 
                                             if (length == 1) {
 

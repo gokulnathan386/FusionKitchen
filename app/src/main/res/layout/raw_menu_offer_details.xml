@@ -7,6 +7,7 @@
     android:background="@drawable/menu_offer_bg"
     android:paddingLeft="@dimen/_5sdp"
     android:gravity="center"
+    android:padding="10dp"
     android:paddingTop="@dimen/_5sdp"
     android:paddingRight="@dimen/_10sdp"
     android:paddingBottom="@dimen/_5sdp">

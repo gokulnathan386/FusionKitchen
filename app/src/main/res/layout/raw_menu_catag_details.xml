@@ -5,11 +5,19 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/border">
+    >
+
+
+    <LinearLayout
+        android:background="@drawable/border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/categorymainLL"
+        android:background="@color/menu_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -19,9 +27,12 @@
             android:id="@+id/relativetextLL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/menucat_bg"
-            android:backgroundTint="@color/menucat_bg"
+            android:background="@drawable/border"
             android:visibility="visible">
+
+           <!-- android:background="@color/menucat_bg"
+            android:backgroundTint="@color/menucat_bg"-->
+
 
             <TextView
                 android:id="@+id/menu_item_cat_name"
@@ -60,11 +71,14 @@
             android:id="@+id/child_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="@color/menu_bg"
             android:backgroundTint="@color/menu_bg"
             android:visibility="visible">
-
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

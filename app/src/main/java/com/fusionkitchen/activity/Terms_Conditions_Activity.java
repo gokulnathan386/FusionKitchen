@@ -173,7 +173,9 @@ public class Terms_Conditions_Activity extends AppCompatActivity {
 
 
         traemWebView = findViewById(R.id.traemWebView);
-        traemWebView.loadUrl("https://www.fusionkitchen.co.uk/terms");
+       // traemWebView.loadUrl("https://www.fusionkitchen.co.uk/terms");
+        traemWebView.loadUrl("https://www.fusionkitchen.co.uk/general-terms");
+
 
 
         new CountDownTimer(6000, 1000) {

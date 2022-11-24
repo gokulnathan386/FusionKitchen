@@ -80,13 +80,10 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
 
         }
 
-
         MenuitemnameAdapter menuitemnameadapter = new MenuitemnameAdapter(mContext, itemname,  menuurlpath, itemsubcatname[position], listdatum);
         holder.child_item_recyclerview.setHasFixedSize(true);
         holder.child_item_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         holder.child_item_recyclerview.setAdapter(menuitemnameadapter);
-
-        // Log.e("sixg", "" + orderhistory.size());
 
     }
 

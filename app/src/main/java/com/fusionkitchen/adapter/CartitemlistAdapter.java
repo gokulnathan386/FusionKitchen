@@ -74,7 +74,8 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
     String PREFS_MOREINFO = "PREFS_MOREINFO";
 
 
-    public CartitemlistAdapter(Context context, ArrayList<Cartitem> listContacts, String menuurlpath, String subcategory_printers, String but_order_type) {
+    public CartitemlistAdapter(Context context, ArrayList<Cartitem> listContacts, String menuurlpath, String subcategory_printers,
+                                                         String but_order_type) {
         this.context = context;
         this.listContacts = listContacts;
         this.mArrayList = listContacts;

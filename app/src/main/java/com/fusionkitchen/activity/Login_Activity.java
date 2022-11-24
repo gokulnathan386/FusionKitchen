@@ -919,7 +919,17 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                             startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                         } else if (activity_details.equalsIgnoreCase("myfavourite")) {
                             startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-                        } else {
+                        } else if(activity_details.equalsIgnoreCase("item_menu_activity")){
+
+                            Intent intent = getIntent();
+                            String menuurlpath = intent.getStringExtra("menuurlpath");
+
+                            Intent item_menu_page = new Intent(getApplicationContext(), Item_Menu_Activity.class);
+                            item_menu_page.putExtra("menuurlpath",menuurlpath);
+                            startActivity(item_menu_page);
+
+
+                        }else {
                             startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                         }
 
