@@ -86,10 +86,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
         sharedpreferences =context.getSharedPreferences(MyPREFERENCES, context.MODE_PRIVATE);
         sharedpreferences1 = context.getSharedPreferences(PREFS_MOREINFO, Context.MODE_PRIVATE);
-      /*  sharedpreferences.getString("orderactivetag", null);
-        sharedpreferences.getString("ordertodattime", null);
-        sharedpreferences.getString("orderlaterdate", null);
-        sharedpreferences.getString("orderlatertime", null);*/
+
 
 
         if (but_order_type == null) {

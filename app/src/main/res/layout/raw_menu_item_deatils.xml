@@ -118,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/menu_item_desc"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menu_item_name"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -156,20 +156,20 @@
 
 
 
-                    <TextView
-                        android:id="@+id/textview_avaliable_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/metropolis_semibold"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:layout_below="@+id/menu_item_desc"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/layout_logo"
-                        android:background="@drawable/available_time_bg"
-                        android:text="Available at 12:00 AM-12:01 AM"
-                        android:textColor="#0071E3"
-                        android:textSize="12dp" />
+                <TextView
+                    android:id="@+id/textview_avaliable_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/metropolis_semibold"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:layout_below="@+id/menu_item_desc"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toRightOf="@+id/layout_logo"
+                    android:background="@drawable/available_time_bg"
+                    android:text="Available at 12:00 AM-12:01 AM"
+                    android:textColor="#0071E3"
+                    android:textSize="12dp" />
 
 
                     <TextView

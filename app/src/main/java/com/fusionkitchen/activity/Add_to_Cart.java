@@ -1563,7 +1563,7 @@ public class Add_to_Cart extends AppCompatActivity {
     public BroadcastReceiver mitemidReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
+
             ItemId = intent.getStringExtra("ItemId");
             menuurlpaths = intent.getStringExtra("menuurlpath");
 
@@ -1591,14 +1591,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
             subcategory_printer();
 
-           /* if(dbHelper.updateItem(Integer.parseInt(ItemupdateId), Itemupdateqty,Itemupdateamt)) {
-               // Toast.makeText(getApplicationContext(), "Person Update Successful", Toast.LENGTH_SHORT).show();
-
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "Person Update Failed", Toast.LENGTH_SHORT).show();
-            }*/
-
 
         }
     };
@@ -1612,8 +1604,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
             Sub_total.setText("£ " + Itemsubtotal);
 
-           // processto_pay_button.setText("Pay £ " + Itemsubtotal);
-            //delivery_pay_button.setText("Pay £ " + Itemsubtotal);
             totalcardamt = Itemsubtotal;
 
 
@@ -1702,22 +1692,10 @@ public class Add_to_Cart extends AppCompatActivity {
 
                     dbHelper = new SQLDBHelper(Add_to_Cart.this);
 
-                    //  ArrayList<Cartitem> allContacts = dbHelper.listContacts();
-                    // ArrayList<Contacts> allContacts = (ArrayList<Contacts>) dbHelper.getAllItem();
-
-                    //   contactView = findViewById(R.id.myContactList);
-
-
                     ArrayList<Cartitem> allContacts = dbHelper.listContacts();
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Add_to_Cart.this);
                     contactView.setLayoutManager(linearLayoutManager);
                     Log.e("allContacts", "" + allContacts.size() + "one");
-
-
-                   /* for(int i = 0; i < allContacts.size(); i++) {
-                        Log.d("allContacts",allContacts.get(i).getItemid());
-                    }
-*/
 
 
                     if (allContacts.size() >= 4) {

@@ -198,7 +198,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     /*---------------------------addon extra add shared prferances----------------------------------------------------*/
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs_extra";
-    // public static final String MyPREFERENCESMENU = "MyPrefs_mrnuurl";
 
     /*---------------------------Intent Value Get URL Path ----------------------------------------------------*/
     String menuurlpath, searchfullUrl, reloadback,menu_collection_tattime,menu_delivery_tattime;
@@ -371,7 +370,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         /*------------------shared preferences Value-------------------------*/
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        //  sharedpreferences = getSharedPreferences(MyPREFERENCESMENU, Context.MODE_PRIVATE);
 
         baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
@@ -3926,7 +3924,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 item_pricesize = new ArrayList<>();
                 item_pricesize.clear();
 
-                //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
+
 
                 addonitemfirstview(ItemName, addonid, "", "", "1");
 
@@ -4235,7 +4233,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             addon_sucess_add(addon_item_name.getText().toString(), ItemName, str_listItems, itemidsstr, itemexradsstr, item_price, "1", item_total_amt, sharedpreferences.getString("ordermodetype", null), categoryname, subcategoryname);
                         }
 
-                        //addon_sucess_add(addon_item_name.getText().toString(), ItemName, str_listItems, itemidsstr, itemexradsstr, item_price, "1", item_total_amt, sharedpreferences.getString("ordermodetype", null), categoryname, subcategoryname);
                         Log.e("item_add_time1", "" + "1");//Item addon Name
                         Log.e("idvalue1", "" + itemexradsstr); // addon extra id
                         Log.e("idvalue2", "" + itemidsstr);//ok addon extra item id
@@ -4810,15 +4807,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             Log.e("nextapi2", "" + btnnextfir);
                             Log.e("nextapi3", "" + addonlimit);
 
-                            //start Local broadcastManager send  Menuitem_name_adapter
+                            /*-----------------------start Local broadcastManager send  Menuitem_name_adapter---------------------*/
 
-                             /*   Intent intent = new Intent("add_on_btn_enable_adapter");
+                                Intent intent = new Intent("add_on_btn_enable_adapter");
                                 intent.putExtra("item_id_activity",str_ItemName);
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
+                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-                            //End Local broadcastManager send  Menuitem_name_adapter
-
-
+                            /*-----------------------End Local broadcastManager send  Menuitem_name_adapter---------------------*/
 
                             Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
                                     "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + " -----> "+ str_item_total_amt + "\n" + "--->"
@@ -4875,7 +4870,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     ArrayList<String> get_amt_count = dbHelper.gettotalamt();
                                     Log.d("TotalAmount",get_amt_count.get(0)+ " ");
                                     total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
-                                    //  total_item.setText(cursor + " Items");
 
                                     if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
@@ -4914,7 +4908,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Log.e("bugcode", "" + t.toString());
                 Log.e("erocode", "" + "3");
                 Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -4935,9 +4928,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     public int getContactsCount() {
         cursor = dbHelper.numberOfRows();
-
         Log.e("c", "" + cursor);
-        //Log.e("totalitemamut12", "" + totalitemamut);
         return cursor;
     }
     protected void onPause() {

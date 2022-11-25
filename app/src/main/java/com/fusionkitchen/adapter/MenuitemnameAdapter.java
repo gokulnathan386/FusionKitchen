@@ -146,6 +146,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String addonitemtype,latertimestring;
     ArrayList<String> allContacts;
     String single_itemqty, single_itemamt;
+    String position2;
     // RecyclerView recyclerView;
     public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub, menu_item_sub_model.categoryall listdatum) {
 
@@ -171,6 +172,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
        textvisiable =  holder;
+       position2 = String.valueOf(position);
 
         holder.menu_item_name.setText(items[position].getName());
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
@@ -179,7 +181,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
-                allContacts = dbHelper.getitemlist();
+        allContacts = dbHelper.getitemlist();
 
 
                 for (int k = 0; k<allContacts.size();k++){
@@ -230,9 +232,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
             getContactsCount();
-
-
-         //   Log.d("Availableitme",items[position].getAvailableTime());
 
          if(items[position].getAvailableTime().equalsIgnoreCase("")){
 
@@ -341,24 +340,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
-      //  LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(maddon_btn_enable_adapter, new IntentFilter("add_on_btn_enable_adapter"));
 
     }
 
-
-   /* public BroadcastReceiver maddon_btn_enable_adapter = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            String item_id = intent.getStringExtra("item_id_activity");
-            Log.d("Adapter_Id_name","" + item_id);
-
-            textvisiable.menu_item_add.setVisibility(GONE);
-            textvisiable.increment_decrement_layout.setVisibility(View.VISIBLE);
-
-        }
-    };
-*/
     private void Decreasepriceqty(View view, String id,ViewHolder holder) {
 
 
@@ -366,13 +350,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 if (count == 1) {
 
-                    holder.qty_textview_number.setText("01");
-                    if(item_view_dismiss == 1){
-                        textview_qty.setText("01");
-                     }
+                         holder.qty_textview_number.setText("01");
+                            if(item_view_dismiss == 1){
+                                textview_qty.setText("01");
+                             }
 
 
                         ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+
                             for (int i=0;i<qtypice.size();i++)
                             {
                                 HashMap<String, String> hashmap= qtypice.get(i);
@@ -392,6 +377,13 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 Intent intent = new Intent("item_successfully_custom-message");
                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                              /*  ArrayList<String> get_qty_count = dbHelper.getqtycount();
+                                Log.d("get_qty_count--->",get_qty_count.get(0));
+*/
+                                holder.menu_item_add.setVisibility(View.VISIBLE);
+                                holder.increment_decrement_layout.setVisibility(GONE);
+
 
                 } else {
 
@@ -458,29 +450,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     }
 
                 }
-
-/*
-        ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
-        for (int i=0;i<qtypice.size();i++)
-        {
-            HashMap<String, String> hashmap= qtypice.get(i);
-
-            removeqty = hashmap.get("qty");
-            removefinalamt = hashmap.get("itemaddontotalamt");
-        }
-
-        int database_qty =  Math.round(Float.parseFloat(removeqty));
-
-        int qty  = database_qty - 1;
-
-        String price  = removefinalamt;
-
-        float total_amt = Float.parseFloat(price) * qty;
-        Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
-
-        Intent intent = new Intent("item_successfully_custom-message");
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
-
 
     }
 
@@ -1762,9 +1731,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         Log.e("params3", ": " + fullUrl);
         Log.e("params4", ": " + params);
 
-             /*  Log.e("params","Time:" + sharedpreferences.getString("ordertodattime", null) +
-                        "date_string :" + sharedpreferences.getString("todaytimestring", null) );*/
-
 
         call.enqueue(new Callback<menu_addon_status_model>() {
             @SuppressLint("LongLogTag")
@@ -1904,6 +1870,17 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     intent.putExtra("subcategoryname", sub.getName());
                                     intent.putExtra("item_price_amt", items[position].getPrice());
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                                    LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+                                        @Override
+                                        public void onReceive(Context context, Intent intent) {
+
+                                            String itempossion = intent.getStringExtra("item_id_activity");
+                                            holder.menu_item_add.setVisibility(GONE);
+                                            holder.increment_decrement_layout.setVisibility(View.VISIBLE);
+
+                                        }
+                                    }, new IntentFilter("add_on_btn_enable_adapter"));
 
                                 }else {
 
