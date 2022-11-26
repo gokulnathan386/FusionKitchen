@@ -97,8 +97,15 @@ public class menu_item_model {
         private String miles;
 
         @SerializedName("take_away_status")
-        private String take_away_status;
+        private TakeAwayStatus take_away_status;
 
+        public TakeAwayStatus getTake_away_status() {
+            return take_away_status;
+        }
+
+        public void setTake_away_status(TakeAwayStatus take_away_status) {
+            this.take_away_status = take_away_status;
+        }
 
         @SerializedName("images")
         private Images images;
@@ -130,16 +137,6 @@ public class menu_item_model {
         public void setmiles(String miles) {
             this.miles = miles;
         }
-
-
-        public String gettakeawaystatus() {
-            return take_away_status;
-        }
-
-        public void settakeawaystatus(String take_away_status) {
-            this.take_away_status = take_away_status;
-        }
-
 
         public String getClienImage() {
             return client_image;
@@ -245,6 +242,31 @@ public class menu_item_model {
             }
         }
 
+        public class TakeAwayStatus {
+
+            @SerializedName("status_message")
+            private String status_message;
+
+            @SerializedName("status_detail")
+            private String status_detail;
+
+
+            public String getStatus_message() {
+                return status_message;
+            }
+
+            public void setStatus_message(String status_message) {
+                this.status_message = status_message;
+            }
+
+            public String getStatus_detail() {
+                return status_detail;
+            }
+
+            public void setStatus_detail(String status_detail) {
+                this.status_detail = status_detail;
+            }
+        }
 
         public class Images {
             private String repeat;
@@ -269,6 +291,27 @@ public class menu_item_model {
                 this.walking = walking;
             }
         }
+
+
+/*      public class take_away_status {
+
+            private String status_message;
+            private String status_detail;
+
+            public String getstatus_message() {
+                return status_message;
+            }
+            public void setstatus_message(String status_message) {
+                this.status_message = status_message;
+            }
+            public String getstatus_detail() {
+                return status_detail;
+            }
+            public void setstatus_detail(String status_detail) {
+                this.status_detail = status_detail;
+            }
+
+        }*/
 
 
     }

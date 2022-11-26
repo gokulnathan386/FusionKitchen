@@ -3484,10 +3484,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     /*---------------------Get Item in menu----------------------------*/
     private void menugetitem(String menuurlpath, String menuparamesint, String str_key_postcode, String str_key_area, String str_key_address,String latvalue,String lonvalue) {
 
-
-
-        // get user data from session
-
         if(menuparamesint==null){
             menuparamesint = "0";
         }
@@ -3514,13 +3510,16 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             public void onResponse(Call<menu_item_model> call, Response<menu_item_model> response) {
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
+
+
+
                 if (statusCode == 200) {
 
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
 
-//array value set textview
+                        //array value set textview
 
                         menu_clientname.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         menu_tvdesc.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -3543,7 +3542,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         Menu_Restaurant_Client_Id  = listdata[0].getclient_id();
 
-                        restaurants_status.setText(listdata[0].gettakeawaystatus());
+                        restaurants_status.setText(listdata[0].getTake_away_status().getStatus_detail());
 
 
                         delivery_image  = listdata[0].getImages().getDeliveryimage();
@@ -3551,37 +3550,32 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         collection_image =  listdata[0].getImages().getWalking();
 
 
-                        if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Closed")) {
+                        if (listdata[0].getTake_away_status().getStatus_message().equalsIgnoreCase("Closed")) {
 
                             restaurants_status.setText("CLOSED");
                             restaurants_status.setBackgroundResource(R.drawable.close_background);
 
-                        } else if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Preorder")) {
-
+                        } else if (listdata[0].getTake_away_status().getStatus_message().equalsIgnoreCase("Preorder")) {
                             restaurants_status.setText("PRE-ORDER");
                             restaurants_status.setBackgroundResource(R.drawable.preorder_background);
 
-                        } else if (listdata[0].gettakeawaystatus().equalsIgnoreCase("Order Now")) {
-
+                        } else if (listdata[0].getTake_away_status().getStatus_message().equalsIgnoreCase("Order Now")) {
                             restaurants_status.setText("Order Now");
                             restaurants_status.setBackgroundResource(R.drawable.open_background);
-
                         } else {
-
                             restaurants_status.setText("CLOSED");
                             restaurants_status.setBackgroundResource(R.drawable.close_background);
-
                         }
 
-                        delicery_collection_time.setText("20-30 min");
-
+                        delicery_collection_time.setText(listdata[0].getTake_away_status().getStatus_detail());
                         Picasso.get()
                                 .load(listdata[0].getClienImage())
                                 .placeholder(R.drawable.hederlocoplaceimg)
                                 .error(R.drawable.hederlocoplaceimg)
                                 .into(restaurants_image);
 
-//client item
+                        //client item
+
                         if (listdata[0].getCuisinename().size() == 0) {
                             menu_tvdesc.setVisibility(View.INVISIBLE);
                         } else if (listdata[0].getCuisinename().size() == 1) {
@@ -3612,7 +3606,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
                         recyclerviewitem.setHasFixedSize(true);
                         recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
-                        // recyclerviewitem.getLayoutManager().scrollToPosition(2);
                         recyclerviewitem.setAdapter(itemadapter);
 
 
@@ -3629,7 +3622,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         if (intentitemdetails.getStringExtra("addonid") == null) {
 
                         } else {
-                            //   cooking_insttructionback = intentitemdetails.getStringExtra("cooking_insttruction");
                             itemdetails();
                         }
 
@@ -3651,8 +3643,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             public void onFailure(Call<menu_item_model> call, Throwable t) {
                 mShimmerViewContainer.stopShimmerAnimation();
                 mShimmerViewContainer.setVisibility(View.GONE);
+
                 Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
 
 
@@ -3721,11 +3713,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             getContactsCount();
             menu_addon_item_view.setVisibility(View.GONE);
             mAddFab.setVisibility(View.VISIBLE);
-            //bottom_nav.setVisibility(View.VISIBLE);
+
             add_to_cart_layout.setVisibility(View.VISIBLE);
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
-            //  total_item.setText(cursor + " Items");
-            //  total_item.setText(cursor + "");
 
             ArrayList<String> get_qty_count = dbHelper.getqtycount();
             total_item.setText(get_qty_count.get(0) + "");
@@ -3756,8 +3746,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     };
 
     private void itemdetails() {
-        // Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_LONG).show();
-        // Get extra data included in the Intent
+
         ItemName = intentitemdetails.getStringExtra("item");
         addonid = intentitemdetails.getStringExtra("addonid");
         categoryname = intentitemdetails.getStringExtra("categoryname");

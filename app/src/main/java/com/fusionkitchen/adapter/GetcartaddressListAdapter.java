@@ -37,10 +37,6 @@ public class GetcartaddressListAdapter extends RecyclerView.Adapter<Getcartaddre
     private getaddAddress_mode.userdetail[] listdata;
     private Context mContext;
     String addresstypesshow;
- /*   private static Switch lastChecked = null;
-    private static int lastCheckedPos = 0;*/
-
-    // RecyclerView recyclerView;
     public GetcartaddressListAdapter(Context mContext, List<getaddAddress_mode.userdetail> listdata) {
 
         this.mContext = mContext;

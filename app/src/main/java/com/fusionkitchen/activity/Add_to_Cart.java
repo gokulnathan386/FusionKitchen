@@ -367,8 +367,6 @@ public class Add_to_Cart extends AppCompatActivity {
         Intent intent = getIntent();
 
 
-
-
         if (intent.getStringExtra("cooking_insttruction") == null) {
             cooking_insttruction.setText("");
         } else {
@@ -383,15 +381,12 @@ public class Add_to_Cart extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
 
-
             }
 
             @SuppressLint("LongLogTag")
             @Override
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
-
-
 
 
             }
@@ -406,8 +401,9 @@ public class Add_to_Cart extends AppCompatActivity {
                     @Override
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
 
+
                         if (keyCode == KeyEvent.KEYCODE_DEL)
-                            keyDel = 1;
+                            keyDel = 0;  //1
                         if (s.length() == 0) {
                             keyDel = 0;
                         }
@@ -419,11 +415,15 @@ public class Add_to_Cart extends AppCompatActivity {
 
                 if (keyDel == 0) {
 
+                    Log.d("validatepostcode---"," " + s);
+
                     nospace = s.toString().replace(" ", "");
 
                     Log.e("nospace", "" + nospace.length());
 
+
                     if (nospace.length() == 5) {
+
 
                         String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
 
@@ -437,6 +437,7 @@ public class Add_to_Cart extends AppCompatActivity {
                     }
                     if (nospace.length() == 6) {
 
+
                         String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
 
                         if (nospace.matches(regex) == true) {
@@ -445,6 +446,7 @@ public class Add_to_Cart extends AppCompatActivity {
                         }
                     }
                     if (nospace.length() == 7) {
+
                         String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
                         if (nospace.matches(regex) == true) {
                             Log.e("zipmatches", "" + nospace.matches(regex));
@@ -499,144 +501,7 @@ public class Add_to_Cart extends AppCompatActivity {
             }
         });
 
-        /*zero_checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (((CompoundButton) view).isChecked()) {
-                    // Toast.makeText(getApplicationContext(), "Checked", Toast.LENGTH_LONG).show();
-                    zero_contact = "1";
-                } else {
-                    //  Toast.makeText(getApplicationContext(), "Un-Checked", Toast.LENGTH_LONG).show();
-                    zero_contact = "0";
-                }
-            }
-        });*/
 
-/*
-
-        if (sharedpreferences.getString("ordermodetype", null).equalsIgnoreCase("0")) {
-            checked_colloection.setImageResource(R.drawable.checked_light);
-            checked_delivery.setImageResource(R.drawable.checked_blue);
-            //order type set
-            but_order_type = "0";
-        } else if (sharedpreferences.getString("ordermodetype", null).equalsIgnoreCase("1")) {
-            checked_colloection.setImageResource(R.drawable.checked_blue);
-            checked_delivery.setImageResource(R.drawable.checked_light);
-            //order type set
-            but_order_type = "1";
-        } else {
-            checked_colloection.setImageResource(R.drawable.checked_light);
-            checked_delivery.setImageResource(R.drawable.checked_blue);
-        }
-*/
-
-
-      /*  collection_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                checked_colloection.setImageResource(R.drawable.checked_blue);
-                checked_delivery.setImageResource(R.drawable.checked_light);
-
-                but_order_type = "1";
-                CheckLogin();
-                SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-                editor_extra.putString("ordermodetype", "1");
-                editor_extra.commit();
-                subcategory_printer();
-
-            }
-        });
-
-        delivery_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                checked_colloection.setImageResource(R.drawable.checked_light);
-                checked_delivery.setImageResource(R.drawable.checked_blue);
-
-                but_order_type = "0";
-                CheckLogin();
-                SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-                editor_extra.putString("ordermodetype", "0");
-                editor_extra.commit();
-                subcategory_printer();
-            }
-        });
-*/
-
-        /*delivery_card_view2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (delivery_btn == false) {
-                    delivery_btn = true;
-                    delivery_card_view2.setVisibility(View.VISIBLE);
-                    collection_card_view3.setVisibility(View.GONE);
-                    order_type_layout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.box));
-                    //collection_card_view3.startAnimation(animationup);
-                    collection_card_view3.setCardBackgroundColor(ContextCompat.getColor(Add_to_Cart.this, R.color.ord_type));
-                    delivery_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_more_24, 0);
-                    collection_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_nomore_24, 0);
-                    //Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_LONG).show();
-                    but_order_type = "1";
-                    CheckLogin();
-                } else {
-                    delivery_btn = false;
-                    collection_card_view3.setVisibility(View.VISIBLE);
-                    delivery_card_view2.setVisibility(View.VISIBLE);
-                    delivery_card_view2.startAnimation(animationdown);
-                    order_type_layout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                    collection_card_view3.setCardBackgroundColor(ContextCompat.getColor(Add_to_Cart.this, R.color.ord_type));
-                    delivery_card_view2.setCardBackgroundColor(ContextCompat.getColor(Add_to_Cart.this, R.color.white));
-                    delivery_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_nomore_24, 0);
-                    collection_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_less_24, 0);
-
-                    //Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-        });
-        collection_card_view3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (collection_btn == true) {
-                    collection_btn = false;
-                    delivery_card_view2.startAnimation(animationup);
-                    delivery_card_view2.setVisibility(View.GONE);
-                    collection_card_view3.setVisibility(View.VISIBLE);
-                    collection_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_more_24, 0);
-                    delivery_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_nomore_24, 0);
-                    //Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_LONG).show();
-
-                    but_order_type = "0";
-                    CheckLogin();
-                } else {
-                    collection_btn = true;
-                    delivery_card_view2.setVisibility(View.VISIBLE);
-                    collection_card_view3.setVisibility(View.VISIBLE);
-                    delivery_card_view2.startAnimation(animationdown);
-                    //Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_LONG).show();
-                    delivery_card_view2.setCardBackgroundColor(ContextCompat.getColor(Add_to_Cart.this, R.color.txt_blu_col));
-                    collection_card_view3.setCardBackgroundColor(ContextCompat.getColor(Add_to_Cart.this, R.color.txt_blu_col));
-                    collection_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_less_24, 0);
-                    delivery_tex.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_expand_nomore_24, 0);
-
-                }
-
-            }
-        });*/
-
-      /*  if (pay_type.equalsIgnoreCase("2")) {
-
-            service_txt.setVisibility(View.INVISIBLE);
-            service_total.setVisibility(View.INVISIBLE);
-
-        } else {
-            service_txt.setVisibility(View.VISIBLE);
-            service_total.setVisibility(View.VISIBLE);
-
-        }*/
 
         /*---------------------------Update time picker ----------------------------------------------------*/
         update_time.setOnClickListener(new OnClickListener() {
@@ -1213,7 +1078,6 @@ public class Add_to_Cart extends AppCompatActivity {
             no_signin.setVisibility(View.GONE);
             process_item.setVisibility(View.GONE);
             no_address.setVisibility(View.GONE);
-            //   address_view.setVisibility(View.GONE);
             edit_address_popup.setVisibility(View.VISIBLE);
 
             address_type = addressgtype;
@@ -1295,8 +1159,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
     private void validatezip(String zipcodesp) {
 
-        Log.d("Post-Code---->","" + zipcodesp);
-
         str_postcode_seperate = zipcodesp;
 
         if (str_postcode_seperate.length() == 5) {
@@ -1308,7 +1170,6 @@ public class Add_to_Cart extends AppCompatActivity {
         } else {
             str_postcode_seperate_str = str_postcode_seperate;
         }
-        // edit_postcode.setText(str_postcode_seperate_str.toUpperCase());
         getaddressforpostcode(str_postcode_seperate_str.toUpperCase());
         Log.d("Post-Codecall---->","" + zipcodesp);
 
@@ -1913,6 +1774,7 @@ public class Add_to_Cart extends AppCompatActivity {
     //get api values
     private void getaddressforpostcode(final String post_code) {
 
+
         //final ProgressDialog loader = ProgressDialog.show(Add_to_Cart.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("postcode", post_code);
@@ -1924,6 +1786,8 @@ public class Add_to_Cart extends AppCompatActivity {
             public void onResponse(Call<getaddressforpostcode_modal> call, Response<getaddressforpostcode_modal> response) {
 
                 int statusCode = response.code();
+
+                Log.d("Add_to_cart_postcodevalidate--->"," "+statusCode);
 
                 if (statusCode == 200) {
 

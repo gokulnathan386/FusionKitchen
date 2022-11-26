@@ -77,6 +77,7 @@ import retrofit2.Response;
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.Integer.parseInt;
 
@@ -226,8 +227,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     .into(holder.menu_item_image);
         }
 
-
-        // Log.e("sixg", "" + orderhistory.size().getName());
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
 
 
@@ -292,6 +291,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     holder.menu_item_add.setEnabled(true);
                                 }
                             }, 4000);
+
                         }else{
                             addonitem(view,position,holder);
                         }
@@ -346,17 +346,18 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private void Decreasepriceqty(View view, String id,ViewHolder holder) {
 
 
+
+
                 count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
 
-                         holder.qty_textview_number.setText("01");
+                            holder.qty_textview_number.setText("01");
                             if(item_view_dismiss == 1){
                                 textview_qty.setText("01");
                              }
 
-
-                        ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
+                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
 
                             for (int i=0;i<qtypice.size();i++)
                             {
@@ -366,24 +367,34 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 removefinalamt = hashmap.get("itemaddontotalamt");
                             }
 
-                                int database_qty =  Math.round(Float.parseFloat(removeqty));
+                            int database_qty =  Math.round(Float.parseFloat(removeqty));
 
-                                int qty  = database_qty - 1;
+                            int qty  = database_qty - 1;
 
-                                String price  = removefinalamt;
+                            String price  = removefinalamt;
 
-                                float total_amt = Float.parseFloat(price) * qty;
-                                Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+                            float total_amt = Float.parseFloat(price) * qty;
 
-                                Intent intent = new Intent("item_successfully_custom-message");
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
 
-                              /*  ArrayList<String> get_qty_count = dbHelper.getqtycount();
-                                Log.d("get_qty_count--->",get_qty_count.get(0));
-*/
-                                holder.menu_item_add.setVisibility(View.VISIBLE);
-                                holder.increment_decrement_layout.setVisibility(GONE);
 
+                            Intent intent = new Intent("item_successfully_custom-message");
+                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+                            holder.menu_item_add.setVisibility(View.VISIBLE);
+                            holder.increment_decrement_layout.setVisibility(GONE);
+
+                            ArrayList<String> get_qty_count = dbHelper.getqtycount();
+
+                            if(get_qty_count.get(0).equalsIgnoreCase("0")){
+
+                                Log.d("Total_qty-->1", " " + get_qty_count.get(0));
+
+                            }else{
+
+                                dbHelper.deleteItemRow(id);
+                            }
 
                 } else {
 
@@ -393,6 +404,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     if(length == 1){
 
                         holder.qty_textview_number.setText("0" + count);
+                        Log.d("Gokulnathanelse---->","0" + count);
                         if(item_view_dismiss == 1){
                             textview_qty.setText("0" + count);
                         }
@@ -450,6 +462,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     }
 
                 }
+
 
     }
 
@@ -729,9 +742,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 }
             }
         });
-
-
-        //  Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
 
         item_view.show();
         item_view.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1264,7 +1274,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                 ArrayAdapter<AdapterListData> todaytimeadapter;
                                                 todaytimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, todaytimeitem);
-                                                //setting adapter to spinner
                                                 today_time.setAdapter(todaytimeadapter);
 
 
@@ -1787,7 +1796,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                 } else {
 
-                                    Toast.makeText(mContext, "Could not Insert Item", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "Could not Insert Item", LENGTH_SHORT).show();
 
                                 }
 

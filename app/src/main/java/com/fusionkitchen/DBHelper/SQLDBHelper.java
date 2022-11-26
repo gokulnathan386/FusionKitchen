@@ -350,5 +350,15 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return item_data;
     }
 
+
+
+
+    public void deleteItemRow(String get_ID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM item WHERE itemid='"+get_ID+"'");
+
+    }
+
 }
 

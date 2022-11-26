@@ -129,7 +129,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         itemcatname.add(listdata[position].getName());
 
        /* if (position == 0) {
-
             holder.menu_item_cat_name.setText(itemcatname.get(position));
             holder.child_recyclerview.setVisibility(View.VISIBLE);
             holder.dropdownindicator.setRotation((float) 180.0);
