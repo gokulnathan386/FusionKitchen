@@ -272,9 +272,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             HashMap<String, String> user = new HashMap<>();
             user.put("qty", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
-            /*    user.put("itemamt",cursor.getString(cursor.getColumnIndex(ITEM_AMOUNT))); */
             user.put("itemaddontotalamt", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));
-            /// user.put("itemfinalamt",cursor.getString(cursor.getColumnIndex(ITEM_Final_AMOUNT)));
             userList.add(user);
         }
         return userList;
@@ -288,9 +286,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             HashMap<String, String> user = new HashMap<>();
             user.put("qty", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
-            /*    user.put("itemamt",cursor.getString(cursor.getColumnIndex(ITEM_AMOUNT))); */
             user.put("itemaddontotalamt", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));
-            //  user.put("itemfinalamt",cursor.getString(cursor.getColumnIndex(ITEM_Final_AMOUNT)));
             userList.add(user);
         }
         return userList;

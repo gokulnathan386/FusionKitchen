@@ -106,7 +106,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
                 intent.putExtra("itempossionname",listdata[position].getName());
                 LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
 
-                Log.v("getpositiponofheader", String.valueOf(position));
             }
         });
 

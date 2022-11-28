@@ -1323,7 +1323,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageonlineoff, new IntentFilter("custom-message-onlineoffer"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageitempossion, new IntentFilter("item_possion-message"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_item_count_update, new IntentFilter("total_count_Update"));
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_count_layout_gone, new IntentFilter("total_count_layout_gone"));
 
         /*---------------------------loaderviewlibrary----------------------------------------------------*/
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -1371,25 +1371,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
           }
 
-     /*  recyclerviewitem.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //Log.e("DY",""+dy);
-
-                int firstVisibleItemCount = ((LinearLayoutManager)recyclerviewitem.getLayoutManager()).findFirstVisibleItemPosition();
-
-                Log.e("recyclerviewitem","  "+firstVisibleItemCount);
-
-            }
-        });
-*/
-
 
             sh = getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
@@ -1420,6 +1401,20 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     }
+
+
+    public BroadcastReceiver mtotal_count_layout_gone = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String item_id = intent.getStringExtra("item_id_sqlite");
+            add_to_cart_layout.setVisibility(GONE);
+            mAddFab.setVisibility(View.GONE);
+
+            dbHelper.deleteItemRow(item_id);
+
+        }
+    };
 
 
     public BroadcastReceiver mtotal_item_count_update = new BroadcastReceiver() {
@@ -1515,38 +1510,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     }
-
-    private void getDataFromAPI() {
-
-    //    loadingPB.setVisibility(View.GONE);
-
-     /*   jobdetails2.clear();
-
-         K = K + 2;
-
-        Log.d("LoopdataK-->",""+ K);
-
-
-        for(int L = 0; L <= K;L++){
-
-           // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);
-
-            jobdetails2.add(pageloader.get(L));
-
-          Log.d("Loopdata-->",""+ pageloader.get(L));
-
-        }
-
-        MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
-        recyclerviewitem.setHasFixedSize(true);
-        recyclerviewitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
-        // recyclerviewitem.getLayoutManager().scrollToPosition(2);
-        recyclerviewitem.setAdapter(itemadapter);
-*/
-
-
-    }
-
 
     public BroadcastReceiver mPreOrderpopup = new BroadcastReceiver() {
         @Override
@@ -3535,6 +3498,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         List<menu_item_model.all_topbanner> clientdetails = (response.body().getTopbanner());
                         menu_item_model.all_topbanner[] listdata = clientdetails.toArray(new menu_item_model.all_topbanner[0]);
 
+
+                        Picasso.get()
+                                .load(listdata[0].getClienImage())
+                                .placeholder(R.drawable.hederlocoplaceimg)
+                                .error(R.drawable.hederlocoplaceimg)
+                                .into(restaurants_image);
+
+
                         restaurants_name = listdata[0].getClientName();
 
                         menu_clientname.setText(listdata[0].getClientName());
@@ -3568,13 +3539,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 
                         delicery_collection_time.setText(listdata[0].getTake_away_status().getStatus_detail());
-                        Picasso.get()
-                                .load(listdata[0].getClienImage())
-                                .placeholder(R.drawable.hederlocoplaceimg)
-                                .error(R.drawable.hederlocoplaceimg)
-                                .into(restaurants_image);
 
-                        //client item
+                        Log.d("get_status_details"," " + listdata[0].getTake_away_status().getStatus_detail());
 
                         if (listdata[0].getCuisinename().size() == 0) {
                             menu_tvdesc.setVisibility(View.INVISIBLE);
@@ -3589,19 +3555,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 
 
-                        //   tvdesc
+
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                        clent_rating.setText(listdata[0].getReviews_count());// item view list
+                        clent_rating.setText(listdata[0].getReviews_count());
 
                          jobdetails2 = (response.body().getMenu().getCategoryall());
-
-                        /* jobdetails2.add(response.body().getMenu().getCategoryall().get(0));
-                         jobdetails2.add(response.body().getMenu().getCategoryall().get(1));
-                         jobdetails2.add(response.body().getMenu().getCategoryall().get(2));*/
-
-                       // pageloader = (response.body().getMenu().getCategoryall());
-                           //LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
                         recyclerviewitem.setHasFixedSize(true);

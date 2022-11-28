@@ -122,8 +122,8 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         holder.tvinteger_number.setText(contacts.getQty());
         holder.tvitem_total.setText(contacts.getFinalamt());
 
+
         if (holder.tvinteger_number.getText().toString().equalsIgnoreCase("1")) {
-            // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
             holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
             holder.delete_All_Item.setVisibility(View.GONE);
         } else {

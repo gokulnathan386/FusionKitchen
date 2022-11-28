@@ -36,7 +36,6 @@
                     shimmer:contentScrim="#FFFFFF"
                     shimmer:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                   <!-- shimmer:contentScrim="@color/app_color"-->
 
                     <ImageView
                         android:scaleType="centerCrop"

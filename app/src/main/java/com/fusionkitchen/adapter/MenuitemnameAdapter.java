@@ -170,7 +170,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        baseUrl  =ApiClient.getInstance().getClient().baseUrl();
+       baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
        textvisiable =  holder;
        position2 = String.valueOf(position);
@@ -202,7 +202,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                         holder.menu_item_add.setVisibility(GONE);
                         holder.increment_decrement_layout.setVisibility(View.VISIBLE);
-
                         holder.qty_textview_number.setText(getqtysqlite_value);
 
 
@@ -271,9 +270,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View view) {
 
                 holder.menu_item_add.setEnabled(false);
-
-               // holder.increment_decrement_layout.setVisibility(View.VISIBLE);
-              //  holder.menu_item_add.setVisibility(GONE);
 
                 item_view_dismiss = 0;
 
@@ -345,9 +341,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     private void Decreasepriceqty(View view, String id,ViewHolder holder) {
 
-
-
-
                 count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
                 if (count == 1) {
@@ -389,11 +382,14 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                             if(get_qty_count.get(0).equalsIgnoreCase("0")){
 
-                                Log.d("Total_qty-->1", " " + get_qty_count.get(0));
+                                Intent cart_botton_layout = new Intent("total_count_layout_gone");
+                                cart_botton_layout.putExtra("item_id_sqlite",id);
+                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(cart_botton_layout);
 
                             }else{
 
                                 dbHelper.deleteItemRow(id);
+
                             }
 
                 } else {
@@ -404,7 +400,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     if(length == 1){
 
                         holder.qty_textview_number.setText("0" + count);
-                        Log.d("Gokulnathanelse---->","0" + count);
+
                         if(item_view_dismiss == 1){
                             textview_qty.setText("0" + count);
                         }
@@ -2215,10 +2211,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                     Intent intent = new Intent("clasback");
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-
-
-                    /*Intent intent = new Intent(mContext, Dashboard_Activity.class);
-                    mContext.startActivity(intent);*/
 
 
                 }

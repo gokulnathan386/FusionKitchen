@@ -1787,11 +1787,10 @@ public class Add_to_Cart extends AppCompatActivity {
 
                 int statusCode = response.code();
 
-                Log.d("Add_to_cart_postcodevalidate--->"," "+statusCode);
+                Log.d("Add_to_cart_postcodevalidate"," "+statusCode);
 
                 if (statusCode == 200) {
 
-                    // loader.dismiss();
 
                     String error_msg =  response.body().geterror_message();
 
