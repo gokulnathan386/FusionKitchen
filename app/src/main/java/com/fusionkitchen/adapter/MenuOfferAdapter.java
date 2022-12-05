@@ -138,25 +138,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
 
 
-        /*  if (listdata[position].getType().equalsIgnoreCase("0")) {
-           *//* holder.offer_title.setText("GET " + listdata[position].getDiscount() + " % OFF");
-            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*//*
-            holder.offer_title.setText(listdata[position].getDiscount() + " % OFF");
-           // holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());
-
-            holder.offer_decs.setText("Use Code " + listdata[position].getFree());
-        } else {
-            *//*holder.offer_title.setText("GET £ " + listdata[position].getDiscount() + " OFF");
-            holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());*//*
-            holder.offer_title.setText(listdata[position].getDiscount() + " OFF");
-          //  holder.offer_decs.setText("On Orders above £ " + listdata[position].getMin_order());
-
-            holder.offer_decs.setText("Use Code " + listdata[position].getFree());
-        }
-
-*/
-
-
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,7 +296,9 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         params.put("order_time",dtatstring);
 
 
-        Log.d("coupencode","User->"+client_id + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+use_code +"subtotsl->"+sub_amount);
+        Log.d("coupencode1","User->"+client_id + "\n" + "ordermode->"+  ordermodetype + "\n"+"paymenttype->"+
+                payment_mode+ "\n"
+                + "code->"+use_code + "\n" +"subtotsl->"+sub_amount+ "\n" + "ordertime---->" +dtatstring);
 
         fullUrl = menuurlpath + "/menu/couponAPI";
 
@@ -332,7 +315,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
                 if (statusCode == 200) {
 
-                   // Log.e("Success======", new Gson().toJson(response.body()));
                     String offer_msg =  response.body().getMsg();
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
@@ -342,6 +324,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                        String discription =  response.body().getDiscription();
                        String type  = response.body().getType();
                        String total =  response.body().getTotal();
+
+                       Log.d("coupencode2",code);
 
 
                         SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
@@ -397,7 +381,6 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                         Coupen_popup.getWindow().setGravity(Gravity.BOTTOM);
 
                     }else{
-
                         Toast.makeText(mContext, offer_msg, Toast.LENGTH_LONG).show();
                     }
 

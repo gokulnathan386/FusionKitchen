@@ -190,7 +190,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                     intent.putExtra("ItemId", contacts.getId());
                     intent.putExtra("menuurlpath", menuurlpath);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                    //Toast.makeText(context, "Item Deleted", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("mins_castitemAdapter","Test");
                     num3 = Double.parseDouble(holder.tvitem_total.getText().toString());
@@ -216,7 +215,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
                 Log.e("contactsdec", "" + contacts.getDesc());
                 if (!contacts.getDesc().isEmpty()) {
-                    // Toast.makeText(context, "On Click", Toast.LENGTH_LONG).show();
+
                     View popupViewrepet = LayoutInflater.from(view.getContext()).inflate(R.layout.item_repeat_popup, null);
                     popupWindow = new PopupWindow(popupViewrepet, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
@@ -379,7 +378,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                     /*------------------repead last-----------------------*/
                                                     popupWindow.dismiss();
                                                     if (count == 1) {
-                                                        // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.delete_All_Item.setVisibility(View.GONE);
                                                     } else {
@@ -444,8 +442,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                             TextView takaway_status_dec = popupView.findViewById(R.id.takaway_status_dec);
                                             TextView takaway_status = popupView.findViewById(R.id.takaway_status);
 
-                                            //ImageView takaway_status_img = popupView.findViewById(R.id.takaway_status_img);
-
                                             takaway_status.setText("Delivery Closed");
                                             takaway_status_dec.setText(response.body().getError_message().getMsg());
 
@@ -461,7 +457,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                     /*------------------repead last-----------------------*/
                                                     popupWindow.dismiss();
                                                     if (count == 1) {
-                                                        // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.delete_All_Item.setVisibility(View.GONE);
                                                     } else {
@@ -542,7 +537,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                     /*------------------repead last-----------------------*/
                                                     popupWindow.dismiss();
                                                     if (count == 1) {
-                                                        // holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
                                                         holder.delete_All_Item.setVisibility(View.GONE);
                                                     } else {
@@ -624,9 +618,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                             totalcount();
                                         }
 
-                                        //Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-
-
                                     } else {
                                         Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                     }
@@ -636,7 +627,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                 public void onFailure(Call<menu_addon_status_model> call, Throwable t) {
                                     Log.e("menuThrowable", "" + t);
                                     Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                                    //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                 }
                             });
 
@@ -647,9 +637,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                     add_new.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                          /*  Intent intent = new Intent(context, Item_Menu_Activity.class);
-                            intent.putExtra("menuurlpath", menuurlpath);
-                            context.startActivity(intent);*/
 
                             if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                                 return;
@@ -691,14 +678,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                 params.put("date_string", sharedpreferences.getString("latertimestring", null));
 
                             }
-
-
-/*
-                            params.put("time",sharedpreferences.getString("ordertodattime", null) + sharedpreferences.getString("orderlatertime", null));
-                            params.put("id", contacts.getItemid());
-                            params.put("ordermode", butordertype);
-                            params.put("activetab", sharedpreferences.getString("orderactivetag", null));
-                            params.put("dates", sharedpreferences.getString("orderlaterdate", null));*/
 
                             fullUrladdon = menuurlpath + "/menu" + "/itemadd";
                             ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -771,9 +750,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                             Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                         }
 
-                                        //Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-
-
                                     } else {
                                         Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                     }
@@ -783,7 +759,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                 public void onFailure(Call<menu_addon_status_model> call, Throwable t) {
                                     Log.e("menuThrowable", "" + t);
                                     Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                                    //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                 }
                             });
 
@@ -797,7 +772,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                 } else {
 
                     if (count == 1) {
-                        //  holder.tvdecrease.setBackground(context.getResources().getDrawable(R.drawable.delete_item));
                         holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));
                         holder.delete_All_Item.setVisibility(View.GONE);
                     } else {
@@ -964,7 +938,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         }
 
     }
-
 
     public void totalcount() {
         num5 = 0.00;

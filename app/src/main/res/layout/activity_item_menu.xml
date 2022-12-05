@@ -74,8 +74,6 @@
                     </LinearLayout>
 
 
-                    <!--android:background="@drawable/restimage"-->
-
                     <LinearLayout
                         android:id="@+id/header_img"
                         android:layout_width="match_parent"

@@ -649,16 +649,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
 
                     if(user_id.equalsIgnoreCase("0") || user_id.isEmpty()){
+
                         Intent item_menu_intent = new Intent(getApplicationContext(), Login_Activity.class);
                         item_menu_intent.putExtra("activity_details", "item_menu_activity");
                         item_menu_intent.putExtra("menuurlpath",menuurlpath);
                         startActivity(item_menu_intent);
 
                     }else{
+
                         HeartIcon(restaurants_name);
                     }
-
             }
+
         });
 
         info_icon_btn.setOnClickListener(new OnClickListener() {
@@ -740,8 +742,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             //addon item comas name
                             arrayaddonextraidsingleaddsize.add(arrayaddonextraidsingleadd.size());
                             arrayaddonextraidsingleadd.clear();
-
-
 
                             for (int i = 0; i < (arrayextranameDataaddsize.get(arrayextranameDataaddsize.size() - 1)); i++) {
 
@@ -922,7 +922,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 String  sub_amount = get_amt_count.get(0);
                 String  offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-               couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
                         sharedpre_offer_details.getString("offer_code",null),
                         sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
 
@@ -1436,7 +1436,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     };
 
     private void couponcodevalidate(String menuurlpath, int favourite_client, String ordermodetype,
-                                    String payment_mode, String offer_code, String sub_amount, String asaptodaylaterstring) {
+                                    String payment_mode, String offer_code, String sub_amount,
+                                    String asaptodaylaterstring) {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("cid", String.valueOf(favourite_client));
@@ -4927,7 +4928,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             } else if (reloadback.equalsIgnoreCase("3")) {
                 startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
             } else if(reloadback.equalsIgnoreCase("4")) {
-                // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
 
             }else{
@@ -4938,19 +4938,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         return false;
     }
 
-   /* @Override
-    public void onResume() {
-        super.onResume();
-       Toast.makeText(getApplicationContext(),"Resume",Toast.LENGTH_LONG).show();
-        finish();
-        startActivity(getIntent());
-    }*/
-
     @Override
     public void onRestart() {
         super.onRestart();
-
-        // do some stuff here
         finish();
         startActivity(getIntent());
     }
@@ -4958,7 +4948,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onResume() {
         super.onResume();
-        // Tracking the screen view
         MyApplication.getInstance().trackScreenView("Menu Activity");
     }
     /*-------------------Loading Images------------------*/
@@ -4972,13 +4961,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         ImageView ImageViewgif = dialog_loading.findViewById(R.id.custom_searchloader_ImageView);
 
-
         Glide.with(Item_Menu_Activity.this)
                 .load(R.drawable.search_loader)
                 .placeholder(R.drawable.search_loader)
                 .centerCrop()
                 .into(ImageViewgif);
-
 
         dialog_loading.show();
     }

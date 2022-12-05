@@ -243,7 +243,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             ViewNoNetDialog alert = new ViewNoNetDialog();
             alert.shownonetDialog(Postcode_Activity.this);
         } else {
-            //version update pop up shoeing
             versionupdate();//versionName
         }
 
@@ -291,46 +290,15 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         /*---------------------------BottomNavigationView----------------------------------------------------*/
 
         bottomNav = findViewById(R.id.bottom_navigation);
-        //  bottomNav.getMenu().setGroupCheckable(0, false, true);
-        //  bottomNav.getOrCreateBadge(R.id.home_card).setNumber(5);
 
         Log.e("cursor", "" + cursor);
 
-       /* if (cursor != 0) {
-            bottomNav.setVisibility(View.VISIBLE);
-        } else {
-            bottomNav.setVisibility(View.GONE); // gone
-        }*/
-
-
-
         BottomNavigationItemView itemView = bottomNav.findViewById(R.id.home_card);
-       /* View badge = LayoutInflater.from(Postcode_Activity.this).inflate(R.layout.notifcation_badge, bottomNav, false);
-        TextView itemtextcut = badge.findViewById(R.id.badge_text_view);
-        itemtextcut.setText(String.valueOf(cursor));
-        itemView.addView(badge);*/
 
-      /*  itemtextcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == post_code_edittext.getId()) {
-                    startActivity(new Intent(getApplicationContext(), Add_to_Cart.class));
-                }
-            }
-        });*/
-
-        // bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.getMenu().setGroupCheckable(0, false, true);
 
         bottomNav.getMenu().findItem(R.id.home_search).setVisible(false);
         bottomNav.getMenu().findItem(R.id.home_chat).setVisible(true);
-
-        // bottomNav.setOnNavigationItemSelectedListener((BottomNavigationView.OnNavigationItemSelectedListener) Postcode_Activity.this);
-      /*  bottomNav.setSelectedItemId(R.id.home_card);
-        BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) bottomNav.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
-        new QBadgeView(Postcode_Activity.this).bindTarget(v).setBadgeNumber(cursor);*/
 
         final Handler handler = new Handler();
         final int delay = 2500;
@@ -352,8 +320,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_bottom:
-                        // finish();
-                        //startActivity(getIntent());
                         bottonkey = 1;
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
@@ -376,8 +342,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             bottonkey = 1;
                         }
 
-
-                        //  startActivity(new Intent(getApplicationContext(), Add_to_Cart.class));
                         break;
                     case R.id.home_account:
                         if (user_id != null && !user_id.isEmpty()) {
@@ -401,9 +365,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         post_code_check = findViewById(R.id.post_code_check);
         btn_next = findViewById(R.id.btn_next);
         clear_list_layout = findViewById(R.id.clear_list_layout);
-     //   layout1 = findViewById(R.id.layout1);
-       // layout2 = findViewById(R.id.layout2);
-
 
           post_code_edittext.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -412,22 +373,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
               }
           });
-        /*---------------------------Session Manager Class----------------------------------------------------*/
-        // session = new SessionManager(getApplicationContext());
 
-
-       /* post_code_edittext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == post_code_edittext.getId()) {
-                    post_code_edittext.setCursorVisible(true);
-                }
-            }
-        });*/
         post_code_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check internet connection
                 hideKeybaord(v);
                 validateLogin();
             }
@@ -517,8 +466,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         toggle.getDrawerArrowDrawable().setBarLength(0);
         toggle.getDrawerArrowDrawable().setGapSize(0);
 
-
-        //drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -529,7 +476,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        // int versionNumber = pinfo.versionCode;
         String versionName = pinfo.versionName;
 
 
@@ -549,8 +495,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         nav_header_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // drawer.closeDrawer(Gravity.LEFT);
                 drawer.closeDrawers();
             }
         });
@@ -626,11 +570,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
             if (!sharedpreferences.getString("menuurlpath", null).equalsIgnoreCase(menuurlpath) && cursor != 0) {
 
-
-
-               /* Dashboard_Activity.ViewwarningDialog alert = new Dashboard_Activity.ViewwarningDialog();
-                alert.showwarningDialog(Dashboard_Activity.this);*/
-
                 clear_list_layout.setVisibility(View.VISIBLE);
 
             } else {
@@ -670,12 +609,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private void PopularRestaurants() {
 
         loadingshow();
-
         popularRestaurantsListAdapter = new PopularRestaurantsListAdapter(popularlistmodule,Postcode_Activity.this);
         RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
         Most_Popular_Listview.setLayoutManager(manager4);
         Most_Popular_Listview.setAdapter(popularRestaurantsListAdapter);
-        //https://www.api.fusionkitchen.co.uk/loadPopularRestaurants
           StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"loadPopularRestaurants",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -720,7 +657,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         hideloading();
                     }
                 }){
-
 
            /* @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -789,8 +725,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         } else {
 //login not Successfully
-            //  layout1.setVisibility(View.VISIBLE);
-            // layout2.setVisibility(View.INVISIBLE);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(false);
@@ -884,7 +818,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     //get api values
     private void postcodecheck(final String post_code) {
         loadingshow();
-        //final ProgressDialog loader = ProgressDialog.show(Postcode_Activity.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("postcode", post_code);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -902,7 +835,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     // loader.dismiss();
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
 
-                        //  session.createLoginSession(response.body().getUrl(), response.headers().get("Set-Cookie"), response.body().getArea(), response.body().getFullpostcode(), response.body().getLocation().getLat(), response.body().getLocation().getLng(), response.body().getAddress());
                         Intent intent = new Intent(Postcode_Activity.this, Dashboard_Activity.class);
                         /*--------------------------Login postcode save local------------------------*/
                         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
@@ -918,14 +850,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         startActivity(intent);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     } else {
-                        //Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), response.body().getPostcode(), Snackbar.LENGTH_LONG).show();
                         invalide_postcode.setVisibility(View.VISIBLE);
                     }
 
 
                 } else {
                     hideloading();
-                    // loader.dismiss();
                     Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
 
                 }
@@ -936,7 +866,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
                 Log.e("Tro", "" + t);
                 hideloading();
-                // loader.dismiss();
                 Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
             }
 
@@ -1052,19 +981,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // drawer.closeDrawers();
             drawer.closeDrawers();
         } else if (id == R.id.nav_login) {
-
-
-           /* Intent intent = new Intent(getApplicationContext(), New_Login.class);
-            intent.putExtra("activity_details", "pcode");
-            startActivity(intent);*/
-
 
             Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
             intent.putExtra("activity_details", "pcode");
@@ -1139,8 +1061,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             }
 
         }
-       /* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
 
         return true;
     }
@@ -1197,18 +1117,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         return cursor;
     }
 
-
-/*    @Override
-    public boolean onKeyDown(int key_code, KeyEvent key_event) {
-        if (key_code == KeyEvent.KEYCODE_BACK) {
-            super.onKeyDown(key_code, key_event);
-
-            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-            return true;
-        }
-        return false;
-    }*/
-
     public void showRateDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle("Fusion Kitchen")
@@ -1217,7 +1125,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.fusionkitchen")));
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
+                          //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.fusionkitchen")));
                         } catch (android.content.ActivityNotFoundException e) {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
                         }
@@ -1230,15 +1139,11 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     @Override
     public void onResume() {
         super.onResume();
-        // Tracking the screen view
         MyApplication.getInstance().trackScreenView("Postcode Activity");
 
     }
 
     public void onBackPressed(){
-
-
-
 
         if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
         {
@@ -1254,11 +1159,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         }
 
          mBackPressed = System.currentTimeMillis();
-
-       /*Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);*/
 
     }
 

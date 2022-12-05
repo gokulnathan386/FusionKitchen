@@ -61,6 +61,7 @@ import com.bumptech.glide.Glide;
 import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.addon.menu_addon_status_model;
+import com.fusionkitchen.model.cart.coupon_valid_model;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.orderstatus.orderstatus_model;
 import com.google.android.material.snackbar.Snackbar;
@@ -105,6 +106,7 @@ public class Add_to_Cart extends AppCompatActivity {
     private Dialog dialog;
     private long mLastClickTime = 0;
     SharedPreferences sharedpre_offer_details;
+    double amtfloat = 0.00;
 
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
@@ -1471,8 +1473,14 @@ public class Add_to_Cart extends AppCompatActivity {
             if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
                 String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
-                processto_pay_button.setText("Pay £ " + offer_amt);
-                delivery_pay_button.setText("Pay £ " + offer_amt);
+           /*     processto_pay_button.setText("Pay £ " + offer_amt);
+                delivery_pay_button.setText("Pay £ " + offer_amt);*/
+                SharedPreferences getclient_id = getSharedPreferences("favourite_store_data", MODE_PRIVATE);
+                int add_to_client = getclient_id.getInt("client_id", 0);
+
+                couponcodevalidate(menuurlpath,add_to_client,sharedpreferences.getString("ordermodetype", null),"1",
+                        sharedpre_offer_details.getString("offer_code",null),
+                      Itemsubtotal,sharedpreferences.getString("asaptodaylaterstring", null));
 
             }else{
 
@@ -1484,6 +1492,86 @@ public class Add_to_Cart extends AppCompatActivity {
 
         }
     };
+
+    private void couponcodevalidate(String menuurlpath, int favourite_client, String ordermodetype,
+                                    String payment_mode, String offer_code, String sub_amount,
+                                    String asaptodaylaterstring) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("cid", String.valueOf(favourite_client));
+        params.put("ordermode", ordermodetype);
+        params.put("paymenttype", payment_mode);
+        params.put("code", offer_code);
+        params.put("subtotal", sub_amount);
+        params.put("order_time",asaptodaylaterstring);
+
+
+        Log.d("coupencode","User->"+favourite_client + "ordermode->"+  ordermodetype +"paymenttype->"+ payment_mode + "code->"+offer_code +"subtotsl->"+sub_amount + "Asap_today_later-->"+asaptodaylaterstring);
+
+        fullUrl = menuurlpath + "/menu/couponAPI";
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<coupon_valid_model> call = apiService.getcouponvalid(fullUrl, params);
+
+        Log.e("paramsval", "" + params);
+
+        call.enqueue(new Callback<coupon_valid_model>() {
+            @Override
+            public void onResponse(Call<coupon_valid_model> call, Response<coupon_valid_model> response) {
+                int statusCode = response.code();
+
+                if (statusCode == 200) {
+
+                    // Log.e("Success======", new Gson().toJson(response.body()));
+                    String offer_msg =  response.body().getMsg();
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        String discount =  response.body().getDiscount();
+                        String code =  response.body().getCode();
+                        String discription =  response.body().getDiscription();
+                        String type  = response.body().getType();
+                        String total =  response.body().getTotal();
+
+                      //  total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(total + "")));
+
+                       String Offer_amt =  String.format("%.2f", amtfloat + Double.parseDouble(total + ""));
+
+
+                        processto_pay_button.setText("Pay £ " + Offer_amt);
+                        delivery_pay_button.setText("Pay £ " + Offer_amt);
+
+
+                        Log.d("MenuPage===coupencode","discount--->" + discount + "code -----> " + code + "discription-----> "  + discription + "type----> " + type + " total ----->"+ total);
+
+                        SharedPreferences sharedPreferences = mContext.getSharedPreferences("Offer_applied",MODE_PRIVATE);
+                        SharedPreferences.Editor offerEdit = sharedPreferences.edit();
+                        offerEdit.putString("offer_total_amount", total);
+                        offerEdit.putString("offer_code", code);
+                        offerEdit.commit();
+
+                    }else{
+
+                        Toast.makeText(mContext, offer_msg, Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<coupon_valid_model> call, Throwable t) {
+                Log.e("Tro", "" + t);
+
+            }
+
+        });
+
+
+
+    }
 
 
 
@@ -1787,8 +1875,6 @@ public class Add_to_Cart extends AppCompatActivity {
 
                 int statusCode = response.code();
 
-                Log.d("Add_to_cart_postcodevalidate"," "+statusCode);
-
                 if (statusCode == 200) {
 
 
@@ -2016,19 +2102,13 @@ public class Add_to_Cart extends AppCompatActivity {
                             intent.putExtra("cooking_insttruction", cooking_insttruction.getText().toString());
                             intent.putExtra("addressids", addressids);
                             intent.putExtra("customerpostcode", customerpostcode);
-
                             startActivity(intent);
                         }
                     } else {
 
 
 
-                      /*  bShowSnackbar.performClick();
-                        bShowSnackbar.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {*/
 
-                        // create an instance of the snackbar
                         final View coordinatorLayoutView = findViewById(R.id.snackbarPosition);
                         final Snackbar snackbar = Snackbar.make(coordinatorLayoutView, "", Snackbar.LENGTH_LONG);
                         View customSnackView = getLayoutInflater().inflate(R.layout.custom_snackbar_view, null);
@@ -2049,13 +2129,10 @@ public class Add_to_Cart extends AppCompatActivity {
                         snackbarLayout.addView(customSnackView, 0);
 
                         snackbar.show();
-                         /*   }
-                        });*/
 
-                        //Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
-                    }
+                        }
                 } else {
-                    // loader.dismiss();
+
                     Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
 
                 }
@@ -2065,7 +2142,7 @@ public class Add_to_Cart extends AppCompatActivity {
             public void onFailure(Call<chechoutvalidate_model> call, Throwable t) {
 
                 Log.e("Tro", "" + t);
-                // loader.dismiss();
+
                 Snackbar.make(Add_to_Cart.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
             }
 
@@ -2207,14 +2284,9 @@ public class Add_to_Cart extends AppCompatActivity {
 
         dialog = new Dialog(Add_to_Cart.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
         dialog.setContentView(R.layout.custom_loading_layout);
-
-        //...initialize the imageView form infalted layout
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
 
         Glide.with(Add_to_Cart.this)
                 .load(R.drawable.loading)
@@ -2222,11 +2294,10 @@ public class Add_to_Cart extends AppCompatActivity {
                 .centerCrop()
                 .into(gifImageView);
 
-        //...finaly show it
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
+
     public void hideloading() {
         dialog.dismiss();
     }

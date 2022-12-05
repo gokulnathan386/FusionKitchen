@@ -8,8 +8,6 @@
     android:layout_height="match_parent">
 
 
-   <!-- android:background="#1Af3f3f3"-->
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -257,29 +255,6 @@
                                         </ImageView>
 
                                     </LinearLayout>
-
-
-                                    <!-- <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:src="@drawable/postal_offer2"></ImageView>
-
-                                    <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_weight="1"
-                                        android:src="@drawable/postal_offer1"></ImageView>-->
-
-                                    <!--
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:scaleType="fitXY"
-                                        android:layout_height="160dp"
-                                        android:src="@drawable/bannerimage">
-                                    </ImageView>-->
-
 
                                 </LinearLayout>
 

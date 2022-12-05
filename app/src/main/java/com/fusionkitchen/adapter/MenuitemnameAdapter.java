@@ -497,8 +497,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
          add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
          add_to_cart_btn.setClickable(false);
 
-
-        //start Single Item API Integration
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+menu_url+"/getitemdetail",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -1753,10 +1751,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     Log.e("statusfor1", ": " + response.body().getStatus());
                     Log.e("statusfor2", ": " + response.body().getError_code());
 
-
-
-                 /*   holder.menu_item_add.setVisibility(GONE);
-                    holder.increment_decrement_layout.setVisibility(View.VISIBLE);*/
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 

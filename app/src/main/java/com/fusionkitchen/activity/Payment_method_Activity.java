@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -256,20 +257,15 @@ public class Payment_method_Activity extends AppCompatActivity {
 
         Log.e("customerpostcode", "" + customerpostcode);
 
-        /*--------------Back----------------*/
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent  = new Intent(Payment_method_Activity.this,Add_to_Cart.class);
+                startActivity(intent);
                 finish();
-                // startActivity(new Intent(getApplicationContext(), Add_to_Cart.class));
-
-               /* Intent intentback = new Intent(Payment_method_Activity.this, Add_to_Cart.class);
-                intentback.putExtra("cooking_insttructionback", cooking_insttruction);
-                startActivity(intentback);*/
             }
         });
-
 
         services_info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1259,15 +1255,16 @@ public class Payment_method_Activity extends AppCompatActivity {
         params.put("ordermode", ordermode);
         params.put("paymenttype", paymenttype);
         params.put("code", code);
+       // params.put("code","FKSANTA");
         params.put("subtotal", subtotal);
         params.put("order_time",asap_todat_laterstr);
 
-        Log.d("coupencode","client_Id->"+usercid +
-                                   "ordermode->"+ ordermode +
-                                    "paymenttype->"+ paymenttype
-                                     + "code->"+code +
-                                       "subtotsl->"+subtotal+
-                                      "Order_time"+asap_todat_laterstr);
+        Log.d("Coupen_apply_data---->","client_Id->"+usercid +"\n" +
+                                          "ordermode->"+ ordermode +"\n" +
+                                         "paymenttype->"+ paymenttype+"\n"
+                                        + "code->"+code + "\n" +
+                                        "subtotsl->"+subtotal+"\n" +
+                                        "Order_time"+asap_todat_laterstr +"\n");
 
 
         fullUrl = menuurlpath + "/menu/couponAPI";
@@ -1729,13 +1726,13 @@ public class Payment_method_Activity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
-    /*@Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (service_txt_info.getVisibility() == View.VISIBLE) {
-            service_txt_info.setVisibility(View.GONE);
-        }
-        return true;
-    }*/
+    @Override
+    public void onBackPressed() {
+      Intent intent = new Intent(Payment_method_Activity.this,Add_to_Cart.class);
+      startActivity(intent);
+      finish();
+    }
+
 
     @Override
     public void onResume() {
