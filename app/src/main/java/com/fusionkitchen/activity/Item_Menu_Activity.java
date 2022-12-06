@@ -426,9 +426,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-
-
-
         mAddFab.shrink();
         nsv = findViewById(R.id.nsv);
 
@@ -3773,9 +3770,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         item_pricesize = new ArrayList<>();
         item_pricesize.clear();
 
-
         addonitemfirstview(ItemName, addonid, "", "", "1");
-
 
     }
 
@@ -3873,7 +3868,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 item_pricesize.clear();
 
 
-
                 addonitemfirstview(ItemName, addonid, "", "", "1");
 
 
@@ -3919,7 +3913,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     Log.d("Offer_page_total--->3"," " + "Not Applied");
 
                 }
-
 
 
             }
@@ -4135,9 +4128,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                     double num1 = Double.parseDouble(separated[1]);
                     double num2 = Double.parseDouble(addonidprice);//addonidprice
-                    // add both number and store it to sum
+
                     sum = num1 - num2;
-                    //   item_amt.setText("Total: £ " + String.format("%.2f", sum));
 
                     item_amt.setText(" £ " + String.format("%.2f", sum));
 
@@ -4145,7 +4137,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 }
 
             }
-            // Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
             addonitemnext("1");
 
         }

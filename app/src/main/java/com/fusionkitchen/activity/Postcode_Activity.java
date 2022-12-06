@@ -53,6 +53,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 
 import com.android.volley.RequestQueue;
@@ -65,6 +66,8 @@ import com.freshchat.consumer.sdk.FreshchatConfig;
 
 import com.fusionkitchen.adapter.EatListAdapter;
 import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
+import com.fusionkitchen.adapter.Slider_adapter;
+import com.fusionkitchen.adapter.The_Slide_items_Pager_Adapter;
 import com.fusionkitchen.model.EatListPostelModel;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
@@ -78,6 +81,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
@@ -87,7 +91,9 @@ import com.fusionkitchen.model.post_code_modal;
 import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,6 +112,11 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
     int bottonkey;
+
+    private List<String> listItems;
+    private ViewPager page;
+    private TabLayout tabLayout;
+
 
 
     /*---------------------------check internet connection----------------------------------------------------*/
@@ -186,12 +197,19 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private PopularRestaurantsListAdapter popularRestaurantsListAdapter;
     private List<popular_restaurants_listmodel> popularlistmodule = new ArrayList<>();
 
+
     HttpUrl baseUrl;
 
     String menuurlpath;
     LinearLayout clear_list_layout;
     AppCompatButton go_back, remove_cart;
     TextView invalide_postcode;
+   // SliderView sliderView;
+    ViewPager mViewPager;
+
+/*    String url1 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
+    String url2 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
+    String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";*/
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -204,6 +222,30 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+
+        /*---------------------------silder start---------------------*/
+
+
+        page = findViewById(R.id.my_pager) ;
+        tabLayout = findViewById(R.id.my_tablayout);
+
+
+        listItems = new ArrayList<>() ;
+        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
+        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
+        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
+
+        Slider_adapter itemsPager_adapter = new Slider_adapter(this, listItems);
+        page.setAdapter(itemsPager_adapter);
+
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new The_slide_timer(),2000,3000);
+        tabLayout.setupWithViewPager(page,true);
+
+
+
+        /*---------------------------silder End---------------------*/
+
 
         go_back = findViewById(R.id.go_back);
         remove_cart = findViewById(R.id.remove_cart);
@@ -258,16 +300,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         }
 
         cads = findViewById(R.id.cads);
-
-      /*  cads.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), rate.class));
-            }
-        });*/
-
-     /*   SharedPreferences shared = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String channel = (shared.getString(keyChannel, ""));*/
 
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
         dbHelper = new SQLDBHelper(Postcode_Activity.this);
@@ -557,7 +589,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
             // Get extra data included in the Intent
             menuurlpath = intent.getStringExtra("menuurlpath");
 
@@ -613,6 +644,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
         Most_Popular_Listview.setLayoutManager(manager4);
         Most_Popular_Listview.setAdapter(popularRestaurantsListAdapter);
+
+
+
           StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"loadPopularRestaurants",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -620,11 +654,17 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         try {
                             hideloading();
                             JSONObject jsonobject = new JSONObject(response);
+
+
                             JSONObject getdata =jsonobject.getJSONObject("data");
+
                             JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
+                            JSONArray banner_image = getdata.getJSONArray("banner_image");
 
                               for (int i = 0; i < most_popular_list.length(); i++) {
+
                                  JSONObject object = most_popular_list.getJSONObject(i);
+
                                     popular_restaurants_listmodel popularlist = new popular_restaurants_listmodel(
                                             object.getString("name"),
                                             object.getString("area"),
@@ -642,6 +682,15 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                 }
 
                             popularRestaurantsListAdapter.notifyDataSetChanged();
+                         /*   List<String> bannerImg = new ArrayList<>();
+                            for (int K = 0; K < banner_image.length(); K++) {
+
+                                bannerImg.add(String.valueOf(banner_image.get(K)));
+                            }
+
+                            adapter = new SliderAdapter(Postcode_Activity.this, bannerImg);
+                            mViewPager.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();*/
 
                         }catch (JSONException e) {
                             e.printStackTrace();
@@ -1160,6 +1209,24 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
          mBackPressed = System.currentTimeMillis();
 
+    }
+
+
+    public class The_slide_timer extends TimerTask {
+        @Override
+        public void run() {
+
+            Postcode_Activity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (page.getCurrentItem()< listItems.size()-1) {
+                        page.setCurrentItem(page.getCurrentItem()+1);
+                    }
+                    else
+                        page.setCurrentItem(0);
+                }
+            });
+        }
     }
 
 }

@@ -199,8 +199,8 @@
                     android:paddingRight="@dimen/_3sdp">
 
                     <TextView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="17dp"
                         android:background="@drawable/plus_addbtn"
                         android:fontFamily="@font/hindvadodara_medium"
                         android:textColor="@color/txt_ten"

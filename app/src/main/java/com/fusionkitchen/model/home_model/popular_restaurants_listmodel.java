@@ -19,7 +19,8 @@ public class popular_restaurants_listmodel {
 
     public popular_restaurants_listmodel(String name, String area, String rating_average,
                                          String takeawaystatus,String discount,String image_url,
-                                         String postcode,String address_location,String menupageurl, String lat,String lang) {
+                                         String postcode,String address_location,String menupageurl,
+                                         String lat,String lang) {
         this.name = name;
         this.area = area;
         this.rating_average=rating_average;

@@ -698,15 +698,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                         Log.e("statusfor2", ": " + response.body().getError_code());
 
 
-                                      /*  Intent intentitemdetails = new Intent(context, Item_Menu_Activity.class);
-                                        intentitemdetails.putExtra("item", contacts.getItemid());
-                                        intentitemdetails.putExtra("addonid", response.body().getAddonId());
-                                        intentitemdetails.putExtra("categoryname", contacts.getCategoryname());
-                                        intentitemdetails.putExtra("subcategoryname", contacts.getSubcategoryname());
-                                        intentitemdetails.putExtra("menuurlpath", menuurlpath);
-                                        context.startActivity(intentitemdetails);*/
-
-
                                         if (response.body().getError_code().equalsIgnoreCase("300")) {
                                             popupWindow.dismiss();
                                             holder.showPopupaddon(view, "Takeaway Closed", response.body().getError_message().getTakeawayclosed().getCurrentlytakeaway(), "300", contacts.getItemid(), response.body().getAddonId(), contacts.getCategoryname(), contacts.getSubcategoryname(), menuurlpath);
@@ -721,16 +712,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                             holder.showPopupaddon(view, "Delivery Closed", response.body().getError_message().getMsg(), "201", contacts.getItemid(), response.body().getAddonId(), contacts.getCategoryname(), contacts.getSubcategoryname(), menuurlpath);
                                         } else if (response.body().getError_code().equalsIgnoreCase("102")) {
                                             popupWindow.dismiss();
-                                            //addon show
-                                          /*  String ItemName = contacts.getId();
-                                            Intent intent = new Intent("custom-message");
-                                            intent.putExtra("item", ItemName);
-                                            intent.putExtra("addonid", response.body().getAddonId());
-                                            intent.putExtra("categoryname", contacts.getCategoryname());
-                                            intent.putExtra("subcategoryname", contacts.getSubcategoryname());
-                                            LocalBroadcastManager.getInstance((((Item_Menu_Activity) context).getBaseContext())).sendBroadcast(intent);
-                                           */
-                                            //String ItemName = contacts.getItemid();
 
                                             Log.e("senditem1", "" + contacts.getItemid());
                                             Log.e("senditem2", "" + response.body().getAddonId());

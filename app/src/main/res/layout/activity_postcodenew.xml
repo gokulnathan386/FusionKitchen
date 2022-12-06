@@ -7,8 +7,6 @@
     android:background="#FFFFFF"
     android:layout_height="match_parent">
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -179,6 +177,50 @@
                                     android:layout_below="@+id/rlimg"
                                     android:layout_marginLeft="8dp"
                                     android:layout_marginTop="20dp"
+                                    android:layout_marginRight="8dp"
+                                    android:background="@drawable/banner_bg"
+                                  >
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                    <androidx.viewpager.widget.ViewPager
+                                        android:id="@+id/my_pager"
+                                        app:layout_constraintHorizontal_bias="0.0"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        app:layout_constraintStart_toStartOf="parent"/>
+
+                                    <com.google.android.material.tabs.TabLayout
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:tabGravity="center"
+                                        android:id="@+id/my_tablayout"
+                                        app:tabBackground="@drawable/indicator_selector"
+                                        app:tabIndicatorHeight="0dp"
+                                        android:layout_marginTop="-50dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        app:layout_constraintTop_toBottomOf="@+id/my_pager">
+                                    </com.google.android.material.tabs.TabLayout>
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+
+
+                               <!-- <LinearLayout
+                                    android:id="@+id/Office_Image"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:layout_below="@+id/rlimg"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginTop="20dp"
                                     android:weightSum="2"
                                     android:layout_marginRight="8dp"
                                     android:background="@drawable/banner_bg"
@@ -256,7 +298,7 @@
 
                                     </LinearLayout>
 
-                                </LinearLayout>
+                                </LinearLayout>-->
 
                                 <TextView
                                     android:id="@+id/eat_what_makes_you_happy"

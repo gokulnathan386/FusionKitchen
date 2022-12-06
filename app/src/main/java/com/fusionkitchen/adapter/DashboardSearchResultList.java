@@ -357,7 +357,7 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
 
 
 
-                Intent intent = new Intent("custom-message-menuurlpath");
+                    Intent intent = new Intent("custom-message-menuurlpath");
                     intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
                     intent.putExtra("client_id", listdata[position].getClientID());
 
