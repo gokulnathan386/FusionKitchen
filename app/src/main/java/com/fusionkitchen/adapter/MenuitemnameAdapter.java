@@ -87,7 +87,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     private final menu_item_sub_model.categoryall.subcat sub;
     private final menu_item_sub_model.categoryall listdatum;
     public static final String PREORDERPREFERENCES = "pre_order_popup";
-    String menu_time_update;
+    String menu_time_update,coll_del_time;
     ViewHolder textvisiable;
 
     private menu_item_sub_model.categoryall.subcat.items[] items;
@@ -1049,6 +1049,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setText("Deliver ASAP");
 
                                                 menu_time_update = "Deliver " + menu_delivery_tattime;
+                                                coll_del_time= menu_delivery_tattime;
 
                                                 today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(GONE);
@@ -1091,6 +1092,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setText("Collection ASAP");
 
                                                 menu_time_update = "Collection " + menu_collection_tattime;
+                                                coll_del_time= menu_collection_tattime;
 
                                                 today_time_layer.setVisibility(GONE);
                                                 later_time_layer.setVisibility(GONE);
@@ -1196,15 +1198,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         todaytimestring = todaytime.today_time_string;
 
                                                         menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                        coll_del_time= todaytime.label +" at " + todaytime.today_time;
 
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
 
                                                             menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                            coll_del_time= todaytime.label +" at 12:00";
                                                         }
 
-                                                    /*    update_mode.setText("Deliver today at " + selectedtodaytimeItem);
-                                                        todaytimestr = selectedtodaytimeItem;*/
                                                         update_mode.setVisibility(View.VISIBLE);
                                                     } // to close the onItemSelected
 
@@ -1281,12 +1283,16 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                         menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
 
+                                                        coll_del_time = todaytime.label +" at " + todaytime.today_time;
+
                                                         todaytimestr = todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
 
                                                             menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
+
+                                                            coll_del_time = todaytime.label +" at 12:00 ";
                                                         }
                                                         update_mode.setVisibility(View.VISIBLE);
                                                     } // to close the onItemSelected
@@ -1431,7 +1437,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                                         selectedlaterdateItem = parent.getItemAtPosition(position).toString();
-                                                        // Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_LONG).show();
                                                         laterdatestr = selectedlaterdateItem;
                                                         // update_mode.setText("Collection at " + selectedlaterdateItem);
                                                         loadLatertime("1", selectedlaterdateItem);
@@ -1509,6 +1514,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                                     menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
 
+                                                                    coll_del_time = laterdates+" at " + latertime.today_time;
+
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
@@ -1523,6 +1530,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                                     update_mode.setText("Collection " +laterdates+ " at " + latertime.today_time);
 
                                                                     menu_time_update = "Collection "+ laterdates+" at " + latertime.today_time;
+
+                                                                    coll_del_time =laterdates+" at " + latertime.today_time;
 
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
@@ -1547,7 +1556,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                     }
                                                 } else {
                                                     dismissloading();
-                                                   // Snackbar.make(mContext.dialog.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                                                 }
                                             }
 
@@ -1555,8 +1563,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             @Override
                                             public void onFailure(Call<getlatertime_model> call, Throwable t) {
                                                 dismissloading();
-                                                //Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                                                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
                                             }
                                         });
                                     }
@@ -1587,18 +1594,18 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         editor_extra.putString("latertimestring",latertimestring);
                                         editor_extra.commit();
 
-
-
                                         if (order_mode.equalsIgnoreCase("0")) {
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Delivery");
-                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.putString("Pre_order_menu_time_update",coll_del_time);
+                                            pop_up_details.putString("col_del_text","Delivery");
                                             pop_up_details.commit();
 
                                             Intent intent = new Intent("Pre_order_pop_up_update");
                                             intent.putExtra("Pre_order_collection_delivery","Delivery");
-                                            intent.putExtra("Pre_order_menu_time_update",menu_time_update);
+                                            intent.putExtra("Pre_order_menu_time_update",coll_del_time);
+                                            intent.putExtra("col_del_text","Delivery");
                                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
@@ -1607,13 +1614,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Collection");
-                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.putString("Pre_order_menu_time_update",coll_del_time);
+                                            pop_up_details.putString("col_del_text","Collection");
                                             pop_up_details.commit();
 
 
                                             Intent intent = new Intent("Pre_order_pop_up_update");
                                             intent.putExtra("Pre_order_collection_delivery","Collection");
-                                            intent.putExtra("Pre_order_menu_time_update",menu_time_update);
+                                            intent.putExtra("Pre_order_menu_time_update",coll_del_time);
+                                            intent.putExtra("col_del_text","Collection");
                                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                                         }
@@ -1957,6 +1966,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     add_more_button_textview.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+
+                                        /*    String ItemName = items[position].getId();
+                                            Intent intent = new Intent("Item_details");
+                                            intent.putExtra("item", ItemName);
+                                            intent.putExtra("addonid", response.body().getAddonId());
+                                            intent.putExtra("categoryname", listdatum.getName());
+                                            intent.putExtra("subcategoryname", sub.getName());
+                                            intent.putExtra("item_price_amt", items[position].getPrice());
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
                                             repeatpopup.dismiss();
                                         }
                                     });

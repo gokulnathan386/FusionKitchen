@@ -69,6 +69,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -150,8 +151,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     TextView restaurants_status;
     RecyclerView recyclerviewcommon;
     int Show_favourite_list;
+    String del_coll_text,del_col_cooking_text,de_cl_cr;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
     int K = 2;
+    LottieAnimationView del_col_anim;
+
+
+
+    String mitem_id;
+    String maddon_id;
+    String mcategoryname;
+    String msubcategoryname;
+    String mitem_price_amt;
+    String mitem_description;
+    int mMenu_illchoose = 0;
+
 
     public Context mContext = Item_Menu_Activity.this;
     private Dialog dialog,dialog_loading;
@@ -184,7 +198,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     List<menu_item_sub_model.categoryall> pageloader;
 
-    ImageView offer_gif;
     String asap_time_string;
     String Menu_Restaurant_Client_Id;
 
@@ -567,7 +580,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         ViewCompat.setNestedScrollingEnabled(recyclerviewOffers, false);
         recyclerviewOffers.setNestedScrollingEnabled(false);
 
-        offer_gif = (ImageView) findViewById(R.id.offer_gif);
+        del_col_anim = (LottieAnimationView) findViewById(R.id.collection_delivery_json);
 
 
         restaurants_status = findViewById(R.id.restaurants_status);
@@ -659,6 +672,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
 
         });
+
 
         info_icon_btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -1321,6 +1335,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageitempossion, new IntentFilter("item_possion-message"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_item_count_update, new IntentFilter("total_count_Update"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_count_layout_gone, new IntentFilter("total_count_layout_gone"));
+       // LocalBroadcastManager.getInstance(this).registerReceiver(mItem_details, new IntentFilter("Item_details"));
+
 
         /*---------------------------loaderviewlibrary----------------------------------------------------*/
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
@@ -1374,9 +1390,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             data_de_cl = sh.getString("Pre_order_collection_delivery", "");
             de_cl_time = sh.getString("Pre_order_menu_time_update", "");
+            de_cl_cr = sh.getString("col_del_text","");
 
-            delivery_collection_textview.setText(data_de_cl);
-            cooking_time_textview.setText(de_cl_time);
+
+
+         /*   delivery_collection_textview.setText(data_de_cl);
+            cooking_time_textview.setText(de_cl_time);*/
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -1384,11 +1403,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                     if(data_de_cl.equalsIgnoreCase("Delivery")){
 
-                        Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
+                        del_col_anim.setAnimation(R.raw.delivery);
+                        delivery_collection_textview.setText(de_cl_cr);
+                        cooking_time_textview.setText(de_cl_time);
 
                     }else{
 
-                        Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
+                        del_col_anim.setAnimation(R.raw.collection);
+                        delivery_collection_textview.setText(de_cl_cr);
+                        cooking_time_textview.setText(de_cl_time);
                     }
 
                 }
@@ -1399,6 +1422,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+   /* public BroadcastReceiver  mItem_details = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+             mitem_id = intent.getStringExtra("item");
+             maddon_id = intent.getStringExtra("addonid");
+             mcategoryname = intent.getStringExtra("categoryname");
+             msubcategoryname = intent.getStringExtra("subcategoryname");
+             mitem_price_amt = intent.getStringExtra("item_price_amt");
+             mitem_description = intent.getStringExtra("item_description");
+             mMenu_illchoose = 1;
+             itemdetails();
+
+        }
+    };*/
 
     public BroadcastReceiver mtotal_count_layout_gone = new BroadcastReceiver() {
         @Override
@@ -1515,17 +1553,17 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             String delivery_collection = intent.getStringExtra("Pre_order_collection_delivery");
 
-            delivery_collection_textview.setText(delivery_collection);
-            cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
-
-
             if(delivery_collection.equalsIgnoreCase("Delivery")){
 
-                Glide.with(getApplicationContext()).load(delivery_image).into(offer_gif);
+                del_col_anim.setAnimation(R.raw.delivery);
+                delivery_collection_textview.setText(intent.getStringExtra("col_del_text"));
+                cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
 
             }else{
 
-                Glide.with(getApplicationContext()).load(collection_image).into(offer_gif);
+                del_col_anim.setAnimation(R.raw.collection);
+                delivery_collection_textview.setText(intent.getStringExtra("col_del_text"));
+                cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
 
             }
 
@@ -2349,7 +2387,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         mAddFab.setVisibility(View.GONE);
 
-                        //Cooking time set
+
                         colloetion_tattime.setText(response.body().getData().getCollection().getCooking_time());
                         delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
 
@@ -2404,8 +2442,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                         order_mode = "0";//Delivery
 
-
-                                        Glide.with(Item_Menu_Activity.this).load(delivery_image).into(offer_gif);
 
                                         if (response.body().getData().getDelivery().getLater_array().getStatus().equalsIgnoreCase("0")) {
                                             sevenday_txt.setVisibility(View.GONE);
@@ -2490,9 +2526,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         loading_imageView1.setVisibility(View.GONE);
                                         loading_imageView2.setVisibility(View.VISIBLE);
                                         order_mode = "1";//Collection
-
-
-                                        Glide.with(Item_Menu_Activity.this).load(collection_image).into(offer_gif);
 
                                         if (response.body().getData().getCollection().getLater_array().getStatus().equalsIgnoreCase("0")) {
                                             sevenday_txt.setVisibility(View.GONE);
@@ -2632,8 +2665,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 menu_time_update = "Deliver " + menu_delivery_tattime;
 
 
-                                                delivery_collection_textview.setText("Delivery");
-                                                cooking_time_textview.setText(menu_time_update);
+                                          /*      delivery_collection_textview.setText("Delivery");
+                                                cooking_time_textview.setText(menu_time_update);*/
+
+                                                del_coll_text = "Delivery";
+                                                del_col_cooking_text = menu_delivery_tattime;
+
+
+
 
                                                 asap_time_string = response.body().getData().getDelivery().getAsap().getAsapTimeString();
 
@@ -2684,8 +2723,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 menu_time_update = "Collection " + menu_collection_tattime;
 
 
-                                                delivery_collection_textview.setText("Collection");
-                                                cooking_time_textview.setText(menu_time_update);
+                                              /*  delivery_collection_textview.setText("Collection");
+                                                cooking_time_textview.setText(menu_time_update);*/
+                                                del_coll_text = "Collection";
+                                                del_col_cooking_text = menu_collection_tattime;
 
                                                 asap_time_string = response.body().getData().getCollection().getAsap().getAsapTimeString();
 
@@ -2787,6 +2828,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         update_mode.setText("Deliver "+ todaytime.label +" at " + todaytime.today_time);
 
                                                         menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                        del_col_cooking_text =todaytime.label +" at " + todaytime.today_time;
 
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
@@ -2797,21 +2839,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                             update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
                                                             menu_time_update = "Deliver "+ todaytime.label +" at 12:00";
+                                                            del_col_cooking_text =todaytime.label +" at 12:00";
 
                                                         }
 
 
 
-
-                                                        delivery_collection_textview.setText("Deliver");
-                                                        cooking_time_textview.setText(menu_time_update);
-
-
-
+                                                        del_coll_text = "Deliver";
+                                                       // del_col_cooking_text = menu_time_update;
 
 
                                                         update_mode.setVisibility(View.VISIBLE);
-                                                    } // to close the onItemSelected
+                                                    }
 
                                                     public void onNothingSelected(AdapterView<?> parent) {
 
@@ -2890,6 +2929,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         update_mode.setText("Collection "+todaytime.label+" at " + todaytime.today_time);
 
                                                         menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
+                                                        del_col_cooking_text =  todaytime.label +" at " + todaytime.today_time;
 
                                                         todaytimestr = todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
@@ -2899,15 +2939,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
                                                             update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
                                                             menu_time_update = "Collection "+ todaytime.label +" at 12:00 ";
+                                                            del_col_cooking_text = todaytime.label +" at 12:00 ";
                                                         }
 
-
-
-                                                        delivery_collection_textview.setText("Collection");
-                                                        cooking_time_textview.setText(menu_time_update);
+                                                        del_coll_text = "Collection";
 
                                                         update_mode.setVisibility(View.VISIBLE);
-                                                    } // to close the onItemSelected
+                                                    }
 
                                                     public void onNothingSelected(AdapterView<?> parent) {
 
@@ -3129,9 +3167,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                                     menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
 
-
-                                                                    delivery_collection_textview.setText("Deliver");
-                                                                    cooking_time_textview.setText(menu_time_update);
+                                                                    del_coll_text = "Deliver";
+                                                                    del_col_cooking_text = laterdates+" at " + latertime.today_time;
 
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
@@ -3150,10 +3187,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                                     menu_time_update = "Collection "+ laterdates+" at " + latertime.today_time;
 
-
-
-                                                                    delivery_collection_textview.setText("Collection");
-                                                                    cooking_time_textview.setText(menu_time_update);
+                                                                    del_coll_text = "Collection";
+                                                                    del_col_cooking_text = laterdates+" at " + latertime.today_time;
 
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
@@ -3193,7 +3228,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             public void onFailure(Call<getlatertime_model> call, Throwable t) {
                                                 dismissloading();
                                                 Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                                                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }
@@ -3227,15 +3261,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_delivery);
                                             mAddFab.setVisibility(View.VISIBLE);
 
+                                            del_coll_text = "Delivery";
+                                            del_col_anim.setAnimation(R.raw.delivery);
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Delivery");
-                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.putString("Pre_order_menu_time_update",del_col_cooking_text);
+                                            pop_up_details.putString("col_del_text",del_coll_text);
                                             pop_up_details.commit();
-
-
-                                            delivery_collection_textview.setText("Delivery");
-                                            cooking_time_textview.setText(menu_time_update);
 
 
                                         } else {
@@ -3244,16 +3277,20 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_collection);
                                             mAddFab.setVisibility(View.VISIBLE);
 
+                                            del_coll_text = "Collection";
+                                            del_col_anim.setAnimation(R.raw.collection);
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Collection");
-                                            pop_up_details.putString("Pre_order_menu_time_update",menu_time_update);
+                                            pop_up_details.putString("Pre_order_menu_time_update",del_col_cooking_text);
+                                            pop_up_details.putString("col_del_text",del_coll_text);
                                             pop_up_details.commit();
 
-                                            delivery_collection_textview.setText("Collection");
-                                            cooking_time_textview.setText(menu_time_update);
-
                                         }
+
+
+                                        delivery_collection_textview.setText(del_coll_text);
+                                        cooking_time_textview.setText(del_col_cooking_text);
 
                                         menu_offer(menuurlpath, "0", "0");
 
@@ -3263,7 +3300,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         Log.e("order_mode_details4", "" + laterdatestr);
                                         Log.e("order_mode_details5", "" + latertimestr);
 
-
                                         mode_view2.setEnabled(true);
                                         menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
@@ -3272,12 +3308,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 });
 
                     } else {
-                        // dismissloading();
-                        //  ordermode_popup_view.setVisibility(View.INVISIBLE);
-                        //      mode_view2.setVisibility(View.INVISIBLE);
+
                         mAddFab.setVisibility(View.VISIBLE);
-
-
                         menugetitem(menuurlpath, "0", key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
                     }
@@ -3686,7 +3718,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 String sub_amount = get_amt_count.get(0);
                 String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
 
-
                 couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
                         sharedpre_offer_details.getString("offer_code",null),
                         sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
@@ -3761,7 +3792,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         listItemsexraids = new ArrayList<String>();
         listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
         adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
-        //    Toast.makeText(Item_Menu_Activity.this, ItemName, Toast.LENGTH_SHORT).show();
 
 
         item_priceadd = new ArrayList<String>();

@@ -229,21 +229,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         page = findViewById(R.id.my_pager) ;
         tabLayout = findViewById(R.id.my_tablayout);
 
-
-        listItems = new ArrayList<>() ;
-        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
-        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
-        listItems.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/fusionkitchenApp/banner/christmas_banner.jpg");
-
-        Slider_adapter itemsPager_adapter = new Slider_adapter(this, listItems);
-        page.setAdapter(itemsPager_adapter);
-
-        java.util.Timer timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new The_slide_timer(),2000,3000);
-        tabLayout.setupWithViewPager(page,true);
-
-
-
         /*---------------------------silder End---------------------*/
 
 
@@ -645,8 +630,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         Most_Popular_Listview.setLayoutManager(manager4);
         Most_Popular_Listview.setAdapter(popularRestaurantsListAdapter);
 
-
-
           StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"loadPopularRestaurants",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -682,15 +665,18 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                 }
 
                             popularRestaurantsListAdapter.notifyDataSetChanged();
-                         /*   List<String> bannerImg = new ArrayList<>();
-                            for (int K = 0; K < banner_image.length(); K++) {
 
-                                bannerImg.add(String.valueOf(banner_image.get(K)));
+                            listItems = new ArrayList<>() ;
+                            for (int K = 0; K < banner_image.length(); K++) {
+                                listItems.add(String.valueOf(banner_image.get(K)));
                             }
 
-                            adapter = new SliderAdapter(Postcode_Activity.this, bannerImg);
-                            mViewPager.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();*/
+                            Slider_adapter itemsPager_adapter = new Slider_adapter(Postcode_Activity.this, listItems);
+                            page.setAdapter(itemsPager_adapter);
+
+                            java.util.Timer timer = new java.util.Timer();
+                            timer.scheduleAtFixedRate(new The_slide_timer(),2000,3000);
+                            tabLayout.setupWithViewPager(page,true);
 
                         }catch (JSONException e) {
                             e.printStackTrace();

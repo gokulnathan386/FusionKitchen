@@ -452,8 +452,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                                 public void onClick(View v) {
                                                     popupWindowreatlast.dismiss();
 
-                                                    //add con
-
                                                     /*------------------repead last-----------------------*/
                                                     popupWindow.dismiss();
                                                     if (count == 1) {
@@ -638,6 +636,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                         @Override
                         public void onClick(View v) {
 
+
                             if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
                                 return;
                             }
@@ -645,10 +644,6 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
 
                             Map<String, String> params = new HashMap<String, String>();
-                        /*    params.put("id", contacts.getItemid());
-                            params.put("ordermode", butordertype);*/
-
-
 
 
                             if (sharedpreferences.getString("orderactivetag", null).equalsIgnoreCase("1")) {
@@ -726,6 +721,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
                                             intentitemdetails.putExtra("subcategoryname", contacts.getSubcategoryname());
                                             intentitemdetails.putExtra("menuurlpath", menuurlpath);
                                             context.startActivity(intentitemdetails);
+
                                         } else {
                                             popupWindow.dismiss();
                                             Toast.makeText(context, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
