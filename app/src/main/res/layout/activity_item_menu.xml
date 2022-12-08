@@ -313,13 +313,13 @@
                             android:layout_height="match_parent">
 
                             <com.airbnb.lottie.LottieAnimationView
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:layout_marginLeft="10dp"
                                 android:id="@+id/collection_delivery_json"
                                 app:lottie_autoPlay="true"
+                                app:lottie_rawRes="@raw/delivery"
                                 app:lottie_loop="true"/>
-
-                           <!-- app:lottie_rawRes="@raw/delivery"-->
 
                         </LinearLayout>
 
@@ -332,7 +332,8 @@
 
                             <TextView
                                 android:id="@+id/delivery_collection_textview"
-                                android:text=""
+                                android:text="Delivery"
+                                android:layout_marginLeft="5dp"
                                 android:textColor="#17284D"
                                 android:fontFamily="@font/poppins_bold"
                                 android:textSize="15dp"
@@ -344,8 +345,9 @@
                                 android:id="@+id/cooking_time_textview"
                                 android:textSize="12dp"
                                 android:textColor="#17284D"
+                                android:layout_marginLeft="5dp"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text=""
+                                android:text="(35 - 45 mins)"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                             </TextView>
@@ -357,6 +359,7 @@
                             android:layout_weight="1"
                             android:text="Change"
                             android:gravity="center"
+                            android:layout_marginRight="10dp"
                             android:textColor="#E0467C"
                             android:textSize="16dp"
                             android:fontFamily="@font/poppins_semibold"
@@ -1803,7 +1806,7 @@
             android:contentDescription="xtended_fab_content_desc"
             android:text="Menu"
             android:textColor="@color/white"
-            android:visibility="visible"
+            android:visibility="gone"
             app:backgroundTint="#DC2462"
             app:icon="@drawable/spoonfork"
             app:iconTint="@color/white" />

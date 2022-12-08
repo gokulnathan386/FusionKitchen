@@ -11,8 +11,8 @@ android {
         applicationId "com.fusionkitchen"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 60  //60
-        versionName "1.9" //1.9
+        versionCode 61 //60
+        versionName "2.0" //1.9
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [

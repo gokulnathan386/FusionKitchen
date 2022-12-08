@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -47,6 +48,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -70,6 +72,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -155,7 +158,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
     int K = 2;
     LottieAnimationView del_col_anim;
-
+    String takeway_closed;
 
 
     String mitem_id;
@@ -951,9 +954,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             add_to_cart_layout.setVisibility(View.INVISIBLE);
             menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
-            //Order_mode_popup();
-
-
             SharedPreferences sharedpreferences = getSharedPreferences("PREFS_MOREINFO", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
             Log.d("More_info",sharedpreferences.getString("More_info",null));
@@ -1402,20 +1402,19 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 public void run() {
 
                     if(data_de_cl.equalsIgnoreCase("Delivery")){
-
                         del_col_anim.setAnimation(R.raw.delivery);
                         delivery_collection_textview.setText(de_cl_cr);
                         cooking_time_textview.setText(de_cl_time);
-
-                    }else{
-
+                        del_col_anim.playAnimation();
+                    }else if(data_de_cl.equalsIgnoreCase("Collection")){
                         del_col_anim.setAnimation(R.raw.collection);
+                        del_col_anim.playAnimation();
                         delivery_collection_textview.setText(de_cl_cr);
                         cooking_time_textview.setText(de_cl_time);
                     }
 
                 }
-            }, 3000);
+            }, 2000);
 
            LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
 
@@ -1556,12 +1555,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             if(delivery_collection.equalsIgnoreCase("Delivery")){
 
                 del_col_anim.setAnimation(R.raw.delivery);
+                del_col_anim.playAnimation();
                 delivery_collection_textview.setText(intent.getStringExtra("col_del_text"));
                 cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
 
-            }else{
+            }else if(delivery_collection.equalsIgnoreCase("Collection")) {
 
                 del_col_anim.setAnimation(R.raw.collection);
+                del_col_anim.playAnimation();
                 delivery_collection_textview.setText(intent.getStringExtra("col_del_text"));
                 cooking_time_textview.setText(intent.getStringExtra("Pre_order_menu_time_update"));
 
@@ -2377,10 +2378,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<modeof_order_popup_model> call, Response<modeof_order_popup_model> response) {
-                //response.headers().get("Set-Cookie");
                 ordermode_popup_view.setVisibility(View.VISIBLE);
                 int statusCode = response.code();
                 if (statusCode == 200) {
+
+                    takeway_closed  = response.body().getStatus();
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
@@ -2671,6 +2673,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 del_coll_text = "Delivery";
                                                 del_col_cooking_text = menu_delivery_tattime;
 
+                                                del_col_anim.setAnimation(R.raw.delivery);
+                                                delivery_collection_textview.setText(del_coll_text);
+                                                cooking_time_textview.setText(menu_delivery_tattime);
+                                                del_col_anim.playAnimation();
+
 
 
 
@@ -2727,6 +2734,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 cooking_time_textview.setText(menu_time_update);*/
                                                 del_coll_text = "Collection";
                                                 del_col_cooking_text = menu_collection_tattime;
+                                                del_col_anim.playAnimation();
+
+                                                del_col_anim.setAnimation(R.raw.collection);
+                                                delivery_collection_textview.setText(del_coll_text);
+                                                cooking_time_textview.setText(menu_collection_tattime);
 
                                                 asap_time_string = response.body().getData().getCollection().getAsap().getAsapTimeString();
 
@@ -2830,6 +2842,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
                                                         del_col_cooking_text =todaytime.label +" at " + todaytime.today_time;
 
+                                                        del_col_anim.setAnimation(R.raw.delivery);
+                                                        delivery_collection_textview.setText("Deliver");
+                                                        cooking_time_textview.setText(del_col_cooking_text);
+                                                        del_col_anim.playAnimation();
+
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
 
@@ -2840,6 +2857,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                             update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
                                                             menu_time_update = "Deliver "+ todaytime.label +" at 12:00";
                                                             del_col_cooking_text =todaytime.label +" at 12:00";
+
+                                                            del_col_anim.setAnimation(R.raw.delivery);
+                                                            delivery_collection_textview.setText("Deliver");
+                                                            cooking_time_textview.setText(del_col_cooking_text);
+                                                            del_col_anim.playAnimation();
 
                                                         }
 
@@ -2931,6 +2953,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
                                                         del_col_cooking_text =  todaytime.label +" at " + todaytime.today_time;
 
+
+                                                        del_col_anim.setAnimation(R.raw.collection);
+                                                        delivery_collection_textview.setText("Collection");
+                                                        cooking_time_textview.setText(del_col_cooking_text);
+                                                        del_col_anim.playAnimation();
+
                                                         todaytimestr = todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
 
@@ -2940,6 +2968,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                             update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
                                                             menu_time_update = "Collection "+ todaytime.label +" at 12:00 ";
                                                             del_col_cooking_text = todaytime.label +" at 12:00 ";
+
+
+                                                            del_col_anim.setAnimation(R.raw.collection);
+                                                            delivery_collection_textview.setText("Collection");
+                                                            cooking_time_textview.setText(del_col_cooking_text);
+                                                            del_col_anim.playAnimation();
                                                         }
 
                                                         del_coll_text = "Collection";
@@ -3170,6 +3204,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                                     del_coll_text = "Deliver";
                                                                     del_col_cooking_text = laterdates+" at " + latertime.today_time;
 
+
+                                                                    del_col_anim.setAnimation(R.raw.delivery);
+                                                                    delivery_collection_textview.setText("Deliver");
+                                                                    cooking_time_textview.setText(del_col_cooking_text);
+                                                                    del_col_anim.playAnimation();
+
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
@@ -3190,6 +3230,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                                     del_coll_text = "Collection";
                                                                     del_col_cooking_text = laterdates+" at " + latertime.today_time;
 
+                                                                    del_col_anim.setAnimation(R.raw.collection);
+                                                                    delivery_collection_textview.setText("Collection");
+                                                                    cooking_time_textview.setText(del_col_cooking_text);
+                                                                    del_col_anim.playAnimation();
+
                                                                     update_mode.setVisibility(View.VISIBLE);
                                                                     latertimestr = latertime.today_time;
                                                                     latertimestring = latertime.today_time_string;
@@ -3198,7 +3243,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                                     dismissloading();
                                                                 }
-                                                            } // to close the onItemSelected
+                                                            }
 
                                                             public void onNothingSelected(AdapterView<?> parent) {
                                                             }
@@ -3263,6 +3308,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                             del_coll_text = "Delivery";
                                             del_col_anim.setAnimation(R.raw.delivery);
+                                            del_col_anim.playAnimation();
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Delivery");
@@ -3279,6 +3325,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                             del_coll_text = "Collection";
                                             del_col_anim.setAnimation(R.raw.collection);
+                                            del_col_anim.playAnimation();
 
                                             SharedPreferences.Editor pop_up_details = order_popup_data.edit();
                                             pop_up_details.putString("Pre_order_collection_delivery", "Collection");
@@ -3308,6 +3355,51 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 });
 
                     } else {
+                        dialog_order_mode_popup.dismiss();
+
+                        View popupView = LayoutInflater.from(Item_Menu_Activity.this).inflate(R.layout.addon_popup, null);
+                        final PopupWindow popupWindowaddon = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT,
+                                WindowManager.LayoutParams.MATCH_PARENT);
+
+                        TextView takaway_status_pop = popupView.findViewById(R.id.takaway_status);
+                        TextView takaway_status_dec_popup = popupView.findViewById(R.id.takaway_status_dec);
+
+                        AppCompatButton update = popupView.findViewById(R.id.update);
+                        AppCompatButton browse = popupView.findViewById(R.id.browse);
+
+                        takaway_status_pop.setText("This store isn't taking orders right now");
+                        takaway_status_dec_popup.setText("You can check out the menu anyway or\n" +
+                                "find another restaurant");
+
+                        update.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupWindowaddon.dismiss();
+                            }
+                        });
+
+                        browse.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
+                                finish();
+                            }
+                        });
+
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+
+                                delivery_collection_textview.setText("Delivery");
+                                cooking_time_textview.setText("Closed");
+                                del_col_anim.setAnimation(R.raw.delivery);
+                                del_col_anim.playAnimation();
+
+                            }
+                        }, 3000);
+
+                        popupWindowaddon.showAsDropDown(popupView, 0, 0);
 
                         mAddFab.setVisibility(View.VISIBLE);
                         menugetitem(menuurlpath, "0", key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
@@ -3360,7 +3452,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<offer_code_model> call, Response<offer_code_model> response) {
-                //response.headers().get("Set-Cookie");
 
                 int statusCode = response.code();
 
@@ -3419,7 +3510,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getOrderType(),
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getValidDate(),
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getDescription()));
-
                         }
 
 
@@ -3589,7 +3679,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         clent_rating.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         clent_rating.setText(listdata[0].getReviews_count());
 
-                         jobdetails2 = (response.body().getMenu().getCategoryall());
+                        jobdetails2 = (response.body().getMenu().getCategoryall());
 
                         MenuItemAdapter itemadapter = new MenuItemAdapter(mContext, (List<menu_item_sub_model.categoryall>) jobdetails2, menuurlpath,recyclerviewitem);
                         recyclerviewitem.setHasFixedSize(true);
@@ -3613,7 +3703,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             itemdetails();
                         }
 
-                        
+
+
                     } else {
                         mShimmerViewContainer.stopShimmerAnimation();
                         mShimmerViewContainer.setVisibility(View.GONE);
@@ -4930,7 +5021,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
+
     public void hideloading() {
         dialog.dismiss();
     }
@@ -4979,7 +5070,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         dialog_loading.setCancelable(false);
         dialog_loading.setContentView(R.layout.custom_loading);
 
-
         ImageView ImageViewgif = dialog_loading.findViewById(R.id.custom_searchloader_ImageView);
 
         Glide.with(Item_Menu_Activity.this)
@@ -4993,7 +5083,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     public void dismissloading() {
         dialog_loading.dismiss();
     }
-
 
 }
 

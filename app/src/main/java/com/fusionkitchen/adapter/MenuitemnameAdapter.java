@@ -48,6 +48,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.fusionkitchen.activity.Dashboard_Activity;
+import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
@@ -1627,7 +1629,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                         }
 
-                                      //  menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                      // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
                                         Log.e("order_mode_details1", "" + order_mode);
                                         Log.e("order_mode_details2", "" + activetagstr);
                                         Log.e("order_mode_details3", "" + todaytimestr);
@@ -1640,14 +1642,39 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 });
 
                     } else {
-                        // dismissloading();
-                        //  ordermode_popup_view.setVisibility(View.INVISIBLE);
-                        //      mode_view2.setVisibility(View.INVISIBLE);
-                      //  mAddFab.setVisibility(View.VISIBLE);
 
+                        dialog.dismiss();
 
-                     //   menugetitem(menuurlpath, "0", key_postcode, key_area, key_address);//menu item call api
+                        View popupView = LayoutInflater.from(mContext).inflate(R.layout.addon_popup, null);
+                        final PopupWindow popupWindowaddon = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT,
+                                WindowManager.LayoutParams.MATCH_PARENT);
 
+                        TextView takaway_status_pop = popupView.findViewById(R.id.takaway_status);
+                        TextView takaway_status_dec_popup = popupView.findViewById(R.id.takaway_status_dec);
+
+                        AppCompatButton update = popupView.findViewById(R.id.update);
+                        AppCompatButton browse = popupView.findViewById(R.id.browse);
+
+                        takaway_status_pop.setText("This store isn't taking orders right now");
+                        takaway_status_dec_popup.setText("You can check out the menu anyway or\n" +
+                                "find another restaurant");
+
+                        update.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                popupWindowaddon.dismiss();
+                            }
+                        });
+
+                        browse.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), Dashboard_Activity.class);
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+
+                        popupWindowaddon.showAsDropDown(popupView, 0, 0);
                     }
 
 

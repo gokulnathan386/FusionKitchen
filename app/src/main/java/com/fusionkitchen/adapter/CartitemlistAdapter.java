@@ -74,7 +74,8 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
     String PREFS_MOREINFO = "PREFS_MOREINFO";
 
 
-    public CartitemlistAdapter(Context context, ArrayList<Cartitem> listContacts, String menuurlpath, String subcategory_printers,
+    public CartitemlistAdapter(Context context, ArrayList<Cartitem> listContacts,
+                               String menuurlpath, String subcategory_printers,
                                                          String but_order_type) {
         this.context = context;
         this.listContacts = listContacts;
@@ -809,7 +810,10 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         }
 
 
-        public void showPopupaddon(View view, String title, String msg, String codes, String stritem, String straddonid, String strcategoryname, String strsubcategoryname, String strmenuurlpath) {
+        public void showPopupaddon(View view, String title, String msg, String codes,
+                                   String stritem, String straddonid, String strcategoryname,
+                                   String strsubcategoryname, String strmenuurlpath) {
+
             View popupView = LayoutInflater.from(view.getContext()).inflate(R.layout.addon_popup, null);
             final PopupWindow popupWindowaddon = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             //Button takaway_btn_dismiss = popupView.findViewById(R.id.takaway_btn_dismiss);
