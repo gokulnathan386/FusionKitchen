@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white">
-            <!--  #EFEFEF-->
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
@@ -1653,14 +1652,6 @@
                   <!--  tools:listitem="@layout/raw_menu_catag_details"-->
 
 
-                   <ProgressBar
-                        android:id="@+id/idPBLoading"
-                       android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-
-
                     <LinearLayout
                         android:id="@+id/search_layout"
                         android:layout_width="match_parent"
@@ -1746,7 +1737,7 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <!--</ScrollView>-->
+
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <!--Menu icon click-->

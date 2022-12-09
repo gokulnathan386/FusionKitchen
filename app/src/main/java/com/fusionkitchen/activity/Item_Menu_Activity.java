@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -168,6 +169,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     String mitem_price_amt;
     String mitem_description;
     int mMenu_illchoose = 0;
+
+    boolean flag = false;
 
 
     public Context mContext = Item_Menu_Activity.this;
@@ -359,7 +362,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     private boolean loading = true;
 
     int page = 0, limit = 2;
-    ProgressBar loadingPB;
     SharedPreferences sharedpre_offer_details;
     List<offer_singe_List>  offer_single_list = new ArrayList<>();
 
@@ -630,7 +632,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         menu_page_pop_up = findViewById(R.id.menu_page_pop_up);
         heart_icon = findViewById(R.id.heart_icon);
         shareicon = findViewById(R.id.shareicon);
-        loadingPB = findViewById(R.id.idPBLoading);
+
       //  repeat_popup = findViewById(R.id.repeat_popup);
 
 
@@ -1353,12 +1355,25 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         shareicon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent shareIntent =   new Intent(Intent.ACTION_SEND);
+
+
+
+             if (available("com.fusionkitchen")) {
+                    Toast.makeText(Item_Menu_Activity.this, "Available", Toast.LENGTH_LONG).show();
+                    flag = true;
+                    setvalue(flag);
+                } else {
+                    flag = false;
+                    setvalue(flag);
+                    Toast.makeText(Item_Menu_Activity.this, "Not Available", Toast.LENGTH_LONG).show();
+                }
+
+              /*  Intent shareIntent =   new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
                 String app_url = " https://play.google.com/store/apps/details?id=com.fusionkitchen";
                 shareIntent.putExtra(Intent.EXTRA_TEXT,app_url);
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
+                startActivity(Intent.createChooser(shareIntent, "Share via"));*/
             }
         });
 
@@ -1421,6 +1436,26 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    private boolean available(String name) {
+        boolean available = true;
+        try {
+            // check if available
+            getPackageManager().getPackageInfo(name, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            // if not available set
+            // available as false
+            available = false;
+        }
+        return available;
+    }
+
+    private void setvalue(boolean flag) {
+        if (flag) {
+           // open.setVisibility(View.VISIBLE);
+        } else {
+           // open.setVisibility(View.INVISIBLE);
+        }
+    }
    /* public BroadcastReceiver  mItem_details = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -4408,7 +4443,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
     /*  ---------------------------get api URL first time get type values----------------------------------------------------*/
-    private void addonitemfirstview(String ItemName, String addonids, String addonitemid, String addonitemarrayextraData, String backnum) {
+    private void addonitemfirstview(String ItemName, String addonids, String addonitemid,
+                                                String addonitemarrayextraData, String backnum) {
 
         if (dialog != null && dialog.isShowing()) {
             hideloading();
@@ -5031,7 +5067,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     public boolean onKeyDown(int key_code, KeyEvent key_event) {
         if (key_code == KeyEvent.KEYCODE_BACK) {
             super.onKeyDown(key_code, key_event);
-            // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
 
             if (reloadback.equalsIgnoreCase("1")) {
                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
@@ -5064,10 +5099,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     }
     /*-------------------Loading Images------------------*/
     public void loading() {
-
         dialog_loading = new Dialog(Item_Menu_Activity.this);
         dialog_loading.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_loading.setCancelable(false);
+
         dialog_loading.setContentView(R.layout.custom_loading);
 
         ImageView ImageViewgif = dialog_loading.findViewById(R.id.custom_searchloader_ImageView);

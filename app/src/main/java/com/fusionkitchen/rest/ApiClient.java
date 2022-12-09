@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-       private final static String BASE_URL = "https://www.api-dev.fusionkitchen.co.uk";//Testing
+    private final static String BASE_URL = "https://www.api-dev.fusionkitchen.co.uk";//Testing
        //private final static String BASE_URL = "https://www.dev.fusionkitchen.co.uk";//Live
         //private final static String BASE_URL = "https://www.api.fusionkitchen.co.uk";//Live
 
