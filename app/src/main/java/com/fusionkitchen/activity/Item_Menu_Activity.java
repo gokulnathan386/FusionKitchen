@@ -1356,8 +1356,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
 
-
-
              if (available("com.fusionkitchen")) {
                     Toast.makeText(Item_Menu_Activity.this, "Available", Toast.LENGTH_LONG).show();
                     flag = true;
@@ -1368,12 +1366,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     Toast.makeText(Item_Menu_Activity.this, "Not Available", Toast.LENGTH_LONG).show();
                 }
 
-              /*  Intent shareIntent =   new Intent(Intent.ACTION_SEND);
+/*              Intent shareIntent =   new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
                 String app_url = " https://play.google.com/store/apps/details?id=com.fusionkitchen";
                 shareIntent.putExtra(Intent.EXTRA_TEXT,app_url);
-                startActivity(Intent.createChooser(shareIntent, "Share via"));*/
+                startActivity(Intent.createChooser(shareIntent, "Share via")); */
             }
         });
 
