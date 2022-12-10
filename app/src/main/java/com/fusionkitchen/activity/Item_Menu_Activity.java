@@ -100,6 +100,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -129,6 +133,10 @@ import com.fusionkitchen.model.menu_model.search_menu_item_model;
 import com.fusionkitchen.model.offer.offer_code_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -1356,15 +1364,89 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
 
-             if (available("com.fusionkitchen")) {
-                    Toast.makeText(Item_Menu_Activity.this, "Available", Toast.LENGTH_LONG).show();
-                    flag = true;
-                    setvalue(flag);
-                } else {
-                    flag = false;
-                    setvalue(flag);
-                    Toast.makeText(Item_Menu_Activity.this, "Not Available", Toast.LENGTH_LONG).show();
-                }
+
+/*                DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/"))
+                        .setDomainUriPrefix("https://fusionkitchen.page.link")
+                        .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                       // .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                        .buildDynamicLink();
+
+                Uri dynamicLinkUri = dynamicLink.getUri();
+
+                Log.d("dynamicLinkUri: "," " + dynamicLinkUri);
+
+
+                  Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLongLink(Uri.parse(""+dynamicLink))
+                        .buildShortDynamicLink()
+                        .addOnCompleteListener(Item_Menu_Activity.this, new OnCompleteListener<ShortDynamicLink>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                                if (task.isSuccessful()) {
+
+                                    Uri shortLink = task.getResult().getShortLink();
+                                    Uri flowchartLink = task.getResult().getPreviewLink();
+
+
+                                    Log.d("shortLink"," " +shortLink);
+
+                                } else {
+
+                                    Log.d("shortLink-Error"," " + task.getException());
+                                }
+                            }
+                        });*/
+
+
+
+
+
+                Log.e("main", "create link ");
+                DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/"))
+                        .setDomainUriPrefix("https://fusionkitchen.page.link")
+
+                        /*.setLink(Uri.parse("https://www.blueappsoftware.com/"))
+                        .setDynamicLinkDomain("referearnpro.page.link")*/
+                        // Open links with this app on Android
+                        .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                        .buildDynamicLink();
+                Uri dynamicLinkUri = dynamicLink.getUri();
+                Log.e("main", "  Long refer "+ dynamicLink.getUri());
+                //   https://referearnpro.page.link?apn=blueappsoftware.referearnpro&link=https%3A%2F%2Fwww.blueappsoftware.com%2F
+                // apn  ibi link
+                // manuall link
+             /*   String sharelinktext  = "https://referearnpro.page.link/?"+
+                        "link=http://www.blueappsoftware.com/"+
+                        "&apn="+ getPackageName()+
+                        "&st="+"My Refer Link"+
+                        "&sd="+"Reward Coins 20"+
+                        "&si="+"https://www.blueappsoftware.com/logo-1.png";*/
+                // shorten the link
+                Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLongLink(Uri.parse(""+dynamicLinkUri))  // manually
+                        .buildShortDynamicLink()
+                        .addOnCompleteListener(Item_Menu_Activity.this, new OnCompleteListener<ShortDynamicLink>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                                if (task.isSuccessful()) {
+                                    Uri shortLink = task.getResult().getShortLink();
+                                    Uri flowchartLink = task.getResult().getPreviewLink();
+                                    Log.e("main ", "short link "+ shortLink.toString());
+                                    Intent intent = new Intent();
+                                    intent.setAction(Intent.ACTION_SEND);
+                                    intent.putExtra(Intent.EXTRA_TEXT,  shortLink.toString());
+                                    intent.setType("text/plain");
+                                    startActivity(intent);
+                                } else {
+
+                                    Log.e("main", " error "+task.getException() );
+                                }
+                            }
+                        });
+
+
 
 /*              Intent shareIntent =   new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
@@ -1434,26 +1516,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-    private boolean available(String name) {
-        boolean available = true;
-        try {
-            // check if available
-            getPackageManager().getPackageInfo(name, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            // if not available set
-            // available as false
-            available = false;
-        }
-        return available;
-    }
 
-    private void setvalue(boolean flag) {
-        if (flag) {
-           // open.setVisibility(View.VISIBLE);
-        } else {
-           // open.setVisibility(View.INVISIBLE);
-        }
-    }
+
+
    /* public BroadcastReceiver  mItem_details = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1771,7 +1836,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 .findFragmentById(R.id.map);
                         mapFragment.getMapAsync((OnMapReadyCallback) Item_Menu_Activity.this);
 
-                        getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                     /*  if(getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup)  == null){
+
+                         Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                        }else{
+
+                          getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+
+                        }
+*/
+
+                     //   getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
@@ -1815,6 +1891,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     /* ------------------------Google Map--------------------------*/
     public LatLng getLocationFromAddress(Context context, String strAddress, Dialog info_popup) {
+
+        Log.d("getLocatiob"," " + strAddress);
 
         Geocoder coder = new Geocoder(context);
         List<Address> address;
@@ -3390,28 +3468,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     } else {
                         dialog_order_mode_popup.dismiss();
 
-                        View popupView = LayoutInflater.from(Item_Menu_Activity.this).inflate(R.layout.addon_popup, null);
-                        final PopupWindow popupWindowaddon = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT,
-                                WindowManager.LayoutParams.MATCH_PARENT);
+                        Dialog takeway_colse = new Dialog(mContext);
+                        takeway_colse.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        takeway_colse.setContentView(R.layout.takeway_status);
 
-                        TextView takaway_status_pop = popupView.findViewById(R.id.takaway_status);
-                        TextView takaway_status_dec_popup = popupView.findViewById(R.id.takaway_status_dec);
+                        TextView browse_menu_textview = takeway_colse.findViewById(R.id.browse_menu_textview);
+                        TextView brower_others = takeway_colse.findViewById(R.id.brower_others);
 
-                        AppCompatButton update = popupView.findViewById(R.id.update);
-                        AppCompatButton browse = popupView.findViewById(R.id.browse);
-
-                        takaway_status_pop.setText("This store isn't taking orders right now");
-                        takaway_status_dec_popup.setText("You can check out the menu anyway or\n" +
-                                "find another restaurant");
-
-                        update.setOnClickListener(new View.OnClickListener() {
+                        browse_menu_textview.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                popupWindowaddon.dismiss();
+                                takeway_colse.dismiss();
                             }
                         });
 
-                        browse.setOnClickListener(new View.OnClickListener() {
+                        brower_others.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
@@ -3432,7 +3503,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             }
                         }, 3000);
 
-                        popupWindowaddon.showAsDropDown(popupView, 0, 0);
+                        takeway_colse.show();
+                        takeway_colse.setCancelable(false);
+                        takeway_colse.setCanceledOnTouchOutside(false);
+                        takeway_colse.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        takeway_colse.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        takeway_colse.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        takeway_colse.getWindow().setGravity(Gravity.BOTTOM);
+
 
                         mAddFab.setVisibility(View.VISIBLE);
                         menugetitem(menuurlpath, "0", key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api

@@ -71,6 +71,8 @@ import com.fusionkitchen.adapter.The_Slide_items_Pager_Adapter;
 import com.fusionkitchen.model.EatListPostelModel;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -92,6 +94,8 @@ import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
 import com.smarteist.autoimageslider.SliderView;
 
@@ -272,6 +276,38 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } else {
             versionupdate();//versionName
         }
+
+/*
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+
+                        if(deepLink != null){
+                            Log.d("Gokulnathan--->", " " + deepLink);
+                            Intent intent =new Intent(Postcode_Activity.this,Item_Menu_Activity.class);
+                            startActivity(intent);
+                            deepLink = null;
+                        }else{
+                            Log.d("Gokulnathan--->", " " + deepLink);
+                        }
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Gokulnathan--->erreor", "getDynamicLink:onFailure", e);
+                    }
+                });
+
+*/
 
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/

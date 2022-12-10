@@ -67,7 +67,21 @@
         <activity
             android:name=".activity.Item_Menu_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:exported="true"
+            android:theme="@style/AppTheme"
+            >
+
+            <intent-filter>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:host="https://fusionkitchen.page.link" android:scheme="http"/>
+                <data android:host="https://fusionkitchen.page.link" android:scheme="https"/>
+
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activity.Add_to_Cart"
             android:screenOrientation="portrait"
@@ -248,7 +262,6 @@
             android:name=".activity.GeocodeAddressIntentService"
             android:exported="false" />
 
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.demoapp.provider"
@@ -268,11 +281,6 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
 
-        <!--Google Analytics -->
-        <!--
-               Optionally, register AnalyticsReceiver and AnalyticsService to support background
-               dispatching on non-Google Play devices
-             -->
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true"
@@ -286,10 +294,7 @@
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
             android:exported="false" />
-        <!--
-             Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
-             installation campaign reporting
-        -->
+
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:exported="true">

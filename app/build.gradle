@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 
 }
 
@@ -59,6 +60,7 @@ dependencies {
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.games:games-activity:1.0.0-rc01'
+    implementation 'com.google.firebase:firebase-dynamic-links:21.1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

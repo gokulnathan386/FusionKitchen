@@ -1645,28 +1645,21 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                         dialog.dismiss();
 
-                        View popupView = LayoutInflater.from(mContext).inflate(R.layout.addon_popup, null);
-                        final PopupWindow popupWindowaddon = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT,
-                                WindowManager.LayoutParams.MATCH_PARENT);
+                        Dialog takeway_colse = new Dialog(mContext);
+                        takeway_colse.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        takeway_colse.setContentView(R.layout.takeway_status);
 
-                        TextView takaway_status_pop = popupView.findViewById(R.id.takaway_status);
-                        TextView takaway_status_dec_popup = popupView.findViewById(R.id.takaway_status_dec);
+                        TextView browse_menu_textview = takeway_colse.findViewById(R.id.browse_menu_textview);
+                        TextView brower_others = takeway_colse.findViewById(R.id.brower_others);
 
-                        AppCompatButton update = popupView.findViewById(R.id.update);
-                        AppCompatButton browse = popupView.findViewById(R.id.browse);
-
-                        takaway_status_pop.setText("This store isn't taking orders right now");
-                        takaway_status_dec_popup.setText("You can check out the menu anyway or\n" +
-                                "find another restaurant");
-
-                        update.setOnClickListener(new View.OnClickListener() {
+                        browse_menu_textview.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                popupWindowaddon.dismiss();
+                                takeway_colse.dismiss();
                             }
                         });
 
-                        browse.setOnClickListener(new View.OnClickListener() {
+                        brower_others.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(v.getContext(), Dashboard_Activity.class);
@@ -1674,7 +1667,15 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             }
                         });
 
-                        popupWindowaddon.showAsDropDown(popupView, 0, 0);
+                        takeway_colse.show();
+                        takeway_colse.setCancelable(false);
+                        takeway_colse.setCanceledOnTouchOutside(false);
+                        takeway_colse.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        takeway_colse.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        takeway_colse.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        takeway_colse.getWindow().setGravity(Gravity.BOTTOM);
+
+
                     }
 
 
