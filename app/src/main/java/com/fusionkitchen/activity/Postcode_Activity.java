@@ -211,9 +211,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
    // SliderView sliderView;
     ViewPager mViewPager;
 
-/*    String url1 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
-    String url2 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";
-    String url3 = "https://bizzbucket.co/wp-content/uploads/2020/08/Life-in-The-Metro-Blog-Title-22.png";*/
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -276,39 +273,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } else {
             versionupdate();//versionName
         }
-
-/*
-
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                        }
-
-                        if(deepLink != null){
-                            Log.d("Gokulnathan--->", " " + deepLink);
-                            Intent intent =new Intent(Postcode_Activity.this,Item_Menu_Activity.class);
-                            startActivity(intent);
-                            deepLink = null;
-                        }else{
-                            Log.d("Gokulnathan--->", " " + deepLink);
-                        }
-
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Gokulnathan--->erreor", "getDynamicLink:onFailure", e);
-                    }
-                });
-
-*/
-
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Postcode_Activity.this.MODE_PRIVATE);
@@ -600,9 +564,105 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         editor.putString("More_info", "Moreinfo-popup");
         editor.commit();
 
+        getdetailshareurl();
+
 
     }
 
+    private void getdetailshareurl() {
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+
+                        if(deepLink != null){
+                            String menu_url_path_share = String.valueOf(deepLink);
+
+                            menu_url_path_share = menu_url_path_share.substring(menu_url_path_share.indexOf("_menuurl=") + 9);
+
+                            String postcode_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_postcode=") + 10);
+                            String postcode_share = postcode_.replaceAll("\\+","");
+
+                           String  key_area_share= menu_url_path_share.substring(menu_url_path_share.indexOf("_keyarea=") + 9);
+                            String key_share_area_ = key_area_share.replaceAll("\\+","");
+
+ /*
+                            String  key_address_= menu_url_path_share.substring(menu_url_path_share.indexOf("_address=") + 9);
+                            String key_address_share = key_address_.replaceAll("\\+","");
+
+
+                            String  key_lat_= menu_url_path_share.substring(menu_url_path_share.indexOf("_lat=") + 5);
+                            String key_lat_share = key_lat_.replaceAll("\\+","");
+
+                            String  key_lng_= menu_url_path_share.substring(menu_url_path_share.indexOf("_lng=") + 5);
+                            String key_lng_share = key_lng_.replaceAll("\\+","");
+
+                            String a =menu_url_path_share;
+                            String[] splita = a.split("&_postcode=");
+                            String menua = splita[0];
+
+
+                            String b =postcode_;
+                            String[] splitb = a.split("&_postcode=");
+                            String menub = splitb[0];
+*/
+
+
+                            Log.d("share_link--->",""+ menu_url_path_share);
+                            String a =menu_url_path_share;
+                            String[] splita = a.split("&_postcode=");
+                            String menua = splita[0];
+                            Log.d("sovlerdata"," " + menua);
+
+
+                            Log.d("share_link--->"," "+ postcode_);
+                            String b =postcode_;
+                            String[] splitb = a.split("&_keyarea=");
+                            String menub = splitb[0];
+                            String menub_ = menub.replaceAll("\\+","");
+                            Log.d("sovlerdata"," " + menub_);
+
+
+                            Log.d("share_link--->",""+ key_area_share);
+                            String c =key_area_share;
+                            String[] splitc = c.split("&_address=");
+                            String menuc = splitc[0];
+                            Log.d("sovlerdata"," " + menuc);
+
+
+                         /*   Log.d("share_link--->",""+ key_area_share);
+                            Log.d("share_link--->",""+ key_address_);
+                            Log.d("share_link--->",""+ key_lat_);
+                            Log.d("share_link--->",""+ key_lng_);
+*/
+
+
+
+
+
+
+                           // Intent intenttwo = new Intent(Postcode_Activity.this, Item_Menu_Activity.class);
+                           // intenttwo.putExtra("menuurlpath", menu_url_path_share);
+                           // intenttwo.putExtra("reloadback", "5");
+                           // startActivity(intenttwo);
+
+
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("share_get_details", "getDynamicLink:onFailure", e);
+                    }
+                });
+    }
 
 
     /*---------------------------MenuItemAdapter item value get add button click----------------------------------------------------*/
@@ -610,7 +670,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            // Get extra data included in the Intent
             menuurlpath = intent.getStringExtra("menuurlpath");
 
             getContactsCount();
@@ -679,6 +738,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
                             JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
                             JSONArray banner_image = getdata.getJSONArray("banner_image");
+
+                            Log.d("banner_image-->","" + banner_image);
 
                               for (int i = 0; i < most_popular_list.length(); i++) {
 

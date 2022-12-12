@@ -196,7 +196,6 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
         if (listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("closed")) {
             holder.client_openstatus.setText("CLOSED");
             holder.client_openstatus.setBackgroundResource(R.drawable.close_background);
-          // holder.linerhead.getChildAt(listdata[position]).setEnabled(false);
         } else if (listdata[position].getTakeawayStautsDetails().equalsIgnoreCase("preorder")) {
             holder.client_openstatus.setText("PRE-ORDER");
             holder.client_openstatus.setBackgroundResource(R.drawable.preorder_background);
@@ -357,75 +356,15 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
 
 
 
-                    Intent intent = new Intent("custom-message-menuurlpath");
-                    intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
-                    intent.putExtra("client_id", listdata[position].getClientID());
+                Intent intent = new Intent("custom-message-menuurlpath");
+                intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
+                intent.putExtra("client_id", listdata[position].getClientID());
 
-                    Log.d("menupath&clientid",listdata[position].getMenuurlpath() + " ==== " + listdata[position].getClientID());
-
-                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 
             }
         });
-
-
-        //Add Fab
-/*        holder.fav_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingshow();
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id", user_id);
-                params.put("path", listdata[position].getMenuurlpath());
-                params.put("client_id", listdata[position].getClientID());
-
-                ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-                Call<insertfavorite_mode> call = apiService.insertfavorite(params);
-
-                Log.e("fav_params", "" + params);
-
-                call.enqueue(new Callback<insertfavorite_mode>() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onResponse(Call<insertfavorite_mode> call, Response<insertfavorite_mode> response) {
-
-                        int statusCode = response.code();
-                        Log.e("fav_statusCode", "" + statusCode);
-
-                        if (statusCode == 200) {
-                            hideloading();
-                            if (response.body().getStatus().equalsIgnoreCase("true")) {
-                                if (response.body().getData().equalsIgnoreCase("delete successfully")) {
-                                    holder.fav_btn.setImageResource(R.drawable.heartnoselect);
-                                } else {
-                                    holder.fav_btn.setImageResource(R.drawable.heartselect);
-                                }
-                                Intent intent = new Intent("custom-message-reloadlist");
-                                intent.putExtra("reloadlist", "1");
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                                Toast.makeText(mContext, response.body().getData(), Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            hideloading();
-                            Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-
-                    @Override
-                    public void onFailure(Call<insertfavorite_mode> call, Throwable t) {
-                        Log.e("menuThrowable", "" + t);
-                        hideloading();
-                        Toast.makeText(mContext, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                        //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                    }
-                });
-
-            }
-        });*/
 
 
     }

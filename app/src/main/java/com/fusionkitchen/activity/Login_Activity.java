@@ -1120,8 +1120,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
         Log.e("onConnectionFailed", "onConnectionFailed:" + connectionResult);
     }
 
@@ -1130,7 +1128,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     private void GmailSignupAction(String userfirstname, String userlastname, String userid, String useremail, String typelogin) {
         loadingshow();
-        // get user data from session
         Map<String, String> params = new HashMap<String, String>();
 
 
@@ -1207,7 +1204,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 hideloading();
                 Log.e("gmailerror", "" + t.toString());
                 Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -1228,21 +1225,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         dialog = new Dialog(Login_Activity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //...set cancelable false so that it's never get hidden
+
         dialog.setCancelable(false);
-        //...that's the layout i told you will inflate later
+
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        //...initialize the imageView form infalted layout
+
         ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-        /*
-        it was never easy to load gif into an ImageView before Glide or Others library
-        and for doing this we need DrawableImageViewTarget to that ImageView
-        */
-        // GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
-
-        //...now load that gif which we put inside the drawble folder here with the help of Glide
 
         Glide.with(Login_Activity.this)
                 .load(R.drawable.loading)

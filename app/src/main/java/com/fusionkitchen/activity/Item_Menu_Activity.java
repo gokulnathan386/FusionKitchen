@@ -373,7 +373,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     SharedPreferences sharedpre_offer_details;
     List<offer_singe_List>  offer_single_list = new ArrayList<>();
 
-
     /*------------------------------------------------------Menu Page List----------------------------------------*/
     private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
 
@@ -1188,10 +1187,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
                     finish();
                 } else if(reloadback.equalsIgnoreCase("4")) {
-                    // startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class))
                     startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                     finish();
-
+                } else if(reloadback.equalsIgnoreCase("5")){
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
                 }else{
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     finish();
@@ -1227,9 +1227,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                     finish();
 
+                } else if(reloadback.equalsIgnoreCase("5")){
 
-                } else {
-                    //startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
+
+                }else {
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     finish();
 
@@ -1364,48 +1367,20 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
 
-
-/*                DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/"))
-                        .setDomainUriPrefix("https://fusionkitchen.page.link")
-                        .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                       // .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-                        .buildDynamicLink();
-
-                Uri dynamicLinkUri = dynamicLink.getUri();
-
-                Log.d("dynamicLinkUri: "," " + dynamicLinkUri);
-
-
-                  Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                        .setLongLink(Uri.parse(""+dynamicLink))
-                        .buildShortDynamicLink()
-                        .addOnCompleteListener(Item_Menu_Activity.this, new OnCompleteListener<ShortDynamicLink>() {
-                            @Override
-                            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                                if (task.isSuccessful()) {
-
-                                    Uri shortLink = task.getResult().getShortLink();
-                                    Uri flowchartLink = task.getResult().getPreviewLink();
-
-
-                                    Log.d("shortLink"," " +shortLink);
-
-                                } else {
-
-                                    Log.d("shortLink-Error"," " + task.getException());
-                                }
-                            }
-                        });*/
-
-
-
-
-
-                Log.e("main", "create link ");
                 DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/"))
+                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/help?_menuurl=" + menuurlpath +
+                                                                                "&_postcode=" +key_postcode +
+                                                                                "&_keyarea=" +key_area +
+                                                                                "&_address=" + key_address +
+                                                                                "&_lat="+ key_lat +
+                                                                                "&_lng=" + key_lon
+
+                                ))
                         .setDomainUriPrefix("https://fusionkitchen.page.link")
+
+
+
+
 
                         /*.setLink(Uri.parse("https://www.blueappsoftware.com/"))
                         .setDynamicLinkDomain("referearnpro.page.link")*/
@@ -1414,8 +1389,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         .buildDynamicLink();
                 Uri dynamicLinkUri = dynamicLink.getUri();
                 Log.e("main", "  Long refer "+ dynamicLink.getUri());
-                //   https://referearnpro.page.link?apn=blueappsoftware.referearnpro&link=https%3A%2F%2Fwww.blueappsoftware.com%2F
-                // apn  ibi link
+
                 // manuall link
              /*   String sharelinktext  = "https://referearnpro.page.link/?"+
                         "link=http://www.blueappsoftware.com/"+
@@ -2141,11 +2115,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
                 finish();
             } else if(reloadback.equalsIgnoreCase("4")){
-
-                //startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                 finish();
-
+            } else if(reloadback.equalsIgnoreCase("5")){
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                finish();
             }else{
                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                 finish();
@@ -3696,6 +3670,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         Log.e("numbers", "" + params + " " + fullUrl);
 
+
+        Log.d("menugetitem--->"," " + menuparamesint);
+        Log.d("menugetitem--->"," " + str_key_postcode);
+        Log.d("menugetitem--->"," " + str_key_area);
+        Log.d("menugetitem--->"," " + str_key_address);
+        Log.d("menugetitem--->"," " + latvalue);
+        Log.d("menugetitem--->"," " + lonvalue);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_item_model> call = apiService.getmenuitem(fullUrl, params);
         call.enqueue(new Callback<menu_item_model>() {
@@ -5152,7 +5134,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 startActivity(new Intent(getApplicationContext(), Show_Offer_Activity.class));
             } else if(reloadback.equalsIgnoreCase("4")) {
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-
+            } else if(reloadback.equalsIgnoreCase("5")){
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
             }else{
                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
             }
