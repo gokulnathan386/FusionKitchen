@@ -762,6 +762,8 @@ public class Payment_method_Activity extends AppCompatActivity {
 
     /*---------------------------Payment type showing----------------------------------------------------*/
     private void orderpayment(String strordermode) {
+
+        Log.d("share_string_data-->"," " + strordermode);
         // get user data from session
         Map<String, String> params = new HashMap<String, String>();
         params.put("ordermode", strordermode);
@@ -775,8 +777,8 @@ public class Payment_method_Activity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<order_payment_model> call, Response<order_payment_model> response) {
-                //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
+
                 if (statusCode == 200) {
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {

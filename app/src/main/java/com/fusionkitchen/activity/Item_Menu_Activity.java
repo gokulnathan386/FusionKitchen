@@ -381,7 +381,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         getTheme().applyStyle(R.style.OverlayThemeLime, true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        setContentView(R.layout.activity_item_menu);
+       // setContentView(R.layout.activity_item_menu);
+        setContentView(R.layout.test);
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -709,7 +710,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         }
 
-   /*recyclerviewitem.addOnScrollListener(new OnScrollListener() {
+   recyclerviewitem.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -718,7 +719,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 int firstVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                 int lastVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                Log.d("Item_Menu_Activity_scroll", String.valueOf(firstVisibleItemCount));
+                Log.d("Item_Menu_Activity_scroll", String.valueOf(firstVisibleItemCount) + "Total----> " + total
+                                            + "Lastvisiable-->" + lastVisibleItemCount);
+
+         /*       Intent intent = new Intent("menu_item_position");
+                intent.putExtra("menu_firstvisiable_item_position", firstVisibleItemCount);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);*/
 
             }
 
@@ -731,7 +737,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
 
         });
-*/
+
 
 
         Log.d("backbtn",reloadback);
@@ -1361,7 +1367,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mclasbackonly, new IntentFilter("clasback"));
 
 
-
         /*---------------------------Share function----------------------------------------------------*/
         shareicon.setOnClickListener(new OnClickListener() {
             @Override
@@ -1378,13 +1383,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 ))
                         .setDomainUriPrefix("https://fusionkitchen.page.link")
 
-
-
-
-
-                        /*.setLink(Uri.parse("https://www.blueappsoftware.com/"))
-                        .setDynamicLinkDomain("referearnpro.page.link")*/
-                        // Open links with this app on Android
                         .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
                         .buildDynamicLink();
                 Uri dynamicLinkUri = dynamicLink.getUri();
@@ -1821,10 +1819,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 */
 
-                     //   getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                       // getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
-
 
                         MoreinfoopenhrsAdapter adapter = new MoreinfoopenhrsAdapter(mContext,jobdetails6);
                         open_hrs_review.setHasFixedSize(true);
@@ -2020,12 +2017,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
         Menulistview(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,menulistpopup,key_lat,key_lon);
-
-        Log.d("Item_Menu_Activity",menuurlpath);
-        Log.d("Item_Menu_Activity",""+sharedpreferences.getString("ordermodetype", null));
-        Log.d("Item_Menu_Activity",key_postcode);
-        Log.d("Item_Menu_Activity",key_area);
-        Log.d("Item_Menu_Activity",key_address);
 
         //menulistpopup.show();
         menulistpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -3669,14 +3660,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         fullUrl = menuurlpath + "/menu";
 
         Log.e("numbers", "" + params + " " + fullUrl);
-
-
-        Log.d("menugetitem--->"," " + menuparamesint);
-        Log.d("menugetitem--->"," " + str_key_postcode);
-        Log.d("menugetitem--->"," " + str_key_area);
-        Log.d("menugetitem--->"," " + str_key_address);
-        Log.d("menugetitem--->"," " + latvalue);
-        Log.d("menugetitem--->"," " + lonvalue);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<menu_item_model> call = apiService.getmenuitem(fullUrl, params);

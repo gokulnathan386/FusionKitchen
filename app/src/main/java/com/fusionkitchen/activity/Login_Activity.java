@@ -890,6 +890,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         /*--------------Login store SharedPreferences------------------*/
                         if (slogin == null)
                             slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+
                         sloginEditor = slogin.edit();
                         sloginEditor.putString("login_key_status", "true");
                         sloginEditor.putString("login_key_cid", response.body().getUserdetails().getCid());

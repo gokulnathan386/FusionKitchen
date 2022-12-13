@@ -2,8 +2,10 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fusionkitchen.R;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 
 public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapter.MyViewHolder> {
@@ -49,6 +53,8 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
 
 
 
+        Log.d("getcategory---->"," " + position);
+
 
         /*if (position == 0) {
             Intent intent = new Intent("item_possion-message");
@@ -62,7 +68,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
             intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
             LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
         }*/
-
 
 
 

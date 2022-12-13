@@ -541,7 +541,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             }
         });
 
-
         remove_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -585,73 +584,51 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             String menu_url_path_share = String.valueOf(deepLink);
 
                             menu_url_path_share = menu_url_path_share.substring(menu_url_path_share.indexOf("_menuurl=") + 9);
-
                             String postcode_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_postcode=") + 10);
                             String postcode_share = postcode_.replaceAll("\\+","");
-
-                           String  key_area_share= menu_url_path_share.substring(menu_url_path_share.indexOf("_keyarea=") + 9);
-                            String key_share_area_ = key_area_share.replaceAll("\\+","");
-
- /*
+                            String  key_area_share= menu_url_path_share.substring(menu_url_path_share.indexOf("_keyarea=") + 9);
                             String  key_address_= menu_url_path_share.substring(menu_url_path_share.indexOf("_address=") + 9);
-                            String key_address_share = key_address_.replaceAll("\\+","");
-
-
                             String  key_lat_= menu_url_path_share.substring(menu_url_path_share.indexOf("_lat=") + 5);
-                            String key_lat_share = key_lat_.replaceAll("\\+","");
 
-                            String  key_lng_= menu_url_path_share.substring(menu_url_path_share.indexOf("_lng=") + 5);
-                            String key_lng_share = key_lng_.replaceAll("\\+","");
+                            String share_menu =menu_url_path_share;
+                            String[] share_menu_split = share_menu.split("&_postcode=");
+                            String Menu_Url = share_menu_split[0];
 
-                            String a =menu_url_path_share;
-                            String[] splita = a.split("&_postcode=");
-                            String menua = splita[0];
+                            String share_post_code =postcode_;
+                            String[] share_post_code_split = share_post_code.split("&_keyarea=");
+                            String share_post_code_remove = share_post_code_split[0];
+                            String menu_share_postcode = share_post_code_remove.replaceAll("\\+"," ");
 
+                            String share_key_area =key_area_share;
+                            String[] share_key_area_split = share_key_area.split("&_address=");
+                            String share_key_area_remove = share_key_area_split[0];
+                            String menu_share_area = share_key_area_remove.replaceAll("\\+"," ");
 
-                            String b =postcode_;
-                            String[] splitb = a.split("&_postcode=");
-                            String menub = splitb[0];
-*/
+                            String share_key_address =key_address_;
+                            String[] share_key_address_split = share_key_address.split("&_lat=");
+                            String share_key_address_remove = share_key_address_split[0];
+                            String menu_share_address = share_key_address_remove.replaceAll("\\+"," ");
 
+                            String share_key_lat =key_lat_;
+                            String[] share_key_lat_split = share_key_lat.split("&_lng=");
+                            String lat_menu_share = share_key_lat_split[0];
+                            String log_menu_share = share_key_lat_split[1];
 
-                            Log.d("share_link--->",""+ menu_url_path_share);
-                            String a =menu_url_path_share;
-                            String[] splita = a.split("&_postcode=");
-                            String menua = splita[0];
-                            Log.d("sovlerdata"," " + menua);
+                            SharedPreferences sharedptcode;
+                            sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor getmenudata = sharedptcode.edit();
+                            getmenudata.putString("KEY_posturl","/location/"+ Menu_Url);
+                            getmenudata.putString("KEY_postcode",menu_share_postcode);
+                            getmenudata.putString("KEY_area",menu_share_area);
+                            getmenudata.putString("KEY_address",menu_share_address);
+                            getmenudata.putString("KEY_lat",lat_menu_share);
+                            getmenudata.putString("KEY_lon",log_menu_share);
+                            getmenudata.commit();
 
-
-                            Log.d("share_link--->"," "+ postcode_);
-                            String b =postcode_;
-                            String[] splitb = a.split("&_keyarea=");
-                            String menub = splitb[0];
-                            String menub_ = menub.replaceAll("\\+","");
-                            Log.d("sovlerdata"," " + menub_);
-
-
-                            Log.d("share_link--->",""+ key_area_share);
-                            String c =key_area_share;
-                            String[] splitc = c.split("&_address=");
-                            String menuc = splitc[0];
-                            Log.d("sovlerdata"," " + menuc);
-
-
-                         /*   Log.d("share_link--->",""+ key_area_share);
-                            Log.d("share_link--->",""+ key_address_);
-                            Log.d("share_link--->",""+ key_lat_);
-                            Log.d("share_link--->",""+ key_lng_);
-*/
-
-
-
-
-
-
-                           // Intent intenttwo = new Intent(Postcode_Activity.this, Item_Menu_Activity.class);
-                           // intenttwo.putExtra("menuurlpath", menu_url_path_share);
-                           // intenttwo.putExtra("reloadback", "5");
-                           // startActivity(intenttwo);
-
+                            Intent share_redirect = new Intent(Postcode_Activity.this, Item_Menu_Activity.class);
+                            share_redirect.putExtra("menuurlpath", Menu_Url);
+                            share_redirect.putExtra("reloadback", "5");
+                            startActivity(share_redirect);
 
                         }
                     }
@@ -970,6 +947,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         Intent intent = new Intent(Postcode_Activity.this, Dashboard_Activity.class);
                         /*--------------------------Login postcode save local------------------------*/
                         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
+
+                        Log.d("hgdfhfvahsfvasfvfaf"," " + response.body().getUrl());
 
                         SharedPreferences.Editor editorpostcode = sharedptcode.edit();
                         editorpostcode.putString("KEY_posturl", response.body().getUrl());

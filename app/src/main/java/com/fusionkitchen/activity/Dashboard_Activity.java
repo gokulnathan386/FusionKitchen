@@ -792,6 +792,14 @@ public class Dashboard_Activity extends AppCompatActivity {
         params.put("user_id", struseris);
 
 
+        Log.e("share_string_data-->",postcode);
+        Log.e("share_string_data-->",lat);
+        Log.e("share_string_data-->", lng);
+        Log.e("share_string_data-->",otp);
+        Log.e("share_string_data-->",area);
+        Log.e("share_string_data-->",struseris);
+
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<location_type_modal> call = apiService.getlocationshop(fullUrl, params);
 
@@ -802,6 +810,8 @@ public class Dashboard_Activity extends AppCompatActivity {
             public void onResponse(Call<location_type_modal> call, Response<location_type_modal> response) {
                 //  response.headers().get("Set-Cookie");
                 int statusCode = response.code();
+
+                Log.e("share_string_data-->", new Gson().toJson(response.body()));
 
 
                 Log.e("dashbord", "" + statusCode);

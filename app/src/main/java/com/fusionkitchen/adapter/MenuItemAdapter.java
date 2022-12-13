@@ -88,6 +88,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
 
 
+
+
         holder.mainLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +128,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
 
         itemcatname.add(listdata[position].getName());
+
 
        /* if (position == 0) {
             holder.menu_item_cat_name.setText(itemcatname.get(position));
