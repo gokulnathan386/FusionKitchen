@@ -41,10 +41,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     Dialog dialog;
     RecyclerView recyclerviewitem;
 
-    // HashSet<String> hashSet1 = new HashSet<String>();
 
-
-    // RecyclerView recyclerView;
     public MenuItemAdapter(Context mContext, List<menu_item_sub_model.categoryall> listdata,  String menuurlpath,RecyclerView recyclerviewitem) {
 
         this.mContext = mContext;
@@ -68,26 +65,33 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-
-          /* LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+        recyclerviewitem.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-                String itempossion = intent.getStringExtra("itempossion");
-                String item_postion_name = intent.getStringExtra("itempossionname");
+                int total = ((LinearLayoutManager)recyclerView.getLayoutManager()).getItemCount();
+                int firstVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                int lastVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if(Integer.parseInt(itempossion) == position){
-
-                    holder.child_recyclerview.setVisibility(View.VISIBLE);
-                    holder.dropdownindicator.setRotation((float) 180.0);
-
-                }
+                  if(firstVisibleItemCount == position){
+                      Intent intent = new Intent("menu_data_update_category");
+                      intent.putExtra("menu_list_name",listdata[position].getName());
+                      intent.putExtra("menu_list_position",position);
+                      LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                  }
 
             }
-        }, new IntentFilter("item_possion-message"));*/
 
+            @Override
+            public void onScrollStateChanged(RecyclerView r, int newState) {
+                super.onScrollStateChanged(r, newState);
 
+                int firstVisibleItemCount = ((LinearLayoutManager)r.getLayoutManager()).findFirstVisibleItemPosition();
 
+            }
+
+        });
 
 
         holder.mainLL.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +125,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         }
         MenuSubcatnameAdapter menuitemnameadapter = new MenuSubcatnameAdapter(mContext, itemsubcatname, listdata[position].getSubcat(),  menuurlpath, listdata[position]);
 
-        // MenuSubcatnameAdapter menuitemnameadapter = new MenuSubcatnameAdapter(mContext, itemsubcatname, ordertypevalue, menuurlpath, listdata[position]);
         holder.child_recyclerview.setHasFixedSize(true);
         holder.child_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         holder.child_recyclerview.setAdapter(menuitemnameadapter);
@@ -130,21 +133,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         itemcatname.add(listdata[position].getName());
 
 
-       /* if (position == 0) {
-            holder.menu_item_cat_name.setText(itemcatname.get(position));
-            holder.child_recyclerview.setVisibility(View.VISIBLE);
-            holder.dropdownindicator.setRotation((float) 180.0);
 
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            intent.putExtra("itempossionname",listdata[position].getName());
-            LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
-            Log.d("menu_item_cat_name",""+listdata[position].getName() + " " +listdata.length);
-
-        }else{
-            holder.menu_item_cat_name.setText(itemcatname.get(position));
-            holder.child_recyclerview.setVisibility(View.GONE); // Visible subtitle
-        }*/
 
         holder.menu_item_cat_name.setText(itemcatname.get(position));
         holder.child_recyclerview.setVisibility(View.GONE); // GONE
@@ -154,7 +143,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     @Override
     public int getItemCount() {
         return listdata.length;
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

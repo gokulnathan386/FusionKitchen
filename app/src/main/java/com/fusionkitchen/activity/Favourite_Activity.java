@@ -200,15 +200,6 @@ public class Favourite_Activity extends AppCompatActivity {
                 intentthir.putExtra("menuurlpath", menuurlpath);
                 intentthir.putExtra("reloadback", "2");
                 startActivity(intentthir);
-
-                  /*  SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-                    editor_extra.putString("menuurlpath", menuurlpath);
-                    editor_extra.putString("ordermodetype", "0");
-                    editor_extra.commit();
-
-                    menugetitem(menuurlpath, "0");//menu item call api*/
-                // startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-
             }
         });
 
@@ -234,17 +225,12 @@ public class Favourite_Activity extends AppCompatActivity {
         /*---------------check User login or not----------------------*/
         if (user_id != null && !user_id.isEmpty()) {
             //Call API
-
             getfavouritelist(key_postcode, key_lat, key_lon, "0", key_area, user_id);
         } else {
             Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
             intent.putExtra("activity_details", "myfavourite");
             startActivity(intent);
         }
-
-
-
-
 
         /*---------------------------Fresh Chat----------------------------------------------------*/
 

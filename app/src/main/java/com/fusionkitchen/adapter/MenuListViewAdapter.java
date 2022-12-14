@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.fusionkitchen.R;
 import com.fusionkitchen.model.menu_model.Menu_Page_listmodel;
+import com.fusionkitchen.model.menu_model.menu_item_sub_model;
+
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -28,17 +30,19 @@ import static android.view.View.GONE;
 
 public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapter.MyViewHolder> {
 
-    List<Menu_Page_listmodel> menu_page_listmodels;
+    List<menu_item_sub_model.categoryall> menu_page_listmodels;
     Context context;
     int selectedposition = -1;
     Dialog menulistpopup;
+    RecyclerView recyclerviewitem;
 
 
 
-    public MenuListViewAdapter(List<Menu_Page_listmodel> menu_page_listmodels, Context context, Dialog menulistpopup ){
+    public MenuListViewAdapter(List<menu_item_sub_model.categoryall> menu_page_listmodels, Context context, Dialog menulistpopup,RecyclerView recyclerviewitem){
         this.menu_page_listmodels = menu_page_listmodels;
         this.context=context;
         this.menulistpopup = menulistpopup;
+        this.recyclerviewitem = recyclerviewitem;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,8 +57,7 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
 
 
 
-        Log.d("getcategory---->"," " + position);
-
+        Log.d("getcategory---->"," " + menu_page_listmodels.get(position).getName());
 
         /*if (position == 0) {
             Intent intent = new Intent("item_possion-message");
@@ -69,8 +72,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
             LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
         }*/
 
-
-
         if(position == selectedposition){
             holder.menu_layout.setBackgroundColor(Color.parseColor("#EEF6FF"));
             holder.menu_item_name.setTextColor(Color.parseColor("#0071E3"));
@@ -81,14 +82,19 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
             holder.Enter_your_Left_arrow.setVisibility(View.GONE);
         }
 
+
         holder.menu_item_name.setTag(position);
         holder.menu_item_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("item_possion-message");
+                Intent intent = new Intent("click_menu_id");
                 intent.putExtra("itempossion", String.valueOf(position));
                 intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
                 LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
+              /*  Intent intent = new Intent("menu_data_update_category");
+                intent.putExtra("menu_list_name",menu_page_listmodels.get(position).getName());
+                intent.putExtra("menu_list_position",position);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
                 selectedposition = (Integer)v.getTag();
                 notifyDataSetChanged();
                 menulistpopup.dismiss();

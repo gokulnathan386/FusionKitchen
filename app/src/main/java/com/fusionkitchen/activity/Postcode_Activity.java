@@ -113,7 +113,7 @@ import retrofit2.Retrofit;
 
 public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
     int bottonkey;
 

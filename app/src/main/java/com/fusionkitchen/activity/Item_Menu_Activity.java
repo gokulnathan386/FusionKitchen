@@ -112,6 +112,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,15 +170,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     int K = 2;
     LottieAnimationView del_col_anim;
     String takeway_closed;
-
-
-    String mitem_id;
-    String maddon_id;
-    String mcategoryname;
-    String msubcategoryname;
-    String mitem_price_amt;
-    String mitem_description;
-    int mMenu_illchoose = 0;
 
     boolean flag = false;
 
@@ -374,15 +367,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     List<offer_singe_List>  offer_single_list = new ArrayList<>();
 
     /*------------------------------------------------------Menu Page List----------------------------------------*/
-    private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
+   // private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
+
+    private List<menu_item_sub_model.categoryall> menu_page_listmodel = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getTheme().applyStyle(R.style.OverlayThemeLime, true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-       // setContentView(R.layout.activity_item_menu);
-        setContentView(R.layout.test);
+        setContentView(R.layout.activity_item_menu);
+       // setContentView(R.layout.test);
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -455,12 +451,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         mAddFab.shrink();
         nsv = findViewById(R.id.nsv);
 
-        nsv.postDelayed(new Runnable() {
+       /* nsv.postDelayed(new Runnable() {
             @Override
             public void run() {
                 nsv.fullScroll(View.FOCUS_UP);
             }
-        }, 400);
+        }, 400);*/
 
         Log.e("nextapi1", "" + nextaid);
         Log.e("nextapi2", "" + btnnextfir);
@@ -485,11 +481,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                      top_card_view.setVisibility(View.INVISIBLE);
                 }*/
 
-                if (scrollY > oldScrollY) {
+              /*  if (scrollY > oldScrollY) {
                     mAddFab.extend();
                 } else {
                     mAddFab.shrink();
-                }
+                }*/
 
 
 
@@ -709,36 +705,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             showFavourite(user_id,favourite_client);
 
         }
-
-   recyclerviewitem.addOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int total = ((LinearLayoutManager)recyclerView.getLayoutManager()).getItemCount();
-                int firstVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                int lastVisibleItemCount = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-
-                Log.d("Item_Menu_Activity_scroll", String.valueOf(firstVisibleItemCount) + "Total----> " + total
-                                            + "Lastvisiable-->" + lastVisibleItemCount);
-
-         /*       Intent intent = new Intent("menu_item_position");
-                intent.putExtra("menu_firstvisiable_item_position", firstVisibleItemCount);
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);*/
-
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView r, int newState) {
-                super.onScrollStateChanged(r, newState);
-
-                int firstVisibleItemCount = ((LinearLayoutManager)r.getLayoutManager()).findFirstVisibleItemPosition();
-
-            }
-
-        });
-
-
 
         Log.d("backbtn",reloadback);
 
@@ -1354,7 +1320,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageitempossion, new IntentFilter("item_possion-message"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_item_count_update, new IntentFilter("total_count_Update"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_count_layout_gone, new IntentFilter("total_count_layout_gone"));
-       // LocalBroadcastManager.getInstance(this).registerReceiver(mItem_details, new IntentFilter("Item_details"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mmenu_data_update_category, new IntentFilter("menu_data_update_category"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mcategory, new IntentFilter("click_menu_id"));
+
 
 
         /*---------------------------loaderviewlibrary----------------------------------------------------*/
@@ -1408,7 +1376,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     Log.e("main ", "short link "+ shortLink.toString());
                                     Intent intent = new Intent();
                                     intent.setAction(Intent.ACTION_SEND);
-                                    intent.putExtra(Intent.EXTRA_TEXT,  shortLink.toString());
+                                    intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
                                     intent.setType("text/plain");
                                     startActivity(intent);
                                 } else {
@@ -1439,7 +1407,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-        Menulistpopup();
+       // Menulistpopup();
         Show_info_popup();
 
 
@@ -1491,21 +1459,26 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-   /* public BroadcastReceiver  mItem_details = new BroadcastReceiver() {
+    public BroadcastReceiver  mmenu_data_update_category = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+             String mwnu = intent.getStringExtra("menu_list_name");
+             menu_list_view.setText(mwnu);
+        }
+    };
+
+
+
+    public BroadcastReceiver  mcategory = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-             mitem_id = intent.getStringExtra("item");
-             maddon_id = intent.getStringExtra("addonid");
-             mcategoryname = intent.getStringExtra("categoryname");
-             msubcategoryname = intent.getStringExtra("subcategoryname");
-             mitem_price_amt = intent.getStringExtra("item_price_amt");
-             mitem_description = intent.getStringExtra("item_description");
-             mMenu_illchoose = 1;
-             itemdetails();
+            String item_position = intent.getStringExtra("itempossion");
+            recyclerviewitem.smoothScrollToPosition(Integer.parseInt(item_position));
 
         }
-    };*/
+    };
+
 
     public BroadcastReceiver mtotal_count_layout_gone = new BroadcastReceiver() {
         @Override
@@ -1514,7 +1487,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             String item_id = intent.getStringExtra("item_id_sqlite");
             add_to_cart_layout.setVisibility(GONE);
             mAddFab.setVisibility(View.GONE);
-
             dbHelper.deleteItemRow(item_id);
 
         }
@@ -1740,7 +1712,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 int statusCode = response.code();
                 if (statusCode == 200) {
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
-                        //   about_deatils.setText(response.body().getAbout().getAboutus().replace("\n", ""));
 
                         textview_email_id.setText(response.body().getAbout().getAboutEmail());
 
@@ -1819,7 +1790,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 */
 
-                       // getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                        getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
@@ -2008,7 +1979,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void Menulistpopup() {
-
+/*
         menulistpopup = new Dialog(this);
         menulistpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
         menulistpopup.setContentView(R.layout.menu_page_pop_up);
@@ -2018,16 +1989,17 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         Menulistview(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,menulistpopup,key_lat,key_lon);
 
-        //menulistpopup.show();
+
         menulistpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         menulistpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         menulistpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        menulistpopup.getWindow().setGravity(Gravity.BOTTOM);
+        menulistpopup.getWindow().setGravity(Gravity.BOTTOM);*/
 
     }
 
     private void Menulistview(String menuurlpath, String ordermodetype, String key_postcode, String key_area, String key_address, Dialog menulistpopup, String menu_lat, String menu_lon) {
 
+/*
         String Menu_Url_Path =  menuurlpath +"/menu";
 
         menuListViewAdapter = new MenuListViewAdapter(menu_page_listmodel,Item_Menu_Activity.this,menulistpopup);
@@ -2086,6 +2058,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         RequestQueue requestqueue = Volley.newRequestQueue(this);
         requestqueue.add(stringRequest);
+*/
 
 
     }
@@ -2209,16 +2182,16 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     public BroadcastReceiver mMessageitempossion = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
+
             itempossion = intent.getStringExtra("itempossion");
             String item_postion_name = intent.getStringExtra("itempossionname");
 
 
-            menu_list_view.setText(item_postion_name);
-            Log.e("itempossion", "" + itempossion);
+            //menu_list_view.setText(item_postion_name);
+          //  recyclerviewitem.scrollToPosition(Integer.parseInt(itempossion));
 
 
-            if (itempossion == null) {
+ /*           if (itempossion == null) {
                 final float y = recyclerviewitem.getChildAt(Integer.parseInt("1")).getY();
                 nsv.post(new Runnable() {
                     @Override
@@ -2238,7 +2211,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     }
                 });
             }
-
+*/
 
             mfab_close.shrink();
             menu_view_card_view.setVisibility(View.GONE);
@@ -3770,6 +3743,27 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         recyclerviewmenuitem.setAdapter(menuitemadapter);
 
 
+
+
+                        menulistpopup = new Dialog(Item_Menu_Activity.this);
+                        menulistpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        menulistpopup.setContentView(R.layout.menu_page_pop_up);
+
+                        menu_item_list_view = menulistpopup.findViewById(R.id.menu_item_list_view);
+
+
+                        menu_page_listmodel = (response.body().getMenu().getCategoryall());
+                        menuListViewAdapter = new MenuListViewAdapter(menu_page_listmodel,Item_Menu_Activity.this, menulistpopup,recyclerviewitem);
+                        LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false);
+                        menu_item_list_view.setLayoutManager(manager4);
+                        menu_item_list_view.setAdapter(menuListViewAdapter);
+
+
+
+                        menulistpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        menulistpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        menulistpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        menulistpopup.getWindow().setGravity(Gravity.BOTTOM);
 
                         /*------------------------------Add to cart to get item details------------------------------*/
                         intentitemdetails = getIntent();
