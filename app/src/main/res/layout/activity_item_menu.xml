@@ -1023,100 +1023,6 @@
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
 
-                 <!--   <androidx.cardview.widget.CardView
-                        android:id="@+id/card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/layout1"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:backgroundTint="@color/txt_four"
-                        shimmer:cardCornerRadius="10dp"
-                        shimmer:cardElevation="5dp">
-
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/searchimg"
-                                android:layout_width="20dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:layout_marginBottom="@dimen/_3sdp"
-                                android:src="@drawable/menu_search" />
-
-                            <EditText
-                                android:id="@+id/editTextSearch"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_toRightOf="@+id/searchimg"
-                                android:background="@android:color/transparent"
-                                android:fontFamily="@font/roboto_light"
-                                android:hint="@string/menu_search"
-                                android:imeOptions="actionDone"
-                                android:inputType="textNoSuggestions"
-                                android:maxLines="1"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:textColor="@color/txt_ten"
-                                android:textColorHint="@color/txt_ten"
-                                android:textSize="@dimen/_13sdp" />
-
-                            <ImageView
-                                android:id="@+id/search_colse_bottom"
-                                android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/coupon_close" />
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>-->
-
-<!--                    <RelativeLayout
-                        android:id="@+id/OfferList"
-                        android:background="#FFFFFF"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <HorizontalScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="none"
-                            shimmer:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerviewOffers"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:clipToPadding="false"
-                                    android:layoutAnimation="@anim/layout_animation"
-                                    android:nestedScrollingEnabled="false"
-                                    android:paddingLeft="15dp" />
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerviewpromo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:clipToPadding="false"
-                                    android:isScrollContainer="false"
-                                    android:layoutAnimation="@anim/layout_animation"
-                                    android:nestedScrollingEnabled="false" />
-
-                            </LinearLayout>
-                        </HorizontalScrollView>
-                    </RelativeLayout>-->
-
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_view_container"
                         android:layout_width="wrap_content"
@@ -1128,7 +1034,7 @@
                         shimmer:duration="100"
                         tools:ignore="MissingConstraints">
 
-                        <!-- Adding 7 rows of placeholders -->
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1138,70 +1044,13 @@
 
                             <include layout="@layout/raw_menu_item_details" />
 
+                            <include layout="@layout/raw_menu_item_details" />
+
+                            <include layout="@layout/raw_menu_item_details" />
+
                         </LinearLayout>
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-                 <!--   <LinearLayout
-                        android:layout_marginTop="150dp"
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:id="@+id/recyclerviewitem"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:layout_height="wrap_content">
-                        </androidx.recyclerview.widget.RecyclerView>
-
-                    </LinearLayout>
-
--->
-
-
-                 <!--   <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerviewitem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:background="@color/menu_bg"
-                            android:backgroundTint="@color/menu_bg"
-                            android:clipToPadding="false"
-                            android:visibility="visible" >
-                        </androidx.recyclerview.widget.RecyclerView>
-
-
-                    </LinearLayout>
-
--->
-                   <!-- <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerviewitem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_80sdp"
-                        android:background="@color/menu_bg"
-                        android:backgroundTint="@color/menu_bg"
-                        android:clipToPadding="false"
-                        android:nestedScrollingEnabled="false"
-                        android:visibility="visible" />
--->
-
-
 
                     <LinearLayout
                         android:id="@+id/search_layout"
@@ -1295,7 +1144,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@color/menu_bg"
                 android:backgroundTint="@color/menu_bg"
