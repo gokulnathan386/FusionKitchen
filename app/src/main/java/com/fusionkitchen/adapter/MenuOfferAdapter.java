@@ -125,13 +125,16 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
 
             //==========================common Code ========================//
 
-            if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
+            holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");
+            holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
+
+          /*  if (offer_singe_list.get(position).getType().equalsIgnoreCase("0")) {
                 holder.offer_title.setText("GET " + offer_singe_list.get(position).getDiscount() + " % OFF");
                 holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
             } else {
                 holder.offer_title.setText("GET £ " + commoncoupon[position].getDiscount() + " OFF");
                 holder.offer_decs.setText("Use Code " + offer_singe_list.get(position).getFree());
-            }
+            }*/
 
 
         }

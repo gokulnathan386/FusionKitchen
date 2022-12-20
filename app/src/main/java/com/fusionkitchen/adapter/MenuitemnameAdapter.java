@@ -213,14 +213,13 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
 
 
-
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
         sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         Log.e("otypeaction", "" + sharedpreferences.getString("orderactivetag", null));
 
         if(items[position].getImage().equalsIgnoreCase("")){
-            holder.layout_logo.setVisibility(GONE);
-
+        //    holder.layout_logo.setVisibility(GONE);
+            holder.menu_item_image.setVisibility(GONE);
         }else{
             Picasso.get()
                     .load("https://fusionbucket.co.uk/img/menu/" + items[position].getImage())
@@ -1844,7 +1843,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         "", items[position].getPrice(), "1", items[position].getPrice(),
                                         items[position].getPrice(), listdatum.getName(), sub.getName())) {
 
-                                    Customertoastmessage(view);
+
 
                                     Log.d("item_add_time5- MenuitemnameAdapter",items[position].getName()+ "\n" + items[position].getId()+ "\n" +
                                             items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
@@ -1854,10 +1853,16 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     holder.menu_item_add.setVisibility(GONE);
                                     holder.increment_decrement_layout.setVisibility(View.VISIBLE);
 
-                                    Intent intent = new Intent("item_successfully_custom-message");
-                               //     intent.putExtra("Qty_count",dbHelper.getqtycount());
+
+                                    Intent intent = new Intent("bottom_btn_hidden");
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
+                                    Customertoastmessage(view);
+
+
+                                   /* Intent intent = new Intent("item_successfully_custom-message");
+                                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+*/
 
 
                                 } else {
@@ -1982,6 +1987,11 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         @Override
                                         public void onClick(View v) {
 
+                                            Intent btn_hide = new Intent("bottom_btn_hidden");
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(btn_hide);
+
+
+
                                             count = Integer.parseInt(String.valueOf(holder.qty_textview_number.getText()));
                                             count++;
                                             length = String.valueOf(count).length();
@@ -2007,6 +2017,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
                                             } else {
+
                                                 String ItemName = items[position].getId();
                                                 Intent intent = new Intent("custom-message");
                                                 intent.putExtra("item", ItemName);
@@ -2025,6 +2036,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 }
 
                                             }
+
+                                            Customertoastmessage(view);
+
                                         }
 
 
@@ -2104,8 +2118,12 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         float total_amt = Float.parseFloat(price) * qty;
         Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(user_id),qty,total_amt);
 
-        Intent intent = new Intent("item_successfully_custom-message");
+      /*  Intent intent = new Intent("item_successfully_custom-message");
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
+
+        Intent intent = new Intent("bottom_btn_hidden");
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
         Customertoastmessage(view);
     }
 
@@ -2117,9 +2135,19 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         tv.setText("Wow! Item added Successfully");
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL, 0, 0);
-        toast.setDuration(LENGTH_LONG);
+        toast.setDuration(LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+                Intent intent = new Intent("item_successfully_custom-message");
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+            }
+        }, 1000);
 
     }
 

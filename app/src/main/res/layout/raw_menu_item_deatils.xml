@@ -117,12 +117,11 @@
 
                 <TextView
                     android:id="@+id/menu_item_desc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="191dp"
+                    android:layout_height="37dp"
                     android:layout_below="@+id/menu_item_name"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="66dp"
-                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="15dp"
                     android:layout_toLeftOf="@+id/menu_item_add"
                     android:layout_toRightOf="@+id/layout_logo"
                     android:ellipsize="end"
@@ -638,7 +637,6 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginRight="20dp"
                                     android:src="@drawable/downarrow" />
-
 
                             </RelativeLayout>
 

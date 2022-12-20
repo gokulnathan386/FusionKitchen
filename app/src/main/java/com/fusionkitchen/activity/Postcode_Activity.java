@@ -357,6 +357,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             Intent intentcard = new Intent(Postcode_Activity.this, Add_to_Cart.class);
                             startActivity(intentcard);
                             bottonkey = 1;
+                        }else{
+                            Toast.makeText(Postcode_Activity.this,"Your cart is Empty!!",Toast.LENGTH_SHORT).show();
                         }
 
                         break;

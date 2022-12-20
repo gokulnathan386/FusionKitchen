@@ -142,10 +142,6 @@
 
                                         </LinearLayout>
 
-
-
-                                        <!--  android:text="SK11 6TJ"-->
-                                        <!-- android:text="L37 0AB" -->
                                         <LinearLayout
                                             android:id="@+id/post_code_check"
                                             android:layout_width="wrap_content"

@@ -82,7 +82,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
             holder.Enter_your_Left_arrow.setVisibility(View.GONE);
         }
 
-
         holder.menu_item_name.setTag(position);
         holder.menu_item_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,10 +90,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
                 intent.putExtra("itempossion", String.valueOf(position));
                 intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
                 LocalBroadcastManager.getInstance(v.getContext()).sendBroadcast(intent);
-              /*  Intent intent = new Intent("menu_data_update_category");
-                intent.putExtra("menu_list_name",menu_page_listmodels.get(position).getName());
-                intent.putExtra("menu_list_position",position);
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);*/
                 selectedposition = (Integer)v.getTag();
                 notifyDataSetChanged();
                 menulistpopup.dismiss();

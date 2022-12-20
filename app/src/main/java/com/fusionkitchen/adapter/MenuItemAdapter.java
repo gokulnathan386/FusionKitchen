@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -30,6 +31,7 @@ import com.fusionkitchen.R;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 
 import static android.text.Html.fromHtml;
+import static android.view.View.GONE;
 
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHolder> {
     private menu_item_sub_model.categoryall[] listdata;
@@ -133,12 +135,23 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         itemcatname.add(listdata[position].getName());
 
 
-
-
         holder.menu_item_cat_name.setText(itemcatname.get(position));
-        holder.child_recyclerview.setVisibility(View.GONE); // GONE
+        holder.child_recyclerview.setVisibility(View.GONE);
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String itempossion = intent.getStringExtra("itempossion");
+                Toast.makeText(context.getApplicationContext(), "hsggdfhd" + itempossion,Toast.LENGTH_LONG).show();
+            }
+        }, new IntentFilter("click_menu_id"));
+
 
     }
+
+
+
     @SuppressLint("LogNotTimber")
     @Override
     public int getItemCount() {

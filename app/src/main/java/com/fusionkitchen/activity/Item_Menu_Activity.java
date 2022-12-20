@@ -153,6 +153,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
 import static androidx.recyclerview.widget.RecyclerView.*;
 import static java.lang.Integer.parseInt;
 
@@ -437,7 +438,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     top_card_view.setVisibility(View.INVISIBLE);
                 }else{
                     MarginLayoutParams params = (MarginLayoutParams) recyclerviewitem.getLayoutParams();
-                    params.topMargin = 100;
+                    params.topMargin =135;
                     top_card_view.setVisibility(View.VISIBLE);
                 }
 
@@ -1215,7 +1216,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 menu_addon_item_view.setVisibility(View.GONE);
                 mAddFab.setVisibility(View.VISIBLE);
-                // bottom_nav.setVisibility(View.VISIBLE);
                 add_to_cart_layout.setVisibility(View.VISIBLE);
                 if (cursor != 0) {
                 } else {
@@ -1318,6 +1318,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mtotal_count_layout_gone, new IntentFilter("total_count_layout_gone"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mmenu_data_update_category, new IntentFilter("menu_data_update_category"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mcategory, new IntentFilter("click_menu_id"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mbottom_btn_hidden, new IntentFilter("bottom_btn_hidden"));
 
 
 
@@ -1471,6 +1472,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             String item_position = intent.getStringExtra("itempossion");
             recyclerviewitem.smoothScrollToPosition(Integer.parseInt(item_position));
+
+        }
+    };
+
+    public BroadcastReceiver mbottom_btn_hidden  = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            add_to_cart_layout.setVisibility(View.INVISIBLE);
 
         }
     };
@@ -3204,6 +3214,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         });
 
                                                         update_mode.setVisibility(View.VISIBLE);
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
 
                                                     } else {
                                                         later_timing_layer.setVisibility(View.GONE);
@@ -3217,6 +3229,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         menu_time_update = "Later Unavailable";
 
                                                         update_mode.setVisibility(View.VISIBLE);
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
                                                     }
                                                 } else {
                                                     Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
@@ -3450,14 +3464,14 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-
+Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon().size());
 
                 for(int k = 0; k<response.body().getDiscount_list().getCommoncoupon().size(); k++ ){
 
                             offer_single_list.add( new offer_singe_List(
                                     "3",
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getDiscountCode(),
-                                    response.body().getDiscount_list().getDiscountcode().get(k).getType(),
+                                   "",
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getDiscount(),
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getPaymentDetails(),
                                     response.body().getDiscount_list().getCommoncoupon().get(k).getMin_Order(),
@@ -4826,7 +4840,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     Log.e("addon_latcode", ": " + response.body().getStatus());
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
-
+                        add_to_cart_layout.setVisibility(View.INVISIBLE);
                         Log.e("addon_latcode", ": " + response.body().getError_code());
                         Log.e("addon_latcode", ": " + response.body().getError_message());
 
@@ -4861,7 +4875,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                             menu_addon_item_view.setVisibility(View.GONE);
                             mAddFab.setVisibility(View.VISIBLE);
-                            add_to_cart_layout.setVisibility(View.VISIBLE);
+                            //add_to_cart_layout.setVisibility(View.VISIBLE);
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
                             total_item.setText(get_qty_count.get(0) + "");
                             Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
@@ -4925,7 +4939,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             }.start();
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "Could not Insert Item", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Could not Insert Item", LENGTH_SHORT).show();
                         }
 
                     } else {
@@ -4953,9 +4967,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         tv.setText("Wow! Item added Successfully");
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL, 0, 0);
-        toast.setDuration(LENGTH_LONG);
+        toast.setDuration(LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+                //add_to_cart_layout.setVisibility(View.VISIBLE);
+            }
+        }, 1000);
 
     }
 

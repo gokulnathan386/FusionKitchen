@@ -8,15 +8,16 @@
 
     <!--android:backgroundTint="@color/white"-->
 
-
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/custom_loading_imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="230dp"
+        android:layout_marginBottom="0dp"
         android:background="#fcfcff"
-        android:src="@drawable/splashanim"
-        />
+        android:src="@drawable/splashanim" />
     <!--android:src="@drawable/splashanimation"-->
 
 </RelativeLayout>

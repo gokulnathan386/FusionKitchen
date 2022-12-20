@@ -76,7 +76,7 @@
                     <LinearLayout
                         android:id="@+id/header_img"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingTop="16dp">
 
@@ -565,101 +565,6 @@
 
                     </RelativeLayout>
 
-
-
-                 <!--   <androidx.cardview.widget.CardView
-                        android:id="@+id/card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/layout1"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:backgroundTint="@color/txt_four"
-                        shimmer:cardCornerRadius="10dp"
-                        shimmer:cardElevation="5dp">
-
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/searchimg"
-                                android:layout_width="20dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:layout_marginBottom="@dimen/_3sdp"
-                                android:src="@drawable/menu_search" />
-
-                            <EditText
-                                android:id="@+id/editTextSearch"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_toRightOf="@+id/searchimg"
-                                android:background="@android:color/transparent"
-                                android:fontFamily="@font/roboto_light"
-                                android:hint="@string/menu_search"
-                                android:imeOptions="actionDone"
-                                android:inputType="textNoSuggestions"
-                                android:maxLines="1"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:textColor="@color/txt_ten"
-                                android:textColorHint="@color/txt_ten"
-                                android:textSize="@dimen/_13sdp" />
-
-                            <ImageView
-                                android:id="@+id/search_colse_bottom"
-                                android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/coupon_close" />
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <RelativeLayout
-                        android:id="@+id/OfferList"
-                        android:background="#FFFFFF"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <HorizontalScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="none"
-                            shimmer:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerviewOffers"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:clipToPadding="false"
-                                    android:layoutAnimation="@anim/layout_animation"
-                                    android:nestedScrollingEnabled="false"
-                                    android:paddingLeft="15dp" />
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerviewpromo"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:clipToPadding="false"
-                                    android:isScrollContainer="false"
-                                    android:layoutAnimation="@anim/layout_animation"
-                                    android:nestedScrollingEnabled="false" />
-
-                            </LinearLayout>
-                        </HorizontalScrollView>
-                      </RelativeLayout>-->
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:background="#FFFFFF"
@@ -1127,7 +1032,6 @@
                             android:clipToPadding="false"
                             android:nestedScrollingEnabled="false" />
 
-
                     </LinearLayout>
 
 
@@ -1240,57 +1144,6 @@
 
         <!-- start Old view cart-->
 
-        <!--  <RelativeLayout
-            android:id="@+id/add_to_cart_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:background="@drawable/view_cart_bg"
-            android:layout_marginRight="@dimen/_5sdp">
-
-
-            <ImageView
-                android:id="@+id/cart_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/cart" />
-
-            <TextView
-                android:id="@+id/total_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/cart_img"
-                android:fontFamily="@font/roboto_medium"
-                android:padding="@dimen/_5sdp"
-                android:text="1 Items"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/proceed_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:background="@color/tranfer"
-                android:backgroundTint="@color/tranfer"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="View Cart"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-        </RelativeLayout>-->
-
-        <!-- End Old view cart-->
-
-
         <RelativeLayout
             android:id="@+id/add_to_cart_layout"
             android:layout_width="match_parent"
@@ -1354,28 +1207,9 @@
                                     android:textStyle="bold"></TextView>
 
 
-                                <!-- <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/cart" />-->
-
                             </LinearLayout>
 
 
-                            <!--
-
-                            <TextView
-                                android:id="@+id/total_item"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toRightOf="@+id/cart_img"
-                                android:fontFamily="@font/roboto_medium"
-                                android:padding="@dimen/_5sdp"
-                                android:text="1 Items"
-                                android:textColor="@color/white"
-                                android:textSize="18dp" />
--->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
