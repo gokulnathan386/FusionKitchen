@@ -36,8 +36,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
     Dialog menulistpopup;
     RecyclerView recyclerviewitem;
 
-
-
     public MenuListViewAdapter(List<menu_item_sub_model.categoryall> menu_page_listmodels, Context context, Dialog menulistpopup,RecyclerView recyclerviewitem){
         this.menu_page_listmodels = menu_page_listmodels;
         this.context=context;
@@ -55,22 +53,7 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
 
         holder.menu_item_name.setText(menu_page_listmodels.get(position).getName());
 
-
-
         Log.d("getcategory---->"," " + menu_page_listmodels.get(position).getName());
-
-        /*if (position == 0) {
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
-            LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
-
-        } else {
-            Intent intent = new Intent("item_possion-message");
-            intent.putExtra("itempossion", String.valueOf(position));
-            intent.putExtra("itempossionname", menu_page_listmodels.get(position).getName());
-            LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcast(intent);
-        }*/
 
         if(position == selectedposition){
             holder.menu_layout.setBackgroundColor(Color.parseColor("#EEF6FF"));
@@ -95,7 +78,6 @@ public class MenuListViewAdapter extends RecyclerView.Adapter<MenuListViewAdapte
                 menulistpopup.dismiss();
             }
         });
-
 
     }
 

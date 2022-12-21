@@ -380,6 +380,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             holder.menu_item_add.setVisibility(View.VISIBLE);
                             holder.increment_decrement_layout.setVisibility(GONE);
 
+                            plus_minus_symbol.setVisibility(View.GONE);
+                            plus_linearlayout.setVisibility(View.VISIBLE);
+
+
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
 
                             if(get_qty_count.get(0).equalsIgnoreCase("0")){
@@ -1535,7 +1539,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         //setting adapter to spinner
                                                         later_time.setAdapter(latertimeadapter);
 
-
                                                         later_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -1584,6 +1587,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         });
 
                                                         update_mode.setVisibility(View.VISIBLE);
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
 
                                                     } else {
                                                         later_timing_layer.setVisibility(GONE);
@@ -1593,6 +1598,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         update_mode.setEnabled(false);
                                                         update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
                                                         update_mode.setText("Later Unavailable");
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
                                                         update_mode.setVisibility(View.VISIBLE);
 
                                                     }

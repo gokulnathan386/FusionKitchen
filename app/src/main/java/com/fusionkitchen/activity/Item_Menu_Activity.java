@@ -438,7 +438,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     top_card_view.setVisibility(View.INVISIBLE);
                 }else{
                     MarginLayoutParams params = (MarginLayoutParams) recyclerviewitem.getLayoutParams();
-                    params.topMargin =135;
+                    params.topMargin = 135;
+                    params.bottomMargin = 20;
                     top_card_view.setVisibility(View.VISIBLE);
                 }
 
@@ -1273,6 +1274,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             Intent intentcard = new Intent(getApplicationContext(), Add_to_Cart.class);
                             intentcard.putExtra("cooking_insttruction", cooking_insttructionback);
                             startActivity(intentcard);
+                        }else{
+                            Toast.makeText(Item_Menu_Activity.this,"Your cart is Empty!",Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case R.id.home_account:
@@ -1370,7 +1373,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 if (task.isSuccessful()) {
                                     Uri shortLink = task.getResult().getShortLink();
                                     Uri flowchartLink = task.getResult().getPreviewLink();
-                                    Log.e("main ", "short link "+ shortLink.toString());
+                                    Log.e("share_link_item_pop_up ", "short link "+ shortLink.toString());
                                     Intent intent = new Intent();
                                     intent.setAction(Intent.ACTION_SEND);
                                     intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());

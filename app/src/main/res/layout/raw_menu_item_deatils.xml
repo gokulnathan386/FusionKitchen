@@ -120,8 +120,9 @@
                     android:layout_width="191dp"
                     android:layout_height="37dp"
                     android:layout_below="@+id/menu_item_name"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="29dp"
                     android:layout_toLeftOf="@+id/menu_item_add"
                     android:layout_toRightOf="@+id/layout_logo"
                     android:ellipsize="end"
@@ -132,7 +133,7 @@
                     android:textColor="#17284D"
                     android:textSize="16sp" />
 
-            <com.borjabravo.readmoretextview.ReadMoreTextView
+                <com.borjabravo.readmoretextview.ReadMoreTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/menu_item_name"
@@ -161,6 +162,7 @@
                     android:fontFamily="@font/metropolis_semibold"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:layout_marginTop="5dp"
                     android:layout_below="@+id/menu_item_desc"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_toRightOf="@+id/layout_logo"

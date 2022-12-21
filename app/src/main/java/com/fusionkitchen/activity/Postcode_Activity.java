@@ -121,8 +121,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private ViewPager page;
     private TabLayout tabLayout;
 
-
-
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
@@ -358,7 +356,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             startActivity(intentcard);
                             bottonkey = 1;
                         }else{
-                            Toast.makeText(Postcode_Activity.this,"Your cart is Empty!!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Postcode_Activity.this,"Your cart is Empty!",Toast.LENGTH_SHORT).show();
                         }
 
                         break;

@@ -157,25 +157,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                  <!--  <LinearLayout
-                        android:layout_width="32dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="32dp">
-                        <TextView
-                            android:id="@+id/Enter_your_plus_symbol"
-                            android:background="@drawable/open_time_bg"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="+"
-                            android:backgroundTint="#EFFFF7"
-                            android:gravity="center"
-                            android:textStyle="bold"
-                            android:textSize="18dp"
-                            android:fontFamily="@font/poppins_bold"
-                            android:textColor="#1DC070"/>
-                    </LinearLayout>-->
-
-
                     <LinearLayout
                         android:id="@+id/plus_symbol_linearlayout"
                         android:layout_width="wrap_content"

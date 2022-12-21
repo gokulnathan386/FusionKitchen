@@ -143,7 +143,18 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             public void onReceive(Context context, Intent intent) {
 
                 String itempossion = intent.getStringExtra("itempossion");
-                Toast.makeText(context.getApplicationContext(), "hsggdfhd" + itempossion,Toast.LENGTH_LONG).show();
+
+                for(int y = 0; y < listdata.length; y++){
+                    if(position==Integer.parseInt(itempossion)){
+                        holder.child_recyclerview.setVisibility(View.VISIBLE);
+                        holder.dropdownindicator.setRotation((float) 180.0);
+                    }else{
+                        holder.child_recyclerview.setVisibility(View.GONE);
+                        holder.dropdownindicator.setRotation((float) 360.0);
+                    }
+                }
+
+
             }
         }, new IntentFilter("click_menu_id"));
 

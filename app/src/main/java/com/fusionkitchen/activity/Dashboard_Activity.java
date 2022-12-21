@@ -347,6 +347,8 @@ public class Dashboard_Activity extends AppCompatActivity {
                         if (cursor != 0) {
                             Intent intentcard = new Intent(getApplicationContext(), Add_to_Cart.class);
                             startActivity(intentcard);
+                        }else{
+                            Toast.makeText(Dashboard_Activity.this,"Your cart is Empty!",Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case R.id.home_account:
