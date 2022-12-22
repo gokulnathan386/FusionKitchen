@@ -104,20 +104,11 @@ public class MenuAddonItemAdapter extends RecyclerView.Adapter<MenuAddonItemAdap
                     }
                 }.start();
 
-              /*  if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();*/
-                //Integer pos = (Integer) holder.checkBox.getTag();
-                //final boolean isChecked = holder.checkBox.isChecked();
                 Log.e("getBtnnext2", "" + listdata[position].getBtnnext());
                 if (holder.checkBox.isChecked()) {
-                    // addonlimitnext
-                    // hideloading();
+
                     sharedpreferences = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
                     holder.menu_addon_item_extra.setText(sharedpreferences.getString("addon_extra", null));
-                   /* holder.menu_addon_item_extra.setText(sharedpreferences.getString("addon_extra", null));
-                    holder.menu_addon_item_extra.setVisibility(View.VISIBLE);*/
                     if (!arrayListUser.contains(listdata[position].getItemid()))
                         arrayListUser.add(listdata[position].getItemid());
                     arrayData = arrayListUser.toString().replace("[", "").replace("]", "").replace(" ", "").trim();//addon item id call
@@ -142,11 +133,8 @@ public class MenuAddonItemAdapter extends RecyclerView.Adapter<MenuAddonItemAdap
                     intent.putExtra("arrayaddonitemid", listdata[position].getItemid());
                     intent.putExtra("arrayaddonextraidsingle", holder.menu_addon_item_extra.getText().toString());
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                    //if(listdata[position].getBtnnext().equalsIgnoreCase("0")&& )
+
                 } else {
-                   /* sharedpreferences.edit().remove("addon_extra").commit();
-                    holder.menu_addon_item_extra.setText("22");
-                    holder.menu_addon_item_extra.setVisibility(View.GONE);*/
 
                     arrayextraListUser.remove(holder.menu_addon_item_extra.getText().toString());
                     arrayextraData = arrayextraListUser.toString().replace("[", "").replace("]", "").replace(" ", "").trim();

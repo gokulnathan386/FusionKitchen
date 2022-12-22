@@ -187,7 +187,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         allContacts = dbHelper.getitemlist();
 
-
                 for (int k = 0; k<allContacts.size();k++){
 
                     if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
@@ -324,7 +323,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 item_view_dismiss = 0;
 
-                Decreasepriceqty(view,items[position].getId(),holder);
+                Decreasepriceqty(view,items[position].getId(),holder,0);
 
             }
         });
@@ -338,10 +337,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
-
     }
 
-    private void Decreasepriceqty(View view, String id,ViewHolder holder) {
+    @SuppressLint("WrongConstant")
+    private void Decreasepriceqty(View view, String id, ViewHolder holder,int singleitem) {
 
                 count= parseInt(String.valueOf(holder.qty_textview_number.getText()));
 
@@ -380,9 +379,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             holder.menu_item_add.setVisibility(View.VISIBLE);
                             holder.increment_decrement_layout.setVisibility(GONE);
 
-                            plus_minus_symbol.setVisibility(View.GONE);
-                            plus_linearlayout.setVisibility(View.VISIBLE);
-
+                            if(singleitem == 8){
+                                plus_minus_symbol.setVisibility(GONE);
+                                plus_linearlayout.setVisibility(View.VISIBLE);
+                            }
 
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
 
@@ -698,7 +698,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
                 item_view_dismiss = 1;
-                Decreasepriceqty(v,item_id,holder);
+                Decreasepriceqty(v,item_id,holder,8);
 
             }
         });

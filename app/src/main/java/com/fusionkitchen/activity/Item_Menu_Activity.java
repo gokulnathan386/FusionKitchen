@@ -29,6 +29,7 @@ import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -106,6 +107,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -250,10 +253,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     BottomNavigationView bottomNav;
 
     /*---------------------------Fab show and hind view----------------------------------------------------*/
-    ExtendedFloatingActionButton mAddFab;
+  //  ExtendedFloatingActionButton mAddFab;
     NestedScrollView nsv;
     //  ScrollView nsv;
-    ExtendedFloatingActionButton mfab_close;
+   // ExtendedFloatingActionButton mfab_close;
     LinearLayout search_listview_header;
 
     /*---------------------------loaderviewlibrary----------------------------------------------------*/
@@ -363,6 +366,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
    // private List<Menu_Page_listmodel> menu_page_listmodel = new ArrayList<>();
 
     private List<menu_item_sub_model.categoryall> menu_page_listmodel = new ArrayList<>();
+    List<String> tagList=new ArrayList<String>();
+    private ChipGroup tag_group;
+
 
 
     @Override
@@ -391,8 +397,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         order_popup_data  = getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
         /*---------------------------ExtendedFloatingActionButton----------------------------------------------------*/
-        mAddFab = findViewById(R.id.add_fab);
-        mfab_close = findViewById(R.id.fab_close);
+     //   mAddFab = findViewById(R.id.add_fab);
+        //mfab_close = findViewById(R.id.fab_close);
         top_card_view = findViewById(R.id.top_card_view);
 
         /*--------------------------Login postcode save local------------------------*/
@@ -415,6 +421,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         Log.e("otypelog", "" + sharedpreferences.getString("ordermodetype", null));
 
+
+
+        tag_group = findViewById(R.id.tag_group);
+        tagList.add("7");
+        tagList.add("8");
 
         /*-----------------Fab-----------------*/
         appbar = findViewById(R.id.appbar);
@@ -446,7 +457,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        mAddFab.shrink();
+      //  mAddFab.shrink();
         nsv = findViewById(R.id.nsv);
 
        /* nsv.postDelayed(new Runnable() {
@@ -491,18 +502,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-        mAddFab.setOnClickListener(
+      /*  mAddFab.setOnClickListener(
                 new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         menu_view_card_view.setVisibility(View.VISIBLE);
-                        mfab_close.setVisibility(View.VISIBLE);
+                     //   mfab_close.setVisibility(View.VISIBLE);
                         mAddFab.setVisibility(View.GONE);
-                        mfab_close.extend();
+                      //  mfab_close.extend();
                     }
-                });
+                });*/
 
-        mfab_close.setOnClickListener(
+      /*  mfab_close.setOnClickListener(
                 new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -512,7 +523,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         mAddFab.setVisibility(View.VISIBLE);
                     }
                 });
-
+*/
         /*---------------------------Intent Value Get URL Path----------------------------------------------------*/
         Intent intent = getIntent();
         menuurlpath = intent.getStringExtra("menuurlpath");
@@ -593,8 +604,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         restaurants_status = findViewById(R.id.restaurants_status);
         delicery_collection_time = findViewById(R.id.delicery_collection_time);
 
-        menu_view_card_view = findViewById(R.id.menu_view_card_view);
-        recyclerviewmenuitem = findViewById(R.id.recyclerviewmenuitem);
+       // menu_view_card_view = findViewById(R.id.menu_view_card_view);
+       // recyclerviewmenuitem = findViewById(R.id.recyclerviewmenuitem);
         menu_addon_item_view = findViewById(R.id.menu_addon_item_view);
         bottom_nav = findViewById(R.id.bottom_nav);
         add_to_cart_layout = findViewById(R.id.add_to_cart_layout);
@@ -859,7 +870,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         top_editTextSearch.setText("");
                         recyclerviewitem.setVisibility(View.VISIBLE);
                         search_layout.setVisibility(View.GONE);
-                        mAddFab.setVisibility(View.VISIBLE);
+                       // mAddFab.setVisibility(View.VISIBLE);
                     }
                 });
         search_colse_bottom.setOnClickListener(
@@ -874,7 +885,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         top_editTextSearch.setText("");
                         recyclerviewitem.setVisibility(View.VISIBLE);
                         search_layout.setVisibility(View.GONE);
-                        mAddFab.setVisibility(View.VISIBLE);
+                       // mAddFab.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -1216,7 +1227,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 menu_addon_item_view.setVisibility(View.GONE);
-                mAddFab.setVisibility(View.VISIBLE);
+               // mAddFab.setVisibility(View.VISIBLE);
                 add_to_cart_layout.setVisibility(View.VISIBLE);
                 if (cursor != 0) {
                 } else {
@@ -1380,20 +1391,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                     intent.setType("text/plain");
                                     startActivity(intent);
                                 } else {
-
                                     Log.e("main", " error "+task.getException() );
                                 }
                             }
                         });
 
-
-
-/*              Intent shareIntent =   new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"");
-                String app_url = " https://play.google.com/store/apps/details?id=com.fusionkitchen";
-                shareIntent.putExtra(Intent.EXTRA_TEXT,app_url);
-                startActivity(Intent.createChooser(shareIntent, "Share via")); */
             }
         });
 
@@ -1453,7 +1455,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
            LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
 
-
     }
 
 
@@ -1495,7 +1496,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             String item_id = intent.getStringExtra("item_id_sqlite");
             add_to_cart_layout.setVisibility(GONE);
-            mAddFab.setVisibility(View.GONE);
+         //   mAddFab.setVisibility(View.GONE);
             dbHelper.deleteItemRow(item_id);
 
         }
@@ -1757,7 +1758,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         } else {
                             strsAddress2 = "";
                         }
-
 
                         if (response.body().getAbout().getGooglemaps().getCity() != null && !response.body().getAbout().getGooglemaps().getCity().isEmpty()) {
 
@@ -2033,12 +2033,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                mAddFab.setVisibility(View.VISIBLE);
+              //  mAddFab.setVisibility(View.VISIBLE);
             } else {
                 recyclerviewitem.setVisibility(View.VISIBLE);
                 search_layout.setVisibility(View.GONE);
-                mAddFab.setVisibility(View.GONE);
-                mfab_close.setVisibility(View.GONE);
+               // mAddFab.setVisibility(View.GONE);
+               // mfab_close.setVisibility(View.GONE);
             }
         }
 
@@ -2136,10 +2136,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
 */
 
-            mfab_close.shrink();
-            menu_view_card_view.setVisibility(View.GONE);
-            mfab_close.setVisibility(View.GONE);
-            mAddFab.setVisibility(View.VISIBLE);
+          //  mfab_close.shrink();
+           // menu_view_card_view.setVisibility(View.GONE);
+         //   mfab_close.setVisibility(View.GONE);
+           // mAddFab.setVisibility(View.VISIBLE);
         }
     };
     public BroadcastReceiver mMessageonlineoff = new BroadcastReceiver() {
@@ -2360,7 +2360,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
 
-                        mAddFab.setVisibility(View.GONE);
+                     //   mAddFab.setVisibility(View.GONE);
 
 
                         colloetion_tattime.setText(response.body().getData().getCollection().getCooking_time());
@@ -2390,7 +2390,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                         } else {
 
-                            mAddFab.setVisibility(View.VISIBLE);
+                           // mAddFab.setVisibility(View.VISIBLE);
                         }
 
 
@@ -3275,7 +3275,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                             delivery_one_tex.setText("Delivery");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_delivery);
-                                            mAddFab.setVisibility(View.VISIBLE);
+                                          //  mAddFab.setVisibility(View.VISIBLE);
 
                                             del_coll_text = "Delivery";
                                             del_col_anim.setAnimation(R.raw.delivery);
@@ -3292,7 +3292,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                             delivery_one_tex.setText("Collection");
                                             bikeimgonlydelivery.setImageResource(R.drawable.menu_collection);
-                                            mAddFab.setVisibility(View.VISIBLE);
+                                          //  mAddFab.setVisibility(View.VISIBLE);
 
                                             del_coll_text = "Collection";
                                             del_col_anim.setAnimation(R.raw.collection);
@@ -3372,7 +3372,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         takeway_colse.getWindow().setGravity(Gravity.BOTTOM);
 
 
-                        mAddFab.setVisibility(View.VISIBLE);
+                     //   mAddFab.setVisibility(View.VISIBLE);
                         menugetitem(menuurlpath, "0", key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
                     }
@@ -3658,11 +3658,11 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                         recyclerviewitem.setAdapter(itemadapter);
 
 
-                        List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
+              /*          List<menu_item_sub_model.searchcategory> menuitemdetails = (response.body().getMenu().getSearchcategory());
                         MenuserachcatAdapter menuitemadapter = new MenuserachcatAdapter(mContext, (List<menu_item_sub_model.searchcategory>) menuitemdetails);
                         recyclerviewmenuitem.setHasFixedSize(true);
                         recyclerviewmenuitem.setLayoutManager(new LinearLayoutManager(Item_Menu_Activity.this));
-                        recyclerviewmenuitem.setAdapter(menuitemadapter);
+                        recyclerviewmenuitem.setAdapter(menuitemadapter);*/
 
 
 
@@ -3783,9 +3783,9 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
         public void onReceive(Context context, Intent intent) {
             getContactsCount();
             menu_addon_item_view.setVisibility(View.GONE);
-            mAddFab.setVisibility(View.VISIBLE);
+         //   mAddFab.setVisibility(View.VISIBLE);
 
-            add_to_cart_layout.setVisibility(View.VISIBLE);
+           // add_to_cart_layout.setVisibility(View.VISIBLE);
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
 
             ArrayList<String> get_qty_count = dbHelper.getqtycount();
@@ -3794,7 +3794,15 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
 
 
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+            Log.d("gokulnathane"," " + get_amt_count.get(0));
+
+            if(get_amt_count.get(0) != null){
+                total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+                add_to_cart_layout.setVisibility(View.VISIBLE);
+            }else{
+                add_to_cart_layout.setVisibility(View.GONE);
+            }
+           // total_amount_textview.setText(""+String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
 
             if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
 
@@ -3849,6 +3857,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
         listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
         selected_addon_item_view.setAdapter(adapter);
+
 
         arrayextranameDataadd = new ArrayList<String>();
         arrayextranameDataadd.clear();
@@ -4135,6 +4144,32 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
             if (addonitemtype.equalsIgnoreCase("0")) {  //add amount
 
                 listItems.add(addsingleextra + " " + arrayextranameData);
+
+//----------------------------------------
+        /*  for (int index = 0; index < tagList.size(); index++) {
+            final String tagName = tagList.get(index);
+            final Chip chip = new Chip(Item_Menu_Activity.this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
+            chip.setText(tagName);
+            chip.setCloseIconResource(R.drawable.filter_icon);
+            chip.setCloseIconEnabled(true);
+
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tagList.remove(tagName);
+                    tag_group.removeView(chip);
+                }
+            });
+
+              tag_group.addView(chip);
+        }*/
+
+  //------------------------------------
                 adapter.notifyDataSetChanged();
 
                 listItemsids.add(arrayaddonitemid);
@@ -4154,6 +4189,8 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 arrayextranameDataadd.add(arrayextranameData);
                 arrayaddonitemidadd.add(arrayaddonitemid);    // addons id store in database
                 arrayaddonextraidsingleadd.add(arrayaddonextraidsingle);
+
+
 
                 Log.d("add_on_popup",arrayextranameDataadd +  "----> " +arrayaddonitemidadd+ "-----> " + arrayaddonextraidsingleadd);
 
@@ -4469,7 +4506,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         hideloading();
                         menu_addon_item_view.setVisibility(View.VISIBLE);
-                        mAddFab.setVisibility(View.GONE);
+                       // mAddFab.setVisibility(View.GONE);
                         //bottom_nav.setVisibility(View.GONE);
                         add_to_cart_layout.setVisibility(View.GONE);
 
@@ -4645,7 +4682,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 if (statusCode == 200) {
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
                         menu_addon_item_view.setVisibility(View.VISIBLE);
-                        mAddFab.setVisibility(View.GONE);
+                      //  mAddFab.setVisibility(View.GONE);
                         // bottom_nav.setVisibility(View.GONE);
                         add_to_cart_layout.setVisibility(View.GONE);
 
@@ -4728,19 +4765,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                         menuaddonitemadapter.notifyDataSetChanged();*/
                         addon_item_view.setAdapter(menuaddonitemadapter);
                         Log.e("menuaddonitnth", "" + menuaddonitemadapter.toString().length());
-                        //   listItem = response.body().getDATA().getSelecteditem().toArray(new menu_addons_model.dataval.selecteditemlist[0]);
-                        //  Log.e("listItemlenth", "" + listItem.length);
-                      /*  if (listItem.length == 0) {
-                            selected_addon_item_view.setVisibility(View.GONE);
-                        } else {
-                            selected_addon_item_view.setVisibility(View.VISIBLE);
-                            values = new String[listItem.length];
-                            for (int i = 0; i < listItem.length; i++) {
-                                values[i] = listItem[i].getItems();
-                            }
-                            adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, values);
-                            selected_addon_item_view.setAdapter(adapter);
-                        }*/
+
                     } else {
                         Log.e("erocode", "" + "1");
                         Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
@@ -4877,7 +4902,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                             getContactsCount();
 
                             menu_addon_item_view.setVisibility(View.GONE);
-                            mAddFab.setVisibility(View.VISIBLE);
+                          //  mAddFab.setVisibility(View.VISIBLE);
                             //add_to_cart_layout.setVisibility(View.VISIBLE);
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
                             total_item.setText(get_qty_count.get(0) + "");

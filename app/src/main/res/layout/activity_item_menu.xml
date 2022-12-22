@@ -80,12 +80,6 @@
                         android:orientation="vertical"
                         android:paddingTop="16dp">
 
-
-                        <!--android:background="@drawable/restimage"-->
-
-                        <!--       android:background="@drawable/headerplaceholder"-->
-
-
                         <RelativeLayout
                             android:id="@+id/rltop"
                             android:layout_width="match_parent"
@@ -1058,14 +1052,14 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <!--Menu icon click-->
-        <androidx.cardview.widget.CardView
+<!--        <androidx.cardview.widget.CardView
             android:id="@+id/menu_view_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/add_to_cart_layout"
             android:layout_alignParentRight="true"
             android:layoutAnimation="@anim/layout_animation"
-            android:visibility="gone"
+            android:visibility=""
             app:cardBackgroundColor="@color/tranfer_color">
 
 
@@ -1098,9 +1092,9 @@
 
                 </LinearLayout>
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>-->
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1140,7 +1134,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="@android:color/holo_red_light"
             app:shapeAppearanceOverlay="@drawable/menu_offer_one"
-            app:strokeColor="@android:color/holo_red_light" />
+            app:strokeColor="@android:color/holo_red_light" />-->
 
         <!-- start Old view cart-->
 
@@ -1408,7 +1402,6 @@
                                 android:background="#EEF6FF"
                                 android:layout_height="wrap_content">
 
-
                                 <GridView
                                     android:layout_margin="13dp"
                                     android:id="@+id/selected_addon_item_view"
@@ -1420,18 +1413,15 @@
                                     android:verticalSpacing="8dp"
                                     />
 
+                                <com.google.android.material.chip.ChipGroup
+                                    android:id="@+id/tag_group"
+                                    android:background="#000000"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    />
+
                             </LinearLayout>
 
-                            <!--  <TextView
-                                  android:id="@+id/addon_item_addonname"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_marginLeft="@dimen/_10sdp"
-                                  android:layout_marginTop="@dimen/_10sdp"
-                                  android:fontFamily="@font/hindvadodara_medium"
-                                  android:text=""
-                                  android:textColor="@color/menu_arrow"
-                                  android:textSize="@dimen/_13sdp" />-->
 
                             <LinearLayout
                                 android:id="@+id/addon_extra_liner"
@@ -1556,11 +1546,6 @@
                                 </HorizontalScrollView>
                             </LinearLayout>
 
-                            <!--     <View
-                                     android:layout_width="match_parent"
-                                     android:layout_height="0.5dp"
-                                     android:layout_marginTop="@dimen/_10sdp"
-                                     android:background="@color/menu_item_desc" />-->
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/addon_item_view"
