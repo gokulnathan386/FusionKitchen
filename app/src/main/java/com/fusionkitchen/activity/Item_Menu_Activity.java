@@ -752,6 +752,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                                Log.d("address5","Gokulnathan");
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
                                 Log.e("addonadapi", "" + i);
@@ -773,6 +774,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                                Log.d("address4","Gokulnathan");
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
                                 Log.e("addonadapi", "" + i);
@@ -808,6 +810,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                                Log.d("address3","Gokulnathan");
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
 //addon item id name
@@ -3856,6 +3859,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
         listItems = new ArrayList<String>();
         listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+        Log.d("address2","Gokulnathan");
         selected_addon_item_view.setAdapter(adapter);
 
 
@@ -3952,7 +3956,8 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 listItems = new ArrayList<String>();
                 listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-                selected_addon_item_view.setAdapter(adapter);
+               Log.d("address1","Gokulnathan");
+               selected_addon_item_view.setAdapter(adapter);
 
 
                 arrayextranameDataadd = new ArrayList<String>();
@@ -4169,7 +4174,39 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
               tag_group.addView(chip);
         }*/
 
+
+
+
   //------------------------------------
+
+                for (int index = 0; index < listItems.size(); index++) {
+                   // final String tagName = listItems.get(index);
+                    final String tagName = listItems.get(index);
+                    final Chip chip = new Chip(Item_Menu_Activity.this);
+                    int paddingDp = (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 10,
+                            getResources().getDisplayMetrics()
+                    );
+                    chip.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
+                    chip.setText(tagName);
+                   // chip.setCloseIconResource(R.drawable.filter_icon);
+                    chip.setCloseIconEnabled(true);
+
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            tagList.remove(tagName);
+                            tag_group.removeView(chip);
+                        }
+                    });
+                    tag_group.addView(chip);
+
+                    Log.d("hjgsdfhgsdhgsfvsfvsdvc"," " +tagName);
+                }
+
+//------------------------------------
+
+
                 adapter.notifyDataSetChanged();
 
                 listItemsids.add(arrayaddonitemid);
