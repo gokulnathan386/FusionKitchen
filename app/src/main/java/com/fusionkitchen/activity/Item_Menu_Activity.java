@@ -108,6 +108,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -176,7 +177,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     String takeway_closed;
 
     boolean flag = false;
-
 
     public Context mContext = Item_Menu_Activity.this;
     private Dialog dialog,dialog_loading;
@@ -368,6 +368,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     private List<menu_item_sub_model.categoryall> menu_page_listmodel = new ArrayList<>();
     List<String> tagList=new ArrayList<String>();
     private ChipGroup tag_group;
+    Chip chip_data;
+    List<String> chip_data_store =new ArrayList<String>();
 
 
 
@@ -424,8 +426,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
         tag_group = findViewById(R.id.tag_group);
-        tagList.add("7");
-        tagList.add("8");
+
 
         /*-----------------Fab-----------------*/
         appbar = findViewById(R.id.appbar);
@@ -633,6 +634,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         miles_textview = findViewById(R.id. miles_textview);
 
         selected_addon_item_view.setVisibility(View.GONE);
+        tag_group.setVisibility(View.GONE);
         animationdown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
         animationup = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
         relativ_moreinfo = findViewById(R.id.relativ_moreinfo);
@@ -1321,7 +1323,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 });
 
         /*---------------------------Offer RecyclerView ----------------------------------------------------*/
-        menu_offer(menuurlpath, "0", "0");
+         menu_offer(menuurlpath, "0", "0");
 
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-message"));
@@ -1802,7 +1804,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 */
 
-                        getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                   //     getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
@@ -3470,7 +3472,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon().size());
+               Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon().size());
 
                 for(int k = 0; k<response.body().getDiscount_list().getCommoncoupon().size(); k++ ){
 
@@ -3837,6 +3839,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
         addonitemid = "";
 
         selected_addon_item_view.setVisibility(View.GONE);
+        tag_group.setVisibility(View.GONE);
         item_price_btn = true;
 
         Log.e("addbuttonclick1", "" + ItemName);
@@ -3927,6 +3930,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 addonitemarrayextraData = "";
                 addonitemid = "";
                 selected_addon_item_view.setVisibility(View.GONE);
+                tag_group.setVisibility(View.GONE);
 
                 item_price_btn = true;
 
@@ -3955,7 +3959,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 //Item Name
                 listItems = new ArrayList<String>();
                 listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
-                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
                Log.d("address1","Gokulnathan");
                selected_addon_item_view.setAdapter(adapter);
 
@@ -4081,6 +4085,8 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
     public BroadcastReceiver addonmMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+
             //Get extra data included in the Intent
             addonitemid = intent.getStringExtra("addonitemid");
             addonidprice = intent.getStringExtra("addonidprice");
@@ -4091,6 +4097,9 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
             arrayaddonitemid = intent.getStringExtra("arrayaddonitemid");
             btnnextfir = intent.getStringExtra("addonbtnnext");
             arrayaddonextraidsingle = intent.getStringExtra("arrayaddonextraidsingle");
+
+
+
             Log.e("menugetlimt33", "" + btnnext);
 
             // item_add_time5
@@ -4126,7 +4135,9 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 addsingleextra = "";
             }
 
-            selected_addon_item_view.setVisibility(View.VISIBLE);
+            selected_addon_item_view.setVisibility(View.GONE); // Visiable
+            tag_group.setVisibility(View.VISIBLE);
+
             Log.e("arrayaddonitemid", "" + arrayaddonitemid);
             Log.e("arrayaddonextraidsingle", "" + arrayaddonextraidsingle);
 
@@ -4148,64 +4159,10 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
             //amount calucluate
             if (addonitemtype.equalsIgnoreCase("0")) {  //add amount
 
+                String data = addsingleextra + " " + arrayextranameData;
+                chip_group(data);
+
                 listItems.add(addsingleextra + " " + arrayextranameData);
-
-//----------------------------------------
-        /*  for (int index = 0; index < tagList.size(); index++) {
-            final String tagName = tagList.get(index);
-            final Chip chip = new Chip(Item_Menu_Activity.this);
-            int paddingDp = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 10,
-                    getResources().getDisplayMetrics()
-            );
-            chip.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
-            chip.setText(tagName);
-            chip.setCloseIconResource(R.drawable.filter_icon);
-            chip.setCloseIconEnabled(true);
-
-            chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tagList.remove(tagName);
-                    tag_group.removeView(chip);
-                }
-            });
-
-              tag_group.addView(chip);
-        }*/
-
-
-
-
-  //------------------------------------
-
-                for (int index = 0; index < listItems.size(); index++) {
-                   // final String tagName = listItems.get(index);
-                    final String tagName = listItems.get(index);
-                    final Chip chip = new Chip(Item_Menu_Activity.this);
-                    int paddingDp = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 10,
-                            getResources().getDisplayMetrics()
-                    );
-                    chip.setPadding(paddingDp,paddingDp,paddingDp,paddingDp);
-                    chip.setText(tagName);
-                   // chip.setCloseIconResource(R.drawable.filter_icon);
-                    chip.setCloseIconEnabled(true);
-
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            tagList.remove(tagName);
-                            tag_group.removeView(chip);
-                        }
-                    });
-                    tag_group.addView(chip);
-
-                    Log.d("hjgsdfhgsdhgsfvsfvsdvc"," " +tagName);
-                }
-
-//------------------------------------
-
 
                 adapter.notifyDataSetChanged();
 
@@ -4226,8 +4183,6 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 arrayextranameDataadd.add(arrayextranameData);
                 arrayaddonitemidadd.add(arrayaddonitemid);    // addons id store in database
                 arrayaddonextraidsingleadd.add(arrayaddonextraidsingle);
-
-
 
                 Log.d("add_on_popup",arrayextranameDataadd +  "----> " +arrayaddonitemidadd+ "-----> " + arrayaddonextraidsingleadd);
 
@@ -4278,6 +4233,8 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 }
             } else if (addonitemtype.equalsIgnoreCase("1")) {//remove amount
 
+
+
                 //check box check or not view
                 checkval = checkval - 1;
                 if (checkval == 0) {
@@ -4285,6 +4242,9 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
                 } else {
                     backbutclknum = "1";
                 }
+
+                String removevalue = addsingleextra + " " + arrayextranameData;
+                chip_group_remove(removevalue);
 
                 listItems.remove(addsingleextra + " " + arrayextranameData);
                 adapter.notifyDataSetChanged();
@@ -4325,6 +4285,45 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
 
         }
     };
+
+    @SuppressLint("ResourceAsColor")
+    private void chip_group(String strvalue) {
+
+        chip_data = new Chip(this);
+        ChipDrawable drawable = ChipDrawable.createFromAttributes(this, null, 0,
+                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Entry
+        );
+        chip_data.setChipDrawable(drawable);
+        chip_data.setCheckable(false);
+        chip_data.setIconStartPadding(3f);
+        chip_data.setCloseIconVisible(false);
+        chip_data.setPadding(60, 10, 40, 10);
+        chip_data.setChipIconResource(R.drawable.tikkicblue);
+        chip_data.setChipBackgroundColorResource(R.color.Addon_popup_background);
+        chip_data.setTextAppearanceResource(R.style.ChipTextStyle_Selected);
+
+        chip_data.setText(strvalue);
+
+        tag_group.addView(chip_data);
+
+    }
+
+    private void chip_group_remove(String strvalue) {
+
+
+        for (int u=0;u<listItems.size();u++){
+
+            if(strvalue.equalsIgnoreCase(listItems.get(u))){
+                tag_group.removeView(chip_data);
+                Log.d("lkhjgfhfhnkghkgjhgh",strvalue + " " + listItems.get(u));
+            }
+
+        }
+
+    }
+
+
+
 
     //  listItemsexraids
     private void addonitemnext(String btontype) {
@@ -4494,6 +4493,7 @@ Log.d("gokulnathan-->"," " + response.body().getDiscount_list().getCommoncoupon(
             btnClear.setVisibility(View.INVISIBLE);
             listItems.clear();
             selected_addon_item_view.setVisibility(View.GONE);
+            tag_group.setVisibility(View.GONE);
         } else {
             btnClear.setVisibility(View.VISIBLE);
         }

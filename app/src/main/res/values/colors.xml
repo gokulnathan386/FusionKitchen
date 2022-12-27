@@ -126,5 +126,9 @@
     <color name="menu_text_bg">#0071E3</color>
     <color name="No_Less_Text_Color">#E0467C</color>
 
+    <color name="Addon_popup_background">#EEF6FF</color>
+    <color name="Addontextcolor">#1271E3</color>
+
+
 
 </resources>
