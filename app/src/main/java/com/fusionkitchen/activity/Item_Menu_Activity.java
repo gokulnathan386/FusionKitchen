@@ -369,7 +369,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     List<String> tagList=new ArrayList<String>();
     private ChipGroup tag_group;
     Chip chip_data;
-    List<String> chip_data_store =new ArrayList<String>();
+    List<String> chipdatastore =new ArrayList<String>();
 
 
 
@@ -753,8 +753,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
+                                chipdatastore.remove(chipdatastore.size() - 1);
+
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-                                Log.d("address5","Gokulnathan");
+
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
                                 Log.e("addonadapi", "" + i);
@@ -775,8 +777,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
+                                chipdatastore.remove(chipdatastore.size() - 1);
+
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-                                Log.d("address4","Gokulnathan");
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
                                 Log.e("addonadapi", "" + i);
@@ -811,8 +814,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             for (int i = 0; i < (arrayextranameDataaddsize.get(arrayextranameDataaddsize.size() - 1)); i++) {
                                 //addon item name
                                 listItems.remove(listItems.size() - 1);
+                                chipdatastore.remove(chipdatastore.size() - 1);
                                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-                                Log.d("address3","Gokulnathan");
                                 selected_addon_item_view.setAdapter(adapter);
                                 Log.e("addonadaptername", "" + adapter.toString());
 //addon item id name
@@ -3861,8 +3864,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         //Item Name
         listItems = new ArrayList<String>();
         listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
+        chipdatastore.clear();
+        tag_group.removeAllViews();
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-        Log.d("address2","Gokulnathan");
         selected_addon_item_view.setAdapter(adapter);
 
 
@@ -3959,8 +3963,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 //Item Name
                 listItems = new ArrayList<String>();
                 listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
-                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-               Log.d("address1","Gokulnathan");
+                chipdatastore.clear();
+                tag_group.removeAllViews();
+
+
+               adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
                selected_addon_item_view.setAdapter(adapter);
 
 
@@ -4162,6 +4169,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 String data = addsingleextra + " " + arrayextranameData;
                 chip_group(data);
 
+                chipdatastore.add(addsingleextra + " " + arrayextranameData);
+
                 listItems.add(addsingleextra + " " + arrayextranameData);
 
                 adapter.notifyDataSetChanged();
@@ -4243,9 +4252,19 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     backbutclknum = "1";
                 }
 
-                String removevalue = addsingleextra + " " + arrayextranameData;
-                chip_group_remove(removevalue);
 
+
+                String removevalue = addsingleextra + " " + arrayextranameData;
+
+                for (int u=0;u<chipdatastore.size();u++){
+                    if(removevalue.equalsIgnoreCase(chipdatastore.get(u))){
+                        chipdatastore.remove(removevalue);
+                        tag_group.removeViewAt(u);
+                    }
+
+                }
+
+              //  chip_group_remove(removevalue);
                 listItems.remove(addsingleextra + " " + arrayextranameData);
                 adapter.notifyDataSetChanged();
 
@@ -4307,23 +4326,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         tag_group.addView(chip_data);
 
     }
-
-    private void chip_group_remove(String strvalue) {
-
-
-        for (int u=0;u<listItems.size();u++){
-
-            if(strvalue.equalsIgnoreCase(listItems.get(u))){
-                tag_group.removeView(chip_data);
-                Log.d("lkhjgfhfhnkghkgjhgh",strvalue + " " + listItems.get(u));
-            }
-
-        }
-
-    }
-
-
-
 
     //  listItemsexraids
     private void addonitemnext(String btontype) {
@@ -4492,6 +4494,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         if (aidlist.size() == 1) {
             btnClear.setVisibility(View.INVISIBLE);
             listItems.clear();
+            chipdatastore.clear();
+            tag_group.removeAllViews();
+
             selected_addon_item_view.setVisibility(View.GONE);
             tag_group.setVisibility(View.GONE);
         } else {
