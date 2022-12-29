@@ -177,7 +177,7 @@
                 android:backgroundTint="@color/menu_line"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/roboto_regular"
-                android:hint="Adding Cooking insttruction (optional)"
+                android:hint="Adding Cooking instruction (optional)"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"

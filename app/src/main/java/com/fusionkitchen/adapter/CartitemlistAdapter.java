@@ -121,6 +121,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
 
         holder.tvitem_addon_name.setText(contacts.getDesc());
         holder.tvinteger_number.setText(contacts.getQty());
+        Log.d("add_to_cart"," " + contacts.getAmount());
         holder.tvitem_total.setText(contacts.getFinalamt());
 
 

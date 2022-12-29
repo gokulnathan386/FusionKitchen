@@ -53,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -249,6 +250,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     CardView top_card_view, search_back;
     TextView total_item;
     AppBarLayout appbar;
+    String Addon_up_data;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
 
@@ -370,6 +372,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     private ChipGroup tag_group;
     Chip chip_data;
     List<String> chipdatastore =new ArrayList<String>();
+    ScrollView chip_scroll;
 
 
 
@@ -453,6 +456,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     params.topMargin = 135;
                     params.bottomMargin = 20;
                     top_card_view.setVisibility(View.VISIBLE);
+
+                    MarginLayoutParams searchbox = (MarginLayoutParams) search_layout.getLayoutParams();
+                    searchbox.topMargin = 250;
                 }
 
             }
@@ -460,6 +466,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
       //  mAddFab.shrink();
         nsv = findViewById(R.id.nsv);
+        chip_scroll = findViewById(R.id.chip_scroll);
 
        /* nsv.postDelayed(new Runnable() {
             @Override
@@ -634,7 +641,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         miles_textview = findViewById(R.id. miles_textview);
 
         selected_addon_item_view.setVisibility(View.GONE);
-        tag_group.setVisibility(View.GONE);
+        chip_scroll.setVisibility(View.GONE);
         animationdown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
         animationup = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
         relativ_moreinfo = findViewById(R.id.relativ_moreinfo);
@@ -1965,14 +1972,17 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         heart_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
         heart_popup.setContentView(R.layout.heart_popup_design);
 
-        ImageView favourite_image = heart_popup.findViewById(R.id.favourite_image);
+        //ImageView favourite_image = heart_popup.findViewById(R.id.favourite_image);
         AppCompatButton favourite_btn = heart_popup.findViewById(R.id.favourite_btn);
         TextView restaurants_textview = heart_popup.findViewById(R.id.restaurants_textview);
         TextView  fav_textview_add_remove = heart_popup.findViewById(R.id.fav_textview_add_remove);
+        LottieAnimationView favourite_json = heart_popup.findViewById(R.id.favourite_json);
+        favourite_json.setAnimation(R.raw.favourite);
+        favourite_json.playAnimation();
 
         restaurants_textview.setText(menu_Restaurant_name);
 
-        Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
+       // Glide.with(this).load(R.drawable.heartgif).into(favourite_image);
 
         if(Show_favourite_list == 1){
             fav_textview_add_remove.setText("Remove from your favourite list");
@@ -3842,7 +3852,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         addonitemid = "";
 
         selected_addon_item_view.setVisibility(View.GONE);
-        tag_group.setVisibility(View.GONE);
+        chip_scroll.setVisibility(View.GONE);
         item_price_btn = true;
 
         Log.e("addbuttonclick1", "" + ItemName);
@@ -3919,22 +3929,31 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             item_price_amt = intent.getStringExtra("item_price_amt");
             subcategoryname = intent.getStringExtra("subcategoryname");
             description = intent.getStringExtra("item_description");
+            Addon_up_data = intent.getStringExtra("addonchoosepopup");
 
 
 
-            Log.d("Item_Amount_Activity","Item_id----->" + ItemName + "Addon_id--->"+ addonid +
-                      "CategoryName----->"+categoryname+"itemPrice---->"+item_price_amt
-                    + "subcategoryname--------->"+subcategoryname + " description--------->" + description);
+            Log.d("Item_Amount_Activity", "Item_id----->" + ItemName + "Addon_id--->" + addonid +
+                    "CategoryName----->" + categoryname + "itemPrice---->" + item_price_amt
+                    + "subcategoryname--------->" + subcategoryname + " description--------->" + description);
 
             int userList = dbHelper.GetUserByUserId(parseInt(ItemName));
 
-            if(userList == 0){
 
 
+
+
+Log.d("addonpopup--->"," " +Addon_up_data);
+
+            if (userList == 0) {
+
+                test();
+
+           /*
                 addonitemarrayextraData = "";
                 addonitemid = "";
                 selected_addon_item_view.setVisibility(View.GONE);
-                tag_group.setVisibility(View.GONE);
+                chip_scroll.setVisibility(View.GONE);
 
                 item_price_btn = true;
 
@@ -3967,8 +3986,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 tag_group.removeAllViews();
 
 
-               adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-               selected_addon_item_view.setAdapter(adapter);
+                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+                selected_addon_item_view.setAdapter(adapter);
 
 
                 arrayextranameDataadd = new ArrayList<String>();
@@ -4007,28 +4026,29 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                 addonitemfirstview(ItemName, addonid, "", "", "1");
+*/
 
-
-            }else {
+            } /*else if(Addon_up_data.equalsIgnoreCase("addonpopup")){
+                 test();
+            }*/else {
 
                 ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(parseInt(ItemName));
 
-                for (int i=0;i<qtypice.size();i++)
-                {
-                    HashMap<String, String> hashmap= qtypice.get(i);
+                for (int i = 0; i < qtypice.size(); i++) {
+                    HashMap<String, String> hashmap = qtypice.get(i);
                     updateqty = hashmap.get("qty");
                     updatefinalamt = hashmap.get("itemaddontotalamt");
                 }
 
-                int database_qty =  Math.round(Float.parseFloat(updateqty));
+                int database_qty = Math.round(Float.parseFloat(updateqty));
 
-                int qty  = database_qty + 1;
+                int qty = database_qty + 1;
 
-                 String price1 = updatefinalamt;
+                String price1 = updatefinalamt;
 
                 float total_amt = Float.parseFloat(price1) * qty;
 
-                Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(ItemName),qty,total_amt);
+                Boolean updatevalue = dbHelper.Updateqtyprice(parseInt(ItemName), qty, total_amt);
 
                 ArrayList<String> get_qty_count = dbHelper.getqtycount();
                 total_item.setText(get_qty_count.get(0) + "");
@@ -4036,27 +4056,109 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 ArrayList<String> get_amt_count = dbHelper.gettotalamt();
                 total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
 
-                if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+                if (sharedpre_offer_details.getString("offer_applied", null).equalsIgnoreCase("1")) {
 
-                    String  sub_amount = get_amt_count.get(0);
-                    String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+                    String sub_amount = get_amt_count.get(0);
+                    String offer_amt = sharedpre_offer_details.getString("offer_total_amount", null);
 
-                    couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
-                            sharedpre_offer_details.getString("offer_code",null),
-                            sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+                    couponcodevalidate(menuurlpath, favourite_client, sharedpreferences.getString("ordermodetype", null), "1",
+                            sharedpre_offer_details.getString("offer_code", null),
+                            sub_amount, sharedpreferences.getString("asaptodaylaterstring", null));
 
 
-                }else{
+                } else {
 
-                    Log.d("Offer_page_total--->3"," " + "Not Applied");
+                    Log.d("Offer_page_total--->3", " " + "Not Applied");
 
                 }
 
 
             }
 
+
         }
     };
+
+    private void test() {
+
+        addonitemarrayextraData = "";
+        addonitemid = "";
+        selected_addon_item_view.setVisibility(View.GONE);
+        chip_scroll.setVisibility(View.GONE);
+
+        item_price_btn = true;
+
+
+        Log.e("nextapi1", "" + nextaid);
+        Log.e("nextapi2", "" + btnnextfir);
+        Log.e("nextapi3", "" + addonlimit);
+
+        Log.e("addbuttonclick1", "" + ItemName);
+        Log.e("addbuttonclick2", "" + addonid);
+        Log.e("addbuttonclick3", "" + categoryname);
+        Log.e("addbuttonclick4", "" + subcategoryname);
+
+
+        SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+        editor_extra.putString("addon_extra", "");
+        editor_extra.commit();
+
+
+//add adddon id in array
+
+        aidlist = new ArrayList<String>();
+        aidlist.clear();
+
+
+        //Item Name
+        listItems = new ArrayList<String>();
+        listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
+        chipdatastore.clear();
+        tag_group.removeAllViews();
+
+
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
+        selected_addon_item_view.setAdapter(adapter);
+
+
+        arrayextranameDataadd = new ArrayList<String>();
+        arrayextranameDataadd.clear();
+        arrayextranameDataaddsize = new ArrayList<Integer>();
+        arrayextranameDataaddsize.clear();
+
+
+        listItemsidssize = new ArrayList<Integer>();
+        listItemsidssize.clear();
+        arrayaddonitemidadd = new ArrayList<>();
+        arrayaddonitemidadd.clear();
+
+
+        arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
+        arrayaddonextraidsingleaddsize.clear();
+        arrayaddonextraidsingleadd = new ArrayList<>();
+        arrayaddonextraidsingleadd.clear();
+
+        //Item Id
+        listItemsids = new ArrayList<String>();
+        listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+        adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
+
+        //Item Extra Addon
+        listItemsexraids = new ArrayList<String>();
+        listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
+        adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
+
+
+        item_priceadd = new ArrayList<String>();
+        item_priceadd.clear();
+
+        item_pricesize = new ArrayList<>();
+        item_pricesize.clear();
+
+
+        addonitemfirstview(ItemName, addonid, "", "", "1");
+    }
+
     /*---------------------------MenuItemAdapter item value get addon button click----------------------------------------------------*/
     public BroadcastReceiver addonbtnnextid = new BroadcastReceiver() {
         @Override
@@ -4143,7 +4245,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             }
 
             selected_addon_item_view.setVisibility(View.GONE); // Visiable
-            tag_group.setVisibility(View.VISIBLE);
+            chip_scroll.setVisibility(View.VISIBLE);
 
             Log.e("arrayaddonitemid", "" + arrayaddonitemid);
             Log.e("arrayaddonextraidsingle", "" + arrayaddonextraidsingle);
@@ -4498,7 +4600,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             tag_group.removeAllViews();
 
             selected_addon_item_view.setVisibility(View.GONE);
-            tag_group.setVisibility(View.GONE);
+            chip_scroll.setVisibility(View.GONE);
         } else {
             btnClear.setVisibility(View.VISIBLE);
         }
@@ -4963,11 +5065,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
                                         sharedpre_offer_details.getString("offer_code",null),
                                         sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
-
-
-                            }else{
-
-                                Log.d("Offer_page_total--->3"," " + "Not Applied");
 
                             }
 

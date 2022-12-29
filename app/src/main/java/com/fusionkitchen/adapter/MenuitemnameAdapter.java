@@ -1955,6 +1955,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                     intent.putExtra("addonid", response.body().getAddonId());
                                     intent.putExtra("categoryname", listdatum.getName());
                                     intent.putExtra("subcategoryname", sub.getName());
+                                    intent.putExtra("addonchoosepopup","");
                                     intent.putExtra("item_price_amt", items[position].getPrice());
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
@@ -2011,6 +2012,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 intent.putExtra("addonid", response.body().getAddonId());
                                                 intent.putExtra("categoryname", listdatum.getName());
                                                 intent.putExtra("subcategoryname", sub.getName());
+                                                intent.putExtra("addonchoosepopup","");
                                                 intent.putExtra("item_price_amt", items[position].getPrice());
                                                 intent.putExtra("item_description", items[position].getDescription());
                                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
@@ -2031,6 +2033,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 intent.putExtra("addonid", response.body().getAddonId());
                                                 intent.putExtra("categoryname", listdatum.getName());
                                                 intent.putExtra("subcategoryname", sub.getName());
+                                                intent.putExtra("addonchoosepopup","");
                                                 intent.putExtra("item_price_amt", items[position].getPrice());
                                                 intent.putExtra("item_description", items[position].getDescription());
                                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
@@ -2055,14 +2058,16 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         @Override
                                         public void onClick(View v) {
 
-                                        /*    String ItemName = items[position].getId();
-                                            Intent intent = new Intent("Item_details");
+                                            String ItemName = items[position].getId();
+                                            Intent intent = new Intent("custom-message");
                                             intent.putExtra("item", ItemName);
                                             intent.putExtra("addonid", response.body().getAddonId());
                                             intent.putExtra("categoryname", listdatum.getName());
                                             intent.putExtra("subcategoryname", sub.getName());
+                                            intent.putExtra("addonchoosepopup","addonpopup");
                                             intent.putExtra("item_price_amt", items[position].getPrice());
-                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);*/
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
                                             repeatpopup.dismiss();
                                         }
                                     });

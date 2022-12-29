@@ -1343,6 +1343,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
                                     intent.putExtra("item", ItemName);
                                     intent.putExtra("addonid", response.body().getAddonId());
                                     intent.putExtra("categoryname", "");
+                                    intent.putExtra("addonchoosepopup","");
                                     intent.putExtra("subcategoryname", "");
                                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
                                     hideloading();
@@ -1384,7 +1385,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public TextView item_name, item_price, menu_item_add;
+        public TextView item_name, item_price;
+        LinearLayout menu_item_add;
 
         public ViewHolder(View itemView) {
             super(itemView);

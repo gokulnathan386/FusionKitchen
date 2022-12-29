@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 
 import static android.text.Html.fromHtml;
@@ -42,6 +46,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     private String  menuurlpath;
     Dialog dialog;
     RecyclerView recyclerviewitem;
+    Handler handler = new Handler();
 
 
     public MenuItemAdapter(Context mContext, List<menu_item_sub_model.categoryall> listdata,  String menuurlpath,RecyclerView recyclerviewitem) {
@@ -100,19 +105,37 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
+                loadingshow();
 
-                if (holder.child_recyclerview.getVisibility() == View.GONE) {
+               if (holder.child_recyclerview.getVisibility() == View.GONE) {
                     holder.child_recyclerview.setVisibility(View.VISIBLE);
                     holder.dropdownindicator.setRotation((float) 180.0);
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           hideloading();
+                       }
+                   }, 4000);
+
                 } else {
+
                     holder.child_recyclerview.setVisibility(View.GONE);
                     holder.dropdownindicator.setRotation((float) 360.0);
-                }
+
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           hideloading();
+                       }
+                   }, 4000);
+
+               }
 
                 Intent intent = new Intent("item_possion-message");
                 intent.putExtra("itempossion", String.valueOf(position));
                 intent.putExtra("itempossionname",listdata[position].getName());
                 LocalBroadcastManager.getInstance(mContext.getApplicationContext()).sendBroadcast(intent);
+
 
             }
         });
@@ -146,8 +169,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
                 for(int y = 0; y < listdata.length; y++){
                     if(position==Integer.parseInt(itempossion)){
+
                         holder.child_recyclerview.setVisibility(View.VISIBLE);
                         holder.dropdownindicator.setRotation((float) 180.0);
+
                     }else{
                         holder.child_recyclerview.setVisibility(View.GONE);
                         holder.dropdownindicator.setRotation((float) 360.0);
@@ -161,6 +186,26 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
     }
 
+    private void loadingshow() {
+        dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_loading_layout);
+
+        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+
+        Glide.with(mContext)
+                .load(R.drawable.loading)
+                .placeholder(R.drawable.loading)
+                .centerCrop()
+                .into(gifImageView);
+
+        dialog.show();
+    }
+
+    public void hideloading() {
+        dialog.dismiss();
+    }
 
 
     @SuppressLint("LogNotTimber")

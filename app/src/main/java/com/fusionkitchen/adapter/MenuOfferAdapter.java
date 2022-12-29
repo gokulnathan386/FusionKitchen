@@ -308,7 +308,7 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<coupon_valid_model> call = apiService.getcouponvalid(fullUrl, params);
 
-        Log.e("paramsval", "" + params);
+        Log.e("paramsval", "" + params + " " +fullUrl);
 
         call.enqueue(new Callback<coupon_valid_model>() {
             @Override
@@ -321,6 +321,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                     String offer_msg =  response.body().getMsg();
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        Log.d("OfferCoupen_if--->"," " + offer_msg);
 
                        String discount =  response.body().getDiscount();
                        String code =  response.body().getCode();
@@ -384,6 +386,8 @@ public class MenuOfferAdapter extends RecyclerView.Adapter<MenuOfferAdapter.View
                         Coupen_popup.getWindow().setGravity(Gravity.BOTTOM);
 
                     }else{
+
+                        Log.d("OfferCoupen_else--->"," " + offer_msg);
                         Toast.makeText(mContext, offer_msg, Toast.LENGTH_LONG).show();
                     }
 

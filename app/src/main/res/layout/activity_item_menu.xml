@@ -562,6 +562,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:background="#FFFFFF"
+                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <androidx.cardview.widget.CardView
@@ -1329,15 +1330,22 @@
                                     android:verticalSpacing="8dp"
                                     />
 
+                                <ScrollView
+                                    android:id="@+id/chip_scroll"
+                                    android:visibility="gone"
+                                    android:scrollbars="none"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp">
 
                                 <com.google.android.material.chip.ChipGroup
                                     android:id="@+id/tag_group"
                                     android:layout_below="@id/selected_addon_item_view"
                                     android:layout_width="match_parent"
-                                    android:visibility="gone"
                                     android:layout_height="wrap_content"
                                     />
 
+                                </ScrollView>
 
                             </LinearLayout>
 
