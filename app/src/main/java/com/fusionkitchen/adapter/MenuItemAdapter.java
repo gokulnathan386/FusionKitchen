@@ -105,29 +105,29 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
-                loadingshow();
+                //loadingshow();
 
                if (holder.child_recyclerview.getVisibility() == View.GONE) {
                     holder.child_recyclerview.setVisibility(View.VISIBLE);
                     holder.dropdownindicator.setRotation((float) 180.0);
-                   handler.postDelayed(new Runnable() {
+                 /*  handler.postDelayed(new Runnable() {
                        @Override
                        public void run() {
                            hideloading();
                        }
-                   }, 4000);
+                   }, 4000);*/
 
                 } else {
 
                     holder.child_recyclerview.setVisibility(View.GONE);
                     holder.dropdownindicator.setRotation((float) 360.0);
 
-                   handler.postDelayed(new Runnable() {
+                /*   handler.postDelayed(new Runnable() {
                        @Override
                        public void run() {
                            hideloading();
                        }
-                   }, 4000);
+                   }, 4000);*/
 
                }
 

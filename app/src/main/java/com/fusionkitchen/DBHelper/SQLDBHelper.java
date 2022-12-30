@@ -1,5 +1,6 @@
 package com.fusionkitchen.DBHelper;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -182,6 +183,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     }
 
 
+    @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> Getqtyprice(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
@@ -208,6 +210,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> getallvalue(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
@@ -236,6 +239,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
 
     }
 
+    @SuppressLint("Range")
     public ArrayList<String> getqtycount() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> array_list = new ArrayList<String>();
@@ -250,6 +254,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     }
 
 
+    @SuppressLint("Range")
     public ArrayList<String> gettotalamt() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> array_list = new ArrayList<String>();
@@ -263,7 +268,24 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
+   /* @SuppressLint("Range")
+    public ArrayList<String> singleitem_total_qty(String item_id) {
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<String>();
+        Cursor res = db.rawQuery("SELECT SUM(itemqty) AS totalqty FROM item WHERE "+ ITEM_ID + " = ? ",  new String[] {item_id});
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            array_list.add(res.getString(res.getColumnIndex("totalqty")));
+            res.moveToNext();
+        }
+        return array_list;
+
+    }*/
+
+
+    @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> Getqtypriceaddon(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
@@ -278,6 +300,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return userList;
     }
 
+    @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> Remoeveqtyprice(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
@@ -293,6 +316,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     }
 
 
+    @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> GetUserdetails(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();

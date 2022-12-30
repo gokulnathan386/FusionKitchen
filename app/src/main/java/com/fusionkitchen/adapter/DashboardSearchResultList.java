@@ -345,21 +345,15 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-
-
-
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences(Favourite_data,MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("menuurlpath", listdata[position].getMenuurlpath());
                 myEdit.putInt("client_id", Integer.parseInt(listdata[position].getClientID()));
                 myEdit.commit();
 
-
-
                 Intent intent = new Intent("custom-message-menuurlpath");
                 intent.putExtra("menuurlpath", listdata[position].getMenuurlpath());
                 intent.putExtra("client_id", listdata[position].getClientID());
-
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
 

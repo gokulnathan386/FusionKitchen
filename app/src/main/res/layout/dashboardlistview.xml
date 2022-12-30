@@ -19,21 +19,6 @@
             android:id="@+id/collapsing_toolbar"
             app:title="@string/app_name"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-            <!--
-            app:contentScrim="?attr/colorControlNormal"
-           -->
-
-<!--
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/Enter_your_RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginBottom="5dp"
-                android:overScrollMode="never"
-                android:scrollbars="horizontal" />-->
-
 
             <LinearLayout
                 android:id="@+id/dynamic_and_static_listview"

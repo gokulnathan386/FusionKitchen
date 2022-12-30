@@ -306,9 +306,11 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         bottomNav = findViewById(R.id.bottom_navigation);
 
+
         Log.e("cursor", "" + cursor);
 
         BottomNavigationItemView itemView = bottomNav.findViewById(R.id.home_card);
+
 
         bottomNav.getMenu().setGroupCheckable(0, false, true);
 
@@ -329,6 +331,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 handler.postDelayed(this, delay);
             }
         }, delay);
+
+
+
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

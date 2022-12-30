@@ -450,11 +450,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 if(20 < ScrollRange){
                     MarginLayoutParams params = (MarginLayoutParams) recyclerviewitem.getLayoutParams();
                     params.topMargin = 10;
+                    params.bottomMargin = 100;
                     top_card_view.setVisibility(View.INVISIBLE);
                 }else{
                     MarginLayoutParams params = (MarginLayoutParams) recyclerviewitem.getLayoutParams();
                     params.topMargin = 135;
-                    params.bottomMargin = 20;
+                    params.bottomMargin = 100;
                     top_card_view.setVisibility(View.VISIBLE);
 
                     MarginLayoutParams searchbox = (MarginLayoutParams) search_layout.getLayoutParams();
@@ -957,6 +958,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         } else {
             add_to_cart_layout.setVisibility(View.INVISIBLE);
+
+
+
             menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address,key_lat,key_lon);//menu item call api
 
             SharedPreferences sharedpreferences = getSharedPreferences("PREFS_MOREINFO", Context.MODE_PRIVATE);
@@ -1244,9 +1248,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 menu_addon_item_view.setVisibility(View.GONE);
                // mAddFab.setVisibility(View.VISIBLE);
                 add_to_cart_layout.setVisibility(View.VISIBLE);
+
                 if (cursor != 0) {
                 } else {
                     add_to_cart_layout.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -1501,6 +1507,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             add_to_cart_layout.setVisibility(View.INVISIBLE);
 
+
         }
     };
 
@@ -1511,6 +1518,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             String item_id = intent.getStringExtra("item_id_sqlite");
             add_to_cart_layout.setVisibility(GONE);
+
          //   mAddFab.setVisibility(View.GONE);
             dbHelper.deleteItemRow(item_id);
 
@@ -3801,9 +3809,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         public void onReceive(Context context, Intent intent) {
             getContactsCount();
             menu_addon_item_view.setVisibility(View.GONE);
-         //   mAddFab.setVisibility(View.VISIBLE);
 
-           // add_to_cart_layout.setVisibility(View.VISIBLE);
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
 
             ArrayList<String> get_qty_count = dbHelper.getqtycount();
@@ -3812,13 +3818,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
             ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-            Log.d("gokulnathane"," " + get_amt_count.get(0));
+
 
             if(get_amt_count.get(0) != null){
                 total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
                 add_to_cart_layout.setVisibility(View.VISIBLE);
+
             }else{
                 add_to_cart_layout.setVisibility(View.GONE);
+
             }
            // total_amount_textview.setText(""+String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
 
@@ -3939,17 +3947,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             int userList = dbHelper.GetUserByUserId(parseInt(ItemName));
 
+            if (userList == 0 || Addon_up_data.equalsIgnoreCase("addonpopup")) {
 
 
-
-
-Log.d("addonpopup--->"," " +Addon_up_data);
-
-            if (userList == 0) {
-
-                test();
-
-           /*
                 addonitemarrayextraData = "";
                 addonitemid = "";
                 selected_addon_item_view.setVisibility(View.GONE);
@@ -4026,11 +4026,8 @@ Log.d("addonpopup--->"," " +Addon_up_data);
 
 
                 addonitemfirstview(ItemName, addonid, "", "", "1");
-*/
 
-            } /*else if(Addon_up_data.equalsIgnoreCase("addonpopup")){
-                 test();
-            }*/else {
+            } else {
 
                 ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(parseInt(ItemName));
 
@@ -4079,85 +4076,6 @@ Log.d("addonpopup--->"," " +Addon_up_data);
         }
     };
 
-    private void test() {
-
-        addonitemarrayextraData = "";
-        addonitemid = "";
-        selected_addon_item_view.setVisibility(View.GONE);
-        chip_scroll.setVisibility(View.GONE);
-
-        item_price_btn = true;
-
-
-        Log.e("nextapi1", "" + nextaid);
-        Log.e("nextapi2", "" + btnnextfir);
-        Log.e("nextapi3", "" + addonlimit);
-
-        Log.e("addbuttonclick1", "" + ItemName);
-        Log.e("addbuttonclick2", "" + addonid);
-        Log.e("addbuttonclick3", "" + categoryname);
-        Log.e("addbuttonclick4", "" + subcategoryname);
-
-
-        SharedPreferences.Editor editor_extra = sharedpreferences.edit();
-        editor_extra.putString("addon_extra", "");
-        editor_extra.commit();
-
-
-//add adddon id in array
-
-        aidlist = new ArrayList<String>();
-        aidlist.clear();
-
-
-        //Item Name
-        listItems = new ArrayList<String>();
-        listItems.clear();//.removeAll(Collections.singleton(arrayextranameData));
-        chipdatastore.clear();
-        tag_group.removeAllViews();
-
-
-        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.raw_simple_list_item, R.id.selected_item, listItems);
-        selected_addon_item_view.setAdapter(adapter);
-
-
-        arrayextranameDataadd = new ArrayList<String>();
-        arrayextranameDataadd.clear();
-        arrayextranameDataaddsize = new ArrayList<Integer>();
-        arrayextranameDataaddsize.clear();
-
-
-        listItemsidssize = new ArrayList<Integer>();
-        listItemsidssize.clear();
-        arrayaddonitemidadd = new ArrayList<>();
-        arrayaddonitemidadd.clear();
-
-
-        arrayaddonextraidsingleaddsize = new ArrayList<Integer>();
-        arrayaddonextraidsingleaddsize.clear();
-        arrayaddonextraidsingleadd = new ArrayList<>();
-        arrayaddonextraidsingleadd.clear();
-
-        //Item Id
-        listItemsids = new ArrayList<String>();
-        listItemsids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-        adapterids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsids);
-
-        //Item Extra Addon
-        listItemsexraids = new ArrayList<String>();
-        listItemsexraids.clear();//.removeAll(Collections.singleton(arrayaddonitemid));
-        adapterexraids = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, listItemsexraids);
-
-
-        item_priceadd = new ArrayList<String>();
-        item_priceadd.clear();
-
-        item_pricesize = new ArrayList<>();
-        item_pricesize.clear();
-
-
-        addonitemfirstview(ItemName, addonid, "", "", "1");
-    }
 
     /*---------------------------MenuItemAdapter item value get addon button click----------------------------------------------------*/
     public BroadcastReceiver addonbtnnextid = new BroadcastReceiver() {
@@ -4654,6 +4572,7 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                         //bottom_nav.setVisibility(View.GONE);
                         add_to_cart_layout.setVisibility(View.GONE);
 
+
                         addon_item_name.setText(response.body().getDATA().getOrderitemname());
                         addon_item_addonname.setText(response.body().getDATA().getAddondescription());
 
@@ -4790,8 +4709,7 @@ Log.d("addonpopup--->"," " +Addon_up_data);
             @Override
             public void onFailure(Call<menu_addons_model> call, Throwable t) {
                 Log.e("bugcode", "" + t.toString());
-                // Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                // Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
                 hideloading();
             }
         });
@@ -4829,6 +4747,8 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                       //  mAddFab.setVisibility(View.GONE);
                         // bottom_nav.setVisibility(View.GONE);
                         add_to_cart_layout.setVisibility(View.GONE);
+
+
 
                         addon_item_name.setText(response.body().getDATA().getOrderitemname());
                         addon_item_addonname.setText(response.body().getDATA().getAddondescription());
@@ -4996,6 +4916,7 @@ Log.d("addonpopup--->"," " +Addon_up_data);
         params.put("ext", str_itemexradsstr);
         params.put("ordermode", str_ordertype);
 
+
         addonscessfullUrl = menuurlpath + "/menu" + "/itemaddaddon";
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<final_addon_add_model> call = apiService.final_addon_add(addonscessfullUrl, params);
@@ -5013,18 +4934,16 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
                         add_to_cart_layout.setVisibility(View.INVISIBLE);
+
+
                         Log.e("addon_latcode", ": " + response.body().getError_code());
                         Log.e("addon_latcode", ": " + response.body().getError_message());
+
 
 
                         if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems,
                                 str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt,
                                 str_categoryname, str_subcategoryname)) {
-
-
-                            Log.e("nextapi1", "" + nextaid);
-                            Log.e("nextapi2", "" + btnnextfir);
-                            Log.e("nextapi3", "" + addonlimit);
 
                             /*-----------------------start Local broadcastManager send  Menuitem_name_adapter---------------------*/
 
@@ -5046,8 +4965,6 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                             getContactsCount();
 
                             menu_addon_item_view.setVisibility(View.GONE);
-                          //  mAddFab.setVisibility(View.VISIBLE);
-                            //add_to_cart_layout.setVisibility(View.VISIBLE);
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
                             total_item.setText(get_qty_count.get(0) + "");
                             Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
@@ -5078,6 +4995,7 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                                 public void onFinish() {
                                     getContactsCount();
                                     add_to_cart_layout.setVisibility(View.VISIBLE);
+
                                     ArrayList<String> get_qty_count = dbHelper.getqtycount();
                                     total_item.setText(get_qty_count.get(0) + "");
 
@@ -5094,11 +5012,6 @@ Log.d("addonpopup--->"," " +Addon_up_data);
                                         couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
                                                 sharedpre_offer_details.getString("offer_code",null),
                                                 sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
-
-
-                                    }else{
-
-                                        Log.d("Offer_page_total--->4"," " + "Not Applied");
 
                                     }
 
@@ -5143,7 +5056,6 @@ Log.d("addonpopup--->"," " +Addon_up_data);
             @Override
             public void run() {
                 toast.cancel();
-                //add_to_cart_layout.setVisibility(View.VISIBLE);
             }
         }, 1000);
 

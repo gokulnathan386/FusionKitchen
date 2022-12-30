@@ -45,6 +45,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import com.fusionkitchen.adapter.DashboardListViewAdapter;
@@ -96,6 +97,7 @@ public class Dashboard_Activity extends AppCompatActivity {
     Internet_connection_checking int_chk;
     HttpUrl baseUrl;
     int bottonkey;
+    Dialog dialog;
 
     /*---------------------------Session Manager Class----------------------------------------------------*/
     // Session Manager Class
@@ -758,6 +760,8 @@ public class Dashboard_Activity extends AppCompatActivity {
             // Get extra data included in the Intent
             menuurlpath = intent.getStringExtra("menuurlpath");
 
+
+
             getContactsCount();
 
             Log.e("dasbcursor", "" + cursor);
@@ -766,12 +770,9 @@ public class Dashboard_Activity extends AppCompatActivity {
 
 
             if (!sharedpreferences.getString("menuurlpath", null).equalsIgnoreCase(menuurlpath) && cursor != 0) {
-
                 clear_list_layout.setVisibility(View.VISIBLE);
 
             } else {
-
-
                 Intent intenttwo = new Intent(Dashboard_Activity.this, Item_Menu_Activity.class);
                 intenttwo.putExtra("menuurlpath", menuurlpath);
                 intenttwo.putExtra("reloadback", "1");
@@ -934,53 +935,7 @@ public class Dashboard_Activity extends AppCompatActivity {
 
         });
     }
-    /* *//*---------------------------get api order type values----------------------------------------------------*//*
-    private void ordertypecheck(Integer otp) {
-        final ProgressDialog loader = ProgressDialog.show(Dashboard_Activity.this, "", "Loading...", true);
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("order_type", otp);
-        // get user data from session
-        HashMap<String, String> user = session.getUserDetails();
-        authKey = user.get(SessionManager.KEY_phpsessid);
 
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<order_type_modal> call = apiService.getordertype(authKey, params);
-        call.enqueue(new Callback<order_type_modal>() {
-            @Override
-            public void onResponse(Call<order_type_modal> call, Response<order_type_modal> response) {
-                response.headers().get("Set-Cookie");
-                int statusCode = response.code();
-                if (statusCode == 200) {
-                    loader.dismiss();
-                    if (response.body().getSTATUS().equalsIgnoreCase("true")) {
-                        url.setText(response.body().getClientinfo().getPostcode());
-                    } else {
-                        if (response.body().getLocations() != null) {
-                            Snackbar.make(Dashboard_Activity.this.findViewById(android.R.id.content), response.body().getLocations(), Snackbar.LENGTH_LONG).show();
-                        } else {
-                            Snackbar.make(Dashboard_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-                } else {
-                    loader.dismiss();
-                    Snackbar.make(Dashboard_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                    // Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<order_type_modal> call, Throwable t) {
-                loader.dismiss();
-                Snackbar.make(Dashboard_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-            }
-
-
-        });
-
-    }
-*/
     /*---------------------------check internet connection----------------------------------------------------*/
 
 
@@ -1023,6 +978,7 @@ public class Dashboard_Activity extends AppCompatActivity {
         Log.e("tmpStr10", "" + cursor);
         return cursor;
     }
+
 
     /*---------------------------Warning dialog show----------------------------------------------------*/
    /* public class ViewwarningDialog {

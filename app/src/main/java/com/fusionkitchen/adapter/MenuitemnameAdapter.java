@@ -1967,6 +1967,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             holder.menu_item_add.setVisibility(GONE);
                                             holder.increment_decrement_layout.setVisibility(View.VISIBLE);
 
+                                     /*       ArrayList<String> total_id_qty = dbHelper.singleitem_total_qty(itempossion);
+
+                                             Log.d("sdkfghksdghfkshgdkjfhg"," " + total_id_qty.get(0));*/
+
                                         }
                                     }, new IntentFilter("add_on_btn_enable_adapter"));
 
