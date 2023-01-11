@@ -281,7 +281,6 @@
 
                         </RelativeLayout>
 
-
                     </LinearLayout>
 
 
@@ -1309,6 +1308,7 @@
                                     android:layout_marginLeft="10dp"
                                     android:textColor="#17284D"
                                     android:textSize="@dimen/_12sdp" />
+
                             </LinearLayout>
 
 

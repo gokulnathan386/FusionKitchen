@@ -72,7 +72,7 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
     String MyPREFERENCES = "MyPrefs_extra";
     SharedPreferences sharedpreferences1;
     String PREFS_MOREINFO = "PREFS_MOREINFO";
-
+    double amtfloat = 0.00;
 
     public CartitemlistAdapter(Context context, ArrayList<Cartitem> listContacts,
                                String menuurlpath, String subcategory_printers,
@@ -122,8 +122,8 @@ public class CartitemlistAdapter extends RecyclerView.Adapter<CartitemlistAdapte
         holder.tvitem_addon_name.setText(contacts.getDesc());
         holder.tvinteger_number.setText(contacts.getQty());
         Log.d("add_to_cart"," " + contacts.getAmount());
-        holder.tvitem_total.setText(contacts.getFinalamt());
-
+       // holder.tvitem_total.setText(contacts.getFinalamt());
+        holder.tvitem_total.setText(String.format("%.2f", amtfloat + Double.parseDouble(contacts.getFinalamt() + "")));
 
         if (holder.tvinteger_number.getText().toString().equalsIgnoreCase("1")) {
             holder.tvdecrease.setImageDrawable(context.getResources().getDrawable(R.drawable.delete_item));

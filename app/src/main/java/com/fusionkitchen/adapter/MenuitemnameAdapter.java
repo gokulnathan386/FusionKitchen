@@ -50,7 +50,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fusionkitchen.activity.Dashboard_Activity;
-import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.AdapterListData;
 import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
@@ -79,7 +78,6 @@ import retrofit2.Response;
 
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
-import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.Integer.parseInt;
@@ -92,6 +90,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     public static final String PREORDERPREFERENCES = "pre_order_popup";
     String menu_time_update,coll_del_time;
     ViewHolder textvisiable;
+    Boolean single_popup = false;
 
     private menu_item_sub_model.categoryall.subcat.items[] items;
     private Dialog dialog;
@@ -151,6 +150,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     ArrayList<String> allContacts;
     String single_itemqty, single_itemamt;
     String position2;
+
+    String remove_qty,remove_item_addon,remove_id;
+
     // RecyclerView recyclerView;
     public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub, menu_item_sub_model.categoryall listdatum) {
 
@@ -185,31 +187,53 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
 
-        allContacts = dbHelper.getitemlist();
+               allContacts = dbHelper.getitemlist();
 
                 for (int k = 0; k<allContacts.size();k++){
 
+
+
                     if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
 
-                        ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(Integer.parseInt(items[position].getId()));
 
 
-                        for (int i=0;i<qtypice.size();i++) {
+                          ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
 
-                             HashMap<String, String> hashmap= qtypice.get(i);
+                          holder.menu_item_add.setVisibility(GONE);
+                          holder.increment_decrement_layout.setVisibility(View.VISIBLE);
 
-                             getqtysqlite_value = hashmap.get("qty");
-                             getamtsqlite_value = hashmap.get("itemaddontotalamt");
-                        }
+                          int count = get_count.get(0).length();
 
-                        holder.menu_item_add.setVisibility(GONE);
-                        holder.increment_decrement_layout.setVisibility(View.VISIBLE);
-                        holder.qty_textview_number.setText(getqtysqlite_value);
-
+                          if(count == 1){
+                              holder.qty_textview_number.setText("0"+get_count.get(0));
+                          }else{
+                              holder.qty_textview_number.setText(""+get_count.get(0));
+                          }
 
                     }
 
             }
+
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
+
+                try {
+                        String count = String.valueOf(get_count.get(0).length());
+                        if(count.equalsIgnoreCase("1")){
+                            holder.qty_textview_number.setText("0"+get_count.get(0));
+                        }else{
+                            holder.qty_textview_number.setText(""+get_count.get(0));
+                        }
+
+                    } catch(NullPointerException e) {
+                        Log.d("Null_point_Expection","" + e);
+                  }
+            }
+        }, new IntentFilter("total_item_qty"));
 
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
@@ -217,7 +241,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         Log.e("otypeaction", "" + sharedpreferences.getString("orderactivetag", null));
 
         if(items[position].getImage().equalsIgnoreCase("")){
-        //    holder.layout_logo.setVisibility(GONE);
             holder.menu_item_image.setVisibility(GONE);
         }else{
             Picasso.get()
@@ -351,26 +374,22 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 textview_qty.setText("01");
                              }
 
-                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
 
-                            for (int i=0;i<qtypice.size();i++)
-                            {
-                                HashMap<String, String> hashmap= qtypice.get(i);
+                            ArrayList<HashMap<String, String>> qtypice3 = dbHelper.getlastposition(id);
 
-                                removeqty = hashmap.get("qty");
-                                removefinalamt = hashmap.get("itemaddontotalamt");
-                            }
+                                for (int i = 0; i < qtypice3.size(); i++) {
+                                    HashMap<String, String> hashmap = qtypice3.get(i);
+                                     remove_qty =  hashmap.get("qty");
+                                     remove_item_addon = hashmap.get("itemaddontotalamt");
+                                     remove_id = hashmap.get("id");
+                                }
 
-                            int database_qty =  Math.round(Float.parseFloat(removeqty));
-
+                            int database_qty =  Math.round(Float.parseFloat(remove_qty));
                             int qty  = database_qty - 1;
-
-                            String price  = removefinalamt;
-
+                            String price  = remove_item_addon;
                             float total_amt = Float.parseFloat(price) * qty;
 
-                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
-
+                            Boolean updatevalue = dbHelper.repeat_last_pop_up(Integer.parseInt(remove_id), qty, total_amt);
 
                             Intent intent = new Intent("item_successfully_custom-message");
                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
@@ -403,6 +422,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     count -= 1;
                     length = String.valueOf(count).length();
 
+
                     if(length == 1){
 
                         holder.qty_textview_number.setText("0" + count);
@@ -412,26 +432,28 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                         }
 
 
-                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
-                            for (int i=0;i<qtypice.size();i++)
-                            {
-                                HashMap<String, String> hashmap= qtypice.get(i);
+                        ArrayList<HashMap<String, String>> qtypice3 = dbHelper.getlastposition(id);
 
-                                removeqty = hashmap.get("qty");
-                                removefinalamt = hashmap.get("itemaddontotalamt");
-                            }
+                        for (int i = 0; i < qtypice3.size(); i++) {
+                            HashMap<String, String> hashmap = qtypice3.get(i);
+                            remove_qty =  hashmap.get("qty");
+                            remove_item_addon = hashmap.get("itemaddontotalamt");
+                            remove_id = hashmap.get("id");
+                        }
 
-                            int database_qty =  Math.round(Float.parseFloat(removeqty));
+                        int database_qty =  Math.round(Float.parseFloat(remove_qty));
+                        int qty  = database_qty - 1;
+                        String price  = remove_item_addon;
+                        float total_amt = Float.parseFloat(price) * qty;
 
-                            int qty  = database_qty - 1;
+                        if(remove_qty.equalsIgnoreCase("1")){
+                             dbHelper.deleteItem(Integer.parseInt(remove_id));
+                        }else{
+                            Boolean updatevalue = dbHelper.repeat_last_pop_up(Integer.parseInt(remove_id), qty, total_amt);
+                        }
 
-                            String price  = removefinalamt;
-
-                            float total_amt = Float.parseFloat(price) * qty;
-                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
-
-                            Intent intent = new Intent("item_successfully_custom-message");
-                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                        Intent intent = new Intent("item_successfully_custom-message");
+                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
                     }else{
 
@@ -440,23 +462,25 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             textview_qty.setText("" + count);
                         }
 
-                            ArrayList<HashMap<String, String>> qtypice = dbHelper.Remoeveqtyprice(parseInt(id));
-                            for (int i=0;i<qtypice.size();i++)
-                            {
-                                HashMap<String, String> hashmap= qtypice.get(i);
+                        ArrayList<HashMap<String, String>> qtypice3 = dbHelper.getlastposition(id);
 
-                                removeqty = hashmap.get("qty");
-                                removefinalamt = hashmap.get("itemaddontotalamt");
-                            }
+                        for (int i = 0; i < qtypice3.size(); i++) {
+                            HashMap<String, String> hashmap = qtypice3.get(i);
+                            remove_qty =  hashmap.get("qty");
+                            remove_item_addon = hashmap.get("itemaddontotalamt");
+                            remove_id = hashmap.get("id");
+                        }
 
-                            int database_qty =  Math.round(Float.parseFloat(removeqty));
+                        int database_qty =  Math.round(Float.parseFloat(remove_qty));
+                        int qty  = database_qty - 1;
+                        String price  = remove_item_addon;
+                        float total_amt = Float.parseFloat(price) * qty;
 
-                            int qty  = database_qty - 1;
-
-                            String price  = removefinalamt;
-
-                            float total_amt = Float.parseFloat(price) * qty;
-                            Boolean updatevalue  =  dbHelper.Updateqtyprice(parseInt(id),qty,total_amt);
+                        if(remove_qty.equalsIgnoreCase("1")){
+                            dbHelper.deleteItem(Integer.parseInt(remove_id));
+                        }else{
+                            Boolean updatevalue = dbHelper.repeat_last_pop_up(Integer.parseInt(remove_id), qty, total_amt);
+                        }
 
                             Intent intent = new Intent("item_successfully_custom-message");
                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
@@ -464,7 +488,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     }
 
                 }
-
 
     }
 
@@ -620,9 +643,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
             if(allContacts.get(k).equalsIgnoreCase(item_id)){
 
-                Log.d("Qty_itemIdTest---",allContacts.get(k)+"========"+item_id);
-
-                ArrayList<HashMap<String, String>> single_item_id = dbHelper.Getqtypriceaddon(Integer.parseInt(item_id));
+                /*ArrayList<HashMap<String, String>> single_item_id = dbHelper.Getqtypriceaddon(Integer.parseInt(item_id));
 
                 for (int i=0;i<single_item_id.size();i++) {
 
@@ -631,9 +652,18 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                     single_itemqty = hashmap1.get("qty");
                     single_itemamt = hashmap1.get("itemaddontotalamt");
 
-                }
+                }*/
 
-                textview_qty.setText(single_itemqty);
+                //textview_qty.setText(single_itemqty);
+
+                ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
+                int count = get_count.get(0).length();
+
+                if(count == 1){
+                    textview_qty.setText("0"+get_count.get(0));
+                }else{
+                    textview_qty.setText(""+get_count.get(0));
+                }
                 plus_linearlayout.setVisibility(GONE);
                 plus_minus_symbol.setVisibility(View.VISIBLE);
 
@@ -688,6 +718,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             @Override
             public void onClick(View v) {
                 item_view_dismiss = 1;
+                single_popup = true;
                 addonitem(v,position,holder);
 
             }
@@ -1850,8 +1881,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                         "", items[position].getPrice(), "1", items[position].getPrice(),
                                         items[position].getPrice(), listdatum.getName(), sub.getName())) {
 
-
-
                                     Log.d("item_add_time5- MenuitemnameAdapter",items[position].getName()+ "\n" + items[position].getId()+ "\n" +
                                             items[position].getPrice()+""+listdatum.getName()+"\n"+sub.getName()
                                     );
@@ -1866,10 +1895,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                     Customertoastmessage(view);
 
-
-                                   /* Intent intent = new Intent("item_successfully_custom-message");
-                                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-*/
 
 
                                 } else {
@@ -1966,10 +1991,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             String itempossion = intent.getStringExtra("item_id_activity");
                                             holder.menu_item_add.setVisibility(GONE);
                                             holder.increment_decrement_layout.setVisibility(View.VISIBLE);
-
-                                     /*       ArrayList<String> total_id_qty = dbHelper.singleitem_total_qty(itempossion);
-
-                                             Log.d("sdkfghksdghfkshgdkjfhg"," " + total_id_qty.get(0));*/
 
                                         }
                                     }, new IntentFilter("add_on_btn_enable_adapter"));
@@ -2072,6 +2093,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             intent.putExtra("item_price_amt", items[position].getPrice());
                                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
+                                            if(single_popup = true){
+                                                single_popup = false;
+                                                item_view.dismiss();
+                                            }
                                             repeatpopup.dismiss();
                                         }
                                     });

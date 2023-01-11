@@ -13,7 +13,13 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +28,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +74,6 @@ import com.freshchat.consumer.sdk.FreshchatConfig;
 import com.fusionkitchen.adapter.EatListAdapter;
 import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
 import com.fusionkitchen.adapter.Slider_adapter;
-import com.fusionkitchen.adapter.The_Slide_items_Pager_Adapter;
 import com.fusionkitchen.model.EatListPostelModel;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
@@ -79,6 +85,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +106,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
-import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,7 +116,6 @@ import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
 public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -116,6 +123,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
     int bottonkey;
+    Dialog offerPopup;
+    Bitmap myBitmap;
 
     private List<String> listItems;
     private ViewPager page;
@@ -160,7 +169,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     SharedPreferences.Editor sloginEditor;
 
     /*--------------------------Login postcode save local------------------------*/
-    SharedPreferences sharedptcode;
+    SharedPreferences sharedptcode,offer_splash;
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
 
 
@@ -186,6 +195,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     String APP_TITLE = "Fusion Kitchen";// App Name
     private final static String APP_PNAME = "com.fusionkitchen";// Package Name
     CardView cads;
+    Boolean offervalue;
 
     /*--------------------------RecyclerView List view ------------------------*/
 
@@ -255,6 +265,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         /*------------------------------------------------------------*/
 
         Most_Popular_Listview  =  findViewById(R.id.Most_Popular_Listview);
+
+
+        offer_splash = getSharedPreferences("Offer_splash_popup", MODE_PRIVATE);
+        offervalue  = offer_splash.getBoolean("offervalue",true);
 
         /*---------------------------Get App Version----------------------------------------------------*/
         try {
@@ -522,6 +536,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         });
 
 
+
         /*--------------Login store SharedPreferences------------------*/
         CheckLogin();
 
@@ -721,7 +736,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
                             JSONArray banner_image = getdata.getJSONArray("banner_image");
 
-                            Log.d("banner_image-->","" + banner_image);
+                           JSONObject Offervalue = getdata.getJSONObject("offer_pop");
+                           String offer_status = Offervalue.getString("status");
+                            if(offer_status.equalsIgnoreCase("true")){
+                                 String offer_image = Offervalue.getString("offer_pop_image");
+                                 OfferPopup(offer_image);
+                            }
 
                               for (int i = 0; i < most_popular_list.length(); i++) {
 
@@ -742,6 +762,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                     );
                                   popularlistmodule.add(popularlist);
                                 }
+
+
 
                             popularRestaurantsListAdapter.notifyDataSetChanged();
 
@@ -785,6 +807,53 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
     }
+
+    private void OfferPopup(String offer_image) {
+
+        offerPopup = new Dialog(Postcode_Activity.this);
+        offerPopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        offerPopup.setContentView(R.layout.home_offer_popup);
+        ImageView offerimage = offerPopup.findViewById(R.id.offer_image);
+        ImageView close_popup = offerPopup.findViewById(R.id.close_popup);
+        Button discard_card = offerPopup.findViewById(R.id.discard_card);
+
+        Glide.with(this)
+                .load(offer_image)
+                .placeholder(R.drawable.loading)
+                .into(offerimage);
+
+        Log.d("skfkdsvkbvkjdsbv"," " + offer_image);
+
+        close_popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                offerPopup.dismiss();
+            }
+        });
+
+        discard_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                offerPopup.dismiss();
+            }
+        });
+
+        if(offervalue == true){
+            offerPopup.show();
+            SharedPreferences.Editor splash_popup = offer_splash.edit();
+            splash_popup.putBoolean("offervalue",false);
+            splash_popup.commit();
+        }
+
+        offerPopup.setCancelable(false);
+        offerPopup.setCanceledOnTouchOutside(false);
+        offerPopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        offerPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        offerPopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        offerPopup.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
 
     private void EatListDataPrepare() {
             EatListPostelModel data = new EatListPostelModel(R.drawable.pizza, "1");

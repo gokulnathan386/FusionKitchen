@@ -29,6 +29,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 public class Splash_Activity extends AppCompatActivity {
 
     Handler handler;
+    SharedPreferences offer_splash;
 
 
     @Override
@@ -38,6 +39,12 @@ public class Splash_Activity extends AppCompatActivity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(Splash_Activity.this, R.color.white));
+
+
+        offer_splash = getSharedPreferences("Offer_splash_popup", MODE_PRIVATE);
+        SharedPreferences.Editor splash_popup = offer_splash.edit();
+        splash_popup.putBoolean("offervalue",true);
+        splash_popup.commit();
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {

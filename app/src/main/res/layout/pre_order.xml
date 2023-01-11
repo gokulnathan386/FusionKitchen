@@ -169,7 +169,9 @@
 
                         <include layout="@layout/shimmer_layout_loader" />
 
+
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
 
                     <TextView
                         android:id="@+id/sevenday_txt"
@@ -401,6 +403,22 @@
 
 
             </RelativeLayout>
+
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/update_layout_shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:orientation="vertical"
+                shimmer:duration="100">
+
+                <include layout="@layout/shimmer_layout" />
+
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/update_mode"

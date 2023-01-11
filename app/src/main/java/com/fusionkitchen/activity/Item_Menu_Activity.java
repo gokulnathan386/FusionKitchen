@@ -171,6 +171,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     TextView restaurants_status;
     RecyclerView recyclerviewcommon;
     int Show_favourite_list;
+    String last_position_id;
     String del_coll_text,del_col_cooking_text,de_cl_cr;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
     int K = 2;
@@ -194,6 +195,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     String strsgetAddress1,strsAddress2,strscity, strsstate, strspincd;
     GoogleMap mMap;
     LatLng p1 = null;
+    boolean found = false;
     double p2;
     double p3;
     Boolean check_favourite_boolean;
@@ -373,6 +375,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     Chip chip_data;
     List<String> chipdatastore =new ArrayList<String>();
     ScrollView chip_scroll;
+
+
+
+    String item_addon_id;
+    String item_addon_name;
+    String item_qty;
+    String item_total_amount;
 
 
 
@@ -1354,6 +1363,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         LocalBroadcastManager.getInstance(this).registerReceiver(mmenu_data_update_category, new IntentFilter("menu_data_update_category"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mcategory, new IntentFilter("click_menu_id"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mbottom_btn_hidden, new IntentFilter("bottom_btn_hidden"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mloadPreOrderPop, new IntentFilter("loadPreOrderPop"));
+
 
 
 
@@ -1478,9 +1489,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-
-
-
     public BroadcastReceiver  mmenu_data_update_category = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1491,12 +1499,23 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
+
+
     public BroadcastReceiver  mcategory = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             String item_position = intent.getStringExtra("itempossion");
             recyclerviewitem.smoothScrollToPosition(Integer.parseInt(item_position));
+
+        }
+    };
+
+    public BroadcastReceiver  mloadPreOrderPop = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+          Order_mode_popup();
 
         }
     };
@@ -1822,7 +1841,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 */
 
-                   //     getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                       // getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 
@@ -2052,7 +2071,16 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             if (words.length() >= 3) {
                 recyclerviewitem.setVisibility(View.GONE);
                 search_layout.setVisibility(View.VISIBLE);
-                search_menu_item(words, sharedpreferences.getString("ordermodetype", null));
+
+                String  check_order = sharedpreferences.getString("ordermodetype", null);
+                if (check_order != null) {
+
+                    search_menu_item(words, sharedpreferences.getString("ordermodetype", null));
+
+                }else{
+                    search_menu_item(words, "0");
+                }
+
             } else if (words.length() == 0) {
                 View view = Item_Menu_Activity.this.getCurrentFocus();
                 if (view != null) {
@@ -2341,6 +2369,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         ShimmerFrameLayout shimmer_view_preorder = dialog_order_mode_popup.findViewById(R.id.shimmer_view_preorder);
         shimmer_view_preorder.startShimmerAnimation();
+        ShimmerFrameLayout  update_layout_shimmer = dialog_order_mode_popup.findViewById(R.id.update_layout_shimmer);
+
+
+
+
         CardView ordermode_popup_view  =dialog_order_mode_popup.findViewById(R.id.ordermode_popup_view);
         TextView colloetion_tattime = dialog_order_mode_popup.findViewById(R.id.colloetion_tattime);
         TextView delivery_tattime = dialog_order_mode_popup.findViewById(R.id.delivery_tattime);
@@ -2413,10 +2446,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                 }
                             }, 1000);
 
-
-                        } else {
-
-                           // mAddFab.setVisibility(View.VISIBLE);
                         }
 
 
@@ -2470,7 +2499,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                                             delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
-
                                             menu_delivery_tattime =response.body().getData().getDelivery().getCooking_time();
 
                                             if (response.body().getData().getDelivery().getAsap().getStatus().equalsIgnoreCase("0")) {
@@ -3005,6 +3033,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         activetagstr = "3";
                                         todaytimestr = "";
 
+                                        update_layout_shimmer.setVisibility(View.VISIBLE);
+                                        update_layout_shimmer.startShimmerAnimation();
                                         update_mode.setVisibility(View.GONE);
 
                                         if (order_mode.equalsIgnoreCase("0")) {
@@ -3027,6 +3057,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 today_time_layer.setVisibility(View.GONE);
                                                 later_time_layer.setVisibility(View.GONE);
 
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
                                                 update_mode.setVisibility(View.VISIBLE);
                                             } else {
 
@@ -3089,6 +3121,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 today_time_layer.setVisibility(View.GONE);
                                                 later_time_layer.setVisibility(View.GONE);
 
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
                                                 update_mode.setVisibility(View.VISIBLE);
 
                                             } else {
@@ -3246,6 +3280,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         shimmer_view_preorder.stopShimmerAnimation();
                                                         shimmer_view_preorder.setVisibility(View.GONE);
 
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
+
                                                     } else {
                                                         later_timing_layer.setVisibility(View.GONE);
                                                         update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
@@ -3260,6 +3297,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                         update_mode.setVisibility(View.VISIBLE);
                                                         shimmer_view_preorder.stopShimmerAnimation();
                                                         shimmer_view_preorder.setVisibility(View.GONE);
+
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
                                                     }
                                                 } else {
                                                     Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
@@ -3972,7 +4012,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 editor_extra.putString("addon_extra", "");
                 editor_extra.commit();
 
-
 //add adddon id in array
 
                 aidlist = new ArrayList<String>();
@@ -4024,18 +4063,21 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 item_pricesize = new ArrayList<>();
                 item_pricesize.clear();
 
-
                 addonitemfirstview(ItemName, addonid, "", "", "1");
 
             } else {
 
-                ArrayList<HashMap<String, String>> qtypice = dbHelper.Getqtypriceaddon(parseInt(ItemName));
+                ArrayList<HashMap<String, String>> qtypice = dbHelper.getlastposition(ItemName);
 
                 for (int i = 0; i < qtypice.size(); i++) {
                     HashMap<String, String> hashmap = qtypice.get(i);
                     updateqty = hashmap.get("qty");
                     updatefinalamt = hashmap.get("itemaddontotalamt");
+                    last_position_id = hashmap.get("id");
+
                 }
+
+
 
                 int database_qty = Math.round(Float.parseFloat(updateqty));
 
@@ -4045,7 +4087,18 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 float total_amt = Float.parseFloat(price1) * qty;
 
-                Boolean updatevalue = dbHelper.Updateqtyprice(parseInt(ItemName), qty, total_amt);
+                //Boolean updatevalue = dbHelper.Updateqtyprice(parseInt(ItemName), qty, total_amt);
+
+                Boolean updatevalue = dbHelper.repeat_last_pop_up(Integer.parseInt(last_position_id), qty, total_amt);
+
+                /*----------------------------start item total qty-------------------------*/
+
+                Intent qty_total = new Intent("total_item_qty");
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(qty_total);
+
+                /*----------------------------End item total qty-------------------------*/
+
+
 
                 ArrayList<String> get_qty_count = dbHelper.getqtycount();
                 total_item.setText(get_qty_count.get(0) + "");
@@ -4062,16 +4115,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                             sharedpre_offer_details.getString("offer_code", null),
                             sub_amount, sharedpreferences.getString("asaptodaylaterstring", null));
 
-
-                } else {
-
-                    Log.d("Offer_page_total--->3", " " + "Not Applied");
-
                 }
 
-
             }
-
 
         }
     };
@@ -4939,88 +4985,88 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         Log.e("addon_latcode", ": " + response.body().getError_code());
                         Log.e("addon_latcode", ": " + response.body().getError_message());
 
+                        int  userList = dbHelper.GetUserByUserId(Integer.parseInt(str_ItemName));
+
+                        ArrayList<String> qtypice = dbHelper.GetAddonid(str_ItemName);
+
+                        for (int i=0;i<qtypice.size();i++) {
+
+                            if(str_itemidsstr.equalsIgnoreCase(qtypice.get(i))){
+
+                                found = true;
+
+                                Log.d("sqlite_database_insert_if"," " + str_itemidsstr + "======"+qtypice.get(i) );
+
+                                ArrayList<HashMap<String,String>> qtypice1 = dbHelper.getaddonvalue(str_itemidsstr);
 
 
-                        if (dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems,
-                                str_itemidsstr, str_itemexradsstr, str_item_price, strqtys, str_item_total_amt, str_item_total_amt,
-                                str_categoryname, str_subcategoryname)) {
+                                for (int k=0;k<qtypice1.size();k++) {
 
-                            /*-----------------------start Local broadcastManager send  Menuitem_name_adapter---------------------*/
+                                    HashMap<String, String> hashmap= qtypice1.get(k);
 
-                                Intent intent = new Intent("add_on_btn_enable_adapter");
-                                intent.putExtra("item_id_activity",str_ItemName);
-                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+                                        item_addon_id = hashmap.get("ITEM_ADDON_NAME_ID");
+                                        item_addon_name = hashmap.get("ITEM_ADDON_NAME");
+                                        item_qty = hashmap.get("ITEM_QTY");
+                                        item_total_amount =hashmap.get("ITEM_TOTAL_AMOUNT");
 
-                            /*-----------------------End Local broadcastManager send  Menuitem_name_adapter---------------------*/
+                                }
 
-                            Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
-                                    "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + " -----> "+ str_item_total_amt + "\n" + "--->"
-                                    + str_item_total_amt + "\n"
-                                    + str_categoryname + "\n" + str_subcategoryname);
+                                int database_qty = Integer.parseInt(item_qty);
 
-                            Customertoastmessage();
+                                int qty  = database_qty + 1;
 
-                            Log.e("item_add_time4", "" + "4");//Item addon Name
+                                String price  = item_total_amount;
 
-                            getContactsCount();
+                                float total_amt = Float.parseFloat(price) * qty;
 
-                            menu_addon_item_view.setVisibility(View.GONE);
-                            ArrayList<String> get_qty_count = dbHelper.getqtycount();
-                            total_item.setText(get_qty_count.get(0) + "");
-                            Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
+                                Boolean updatevalue = dbHelper.update_addon_item(str_itemidsstr,qty,total_amt);
 
-                            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-                            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
-                            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
+                                getdetails(str_addon_item_name,str_ItemName,str_str_listItems,
+                                        str_itemidsstr, str_itemexradsstr,str_item_price, strqtys,
+                                        str_item_total_amt, str_ordertype, str_categoryname, str_subcategoryname);
 
-                            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
-
-                                String  sub_amount = get_amt_count.get(0);
-                                String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
-
-
-                                couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
-                                        sharedpre_offer_details.getString("offer_code",null),
-                                        sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+                                Intent qty_total = new Intent("total_item_qty");
+                                LocalBroadcastManager.getInstance(mContext).sendBroadcast(qty_total);
 
                             }
 
-
-                            new CountDownTimer(2000, 1000) {
-
-                                public void onTick(long millisUntilFinished) {
-
-                                }
-
-                                public void onFinish() {
-                                    getContactsCount();
-                                    add_to_cart_layout.setVisibility(View.VISIBLE);
-
-                                    ArrayList<String> get_qty_count = dbHelper.getqtycount();
-                                    total_item.setText(get_qty_count.get(0) + "");
-
-                                    ArrayList<String> get_amt_count = dbHelper.gettotalamt();
-                                    Log.d("TotalAmount",get_amt_count.get(0)+ " ");
-                                    total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
-
-                                    if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
-
-                                        String sub_amount = get_amt_count.get(0);
-                                        String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
-
-
-                                        couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
-                                                sharedpre_offer_details.getString("offer_code",null),
-                                                sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
-
-                                    }
-
-                                }
-                            }.start();
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Could not Insert Item", LENGTH_SHORT).show();
                         }
+
+
+                        if(userList !=0 ){
+
+                           if(found) {
+                               Log.d("Find_the_value", "is found ");
+                           }else {
+                               Log.d("Find_the_value", "is Not found ");
+                               found = false;
+                               dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems,
+                                       str_itemidsstr, str_itemexradsstr, str_item_price, strqtys,
+                                       str_item_total_amt, str_item_total_amt,
+                                       str_categoryname, str_subcategoryname);
+
+                               getdetails(str_addon_item_name, str_ItemName, str_str_listItems,
+                                       str_itemidsstr, str_itemexradsstr, str_item_price, strqtys,
+                                       str_item_total_amt, str_ordertype, str_categoryname, str_subcategoryname);
+
+                               Intent qty_total = new Intent("total_item_qty");
+                               LocalBroadcastManager.getInstance(mContext).sendBroadcast(qty_total);
+                              }
+                        }
+
+                        if(userList == 0){
+
+                            dbHelper.insertItem(str_addon_item_name, str_ItemName, str_str_listItems,
+                                    str_itemidsstr, str_itemexradsstr, str_item_price, strqtys,
+                                    str_item_total_amt, str_item_total_amt,
+                                    str_categoryname, str_subcategoryname);
+
+                            getdetails(str_addon_item_name,str_ItemName,str_str_listItems,
+                                    str_itemidsstr, str_itemexradsstr,str_item_price, strqtys,
+                                    str_item_total_amt, str_ordertype, str_categoryname, str_subcategoryname);
+
+                         }
+
 
                     } else {
                         Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
@@ -5037,6 +5083,90 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void getdetails(String str_addon_item_name, String str_ItemName, String str_str_listItems,
+                            String str_itemidsstr, String str_itemexradsstr, String str_item_price, String strqtys,
+                            String str_item_total_amt, String str_ordertype, String str_categoryname, String str_subcategoryname) {
+
+
+            /*-----------------------start Local broadcastManager send  Menuitem_name_adapter---------------------*/
+
+            Intent intent = new Intent("add_on_btn_enable_adapter");
+            intent.putExtra("item_id_activity",str_ItemName);
+            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+            Log.d("dfkjgbdbvdkbvdkfv","seefsbdmvbdmbvmdvdfvdfv");
+
+            /*-----------------------End Local broadcastManager send  Menuitem_name_adapter---------------------*/
+
+            Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
+                    "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + " -----> "+ str_item_total_amt + "\n" + "--->"
+                    + str_item_total_amt + "\n"
+                    + str_categoryname + "\n" + str_subcategoryname);
+
+            Customertoastmessage();
+
+            Log.e("item_add_time4", "" + "4");//Item addon Name
+
+            getContactsCount();
+
+            menu_addon_item_view.setVisibility(View.GONE);
+            ArrayList<String> get_qty_count = dbHelper.getqtycount();
+            total_item.setText(get_qty_count.get(0) + "");
+            Log.d("Cursor3", String.valueOf(get_qty_count.get(0) + ""));
+
+            ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+            total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+            Log.d("TotalAmount",get_amt_count.get(0)+ " ");
+
+            if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                String  sub_amount = get_amt_count.get(0);
+                String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+
+
+                couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                        sharedpre_offer_details.getString("offer_code",null),
+                        sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+
+            }
+
+
+            new CountDownTimer(2000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                public void onFinish() {
+                    getContactsCount();
+                    add_to_cart_layout.setVisibility(View.VISIBLE);
+
+                    ArrayList<String> get_qty_count = dbHelper.getqtycount();
+                    total_item.setText(get_qty_count.get(0) + "");
+
+                    ArrayList<String> get_amt_count = dbHelper.gettotalamt();
+                    Log.d("TotalAmount",get_amt_count.get(0)+ " ");
+                    total_amount_textview.setText(String.format("%.2f", amtfloat + Double.parseDouble(get_amt_count.get(0) + "")));
+
+                    if(sharedpre_offer_details.getString("offer_applied",null).equalsIgnoreCase("1")){
+
+                        String sub_amount = get_amt_count.get(0);
+                        String offer_amt = sharedpre_offer_details.getString("offer_total_amount",null);
+
+
+                        couponcodevalidate(menuurlpath,favourite_client,sharedpreferences.getString("ordermodetype", null),"1",
+                                sharedpre_offer_details.getString("offer_code",null),
+                                sub_amount,sharedpreferences.getString("asaptodaylaterstring", null));
+
+                    }
+
+                }
+            }.start();
+
+
+
     }
 
     private void Customertoastmessage() {

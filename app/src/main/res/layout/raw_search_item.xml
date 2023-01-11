@@ -47,7 +47,7 @@
 
 
 
-       <!-- <TextView
+        <!--<TextView
             android:id="@+id/menu_item_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,8 +64,8 @@
             android:paddingRight="@dimen/_5sdp"
             android:text="ADD"
             android:textColor="@color/txt_ten"
-            android:textSize="18sp" />-->
-
+            android:textSize="18sp" />
+-->
 
         <LinearLayout
             android:id="@+id/menu_item_add"

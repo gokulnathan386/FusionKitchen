@@ -192,9 +192,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             HashMap<String, String> user = new HashMap<>();
             user.put("qty", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
-            /*    user.put("itemamt",cursor.getString(cursor.getColumnIndex(ITEM_AMOUNT))); */
             user.put("itemaddontotalamt", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));
-            //  user.put("itemfinalamt",cursor.getString(cursor.getColumnIndex(ITEM_Final_AMOUNT)));
             userList.add(user);
         }
         return userList;
@@ -207,6 +205,15 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         contentValues.put(ITEM_QTY, itemqty);
         contentValues.put(ITEM_Final_AMOUNT, itemfinalamount);
         db.update(ITEM_TABLE_NAME, contentValues, ITEM_ID + " = ? ", new String[]{Integer.toString(id)});
+        return true;
+    }
+
+    public boolean repeat_last_pop_up(int id, int itemqty, float itemfinalamount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ITEM_QTY, itemqty);
+        contentValues.put(ITEM_Final_AMOUNT, itemfinalamount);
+        db.update(ITEM_TABLE_NAME, contentValues, ITEM_COLUMN_ID + " = ? ", new String[]{Integer.toString(id)});
         return true;
     }
 
@@ -268,28 +275,11 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
-   /* @SuppressLint("Range")
-    public ArrayList<String> singleitem_total_qty(String item_id) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<String> array_list = new ArrayList<String>();
-        Cursor res = db.rawQuery("SELECT SUM(itemqty) AS totalqty FROM item WHERE "+ ITEM_ID + " = ? ",  new String[] {item_id});
-        res.moveToFirst();
-
-        while (res.isAfterLast() == false) {
-            array_list.add(res.getString(res.getColumnIndex("totalqty")));
-            res.moveToNext();
-        }
-        return array_list;
-
-    }*/
-
-
-    @SuppressLint("Range")
+  @SuppressLint("Range")
     public ArrayList<HashMap<String, String>> Getqtypriceaddon(int userid) {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
-        String query = "SELECT * FROM " + ITEM_TABLE_NAME;
         Cursor cursor = db.query(ITEM_TABLE_NAME, new String[]{ITEM_QTY, ITEM_TOTAL_AMOUNT}, ITEM_ID + "=?", new String[]{String.valueOf(userid)}, null, null, null, null);
         if (cursor.moveToNext()) {
             HashMap<String, String> user = new HashMap<>();
@@ -298,6 +288,25 @@ public class SQLDBHelper extends SQLiteOpenHelper {
             userList.add(user);
         }
         return userList;
+    }
+
+
+
+  @SuppressLint("Range")
+    public ArrayList<HashMap<String, String>> getlastposition(String userid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String, String>> userList = new ArrayList<>();
+
+      Cursor cursor =db.rawQuery("select * from item WHERE itemid = "+ userid+" " +"ORDER BY "+ITEM_COLUMN_ID+" " + "DESC LIMIT 1", null);
+        if (cursor.moveToNext()) {
+            HashMap<String, String> user = new HashMap<>();
+            user.put("qty", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
+            user.put("itemaddontotalamt", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));
+            user.put("id", cursor.getString(cursor.getColumnIndex(ITEM_COLUMN_ID)));
+            userList.add(user);
+        }
+
+      return userList;
     }
 
     @SuppressLint("Range")
@@ -370,15 +379,97 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return item_data;
     }
 
-
-
-
     public void deleteItemRow(String get_ID)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM item WHERE itemid='"+get_ID+"'");
 
     }
+
+/*------------------------------*/
+
+    @SuppressLint("Range")
+    public ArrayList<String> getuseridcount(String itemid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<String>();
+        Cursor res = db.rawQuery("SELECT SUM(itemqty) AS totalqty FROM item WHERE "+ ITEM_ID + " = ? ",  new String[] {itemid});
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            array_list.add(res.getString(res.getColumnIndex("totalqty")));
+            res.moveToNext();
+        }
+        return array_list;
+    }
+
+ @SuppressLint("Range")
+    public ArrayList<String> GetAddonid(String itemid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_list = new ArrayList<String>();
+        Cursor res = db.rawQuery("SELECT * FROM item WHERE "+ ITEM_ID + " = ? ",  new String[] {itemid});
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            array_list.add(res.getString(res.getColumnIndex(ITEM_ADDON_NAME_ID)));
+            res.moveToNext();
+        }
+        return array_list;
+    }
+
+
+    @SuppressLint("Range")
+    public ArrayList<HashMap<String, String>> getaddonvalue(String itemid) {
+
+        ArrayList<HashMap<String, String>> productList = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM item WHERE "+ ITEM_ADDON_NAME_ID + " = ? ",  new String[] {itemid});
+        if (cursor.moveToFirst()) {
+            do {
+
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put("ITEM_COLUMN_ID", cursor.getString(cursor.getColumnIndex(ITEM_COLUMN_ID)));
+                map.put("ITEM_NAME", cursor.getString(cursor.getColumnIndex(ITEM_NAME)));
+                map.put("ITEM_ID", cursor.getString(cursor.getColumnIndex(ITEM_ID)));
+                map.put("ITEM_ADDON_NAME", cursor.getString(cursor.getColumnIndex(ITEM_ADDON_NAME)));
+                map.put("ITEM_ADDON_EXTRA_ID", cursor.getString(cursor.getColumnIndex(ITEM_ADDON_EXTRA_ID)));
+                map.put("ITEM_AMOUNT", cursor.getString(cursor.getColumnIndex(ITEM_AMOUNT)));
+                map.put("ITEM_QTY", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
+                map.put("ITEM_TOTAL_AMOUNT", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));
+                map.put("ITEM_Final_AMOUNT", cursor.getString(cursor.getColumnIndex(ITEM_Final_AMOUNT)));
+                map.put("ITEM_CATEGORY_NAME", cursor.getString(cursor.getColumnIndex(ITEM_CATEGORY_NAME)));
+                map.put("ITEM_SUBCATEGORY_NAME", cursor.getString(cursor.getColumnIndex(ITEM_SUBCATEGORY_NAME)));
+                map.put("ITEM_ADDON_NAME_ID", cursor.getString(cursor.getColumnIndex(ITEM_ADDON_NAME_ID)));
+
+                productList.add(map);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        database.close();
+
+        return productList;
+    }
+
+    public boolean update_addon_item(String addonid, int itemqty, float itemfinalamount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ITEM_QTY, itemqty);
+        contentValues.put(ITEM_Final_AMOUNT, itemfinalamount);
+        db.update(ITEM_TABLE_NAME, contentValues, ITEM_ADDON_NAME_ID + " = ? ", new String[]{addonid});
+        return true;
+    }
+
+
+    /*public boolean (int id, int itemqty, float itemfinalamount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ITEM_QTY, itemqty);
+        contentValues.put(ITEM_Final_AMOUNT, itemfinalamount);
+        db.update(ITEM_TABLE_NAME, contentValues, ITEM_ID + " = ? ", new String[]{Integer.toString(id)});
+        return true;
+    }*/
+
 
 }
 
