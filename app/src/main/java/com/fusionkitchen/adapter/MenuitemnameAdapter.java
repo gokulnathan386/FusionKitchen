@@ -356,7 +356,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onClick(View v) {
                  item_view_dismiss = 0;
                  addonitem(v,position,holder);
-
             }
         });
 
@@ -1810,6 +1809,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         loadingshow();
         holder.menu_item_add.setEnabled(true);
 
+        Log.d("dhsvsdvcsvcu1"," " +single_popup);
+
         Map<String, String> params = new HashMap<String, String>();
 
         if (sharedpreferences.getString("orderactivetag", null).equalsIgnoreCase("1")) {
@@ -2093,9 +2094,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                             intent.putExtra("item_price_amt", items[position].getPrice());
                                             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-                                            if(single_popup = true){
-                                                single_popup = false;
-                                                item_view.dismiss();
+                                            if(single_popup == true){
+                                                 single_popup = false;
+                                                 item_view.dismiss();
                                             }
                                             repeatpopup.dismiss();
                                         }
