@@ -13,7 +13,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -195,8 +197,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                     if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
 
-
-
                           ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
 
                           holder.menu_item_add.setVisibility(GONE);
@@ -221,7 +221,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                 ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
 
-                try {
+                    try {
                         String count = String.valueOf(get_count.get(0).length());
                         if(count.equalsIgnoreCase("1")){
                             holder.qty_textview_number.setText("0"+get_count.get(0));
@@ -252,8 +252,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
 
-
-            getContactsCount();
+         getContactsCount();
 
          if(items[position].getAvailableTime().equalsIgnoreCase("")){
 
@@ -398,8 +397,13 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                             holder.increment_decrement_layout.setVisibility(GONE);
 
                             if(singleitem == 8){
+
                                 plus_minus_symbol.setVisibility(GONE);
                                 plus_linearlayout.setVisibility(View.VISIBLE);
+
+                                add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#DEDDDF"), PorterDuff.Mode.SRC_ATOP);
+                                add_to_cart_btn.setClickable(false);
+
                             }
 
                             ArrayList<String> get_qty_count = dbHelper.getqtycount();
@@ -409,6 +413,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 Intent cart_botton_layout = new Intent("total_count_layout_gone");
                                 cart_botton_layout.putExtra("item_id_sqlite",id);
                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(cart_botton_layout);
+
+
 
                             }else{
 
@@ -601,6 +607,18 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                  }
 
 
+                                 allContacts = dbHelper.getitemlist();
+
+                                 for (int k = 0; k<allContacts.size();k++){
+
+                                     if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
+                                         ArrayList<String> getspecial = dbHelper.getspecialinstruction(items[position].getId());
+                                         Enter_your_comments.setText(getspecial.get(0));
+
+                                     }
+
+                                 }
+
                              }
 
                         }catch (JSONException e) {
@@ -642,19 +660,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
             if(allContacts.get(k).equalsIgnoreCase(item_id)){
 
-                /*ArrayList<HashMap<String, String>> single_item_id = dbHelper.Getqtypriceaddon(Integer.parseInt(item_id));
-
-                for (int i=0;i<single_item_id.size();i++) {
-
-                    HashMap<String, String> hashmap1= single_item_id.get(i);
-
-                    single_itemqty = hashmap1.get("qty");
-                    single_itemamt = hashmap1.get("itemaddontotalamt");
-
-                }*/
-
-                //textview_qty.setText(single_itemqty);
-
                 ArrayList<String> get_count = dbHelper.getuseridcount(items[position].getId());
                 int count = get_count.get(0).length();
 
@@ -665,6 +670,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 }
                 plus_linearlayout.setVisibility(GONE);
                 plus_minus_symbol.setVisibility(View.VISIBLE);
+
+
+                add_to_cart_btn.getBackground().setColorFilter(Color.parseColor("#FF276CF6"), PorterDuff.Mode.SRC_ATOP);
+                add_to_cart_btn.setClickable(true);
 
             }
 
@@ -773,6 +782,30 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }
         });
 
+
+        Enter_your_comments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String txt_cmt = String.valueOf(s);
+                //Log.d("djgfjhbfjhbvhdbvhd"," " + txt_cmt + "  " + items[position].getId());
+
+               dbHelper.singleitemupdate(Integer.valueOf(items[position].getId()),txt_cmt);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         item_view.show();
         item_view.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         item_view.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -789,6 +822,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         ShimmerFrameLayout shimmer_view_preorder = dialog.findViewById(R.id.shimmer_view_preorder);
         shimmer_view_preorder.startShimmerAnimation();
+
+        ShimmerFrameLayout  update_layout_shimmer = dialog.findViewById(R.id.update_layout_shimmer);
+
         CardView ordermode_popup_view  =dialog.findViewById(R.id.ordermode_popup_view);
         TextView colloetion_tattime = dialog.findViewById(R.id.colloetion_tattime);
         TextView delivery_tattime = dialog.findViewById(R.id.delivery_tattime);
@@ -1375,6 +1411,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+
+                                        update_layout_shimmer.setVisibility(View.VISIBLE);
+                                        update_layout_shimmer.startShimmerAnimation();
+
                                         update_mode.setVisibility(View.GONE);
                                         activetagstr = "3";
                                         todaytimestr = "";
@@ -1405,6 +1445,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setVisibility(View.VISIBLE);
                                                 sevenday_txt.setVisibility(View.VISIBLE);
                                                 card_change.setVisibility(View.VISIBLE);
+
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
 
 
                                             } else {
@@ -1475,6 +1518,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 shimmer_view_preorder.setVisibility(View.GONE);
                                                 sevenday_txt.setVisibility(View.VISIBLE);
                                                 card_change.setVisibility(View.VISIBLE);
+
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
                                                 update_mode.setVisibility(View.VISIBLE);
 
 
@@ -1616,6 +1662,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                             }
                                                         });
 
+
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
+
                                                         update_mode.setVisibility(View.VISIBLE);
                                                         shimmer_view_preorder.stopShimmerAnimation();
                                                         shimmer_view_preorder.setVisibility(View.GONE);
@@ -1630,6 +1680,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                         update_mode.setText("Later Unavailable");
                                                         shimmer_view_preorder.stopShimmerAnimation();
                                                         shimmer_view_preorder.setVisibility(View.GONE);
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
                                                         update_mode.setVisibility(View.VISIBLE);
 
                                                     }
@@ -1870,7 +1922,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                         if (response.body().getError_code().equalsIgnoreCase("0")) {
                             hideloading();
-
 
                             int  userList = dbHelper.GetUserByUserId(parseInt(items[position].getId()));
 

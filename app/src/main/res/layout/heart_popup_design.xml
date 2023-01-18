@@ -30,6 +30,7 @@
             app:lottie_loop="true"/>
 
         <TextView
+            android:id="@+id/added_remove_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"

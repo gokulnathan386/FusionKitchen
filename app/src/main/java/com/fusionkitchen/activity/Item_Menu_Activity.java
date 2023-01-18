@@ -2004,6 +2004,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         TextView restaurants_textview = heart_popup.findViewById(R.id.restaurants_textview);
         TextView  fav_textview_add_remove = heart_popup.findViewById(R.id.fav_textview_add_remove);
         LottieAnimationView favourite_json = heart_popup.findViewById(R.id.favourite_json);
+        TextView added_remove_text = heart_popup.findViewById(R.id.added_remove_text);
+
         favourite_json.setAnimation(R.raw.favourite);
         favourite_json.playAnimation();
 
@@ -2013,8 +2015,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         if(Show_favourite_list == 1){
             fav_textview_add_remove.setText("Remove from your favourite list");
+            added_remove_text.setText("Remove to Favourite");
         }else{
             fav_textview_add_remove.setText("Added to your favourite list");
+            added_remove_text.setText("Added to Favourite");
         }
 
 
@@ -3035,6 +3039,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                         update_layout_shimmer.setVisibility(View.VISIBLE);
                                         update_layout_shimmer.startShimmerAnimation();
+
                                         update_mode.setVisibility(View.GONE);
 
                                         if (order_mode.equalsIgnoreCase("0")) {
@@ -5096,7 +5101,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             intent.putExtra("item_id_activity",str_ItemName);
             LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 
-            Log.d("dfkjgbdbvdkbvdkfv","seefsbdmvbdmbvmdvdfvdfv");
 
             /*-----------------------End Local broadcastManager send  Menuitem_name_adapter---------------------*/
 

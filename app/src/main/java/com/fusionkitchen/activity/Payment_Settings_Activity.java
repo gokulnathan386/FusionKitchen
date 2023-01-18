@@ -76,6 +76,7 @@ import com.fusionkitchen.model.wallet.wallet_getrefer_details;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentIntentResult;
@@ -554,6 +555,14 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                     item1.put("free", "0");
                     item1.put("offer", "");
                     item1.put("sub", new JSONArray(subItemArray));
+                   // item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+                    if(allContacts.get(i).getSpecialinstruction() != null){
+                        item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+                    }else{
+                        item1.put("special_instruction","");
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -945,7 +954,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         fullUrl = menuurlpath + "/orderprocess";
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<CheckloginModel> call = apiService.insertOrder(fullUrl, requestBody);
-        Log.e("fullUrl", "" + fullUrl);
+        Log.e("fullUrl_arrayrequest", "" + fullUrl + " " +  s);
         Log.e("arrayrequest", "" + s);
         call.enqueue(new Callback<CheckloginModel>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -1456,6 +1465,16 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 item1.put("free", "0");
                                 item1.put("offer", "");
                                 item1.put("sub", new JSONArray(subItemArray));
+                                //item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+
+                                if(allContacts.get(i).getSpecialinstruction() != null){
+                                    item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+                                }else{
+                                    item1.put("special_instruction","");
+                                }
+
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1568,6 +1587,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             public void onResponse(Call<CheckloginModel> call, Response<CheckloginModel> response) {
                 int statusCode = response.code();
                 Log.e("statusCodecashpay", "" + statusCode);
+                Log.e("card_payment---->", new Gson().toJson(response.body()));
                 if (statusCode == 200) {
                     hideloading();
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
@@ -1626,10 +1646,12 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                         }.start();
                     } else {
                         hideloading();
+                        Log.d("error_else--","something");
                         Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), "Something not right Please try again", Snackbar.LENGTH_LONG).show();
                     }
                 } else {
                     hideloading();
+                    Log.d("error_else--else","something");
                     Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), "Something not right Please try again", Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -1734,6 +1756,13 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 item1.put("free", "0");
                                 item1.put("offer", "");
                                 item1.put("sub", new JSONArray(subItemArray));
+                                //item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+                                if(allContacts.get(i).getSpecialinstruction() != null){
+                                    item1.put("special_instruction",allContacts.get(i).getSpecialinstruction());
+                                }else{
+                                    item1.put("special_instruction","");
+                                }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

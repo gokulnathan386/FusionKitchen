@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -49,6 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,6 +105,14 @@ import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
@@ -219,6 +229,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
    // SliderView sliderView;
     ViewPager mViewPager;
 
+
+
+    private AppUpdateManager mAppUpdateManager;
+    private static  final int RC_APP_UPDATE = 100;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -586,7 +600,103 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         getdetailshareurl();
 
 
+        /*-------------------------------Start Auto In Update Google---------------------------*/
+/*
+        mAppUpdateManager = AppUpdateManagerFactory.create(this);
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                if(result.updateAvailability() ==
+                        UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)){  // FLEXIBLE
+
+                    try {
+                        mAppUpdateManager.startUpdateFlowForResult(result,AppUpdateType.FLEXIBLE,
+                                Postcode_Activity.this,RC_APP_UPDATE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+            }
+        });
+
+        mAppUpdateManager.registerListener(installStateUpdatedListener);*/
+
+        /*-------------------------------End Auto In Update Google---------------------------*/
+
+
     }
+
+
+    /*------------------------------  start Atuo In update-------------------*/
+
+
+  /*  private InstallStateUpdatedListener installStateUpdatedListener = new
+            InstallStateUpdatedListener() {
+                @Override
+                public void onStateUpdate(InstallState state) {
+                    if (state.installStatus() == InstallStatus.DOWNLOADED){
+                        showCompletedUpdate();
+                    } else if (state.installStatus() == InstallStatus.INSTALLED){
+                        if (mAppUpdateManager != null){
+                            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+                        }
+
+                    } else {
+                        Log.d("gokulnathan",""+ state.installStatus());
+                    }
+                }
+            };
+
+    @Override
+    protected void onStop() {
+        if(mAppUpdateManager != null) mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        super.onStop();
+    }
+
+    private void showCompletedUpdate() {
+
+        Snackbar snackbar =
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "New app is ready!",
+                        Snackbar.LENGTH_INDEFINITE);
+
+
+
+        snackbar.setAction("Install", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mAppUpdateManager.completeUpdate();
+
+            }
+        });
+
+        snackbar.show();
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == RC_APP_UPDATE && resultCode != RESULT_OK){
+
+            Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+*/
+    /*------------------------------  End Atuo In update-------------------*/
+
 
     private void getdetailshareurl() {
 

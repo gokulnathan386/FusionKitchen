@@ -39,6 +39,7 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     public static final String ITEM_Final_AMOUNT = "itemfinalamount";//9   //Amount--->
     public static final String ITEM_CATEGORY_NAME = "itemcategoryname";//10
     public static final String ITEM_SUBCATEGORY_NAME = "itemsubcategoryname";//11
+    public static final String ITEM_SPECIAL_INSTRUCTION = "itemspecialinstruction";//12
 
     public SQLDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -59,7 +60,8 @@ public class SQLDBHelper extends SQLiteOpenHelper {
                         ITEM_TOTAL_AMOUNT + " TEXT, " +
                         ITEM_Final_AMOUNT + " TEXT, " +
                         ITEM_CATEGORY_NAME + " TEXT, " +
-                        ITEM_SUBCATEGORY_NAME + " TEXT)"
+                        ITEM_SUBCATEGORY_NAME + " TEXT, " +
+                        ITEM_SPECIAL_INSTRUCTION + " TEXT)"
 
         );
     }
@@ -161,8 +163,9 @@ public class SQLDBHelper extends SQLiteOpenHelper {
                 String addonextraid = cursor.getString(5);
                 String categoryname = cursor.getString(10);
                 String subcategoryname = cursor.getString(11);
+                String specialinstruction = cursor.getString(12);
 
-                storeContacts.add(new Cartitem(name, desc, qty, amount, itemamount, id, finalamt, itemid, addonnameid, addonextraid, categoryname, subcategoryname));
+                storeContacts.add(new Cartitem(name, desc, qty, amount, itemamount, id, finalamt, itemid, addonnameid, addonextraid, categoryname, subcategoryname,specialinstruction));
             }
             while (cursor.moveToNext());
         }
@@ -402,6 +405,23 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
+
+    @SuppressLint("Range")
+    public ArrayList<String> getspecialinstruction(String itemid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> array_special = new ArrayList<String>();
+        Cursor res = db.rawQuery("SELECT itemspecialinstruction FROM item WHERE "+ ITEM_ID + " = ? ",  new String[] {itemid});
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            array_special.add(res.getString(res.getColumnIndex("itemspecialinstruction")));
+            res.moveToNext();
+        }
+        return array_special;
+    }
+
+
+
  @SuppressLint("Range")
     public ArrayList<String> GetAddonid(String itemid) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -461,14 +481,14 @@ public class SQLDBHelper extends SQLiteOpenHelper {
     }
 
 
-    /*public boolean (int id, int itemqty, float itemfinalamount) {
+    public boolean singleitemupdate(Integer id,String cmt) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ITEM_QTY, itemqty);
-        contentValues.put(ITEM_Final_AMOUNT, itemfinalamount);
+        contentValues.put(ITEM_SPECIAL_INSTRUCTION, cmt);
+
         db.update(ITEM_TABLE_NAME, contentValues, ITEM_ID + " = ? ", new String[]{Integer.toString(id)});
         return true;
-    }*/
+    }
 
 
 }

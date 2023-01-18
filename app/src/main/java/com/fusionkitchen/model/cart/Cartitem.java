@@ -3,10 +3,10 @@ package com.fusionkitchen.model.cart;
 public class Cartitem {
 
 
-    private String name, desc, qty, amount, itemamount, id, finalamt, itemid, addonnameid, addonextraid,categoryname,subcategoryname;
+    private String name, desc, qty, amount, itemamount, id, finalamt, itemid, addonnameid, addonextraid,categoryname,subcategoryname,specialinstruction;
 
 
-    public Cartitem(String name, String desc, String qty, String amount, String itemamount, String id, String finalamt, String itemid, String addonnameid, String addonextraid, String categoryname, String subcategoryname) {
+    public Cartitem(String name, String desc, String qty, String amount, String itemamount, String id, String finalamt, String itemid, String addonnameid, String addonextraid, String categoryname, String subcategoryname,String specialinstruction) {
 
         this.name = name;
         this.desc = desc;
@@ -20,6 +20,8 @@ public class Cartitem {
         this.addonextraid = addonextraid;
         this.categoryname = categoryname;
         this.subcategoryname = subcategoryname;
+        this.specialinstruction = specialinstruction;
+
     }
 
     public String getName() {
@@ -116,5 +118,14 @@ public class Cartitem {
 
     public void setSubcategoryname(String subcategoryname) {
         this.subcategoryname = subcategoryname;
+    }
+
+
+    public String getSpecialinstruction() {
+        return specialinstruction;
+    }
+
+    public void setSpecialinstruction(String specialinstruction) {
+        this.specialinstruction = specialinstruction;
     }
 }

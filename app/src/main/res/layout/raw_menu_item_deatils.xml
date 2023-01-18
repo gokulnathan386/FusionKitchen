@@ -126,7 +126,7 @@
                     android:layout_toLeftOf="@+id/menu_item_add"
                     android:layout_toRightOf="@+id/layout_logo"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto_light"
+                    android:fontFamily="@font/metropolis_regular"
                     android:gravity="left"
                     android:maxLines="2"
                     android:text="hgffaytrfaywedeyfg fwhjdgfafsjdgfjdffgjhgfsdfgfhgfvgdfgfgdfgf"

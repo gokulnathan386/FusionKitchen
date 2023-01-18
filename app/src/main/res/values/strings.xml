@@ -33,8 +33,8 @@
     <string name="post_txt12">Place \n Your Order</string>
     <string name="post_txt13">Pay \n &amp; Enjoy</string>
     <string name="post_txt14">View all</string>
-    <string name="post_txt15"><font color='#FF204356'>Order</font><font color='#FF1DC070'> what You Love!</font></string>
-
+    <!--<string name="post_txt15"><font color='#FF204356'>Order</font><font color='#FF1DC070'> what You Love!</font></string>-->
+    <string name="post_txt15"><font color='#FF204356'>Local Food deliveries \nand much more</font></string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
