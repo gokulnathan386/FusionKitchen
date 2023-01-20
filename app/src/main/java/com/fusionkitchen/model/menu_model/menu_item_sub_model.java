@@ -36,6 +36,33 @@ public class menu_item_sub_model {
         @SerializedName("name")
         private String name;
 
+        @SerializedName("working_days")
+        private String working_days;
+
+
+        @SerializedName("working_time1")
+        private String working_time1;
+
+        @SerializedName("working_time2")
+        private String working_time2;
+
+        @SerializedName("working_time3")
+        private String working_time3;
+
+        @SerializedName("working_time4")
+        private String working_time4;
+
+        @SerializedName("working_time5")
+        private String working_time5;
+
+        @SerializedName("working_time6")
+        private String working_time6;
+
+        @SerializedName("working_time7")
+        private String working_time7;
+
+
+
         @SerializedName("subcat")
         private List<menu_item_sub_model.categoryall.subcat> subcat;
 
@@ -57,6 +84,71 @@ public class menu_item_sub_model {
             this.name = name;
         }
 
+        public String getWorkingdays() {
+            return working_days;
+        }
+
+        public void setworkingdays(String working_days) {
+            this.working_days = working_days;
+        }
+
+        public String getWorkingtime1() {
+            return working_time1;
+        }
+
+        public void setWorkingtime1(String working_time1) {
+            this.working_time1 = working_time1;
+        }
+
+        public String getWorkingtime2() {
+            return working_time2;
+        }
+
+        public void setWorkingtime2(String working_time2) {
+            this.working_time2 = working_time2;
+        }
+
+        public String getWorkingtime3() {
+            return working_time3;
+        }
+
+        public void setWorkingtime3(String working_time3) {
+            this.working_time3 = working_time3;
+        }
+
+        public String getWorkingtime4() {
+            return working_time4;
+        }
+
+        public void setWorkingtime4(String working_time4) {
+            this.working_time4 = working_time4;
+        }
+
+        public String getWorkingtime5() {
+            return working_time5;
+        }
+
+        public void setWorkingtime5(String working_time5) {
+            this.working_time5 = working_time5;
+        }
+
+        public String getWorkingtime6() {
+            return working_time6;
+        }
+
+        public void setWorkingtime6(String working_time6) {
+            this.working_time6 = working_time6;
+        }
+
+        public String getWorkingtime7() {
+            return working_time7;
+        }
+
+        public void setWorkingtime7(String working_time7) {
+            this.working_time7 = working_time7;
+        }
+
+
         public List<menu_item_sub_model.categoryall.subcat> getSubcat() {
             return subcat;
         }
@@ -73,6 +165,27 @@ public class menu_item_sub_model {
 
             @SerializedName("description")
             private String description;
+
+            @SerializedName("working_time1")
+            private String working_time1;
+
+            @SerializedName("working_time2")
+            private String working_time2;
+
+            @SerializedName("working_time3")
+            private String working_time3;
+
+            @SerializedName("working_time4")
+            private String working_time4;
+
+            @SerializedName("working_time5")
+            private String working_time5;
+
+            @SerializedName("working_time6")
+            private String working_time6;
+
+            @SerializedName("working_time7")
+            private String working_time7;
 
             @SerializedName("items")
             private List<menu_item_sub_model.categoryall.subcat.items> items;
@@ -92,6 +205,63 @@ public class menu_item_sub_model {
 
             public void setDescription(String description) {
                 this.description = description;
+            }
+
+            public String getWorkingtime1() {
+                return working_time1;
+            }
+
+            public void setWorkingtime1(String working_time1) {
+                this.working_time1 = working_time1;
+            }
+
+
+            public String getWorkingtime2() {
+                return working_time2;
+            }
+
+            public void setWorkingtime2(String working_time2) {
+                this.working_time2 = working_time2;
+            }
+
+            public String getWorkingtime3() {
+                return working_time3;
+            }
+
+            public void setWorkingtime3(String working_time3) {
+                this.working_time3 = working_time3;
+            }
+
+            public String getWorkingtime4() {
+                return working_time4;
+            }
+
+            public void setWorkingtime4(String working_time4) {
+                this.working_time4 = working_time4;
+            }
+
+            public String getWorkingtime5() {
+                return working_time5;
+            }
+
+            public void setWorkingtime5(String working_time5) {
+                this.working_time5 = working_time5;
+            }
+
+            public String getWorkingtime6() {
+                return working_time6;
+            }
+
+            public void setWorkingtime6(String working_time6) {
+                this.working_time6 = working_time6;
+            }
+
+            public String getWorkingtime7() {
+                return working_time7;
+            }
+
+            public void setWorkingtime7(String working_time7) {
+                this.working_time7 = working_time7;
             }
 
             public List<menu_item_sub_model.categoryall.subcat.items> getItems() {
@@ -133,6 +303,33 @@ public class menu_item_sub_model {
 
                 @SerializedName("must_try")
                 private String must_try;
+
+               @SerializedName("working_days")
+               private String working_days;
+
+
+                @SerializedName("working_time1")
+                private String working_time1;
+
+                @SerializedName("working_time2")
+                private String working_time2;
+
+                @SerializedName("working_time3")
+                private String working_time3;
+
+                @SerializedName("working_time4")
+                private String working_time4;
+
+                @SerializedName("working_time5")
+                private String working_time5;
+
+                @SerializedName("working_time6")
+                private String working_time6;
+
+                @SerializedName("working_time7")
+                private String working_time7;
+
+
 
 
                 public String getBestseller() {
@@ -220,6 +417,80 @@ public class menu_item_sub_model {
                 public void setItemtype(String itemtype) {
                     this.itemtype = itemtype;
                 }
+
+
+                public String getWorkingday() {
+                    return working_days;
+                }
+
+                public void setWorkingday(String working_days) {
+                    this.working_days = working_days;
+                }
+
+
+                public String getWorkingtime1() {
+                    return working_time1;
+                }
+
+                public void setWorkingtime1(String working_time1) {
+                    this.working_time1 = working_time1;
+                }
+
+                public String getWorkingtime2() {
+                    return working_time2;
+                }
+
+                public void setWorkingtime2(String working_time2) {
+                    this.working_time2 = working_time2;
+                }
+
+
+                public String getWorkingtime3() {
+                    return working_time3;
+                }
+
+                public void setWorkingtime3(String working_time3) {
+                    this.working_time3 = working_time3;
+                }
+
+                public String getWorkingtime4() {
+                    return working_time4;
+                }
+
+                public void setWorkingtime4(String working_time4) {
+                    this.working_time4 = working_time4;
+                }
+
+
+                public String getWorkingtime5() {
+                    return working_time5;
+                }
+
+                public void setWorkingtime5(String working_time5) {
+                    this.working_time5 = working_time5;
+                }
+
+
+                public String getWorkingtime6() {
+                    return working_time6;
+                }
+
+                public void setWorkingtime6(String working_time6) {
+                    this.working_time6 = working_time6;
+                }
+
+
+                public String getWorkingtime7() {
+                    return working_time7;
+                }
+
+                public void setWorkingtime7(String working_time7) {
+                    this.working_time7 = working_time7;
+                }
+
+
+
+
 
 
             }

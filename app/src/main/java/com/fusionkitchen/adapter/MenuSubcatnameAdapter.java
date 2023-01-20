@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.fusionkitchen.R;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
@@ -27,11 +29,13 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
     private menu_item_sub_model.categoryall.subcat[] itemsubcatname;
     private Context mContext;
     private String  menuurlpath;
+    private String  category_time;
+    String subcat_dayOfTheWeek,subcat_restaurants_working_time;
 
 
     // RecyclerView recyclerView;
     //  public SubcatnameAdapter(Context mContext, List<String> itemsubcatname, List<menu_item_sub_model.categoryall.subcat> items) {
-    public MenuSubcatnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat> itemsubcatname, List<menu_item_sub_model.categoryall.subcat> items,  String menuurlpath, menu_item_sub_model.categoryall listdatum) {
+    public MenuSubcatnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat> itemsubcatname, List<menu_item_sub_model.categoryall.subcat> items,  String menuurlpath, menu_item_sub_model.categoryall listdatum,String category_time) {
         // public MenuSubcatnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat> itemsubcatname,  String ordertypevalue, String menuurlpath, menu_item_sub_model.categoryall listdatum) {
         this.items = items.toArray(new menu_item_sub_model.categoryall.subcat[0]);
         this.itemsubcatname = itemsubcatname.toArray(new menu_item_sub_model.categoryall.subcat[0]);
@@ -40,6 +44,7 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
         this.menuurlpath = menuurlpath;
 
         this.listdatum = listdatum;
+        this.category_time = category_time;
     }
 
     @Override
@@ -67,8 +72,43 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
         }
 
 
-       /* holder.menu_item_subcat_name.setText(itemsubcatname[position].getName());
-        holder.menu_item_subcat_desc.setText(itemsubcatname[position].getDescription());*/
+
+
+        TimeZone tz = TimeZone.getTimeZone("Europe/London");
+        Calendar c = Calendar.getInstance(tz);
+
+        int days  = c.get(Calendar.DAY_OF_WEEK);
+
+        switch (days) {
+            case Calendar.SUNDAY:
+                subcat_dayOfTheWeek = "Sunday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime7();
+                break;
+            case Calendar.MONDAY:
+                subcat_dayOfTheWeek = "Monday";
+                subcat_restaurants_working_time =itemsubcatname[position].getWorkingtime1();
+                break;
+            case Calendar.TUESDAY:
+                subcat_dayOfTheWeek = "Tuesday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime2();
+                break;
+            case Calendar.WEDNESDAY:
+                subcat_dayOfTheWeek = "Wednesday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime3();
+                break;
+            case Calendar.THURSDAY:
+                subcat_dayOfTheWeek = "Thursday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime4();
+                break;
+            case Calendar.FRIDAY:
+                subcat_dayOfTheWeek = "Friday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime5();
+                break;
+            case Calendar.SATURDAY:
+                subcat_dayOfTheWeek = "Saturday";
+                subcat_restaurants_working_time = itemsubcatname[position].getWorkingtime6();
+                break;
+        }
 
         List<menu_item_sub_model.categoryall.subcat.items> itemname = new ArrayList<>();
 
@@ -77,10 +117,11 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
 
             itemname.add(itemsubcatname[position].getItems().get(k));
 
-
         }
 
-        MenuitemnameAdapter menuitemnameadapter = new MenuitemnameAdapter(mContext, itemname,  menuurlpath, itemsubcatname[position], listdatum);
+
+
+        MenuitemnameAdapter menuitemnameadapter = new MenuitemnameAdapter(mContext, itemname,  menuurlpath, itemsubcatname[position], listdatum,category_time,subcat_restaurants_working_time);
         holder.child_item_recyclerview.setHasFixedSize(true);
         holder.child_item_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         holder.child_item_recyclerview.setAdapter(menuitemnameadapter);

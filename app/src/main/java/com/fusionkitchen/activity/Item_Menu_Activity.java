@@ -3093,6 +3093,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 //setting adapter to spinner
                                                 later_date.setAdapter(laterdateadapter);
 
+                                                card_change.setVisibility(VISIBLE);
+
 
                                                 later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -3157,6 +3159,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                 laterdateadapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, laterdateitem);
                                                 later_date.setAdapter(laterdateadapter);
 
+                                                card_change.setVisibility(VISIBLE);
 
                                                 later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

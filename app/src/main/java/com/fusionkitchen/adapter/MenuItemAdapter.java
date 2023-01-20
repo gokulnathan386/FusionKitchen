@@ -27,7 +27,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
@@ -40,6 +42,7 @@ import static android.view.View.GONE;
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHolder> {
     private menu_item_sub_model.categoryall[] listdata;
     private static Context mContext;
+    String cat_dayOfTheWeek,cat_restaurants_working_time;
 
     List<String> itemcatname = new ArrayList<String>();
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
@@ -100,6 +103,49 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
         });
 
+        /*----------------------------------start category time ----------------------------------*/
+
+        TimeZone tz = TimeZone.getTimeZone("Europe/London");
+        Calendar c = Calendar.getInstance(tz);
+   /*     String time = String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+                String.format("%02d" , c.get(Calendar.MINUTE))+":"+
+                String.format("%02d" , c.get(Calendar.SECOND)) + " : " +
+                String.format("%02d" , c.get(Calendar.DAY_OF_MONTH));*/
+
+        int days  = c.get(Calendar.DAY_OF_WEEK);
+
+        switch (days) {
+            case Calendar.SUNDAY:
+                cat_dayOfTheWeek = "Sunday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime7();
+                break;
+            case Calendar.MONDAY:
+                cat_dayOfTheWeek = "Monday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime1();
+                break;
+            case Calendar.TUESDAY:
+                cat_dayOfTheWeek = "Tuesday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime2();
+                break;
+            case Calendar.WEDNESDAY:
+                cat_dayOfTheWeek = "Wednesday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime3();
+                break;
+            case Calendar.THURSDAY:
+                cat_dayOfTheWeek = "Thursday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime4();
+                break;
+            case Calendar.FRIDAY:
+                cat_dayOfTheWeek = "Friday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime5();
+                break;
+            case Calendar.SATURDAY:
+                cat_dayOfTheWeek = "Saturday";
+                cat_restaurants_working_time = listdata[position].getWorkingtime6();
+                break;
+        }
+
+        /*----------------------------------End category time ----------------------------------*/
 
         holder.mainLL.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,24 +156,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
                if (holder.child_recyclerview.getVisibility() == View.GONE) {
                     holder.child_recyclerview.setVisibility(View.VISIBLE);
                     holder.dropdownindicator.setRotation((float) 180.0);
-                 /*  handler.postDelayed(new Runnable() {
-                       @Override
-                       public void run() {
-                           hideloading();
-                       }
-                   }, 4000);*/
-
                 } else {
 
                     holder.child_recyclerview.setVisibility(View.GONE);
                     holder.dropdownindicator.setRotation((float) 360.0);
-
-                /*   handler.postDelayed(new Runnable() {
-                       @Override
-                       public void run() {
-                           hideloading();
-                       }
-                   }, 4000);*/
 
                }
 
@@ -141,6 +173,9 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         });
 
 
+
+
+
         List<menu_item_sub_model.categoryall.subcat> itemsubcatname = new ArrayList<>();
 
         for (int j = 0; j < listdata[position].getSubcat().size(); j++) {
@@ -148,7 +183,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             itemsubcatname.add(listdata[position].getSubcat().get(j));
 
         }
-        MenuSubcatnameAdapter menuitemnameadapter = new MenuSubcatnameAdapter(mContext, itemsubcatname, listdata[position].getSubcat(),  menuurlpath, listdata[position]);
+        MenuSubcatnameAdapter menuitemnameadapter = new MenuSubcatnameAdapter(mContext, itemsubcatname, listdata[position].getSubcat(),  menuurlpath, listdata[position],cat_restaurants_working_time);
 
         holder.child_recyclerview.setHasFixedSize(true);
         holder.child_recyclerview.setLayoutManager(new LinearLayoutManager(mContext));

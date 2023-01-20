@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -57,10 +58,18 @@ import com.fusionkitchen.model.modeoforder.getlatertime_model;
 import com.fusionkitchen.model.modeoforder.modeof_order_popup_model;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
@@ -80,6 +89,7 @@ import retrofit2.Response;
 
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.lang.Integer.parseInt;
@@ -104,6 +114,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     Dialog item_view,repeatpopup ;
     int  item_view_dismiss = 0;
     int length;
+    Boolean liesBetween = false;
     HttpUrl baseUrl;
     String id_item,item_name,item_image,item_description,item_price;
     String item_count_increment_decrement,item_bestseller,item_musttry;
@@ -152,17 +163,22 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     ArrayList<String> allContacts;
     String single_itemqty, single_itemamt;
     String position2;
-
     String remove_qty,remove_item_addon,remove_id;
+    String category_time,sub_category_time;
+    String item_dayOfTheWeek,item_restaurants_working_time;
 
     // RecyclerView recyclerView;
-    public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub, menu_item_sub_model.categoryall listdatum) {
+    public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub,
+                               menu_item_sub_model.categoryall listdatum,String category_time,String sub_category_time) {
 
         this.items = items.toArray(new menu_item_sub_model.categoryall.subcat.items[0]);
         this.mContext = mContext;
         this.menuurlpath = menuurlpath;
         this.sub = sub;
         this.listdatum = listdatum;
+        this.category_time = category_time;
+        this.sub_category_time =sub_category_time;
+
     }
 
     @Override
@@ -173,6 +189,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         return viewHolder;
     }
 
+    @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -185,6 +202,48 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         holder.menu_item_name.setText(items[position].getName());
         holder.menu_item_desc.setText(fromHtml(items[position].getDescription().replaceAll("Â", ""), Html.FROM_HTML_MODE_COMPACT));
         holder.menu_item_amout.setText("£ " + items[position].getPrice());
+
+
+        TimeZone tz = TimeZone.getTimeZone("Europe/London");
+        Calendar c = Calendar.getInstance(tz);
+        String time = String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
+                        String.format("%02d" , c.get(Calendar.MINUTE));
+        int days  = c.get(Calendar.DAY_OF_WEEK);
+
+        switch (days) {
+            case Calendar.SUNDAY:
+                item_dayOfTheWeek = "Sunday";
+                item_restaurants_working_time = items[position].getWorkingtime7();
+                break;
+            case Calendar.MONDAY:
+                item_dayOfTheWeek = "Monday";
+                item_restaurants_working_time = items[position].getWorkingtime1();
+                break;
+            case Calendar.TUESDAY:
+                item_dayOfTheWeek = "Tuesday";
+                item_restaurants_working_time = items[position].getWorkingtime2();
+                break;
+            case Calendar.WEDNESDAY:
+                item_dayOfTheWeek = "Wednesday";
+                item_restaurants_working_time = items[position].getWorkingtime3();
+                break;
+            case Calendar.THURSDAY:
+                item_dayOfTheWeek = "Thursday";
+                item_restaurants_working_time = items[position].getWorkingtime4();
+                break;
+            case Calendar.FRIDAY:
+                item_dayOfTheWeek = "Friday";
+                item_restaurants_working_time = items[position].getWorkingtime5();
+                break;
+            case Calendar.SATURDAY:
+                item_dayOfTheWeek = "Saturday";
+                item_restaurants_working_time = items[position].getWorkingtime6();
+                break;
+        }
+
+
+
+
         dbHelper = new SQLDBHelper(mContext);
 
         order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);
@@ -192,8 +251,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                allContacts = dbHelper.getitemlist();
 
                 for (int k = 0; k<allContacts.size();k++){
-
-
 
                     if(allContacts.get(k).equalsIgnoreCase(items[position].getId())){
 
@@ -254,7 +311,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
          getContactsCount();
 
-         if(items[position].getAvailableTime().equalsIgnoreCase("")){
+         /*if(items[position].getAvailableTime().equalsIgnoreCase("")){
 
             holder.menu_item_add.setVisibility(View.VISIBLE);
             holder.textview_avaliable_time.setVisibility(GONE);
@@ -264,7 +321,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 holder.textview_avaliable_time.setText(items[position].getAvailableTime());
                 holder.menu_item_add.setVisibility(GONE);
 
-            }
+            }*/
 
 
              if(items[position].getBestseller().equalsIgnoreCase("true")){
@@ -286,6 +343,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                  holder.menu_item_list.setBackgroundResource(R.drawable.item_bg_border2);
 
              }
+
 
 
         holder.menu_item_add.setOnClickListener(new View.OnClickListener() {
@@ -357,6 +415,104 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                  addonitem(v,position,holder);
             }
         });
+
+
+        Log.d("kjbnvkjnvkndsvksndvknvknv--","" + item_restaurants_working_time + "==== " + items[position].getWorkingtime5());
+
+        if (!TextUtils.isEmpty(category_time)) {
+
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+            Date strat_time = null;
+            Date end_time= null;
+            try {
+                strat_time = parseFormat.parse(category_time.substring(0,8));
+                end_time = parseFormat.parse(category_time.substring(9,17));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Boolean cat_check_time = checkliesornot(displayFormat.format(strat_time),displayFormat.format(end_time),time);
+
+            if(cat_check_time == true){
+
+                holder.textview_avaliable_time.setVisibility(GONE);
+                holder.menu_item_add.setVisibility(View.VISIBLE);
+
+            }else{
+
+                holder.textview_avaliable_time.setVisibility(View.VISIBLE);
+                holder.textview_avaliable_time.setText(category_time);
+                holder.menu_item_add.setVisibility(GONE);
+                holder.increment_decrement_layout.setVisibility(GONE);
+
+            }
+
+        }else if(!TextUtils.isEmpty(sub_category_time)){
+
+
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+            Date strat_time = null;
+            Date end_time= null;
+            try {
+                strat_time = parseFormat.parse(sub_category_time.substring(0,8));
+                end_time = parseFormat.parse(sub_category_time.substring(9,17));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            Boolean sub_cat_check_time = checkliesornot(displayFormat.format(strat_time),displayFormat.format(end_time),time);
+
+            if(sub_cat_check_time == true){
+
+                holder.textview_avaliable_time.setVisibility(GONE);
+                holder.menu_item_add.setVisibility(View.VISIBLE);
+
+            }else{
+
+                holder.textview_avaliable_time.setVisibility(View.VISIBLE);
+                holder.textview_avaliable_time.setText(sub_category_time);
+                holder.menu_item_add.setVisibility(GONE);
+                holder.increment_decrement_layout.setVisibility(GONE);
+
+            }
+
+        }else if(!TextUtils.isEmpty(item_restaurants_working_time)){
+
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+            Date strat_time = null;
+            Date end_time= null;
+            try {
+                strat_time = parseFormat.parse(item_restaurants_working_time.substring(0,8));
+                end_time = parseFormat.parse(item_restaurants_working_time.substring(9,17));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            Boolean sub_cat_item_check_time = checkliesornot(displayFormat.format(strat_time),displayFormat.format(end_time),time);
+
+
+            if(sub_cat_item_check_time == true){
+
+                holder.textview_avaliable_time.setVisibility(GONE);
+                holder.menu_item_add.setVisibility(View.VISIBLE);
+
+            }else{
+
+                holder.textview_avaliable_time.setVisibility(View.VISIBLE);
+                holder.textview_avaliable_time.setText(item_restaurants_working_time);
+                holder.menu_item_add.setVisibility(GONE);
+                holder.increment_decrement_layout.setVisibility(GONE);
+
+            }
+
+        }else{
+            holder.textview_avaliable_time.setVisibility(GONE);
+        }
 
     }
 
@@ -793,7 +949,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String txt_cmt = String.valueOf(s);
-                //Log.d("djgfjhbfjhbvhdbvhd"," " + txt_cmt + "  " + items[position].getId());
+
 
                dbHelper.singleitemupdate(Integer.valueOf(items[position].getId()),txt_cmt);
 
@@ -851,6 +1007,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         Map<String, String> params = new HashMap<String, String>();
 
         metdpasfullUrl = menuurlpath + "/loadPreOrderPop";
+        Log.e("LoadPreOrderPop->","" + metdpasfullUrl);
        //ordermode_popup_view.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<modeof_order_popup_model> call = apiService.modeofordershow(metdpasfullUrl);
@@ -1452,6 +1609,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                             } else {
 
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+
                                                 bun_asap.setBackgroundResource(R.drawable.background_asap);
                                                 bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
                                                 bun_today.setBackgroundResource(R.drawable.background_today);
@@ -1479,6 +1639,8 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 //setting adapter to spinner
                                                 later_date.setAdapter(laterdateadapter);
 
+
+                                                card_change.setVisibility(VISIBLE);
 
                                                 later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1525,6 +1687,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
 
                                             } else {
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+
                                                 bun_asap.setBackgroundResource(R.drawable.background_asap);
                                                 bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
                                                 bun_today.setBackgroundResource(R.drawable.background_today);
@@ -1553,6 +1719,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 //setting adapter to spinner
                                                 later_date.setAdapter(laterdateadapter);
 
+                                                card_change.setVisibility(VISIBLE);
 
                                                 later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -2444,4 +2611,44 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         dialog.dismiss();
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public final boolean checkliesornot(String startTime, String endTime, String checkTime) {
+
+
+        boolean validTimeFlag = false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.UK);
+        LocalTime startLocalTime = LocalTime.parse(startTime, formatter);
+        LocalTime endLocalTime = LocalTime.parse(endTime, formatter);
+        LocalTime checkLocalTime = LocalTime.parse(checkTime, formatter);
+
+        boolean isInBetween = false;
+        if (endLocalTime.isAfter(startLocalTime)) {
+            if (startLocalTime.isBefore(checkLocalTime) && endLocalTime.isAfter(checkLocalTime)) {
+                isInBetween = true;
+
+            }
+        } else if (checkLocalTime.isAfter(startLocalTime) || checkLocalTime.isBefore(endLocalTime)) {
+            isInBetween = true;
+
+        } if ((checkLocalTime.equals(startLocalTime)) ||(checkLocalTime.equals(endLocalTime))){
+            isInBetween = true;
+        }
+
+        if (isInBetween) {
+            System.out.println("Is in between!");
+
+            liesBetween=true;
+
+        } else {
+            System.out.println("Is not in between!");
+        }
+
+        return liesBetween;
+    }
+
+
 }
+
+
+
