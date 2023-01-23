@@ -417,7 +417,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         });
 
 
-        Log.d("kjbnvkjnvkndsvksndvknvknv--","" + item_restaurants_working_time + "==== " + items[position].getWorkingtime5());
 
         if (!TextUtils.isEmpty(category_time)) {
 
@@ -442,7 +441,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }else{
 
                 holder.textview_avaliable_time.setVisibility(View.VISIBLE);
-                holder.textview_avaliable_time.setText(category_time);
+                holder.textview_avaliable_time.setText("Available at " + category_time);
                 holder.menu_item_add.setVisibility(GONE);
                 holder.increment_decrement_layout.setVisibility(GONE);
 
@@ -473,7 +472,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }else{
 
                 holder.textview_avaliable_time.setVisibility(View.VISIBLE);
-                holder.textview_avaliable_time.setText(sub_category_time);
+                holder.textview_avaliable_time.setText("Available at " + sub_category_time);
                 holder.menu_item_add.setVisibility(GONE);
                 holder.increment_decrement_layout.setVisibility(GONE);
 
@@ -504,7 +503,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
             }else{
 
                 holder.textview_avaliable_time.setVisibility(View.VISIBLE);
-                holder.textview_avaliable_time.setText(item_restaurants_working_time);
+                holder.textview_avaliable_time.setText("Available at "+item_restaurants_working_time);
                 holder.menu_item_add.setVisibility(GONE);
                 holder.increment_decrement_layout.setVisibility(GONE);
 
@@ -569,8 +568,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 Intent cart_botton_layout = new Intent("total_count_layout_gone");
                                 cart_botton_layout.putExtra("item_id_sqlite",id);
                                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(cart_botton_layout);
-
-
+                                
 
                             }else{
 
@@ -1568,6 +1566,10 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+
+                                        shimmer_view_preorder.stopShimmerAnimation();
+                                        shimmer_view_preorder.setVisibility(View.GONE);
+
 
                                         update_layout_shimmer.setVisibility(View.VISIBLE);
                                         update_layout_shimmer.startShimmerAnimation();

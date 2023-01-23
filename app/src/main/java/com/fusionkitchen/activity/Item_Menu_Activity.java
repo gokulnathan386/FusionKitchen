@@ -3037,6 +3037,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                         activetagstr = "3";
                                         todaytimestr = "";
 
+                                        shimmer_view_preorder.stopShimmerAnimation();
+                                        shimmer_view_preorder.setVisibility(View.GONE);
+
                                         update_layout_shimmer.setVisibility(View.VISIBLE);
                                         update_layout_shimmer.startShimmerAnimation();
 
