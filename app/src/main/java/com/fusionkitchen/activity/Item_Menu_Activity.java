@@ -1841,7 +1841,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                         }
 */
 
-                       // getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
+                        getLocationFromAddress(Item_Menu_Activity.this, shop_address.getText().toString(),info_popup);
 
                         jobdetails6 = (response.body().getAbout().getOpeninghours());
 

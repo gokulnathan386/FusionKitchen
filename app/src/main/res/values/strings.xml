@@ -116,8 +116,7 @@
 
 
     <string name="edittext_hint_post_text"><font size="15">Enter your postcode</font></string>
-
-
+    <string name="edittext_hint_gmail_phone"><font size="15">Email ID/Phone number</font></string>
 
 
 </resources>

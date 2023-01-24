@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -94,6 +95,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
+    TextView otp_timer;
 
 
     /*--------------Login store SharedPreferences------------------*/
@@ -141,6 +143,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     ImageButton facebook_login_layout, facebook_signup_layout;
     String fb_first_name, fb_last_name, fb_id, fb_email;
     AlertDialog.Builder builder;
+    TextView text_terms_condition;
 
 
     /*---------------------------------Sqlite database ------------------------------------*/
@@ -177,10 +180,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             alert.showDialog(Login_Activity.this);
         }
 
+        text_terms_condition = findViewById(R.id.text_terms_condition);
+
 
         signinlayout = findViewById(R.id.signinlayout);
         signuplayout = findViewById(R.id.signuplayout);
         signup_link = findViewById(R.id.signup_link);
+        otp_timer = findViewById(R.id.otp_timer);
 
 
         signup = findViewById(R.id.signup);
@@ -210,6 +216,16 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             }
         });
+
+
+        text_terms_condition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login_Activity.this,Terms_Conditions_Activity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 
@@ -707,6 +723,29 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             }
         });
+
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                long count = millisUntilFinished / 1000;
+
+                String count_timer = String.valueOf(count);
+
+               if(count_timer.length() == 2){
+                   otp_timer.setText("00:"+millisUntilFinished / 1000 );
+               }else{
+                   otp_timer.setText("00:0"+millisUntilFinished / 1000 );
+               }
+
+            }
+
+            public void onFinish() {
+                otp_timer.setText("00:00");
+            }
+
+        }.start();
     }
 
     /*--------------SSO LOGIN ENABLE-----------------*/
@@ -1456,5 +1495,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         } else {
             finish();
         }
+
+        Toast.makeText(Login_Activity.this,"Gokulnathan",Toast.LENGTH_SHORT).show();
+
     }
+
+
+
 }

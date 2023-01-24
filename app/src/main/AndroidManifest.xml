@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fusionkitchen">
-
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,7 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.Postcode_Activity"
             android:label=""
@@ -191,8 +189,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0" />
-
-
         <!--
   <meta-data
               android:name="com.google.android.geo.API_KEY"

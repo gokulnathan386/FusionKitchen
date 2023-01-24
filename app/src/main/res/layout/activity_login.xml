@@ -1,17 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:scrollbars="none"
+    android:layout_height="match_parent"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/loginscreen_bg"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back" />
+
+      <TextView
+          android:text="Wecome"
+          android:textColor="#FF0071E3"
+          android:textSize="25dp"
+          android:textStyle="bold"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/poppins_semibold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+      </TextView>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="-30dp"
+        android:src="@drawable/ic_layer_2"></ImageView>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:text="Sign In or Sign Up"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="#17284D"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <TextView
+        android:layout_marginTop="18dp"
+        android:text="Enter your email or phone number"
+        android:textSize="15dp"
+        android:textStyle="normal"
+        android:textColor="#17284D"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:drawablePadding="15dp"
+        android:singleLine="true"
+        android:layout_marginTop="22dp"
+        android:paddingBottom="20dp"
+        android:textSize="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="@string/edittext_hint_gmail_phone"
+        android:theme="@style/MyEditTextTheme"
+        android:drawableLeft="@drawable/ic_gmail_phone_icon"
+        android:layout_height="wrap_content">
+    </EditText>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:background="@drawable/edit_text_otp"
+            android:text="1"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:textColor="#1F4073"
+            android:fontFamily="@font/metropolis_semibold"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+        </EditText>
+
+        <EditText
+            android:background="@drawable/edit_text_otp"
+            android:text="1"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:maxLength="1"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:textSize="20dp"
+            android:fontFamily="@font/metropolis_semibold"
+            android:textColor="#1F4073"
+            android:layout_marginLeft="12dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+        </EditText>
+
+        <EditText
+            android:background="@drawable/edit_text_otp"
+            android:text="1"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:textColor="#1F4073"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:fontFamily="@font/metropolis_semibold"
+            android:layout_marginLeft="12dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+        </EditText>
+
+        <EditText
+            android:background="@drawable/edit_text_otp"
+            android:text="1"
+            android:layout_weight="1"
+            android:layout_marginLeft="12dp"
+            android:gravity="center"
+            android:maxLength="1"
+            android:textSize="20dp"
+            android:textColor="#1F4073"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:fontFamily="@font/metropolis_semibold"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+        </EditText>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/otp_timer"
+        android:text="00:12"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textColor="#17284D"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Enter the valid OTP or"
+        android:textColor="#17284D"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <TextView
+        android:text="ResendOTP"
+        android:textColor="#17284D"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sigin_button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/button_background"
+        android:backgroundTint="#DEDDDF"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Sign Up"
+        android:layout_marginTop="60dp"
+        android:textAllCaps="false"
+        android:textColor="#909497"
+        android:textSize="@dimen/text_20"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="150dp"
+            android:background="#D3D3D3"/>
+
+        <TextView
+            android:text="or"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#808695"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <View
+            android:layout_height="1dp"
+            android:layout_width="150dp"
+            android:layout_gravity="center_vertical"
+            android:background="#D3D3D3"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#F0F4FD"
+            android:gravity="center"
+            android:padding="8dp"
+            android:src="@drawable/google_icon"
+        />
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#F0F4FD"
+            android:gravity="center"
+            android:padding="8dp"
+            android:src="@drawable/facebook_icon" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By continuing you agree to our"
+            android:textColor="#808695"
+            android:textSize="15dp"
+            android:textStyle="normal">
+        </TextView>
+
+        <TextView
+            android:id="@+id/text_terms_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:text="T&amp;C"
+            android:textColor="#fe9296"
+            android:textSize="15dp"
+            android:textStyle="normal"></TextView>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <ImageView
             android:id="@+id/signin_back"
@@ -34,3 +338,7 @@
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+
+</ScrollView>

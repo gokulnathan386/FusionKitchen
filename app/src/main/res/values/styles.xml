@@ -204,4 +204,10 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
+    <style name="MyEditTextTheme">
+        <item name="colorControlNormal">#D3D3D3</item>
+        <item name="colorControlActivated">#D3D3D3</item>
+        <item name="colorControlHighlight">#D3D3D3</item>
+    </style>
+
 </resources>
