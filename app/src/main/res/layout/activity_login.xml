@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:scrollbars="none"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -32,14 +32,14 @@
           android:layout_height="wrap_content">
       </TextView>
 
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginRight="10dp"
         android:layout_marginTop="-30dp"
-        android:src="@drawable/ic_layer_2"></ImageView>
+        android:src="@drawable/ic_layer_2">
+    </ImageView>
 
     <TextView
         android:layout_marginTop="20dp"
@@ -64,6 +64,7 @@
     </TextView>
 
     <EditText
+        android:id="@+id/email_phone_edittxt"
         android:layout_width="match_parent"
         android:drawablePadding="15dp"
         android:singleLine="true"
@@ -81,13 +82,15 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:weightSum="4"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/otp1"
             android:background="@drawable/edit_text_otp"
-            android:text="1"
+            android:text=""
             android:maxLength="1"
             android:layout_weight="1"
             android:inputType="number"
@@ -101,8 +104,9 @@
         </EditText>
 
         <EditText
+            android:id="@+id/otp2"
             android:background="@drawable/edit_text_otp"
-            android:text="1"
+            android:text=""
             android:gravity="center"
             android:layout_weight="1"
             android:maxLength="1"
@@ -117,8 +121,9 @@
         </EditText>
 
         <EditText
+            android:id="@+id/otp3"
             android:background="@drawable/edit_text_otp"
-            android:text="1"
+            android:text=""
             android:maxLength="1"
             android:layout_weight="1"
             android:textColor="#1F4073"
@@ -133,8 +138,9 @@
         </EditText>
 
         <EditText
+            android:id="@+id/otp4"
             android:background="@drawable/edit_text_otp"
-            android:text="1"
+            android:text=""
             android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:gravity="center"
@@ -151,6 +157,7 @@
     </LinearLayout>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/otp_timer"
         android:text="00:12"
         android:textSize="18dp"
@@ -163,6 +170,7 @@
     </TextView>
 
     <LinearLayout
+        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -191,10 +199,7 @@
         android:id="@+id/sigin_button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="@drawable/button_background"
-        android:backgroundTint="#DEDDDF"
+        android:background="@drawable/gmail_phone_bg"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:padding="10dp"
@@ -206,14 +211,20 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+   <!-- android:background="@drawable/button_background"-->
+
+
     <LinearLayout
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
+        android:weightSum="2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <View
+            android:layout_weight="1"
             android:layout_height="1dp"
             android:layout_gravity="center_vertical"
             android:layout_width="150dp"
@@ -231,6 +242,7 @@
         </TextView>
 
         <View
+            android:layout_weight="1"
             android:layout_height="1dp"
             android:layout_width="150dp"
             android:layout_gravity="center_vertical"
@@ -263,7 +275,7 @@
         <ImageButton
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/button_background"
             android:backgroundTint="#F0F4FD"
             android:gravity="center"

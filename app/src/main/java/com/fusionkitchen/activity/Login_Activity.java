@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -116,6 +118,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     String fname, lname, phonenumber, usermail, pwd, cpwd;
 
     ImageView signin_back;
+    AppCompatButton sigin_button1;
 
 
     /*--------------Login Button-----------------*/
@@ -144,6 +147,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     String fb_first_name, fb_last_name, fb_id, fb_email;
     AlertDialog.Builder builder;
     TextView text_terms_condition;
+    EditText email_phone_edittxt,otp1,otp2,otp3,otp4;
 
 
     /*---------------------------------Sqlite database ------------------------------------*/
@@ -205,6 +209,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         mContentView = findViewById(R.id.content_layout);
         signin_back = findViewById(R.id.signin_back);
 
+        sigin_button1 = findViewById(R.id.sigin_button1);
+        email_phone_edittxt  = findViewById(R.id.email_phone_edittxt);
+        otp1 = findViewById(R.id.otp1);
+        otp2 = findViewById(R.id.otp2);
+        otp3 = findViewById(R.id.otp3);
+        otp4 = findViewById(R.id.otp4);
+
 
         signin_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +238,118 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+        otp1.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+               if(s.length() == 1){
+                   otp2.requestFocus();
+               }
+
+            }
+        });
+
+
+        otp2.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+                if(s.length() == 1){
+                    otp1.requestFocus();
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+                if(s.length() == 1){
+                    otp3.requestFocus();
+                }
+
+            }
+        });
+
+        otp3.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                if(s.length() == 1){
+                    otp2.requestFocus();
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+                if(s.length() == 1){
+                    otp4.requestFocus();
+                }
+
+            }
+        });
+
+        otp4.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                if(s.length() == 1){
+                    otp3.requestFocus();
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        email_phone_edittxt.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                if(s.length() == 1){
+                    Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.ic_gmail_phone_icon );
+                    email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+                    sigin_button1.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
+                    sigin_button1.setTextColor(Color.parseColor("#909497"));
+
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+                if(s.length() > 0){
+                    Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.login_icon_green );
+                    email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+                    sigin_button1.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg1));
+                    sigin_button1.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+
+            }
+        });
 
 
         /*-------------------Sign-up next button color change--------------*/
