@@ -301,7 +301,8 @@ public class SQLDBHelper extends SQLiteOpenHelper {
         ArrayList<HashMap<String, String>> userList = new ArrayList<>();
 
       Cursor cursor =db.rawQuery("select * from item WHERE itemid = "+ userid+" " +"ORDER BY "+ITEM_COLUMN_ID+" " + "DESC LIMIT 1", null);
-        if (cursor.moveToNext()) {
+
+      if (cursor.moveToNext()) {
             HashMap<String, String> user = new HashMap<>();
             user.put("qty", cursor.getString(cursor.getColumnIndex(ITEM_QTY)));
             user.put("itemaddontotalamt", cursor.getString(cursor.getColumnIndex(ITEM_TOTAL_AMOUNT)));

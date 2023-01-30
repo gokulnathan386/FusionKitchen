@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 
+import com.fusionkitchen.model.Login.Login_mobile_email;
 import com.fusionkitchen.model.Savecard.addnewsavecard_model;
 import com.fusionkitchen.model.Savecard.deletesavecard_model;
 import com.fusionkitchen.model.Savecard.getclientscSecret_model;
@@ -89,6 +90,10 @@ public interface ApiInterface {
     Call<post_code_modal> getpostcode(@FieldMap Map<String, String> params);
 
 
+
+    @POST("/login_otp")
+    @FormUrlEncoded
+    Call<Login_mobile_email> sendotpemailphone(@FieldMap Map<String, String> params);
 
   /*  @POST("/ordertype")
     Call<post_code_modal> getordertype(@Path("order_type") Integer otp);*/

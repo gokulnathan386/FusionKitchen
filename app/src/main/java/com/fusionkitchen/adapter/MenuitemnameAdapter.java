@@ -241,9 +241,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                 break;
         }
 
-
-
-
         dbHelper = new SQLDBHelper(mContext);
 
         order_popup_data  = mContext.getSharedPreferences(PREORDERPREFERENCES,MODE_PRIVATE);

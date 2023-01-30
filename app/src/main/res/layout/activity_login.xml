@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:scrollbars="none"
+    android:background="#ffffff"
     android:layout_height="match_parent">
 
 <LinearLayout
@@ -17,9 +18,11 @@
     >
 
     <ImageView
+        android:id="@+id/signin_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back" />
+
 
       <TextView
           android:text="Wecome"
@@ -71,6 +74,7 @@
         android:layout_marginTop="22dp"
         android:paddingBottom="20dp"
         android:textSize="15dp"
+        android:maxLines="150"
         android:fontFamily="@font/poppins_medium"
         android:hint="@string/edittext_hint_gmail_phone"
         android:theme="@style/MyEditTextTheme"
@@ -196,7 +200,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sigin_button1"
+        android:id="@+id/sigin_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gmail_phone_bg"
@@ -210,10 +214,6 @@
         android:textSize="@dimen/text_20"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-   <!-- android:background="@drawable/button_background"-->
-
 
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -252,6 +252,7 @@
 
 
     <LinearLayout
+        android:id="@+id/sso_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -259,10 +260,12 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent">
 
 
         <ImageButton
+            android:id="@+id/gmail_login_layout"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@drawable/button_background"
@@ -273,6 +276,7 @@
         />
 
         <ImageButton
+            android:id="@+id/facebook_login_layout"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -281,6 +285,13 @@
             android:gravity="center"
             android:padding="8dp"
             android:src="@drawable/facebook_icon" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGrey"
+            android:visibility="gone" />
 
 
     </LinearLayout>
@@ -311,45 +322,10 @@
             android:text="T&amp;C"
             android:textColor="#fe9296"
             android:textSize="15dp"
-            android:textStyle="normal"></TextView>
+            android:textStyle="normal">
+        </TextView>
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:shimmer="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/content_layout"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/signin_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/back_arrow" />
-
-        <include
-            android:id="@+id/signinlayout"
-            layout="@layout/signin_layout"
-            android:visibility="visible" />
-
-        <include
-            android:id="@+id/signuplayout"
-            layout="@layout/signup_layout"
-            android:visibility="gone" />
-
-    </RelativeLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
 

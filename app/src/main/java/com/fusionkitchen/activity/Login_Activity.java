@@ -45,6 +45,10 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -59,10 +63,14 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
+import com.fusionkitchen.adapter.Slider_adapter;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.check_internet.Internet_connection_checking;
+import com.fusionkitchen.model.Login.Login_mobile_email;
+import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.loginsignup.login_model;
 import com.fusionkitchen.model.loginsignup.signup_model;
+import com.fusionkitchen.model.post_code_modal;
 import com.fusionkitchen.model.social_signup_model;
 import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.rest.ApiClient;
@@ -77,11 +85,14 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,49 +116,48 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     SharedPreferences.Editor sloginEditor;
     String activity_details, cooking_insttructionback;
     Dialog dialog;
+    LoginButton loginButton;
 
 
     /*-------------------view signin signup layout---------------*/
     View signinlayout, signuplayout, mContentView;
-    AppCompatTextView signup_link;
     RelativeLayout signup, signup_welcome;
     LinearLayout signup_page1, signup_page2;
     AppCompatButton signup_next;
     int mCount = 0;
-    AppCompatEditText mRgFirstName, mRgLastname, mRgPhonenumber, mRgUsermail, mRgPwd, mRgConfPwd;
-    String fname, lname, phonenumber, usermail, pwd, cpwd;
+    AppCompatEditText mRgFirstName, mRgLastname, mRgPhonenumber;
+
 
     ImageView signin_back;
-    AppCompatButton sigin_button1;
+    AppCompatButton sigin_button;
 
 
     /*--------------Login Button-----------------*/
 
-    AppCompatButton sigin_button, signin_link;
     AppCompatEditText user_email, user_password;
 
     /*----------------------forgot_password-------------------------*/
-    TextView forgot_password;
+
 
 
     /*--------------SSO LOGIN ENABLE-----------------*/
-    TableLayout sso_login, sso_signup;
+    TableLayout sso_signup;
 
 
     /*---------------------------G-mail Login----------------------------------------------------*/
     private static final String TAG = Login_Activity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
     private GoogleApiClient mGoogleApiClient;
-    ImageButton gmail_login_layout, gmail_signup_layout;
+    ImageButton gmail_login_layout;
     String personName, personGivenName, personFamilyName, personEmail, personId;
     /*---------------------------FaceBook Login----------------------------------------------------*/
-    LoginButton loginButton;
     CallbackManager callbackManager;
-    ImageButton facebook_login_layout, facebook_signup_layout;
+    ImageButton facebook_login_layout;
     String fb_first_name, fb_last_name, fb_id, fb_email;
     AlertDialog.Builder builder;
     TextView text_terms_condition;
     EditText email_phone_edittxt,otp1,otp2,otp3,otp4;
+    LinearLayout sso_login;
 
 
     /*---------------------------------Sqlite database ------------------------------------*/
@@ -187,29 +197,15 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         text_terms_condition = findViewById(R.id.text_terms_condition);
 
 
-        signinlayout = findViewById(R.id.signinlayout);
-        signuplayout = findViewById(R.id.signuplayout);
-        signup_link = findViewById(R.id.signup_link);
+
         otp_timer = findViewById(R.id.otp_timer);
 
 
-        signup = findViewById(R.id.signup);
-        signup_welcome = findViewById(R.id.signup_welcome);
-        signup_page1 = findViewById(R.id.signup_page1);
-        signup_page2 = findViewById(R.id.signup_page2);
-        signup_next = findViewById(R.id.signup_next);
 
-
-        mRgFirstName = findViewById(R.id.mRgFirstName);
-        mRgLastname = findViewById(R.id.mRgLastname);
-        mRgPhonenumber = findViewById(R.id.mRgPhonenumber);
-        mRgUsermail = findViewById(R.id.mRgUsermail);
-        mRgPwd = findViewById(R.id.mRgPwd);
-        mRgConfPwd = findViewById(R.id.mRgConfPwd);
-        mContentView = findViewById(R.id.content_layout);
+        sso_login = findViewById(R.id.sso_login);
         signin_back = findViewById(R.id.signin_back);
 
-        sigin_button1 = findViewById(R.id.sigin_button1);
+        sigin_button = findViewById(R.id.sigin_button);
         email_phone_edittxt  = findViewById(R.id.email_phone_edittxt);
         otp1 = findViewById(R.id.otp1);
         otp2 = findViewById(R.id.otp2);
@@ -332,8 +328,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 if(s.length() == 1){
                     Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.ic_gmail_phone_icon );
                     email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
-                    sigin_button1.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
-                    sigin_button1.setTextColor(Color.parseColor("#909497"));
+                    sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
+                    sigin_button.setTextColor(Color.parseColor("#909497"));
 
                 }
 
@@ -344,8 +340,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 if(s.length() > 0){
                     Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.login_icon_green );
                     email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
-                    sigin_button1.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg1));
-                    sigin_button1.setTextColor(Color.parseColor("#FFFFFF"));
+                    sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg1));
+                    sigin_button.setTextColor(Color.parseColor("#FFFFFF"));
                 }
 
             }
@@ -355,7 +351,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         /*-------------------Sign-up next button color change--------------*/
 
         /*-------------------First namee--------------*/
-
+/*
         mRgFirstName.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -381,9 +377,9 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             }
-        });
+        });*/
         /*-------------------Lastname namee--------------*/
-        mRgLastname.addTextChangedListener(new TextWatcher() {
+/*        mRgLastname.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -408,9 +404,9 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             }
-        });
+        });*/
 
-        /*-------------------Phone Number--------------*/
+/*        *//*-------------------Phone Number--------------*//*
         mRgPhonenumber.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -436,9 +432,9 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             }
-        });
+        });*/
 
-        /*-------------------E-mail--------------*/
+/*        *//*-------------------E-mail--------------*//*
         mRgUsermail.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -464,8 +460,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             }
-        });
-        /*-------------------Password--------------*/
+        });*/
+/*        *//*-------------------Password--------------*//*
         mRgPwd.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -491,9 +487,12 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             }
-        });
+        });*/
 
-        /*-------------------Confirm password--------------*/
+/*
+        */
+/*-------------------Confirm password--------------*//*
+
         mRgConfPwd.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -522,44 +521,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+*/
 
 
-        /*----------------------forgot_password-------------------------*/
-        forgot_password = findViewById(R.id.forgot_password);
 
-
-        forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getApplicationContext(), Forgot_Password_Activity.class));
-            }
-        });
-
-
-        signup_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                signinlayout.setVisibility(View.GONE);
-                signuplayout.setVisibility(View.VISIBLE);
-                mCount = 1;
-
-                signup.setVisibility(View.VISIBLE);
-                signup_welcome.setVisibility(View.GONE);
-                signup_page1.setVisibility(View.VISIBLE);
-
-                mRgFirstName.getText().clear();
-                mRgLastname.getText().clear();
-                mRgPhonenumber.getText().clear();
-                mRgUsermail.getText().clear();
-                mRgPwd.getText().clear();
-                mRgConfPwd.getText().clear();
-
-                ssoenabledisabaleregister();
-
-            }
-        });
+/*
 
         signup_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -630,19 +596,23 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         } else if (pwd.equals(cpwd)) {
 
                             SignupAction(fname, lname, phonenumber, usermail, pwd, cpwd);
-                            /*mCount++;
+                            */
+/*mCount++;
                             signup.setVisibility(View.GONE);
                             signup_welcome.setVisibility(View.VISIBLE);
-*/
+*//*
+
                             //SignupAction(fname, lname, phonenumber, usermail, pwd, cpwd);
                             //API call
-                               /* User user = new User();
+                               */
+/* User user = new User();
                                 user.email = usermail;
                                 user.name = fname;
                                 user.lname = lname;
                                 user.password = pwd;
                                 user.phonenumber = phonenumber;
-                                insertuser(user);*/
+                                insertuser(user);*//*
+
 
 
                         } else {
@@ -672,22 +642,20 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
             }
         });
+*/
 
 
         /*--------------SSO LOGIN ENABLE-----------------*/
 
-        sso_login = findViewById(R.id.sso_login);
-        sso_signup = findViewById(R.id.sso_signup);
         ssoenabledisabalelogin();
 
 
         /*--------------Login Button-----------------*/
 
-        sigin_button = findViewById(R.id.sigin_button);
-        signin_link = findViewById(R.id.signin_link);
+
+
 
         user_email = findViewById(R.id.user_email);
-        user_password = findViewById(R.id.user_password);
 
 
         sigin_button.setOnClickListener(new View.OnClickListener() {
@@ -697,16 +665,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-
-        signin_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                signinlayout.setVisibility(View.VISIBLE);
-                signuplayout.setVisibility(View.GONE);
-                mCount = 0;
-            }
-        });
 
 
         /*---------------------------Intent Value Get URL Path----------------------------------------------------*/
@@ -739,7 +697,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
 
         gmail_login_layout = findViewById(R.id.gmail_login_layout);
-        gmail_signup_layout = findViewById(R.id.gmail_signup_layout);
 
         gmail_login_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -750,21 +707,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-        gmail_signup_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                signIn();
-
-            }
-        });
-
-
 
         /*---------------------------FaceBook Login----------------------------------------------------*/
         facebook_login_layout = findViewById(R.id.facebook_login_layout);
-        facebook_signup_layout = findViewById(R.id.facebook_signup_layout);
         loginButton = findViewById(R.id.login_button);
+
 
         facebook_login_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -775,14 +722,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-        facebook_signup_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                loginButton.performClick();
-
-            }
-        });
 
         builder = new AlertDialog.Builder(this);
         boolean loggedOut = AccessToken.getCurrentAccessToken() == null;
@@ -880,8 +819,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onResponse(Call<version_code_modal> call, Response<version_code_modal> response) {
                 int statusCode = response.code();
-                Log.d("responsemsg1", "ok" + statusCode);
+                Log.d("responsemsg==", "ok" + statusCode + "SSO_LOGIN_ENABLE_DISABLE"+new Gson().toJson(response.body()));
                 /*Get Login Good Response...*/
+
+
                 if (statusCode == 200) {
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
@@ -1002,24 +943,80 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------Login Button----------------------------------------------------*/
     /*Check Login Details Hear...!*/
     private void validateLogin() {
-        if (TextUtils.isEmpty(user_email.getText())) {
+
+        if(TextUtils.isEmpty(email_phone_edittxt.getText())){
+            Snackbar.make(this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+        }else{
+            Sendotpphone(email_phone_edittxt.getText().toString().trim());
+        }
+
+      /*  if (TextUtils.isEmpty(user_email.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(user_email.getWindowToken(), 0);
             user_email.setError("Please fill out this field.");
             Utility.Showsnackbar(mContentView, "Enter the E-mail address");
+
             // Snackbar.make(this.findViewById(android.R.id.content), "Please enter your mobile number", Snackbar.LENGTH_LONG).show();
         } else if (TextUtils.isEmpty(user_password.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(user_password.getWindowToken(), 0);
             Utility.Showsnackbar(mContentView, "Enter the Password");
+
         } else if (!Utility.isVaildEmail(user_email.getText().toString())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(user_email.getWindowToken(), 0);
             user_email.setError("Invalid email address");
             Utility.Showsnackbar(mContentView, "Invalid email address");
+
         } else {
             LoginAction(user_email.getText().toString(), user_password.getText().toString());
-        }
+
+        }*/
+
+
+
+    }
+
+    private void Sendotpphone(String emailphone){
+
+            loadingshow();
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_name", emailphone);
+            ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
+            call.enqueue(new Callback<Login_mobile_email>() {
+                @Override
+                public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
+                    int statusCode = response.code();
+
+                    Log.e("Login_Activity", new Gson().toJson(response.body()));
+
+                    /*Get Login Good Response...*/
+                    if (statusCode == 200) {
+                        hideloading();
+                        if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
+
+                        }
+
+                    } else {
+                        hideloading();
+                        Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Login_mobile_email> call, Throwable t) {
+
+                    Log.e("Tro", "" + t);
+                    hideloading();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+
+            });
+
 
     }
 
@@ -1553,32 +1550,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-    public void ShowHidePass(View view) {
-
-        if (view.getId() == R.id.show_pass_btn) {
-            if (mRgPwd.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-                ((ImageView) (view)).setImageResource(R.drawable.invisible);
-                //Show Password
-                mRgPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            } else {
-                ((ImageView) (view)).setImageResource(R.drawable.visibility);
-                //Hide Password
-                mRgPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-        } else if (view.getId() == R.id.show_conpass_btn) {
-            if (mRgConfPwd.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-                ((ImageView) (view)).setImageResource(R.drawable.invisible);
-                //Show Password
-                mRgConfPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            } else {
-                ((ImageView) (view)).setImageResource(R.drawable.visibility);
-                //Hide Password
-                mRgConfPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-        }
-    }
-
-
     /*------------------On resume--------------*/
 
     @Override
@@ -1589,10 +1560,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-    @Override
+  /*    @Override
     public void onBackPressed() {
 
-        Log.e("mCount", "" + mCount);
+      Log.e("mCount", "" + mCount);
         if (signuplayout.getVisibility() == View.VISIBLE) {
             if (mCount == 1) {
                 signinlayout.setVisibility(View.VISIBLE);
@@ -1623,6 +1594,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-
+*/
 
 }
