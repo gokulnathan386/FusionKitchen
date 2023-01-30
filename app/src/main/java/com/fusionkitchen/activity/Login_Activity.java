@@ -108,7 +108,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
-    TextView otp_timer;
+    TextView otp_timer,decs_txt;
+    TextView desc_otp;
 
 
     /*--------------Login store SharedPreferences------------------*/
@@ -117,15 +118,15 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     String activity_details, cooking_insttructionback;
     Dialog dialog;
     LoginButton loginButton;
+    LinearLayout four_otp,desc_resend_otp;
+
 
 
     /*-------------------view signin signup layout---------------*/
-    View signinlayout, signuplayout, mContentView;
     RelativeLayout signup, signup_welcome;
-    LinearLayout signup_page1, signup_page2;
-    AppCompatButton signup_next;
+    AppCompatButton otp_btn;
     int mCount = 0;
-    AppCompatEditText mRgFirstName, mRgLastname, mRgPhonenumber;
+
 
 
     ImageView signin_back;
@@ -155,7 +156,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     ImageButton facebook_login_layout;
     String fb_first_name, fb_last_name, fb_id, fb_email;
     AlertDialog.Builder builder;
-    TextView text_terms_condition;
+    TextView text_terms_condition,resend_txt;
     EditText email_phone_edittxt,otp1,otp2,otp3,otp4;
     LinearLayout sso_login;
 
@@ -207,10 +208,40 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         sigin_button = findViewById(R.id.sigin_button);
         email_phone_edittxt  = findViewById(R.id.email_phone_edittxt);
+        decs_txt = findViewById(R.id.decs_txt);
+        four_otp = findViewById(R.id.four_otp);
+        desc_otp = findViewById(R.id.desc_otp);
+        desc_resend_otp = findViewById(R.id.desc_resend_otp);
+        otp_btn = findViewById(R.id.otp_btn);
+        resend_txt = findViewById(R.id.resend_txt);
+
         otp1 = findViewById(R.id.otp1);
         otp2 = findViewById(R.id.otp2);
         otp3 = findViewById(R.id.otp3);
         otp4 = findViewById(R.id.otp4);
+
+        otp_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(otp1.getText().toString().trim().isEmpty()){
+                    otp1.requestFocus();
+                  Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                }else if(otp2.getText().toString().trim().isEmpty()){
+                    otp2.requestFocus();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                }else if(otp3.getText().toString().trim().isEmpty()){
+                    otp3.requestFocus();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                }else if(otp4.getText().toString().trim().isEmpty()){
+                    otp4.requestFocus();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                }else{
+
+                }
+
+            }
+        });
 
 
         signin_back.setOnClickListener(new View.OnClickListener() {
@@ -347,302 +378,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-
-        /*-------------------Sign-up next button color change--------------*/
-
-        /*-------------------First namee--------------*/
-/*
-        mRgFirstName.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgLastname.getText().toString().length() != 0 && mRgPhonenumber.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });*/
-        /*-------------------Lastname namee--------------*/
-/*        mRgLastname.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgFirstName.getText().toString().length() != 0 && mRgPhonenumber.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });*/
-
-/*        *//*-------------------Phone Number--------------*//*
-        mRgPhonenumber.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgFirstName.getText().toString().length() != 0 && mRgLastname.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });*/
-
-/*        *//*-------------------E-mail--------------*//*
-        mRgUsermail.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgPwd.getText().toString().length() != 0 && mRgConfPwd.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });*/
-/*        *//*-------------------Password--------------*//*
-        mRgPwd.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgUsermail.getText().toString().length() != 0 && mRgConfPwd.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });*/
-
-/*
-        */
-/*-------------------Confirm password--------------*//*
-
-        mRgConfPwd.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    if (mRgUsermail.getText().toString().length() != 0 && mRgPwd.getText().toString().length() != 0) {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                    } else {
-                        signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                    }
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            }
-        });
-
-
-*/
-
-
-
-/*
-
-        signup_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                fname = mRgFirstName.getText().toString().trim();
-                lname = mRgLastname.getText().toString().trim();
-                phonenumber = mRgPhonenumber.getText().toString();
-                usermail = mRgUsermail.getText().toString();
-                pwd = mRgPwd.getText().toString();
-                cpwd = mRgConfPwd.getText().toString();
-
-                if (mCount == 1) {
-
-                    if (!TextUtils.isEmpty(fname) && !TextUtils.isEmpty(lname) && !TextUtils.isEmpty(phonenumber)) {
-
-
-                        if (phonenumber.length() == 11) {
-                            signup_page1.setVisibility(View.GONE);
-                            signup_page2.setVisibility(View.VISIBLE);
-                            mCount++;
-
-                            if (mRgUsermail.getText().toString().length() != 0 && mRgPwd.getText().toString().length() != 0 && mRgConfPwd.getText().toString().length() != 0) {
-                                signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                            } else {
-                                signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                            }
-                        } else {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgPhonenumber.getWindowToken(), 0);
-                            Utility.Showsnackbar(mContentView, "Please Enter valid Phone Number");
-                        }
-
-
-                    } else {
-
-                        if (TextUtils.isEmpty(fname)) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgFirstName.getWindowToken(), 0);
-                            mRgFirstName.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the First Name");
-                        } else if (TextUtils.isEmpty(lname)) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgLastname.getWindowToken(), 0);
-                            mRgLastname.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the Last Namer");
-                        } else {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgPhonenumber.getWindowToken(), 0);
-                            mRgPhonenumber.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the Phone number");
-                        }
-
-
-                    }
-
-
-                } else if (mCount == 2) {
-
-                    if (!TextUtils.isEmpty(usermail) && !TextUtils.isEmpty(pwd)
-                            && !TextUtils.isEmpty(cpwd)) {
-                        if (!Utility.isVaildEmail(usermail)) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgUsermail.getWindowToken(), 0);
-                            mRgUsermail.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Please Enter valid Email Address");
-                        } else if (pwd.equals(cpwd)) {
-
-                            SignupAction(fname, lname, phonenumber, usermail, pwd, cpwd);
-                            */
-/*mCount++;
-                            signup.setVisibility(View.GONE);
-                            signup_welcome.setVisibility(View.VISIBLE);
-*//*
-
-                            //SignupAction(fname, lname, phonenumber, usermail, pwd, cpwd);
-                            //API call
-                               */
-/* User user = new User();
-                                user.email = usermail;
-                                user.name = fname;
-                                user.lname = lname;
-                                user.password = pwd;
-                                user.phonenumber = phonenumber;
-                                insertuser(user);*//*
-
-
-
-                        } else {
-                            Utility.Showsnackbar(mContentView, "Confirm Password should be same.");
-                        }
-
-                    } else {
-                        if (TextUtils.isEmpty(usermail)) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgUsermail.getWindowToken(), 0);
-                            mRgUsermail.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the Email address");
-                        } else if (TextUtils.isEmpty(pwd)) {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgPwd.getWindowToken(), 0);
-                            mRgPwd.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the Password");
-                        } else {
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(mRgConfPwd.getWindowToken(), 0);
-                            mRgConfPwd.setError("Please fill out this field.");
-                            Utility.Showsnackbar(mContentView, "Enter the Confirm Passwordr");
-                        }
-
-
-                    }
-                }
-            }
-        });
-*/
 
 
         /*--------------SSO LOGIN ENABLE-----------------*/
@@ -787,27 +522,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
-        new CountDownTimer(30000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-
-                long count = millisUntilFinished / 1000;
-
-                String count_timer = String.valueOf(count);
-
-               if(count_timer.length() == 2){
-                   otp_timer.setText("00:"+millisUntilFinished / 1000 );
-               }else{
-                   otp_timer.setText("00:0"+millisUntilFinished / 1000 );
-               }
-
-            }
-
-            public void onFinish() {
-                otp_timer.setText("00:00");
-            }
-
-        }.start();
     }
 
     /*--------------SSO LOGIN ENABLE-----------------*/
@@ -950,31 +664,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             Sendotpphone(email_phone_edittxt.getText().toString().trim());
         }
 
-      /*  if (TextUtils.isEmpty(user_email.getText())) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(user_email.getWindowToken(), 0);
-            user_email.setError("Please fill out this field.");
-            Utility.Showsnackbar(mContentView, "Enter the E-mail address");
-
-            // Snackbar.make(this.findViewById(android.R.id.content), "Please enter your mobile number", Snackbar.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(user_password.getText())) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(user_password.getWindowToken(), 0);
-            Utility.Showsnackbar(mContentView, "Enter the Password");
-
-        } else if (!Utility.isVaildEmail(user_email.getText().toString())) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(user_email.getWindowToken(), 0);
-            user_email.setError("Invalid email address");
-            Utility.Showsnackbar(mContentView, "Invalid email address");
-
-        } else {
-            LoginAction(user_email.getText().toString(), user_password.getText().toString());
-
-        }*/
-
-
-
     }
 
     private void Sendotpphone(String emailphone){
@@ -996,7 +685,19 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         hideloading();
                         if (response.body().getStatus().equalsIgnoreCase("true")) {
 
+                            decs_txt.setVisibility(View.GONE);
+                            email_phone_edittxt.setVisibility(View.GONE);
+                            sigin_button.setVisibility(View.GONE);
+
+                            four_otp.setVisibility(View.VISIBLE);
+                            desc_otp.setVisibility(View.VISIBLE);
+                            otp_timer.setVisibility(View.VISIBLE);
+                            otp_btn.setVisibility(View.VISIBLE);
+
+                            Resendtimecount();
+
                             Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
+
 
                         }
 
@@ -1016,6 +717,35 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 }
 
             });
+
+
+    }
+
+    private void Resendtimecount() {
+
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                long count = millisUntilFinished / 1000;
+
+                String count_timer = String.valueOf(count);
+
+                if(count_timer.length() == 2){
+                    otp_timer.setText("00:"+millisUntilFinished / 1000 );
+                }else{
+                    otp_timer.setText("00:0"+millisUntilFinished / 1000 );
+                }
+
+            }
+
+            public void onFinish() {
+                otp_timer.setText("00:00");
+                desc_resend_otp.setVisibility(View.VISIBLE);
+            }
+
+        }.start();
 
 
     }
