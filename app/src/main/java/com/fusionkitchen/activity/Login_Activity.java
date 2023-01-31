@@ -110,6 +110,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     Internet_connection_checking int_chk;
     TextView otp_timer,decs_txt;
     TextView desc_otp;
+    Boolean resend = false;
 
 
     /*--------------Login store SharedPreferences------------------*/
@@ -224,19 +225,37 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View v) {
 
-                if(otp1.getText().toString().trim().isEmpty()){
+                if(otp1.getText().toString().trim().isEmpty() && otp2.getText().toString().trim().isEmpty()
+                && otp3.getText().toString().trim().isEmpty() && otp4.getText().toString().trim().isEmpty()
+                ){
+
                     otp1.requestFocus();
-                  Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                    otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+                    otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+                    otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+                    otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+
+                }else if(otp1.getText().toString().trim().isEmpty()){
+                    otp1.requestFocus();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
+                    otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg));
                 }else if(otp2.getText().toString().trim().isEmpty()){
                     otp2.requestFocus();
+                    otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg));
                     Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
                 }else if(otp3.getText().toString().trim().isEmpty()){
+                    otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg));
                     otp3.requestFocus();
                     Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
                 }else if(otp4.getText().toString().trim().isEmpty()){
                     otp4.requestFocus();
+                    otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg));
                     Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
                 }else{
+
+                    LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
+                            otp3.getText().toString().trim() + otp4.getText().toString().trim() , email_phone_edittxt.getText().toString().trim());
 
                 }
 
@@ -522,6 +541,78 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+        resend_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resend = true;
+                Sendotpphone(email_phone_edittxt.getText().toString().trim());
+            }
+        });
+
+
+    }
+
+    private void Checkotpvalidation(String txtotp,String txtgmail) {
+
+        loadingshow();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("otp_login", txtotp);
+        params.put("user_name", txtgmail);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
+        call.enqueue(new Callback<Login_mobile_email>() {
+            @Override
+            public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
+                int statusCode = response.code();
+
+                Log.e("Login_Activity", new Gson().toJson(response.body()));
+
+                if (statusCode == 200) {
+                    hideloading();
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        if(resend == true){
+                            Resendtimecount();
+                            resend = false;
+                        }else{
+
+                            decs_txt.setVisibility(View.GONE);
+                            email_phone_edittxt.setVisibility(View.GONE);
+                            sigin_button.setVisibility(View.GONE);
+
+                            four_otp.setVisibility(View.VISIBLE);
+                            desc_otp.setVisibility(View.VISIBLE);
+                            otp_timer.setVisibility(View.VISIBLE);
+                            otp_btn.setVisibility(View.VISIBLE);
+
+                            Resendtimecount();
+
+                        }
+
+
+                        // Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
+
+
+                    }
+
+                } else {
+                    hideloading();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Login_mobile_email> call, Throwable t) {
+
+                Log.e("Tro", "" + t);
+                hideloading();
+                Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+
+        });
+
+
     }
 
     /*--------------SSO LOGIN ENABLE-----------------*/
@@ -680,23 +771,30 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                     Log.e("Login_Activity", new Gson().toJson(response.body()));
 
-                    /*Get Login Good Response...*/
                     if (statusCode == 200) {
                         hideloading();
                         if (response.body().getStatus().equalsIgnoreCase("true")) {
 
-                            decs_txt.setVisibility(View.GONE);
-                            email_phone_edittxt.setVisibility(View.GONE);
-                            sigin_button.setVisibility(View.GONE);
+                            if(resend == true){
+                                Resendtimecount();
+                                resend = false;
+                            }else{
 
-                            four_otp.setVisibility(View.VISIBLE);
-                            desc_otp.setVisibility(View.VISIBLE);
-                            otp_timer.setVisibility(View.VISIBLE);
-                            otp_btn.setVisibility(View.VISIBLE);
+                                decs_txt.setVisibility(View.GONE);
+                                email_phone_edittxt.setVisibility(View.GONE);
+                                sigin_button.setVisibility(View.GONE);
 
-                            Resendtimecount();
+                                four_otp.setVisibility(View.VISIBLE);
+                                desc_otp.setVisibility(View.VISIBLE);
+                                otp_timer.setVisibility(View.VISIBLE);
+                                otp_btn.setVisibility(View.VISIBLE);
 
-                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
+                                Resendtimecount();
+
+                            }
+
+
+                           // Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
 
 
                         }
@@ -752,14 +850,16 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
 
     /*---------------------------Login Button----------------------------------------------------*/
-    private void LoginAction(String useremail, String userpass) {
+    private void LoginAction(String txtotp, String txtgmail) {
 
+       // Checkotpvalidation();
+
+        Log.d("bjbjhdbvsbjbd"," " + txtotp + txtgmail);
         loadingshow();
-
         // get user data from session
         Map<String, String> params = new HashMap<String, String>();
-        params.put("username", useremail);
-        params.put("password", userpass);
+        params.put("otp_login", txtotp);
+        params.put("user_name", txtgmail);
 
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -773,16 +873,19 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 int statusCode = response.code();
 
                 Log.e("loginstatuscode", "" + statusCode);
+
+                Log.e("loginstatuscode", new Gson().toJson(response.body()));
                 if (statusCode == 200) {
-                    if (response.body().getStatus().equalsIgnoreCase("1")) {
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
                         hideloading();
                         /*--------------Login store SharedPreferences------------------*/
                         if (slogin == null)
                             slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
 
+                        Log.d("mvjgdusjssgcugcscb"," " +response.body().getUserdetails().getCid() );
                         sloginEditor = slogin.edit();
                         sloginEditor.putString("login_key_status", "true");
-                        sloginEditor.putString("login_key_cid", response.body().getUserdetails().getCid());
+                     //   sloginEditor.putString("login_key_cid", response.body().getUserdetails().getCid());
                         sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
                         sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
                         sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());

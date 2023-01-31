@@ -5110,7 +5110,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
             /*-----------------------End Local broadcastManager send  Menuitem_name_adapter---------------------*/
 
-            Log.e("item_add_time5-Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
+            Log.e("Item_Menu_Activity", "\n"+" " + str_addon_item_name + "\n" + "-------->"+str_ItemName + "\n" + str_str_listItems +
                     "\n" +"----->"+ str_itemidsstr + "\n" + str_itemexradsstr + "\n" + str_item_price + "\n" + strqtys + "\n" + " -----> "+ str_item_total_amt + "\n" + "--->"
                     + str_item_total_amt + "\n"
                     + str_categoryname + "\n" + str_subcategoryname);

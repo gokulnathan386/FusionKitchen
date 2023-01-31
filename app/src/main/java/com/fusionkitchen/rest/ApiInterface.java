@@ -128,9 +128,14 @@ public interface ApiInterface {
     Call<menu_addons_model> addonslist(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
 
 
-    @POST("/login")
+   /* @POST("/login")
+    @FormUrlEncoded
+    Call<login_model> logininterfas(@FieldMap Map<String, String> params);*/
+
+    @POST("/login_check")
     @FormUrlEncoded
     Call<login_model> logininterfas(@FieldMap Map<String, String> params);
+
 
 
     @POST("/registerprocess")
