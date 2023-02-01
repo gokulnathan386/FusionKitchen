@@ -165,6 +165,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------------Sqlite database ------------------------------------*/
     SQLDBHelper dbHelper;
     int cursor;
+    String url = "";
 
 
     @Override
@@ -220,6 +221,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         otp2 = findViewById(R.id.otp2);
         otp3 = findViewById(R.id.otp3);
         otp4 = findViewById(R.id.otp4);
+      
+
 
         otp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +257,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
                 }else{
 
+                    otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                    otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                    otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                    otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+
                     LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
                             otp3.getText().toString().trim() + otp4.getText().toString().trim() , email_phone_edittxt.getText().toString().trim());
 
@@ -284,8 +292,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+
         otp1.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+              //  otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+
 
             }
 
@@ -299,10 +310,14 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                if(s.length() == 1){
                    otp2.requestFocus();
+                   otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
                }
 
             }
         });
+
+
+
 
 
         otp2.addTextChangedListener(new TextWatcher() {
@@ -323,6 +338,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                 if(s.length() == 1){
                     otp3.requestFocus();
+                    otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
                 }
 
             }
@@ -345,6 +361,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                 if(s.length() == 1){
                     otp4.requestFocus();
+                    otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
                 }
 
             }
@@ -554,6 +571,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     private void Checkotpvalidation(String txtotp,String txtgmail) {
 
+
         loadingshow();
         Map<String, String> params = new HashMap<String, String>();
         params.put("otp_login", txtotp);
@@ -586,6 +604,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                             otp_btn.setVisibility(View.VISIBLE);
 
                             Resendtimecount();
+
+
 
                         }
 
@@ -791,6 +811,19 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                                 Resendtimecount();
 
+
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                otp1.postDelayed(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        otp1.requestFocus();
+                                        imm.showSoftInput(otp1, 0);
+                                        otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                                    }
+                                }, 100);
+
                             }
 
 
@@ -852,11 +885,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------Login Button----------------------------------------------------*/
     private void LoginAction(String txtotp, String txtgmail) {
 
-       // Checkotpvalidation();
 
-        Log.d("bjbjhdbvsbjbd"," " + txtotp + txtgmail);
         loadingshow();
-        // get user data from session
         Map<String, String> params = new HashMap<String, String>();
         params.put("otp_login", txtotp);
         params.put("user_name", txtgmail);
@@ -869,7 +899,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<login_model> call, Response<login_model> response) {
-                //response.headers().get("Set-Cookie");
+
                 int statusCode = response.code();
 
                 Log.e("loginstatuscode", "" + statusCode);
@@ -882,20 +912,21 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         if (slogin == null)
                             slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
 
-                        Log.d("mvjgdusjssgcugcscb"," " +response.body().getUserdetails().getCid() );
+                        Log.d("mvjgdusjssgcugcscb"," " +response.body().getData().getUserdetails().getCid() );
                         sloginEditor = slogin.edit();
                         sloginEditor.putString("login_key_status", "true");
-                     //   sloginEditor.putString("login_key_cid", response.body().getUserdetails().getCid());
-                        sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
-                        sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
-                        sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());
-                        sloginEditor.putString("login_key_fname",response.body().getUserdetails().getFname());
-                        sloginEditor.putString("login_key_phone",response.body().getUserdetails().getPhone());
+                        sloginEditor.putString("login_key_cid", response.body().getData().getUserdetails().getCid());
+                        sloginEditor.putString("login_key_vcode",response.body().getData().getUserdetails().getVcode());
+                        sloginEditor.putString("type_of_login", response.body().getData().getUserdetails().getType_of_login());
+                        sloginEditor.putString("login_key_email", response.body().getData().getUserdetails().getEmail());
+                        sloginEditor.putString("login_key_fname",response.body().getData().getUserdetails().getFname());
+                        sloginEditor.putString("login_key_phone",response.body().getData().getUserdetails().getPhone());
                         sloginEditor.commit();
 
 
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
 
+                        Log.d("gokul_else","Hoklul");
 
                         //Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
                         if (activity_details.equalsIgnoreCase("pcode")) {
@@ -933,7 +964,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     }
                 } else {
                     hideloading();
-                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),R.string.wrong_otp, Snackbar.LENGTH_LONG).show();
                 }
             }
 
@@ -941,8 +972,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             public void onFailure(Call<login_model> call, Throwable t) {
                 hideloading();
                 Log.e("bugcode", "" + t.toString());
-                Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+                Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.wrong_otp, Snackbar.LENGTH_LONG).show();
+
             }
         });
     }
