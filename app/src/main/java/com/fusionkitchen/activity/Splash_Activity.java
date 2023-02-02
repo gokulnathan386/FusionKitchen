@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 
+import com.airbnb.lottie.L;
 import com.fusionkitchen.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,7 +30,8 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 public class Splash_Activity extends AppCompatActivity {
 
     Handler handler;
-    SharedPreferences offer_splash;
+    SharedPreferences offer_splash,slogin;
+    String user_id;
 
 
     @Override
@@ -50,10 +52,15 @@ public class Splash_Activity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+                user_id = (slogin.getString("login_key_cid", null));
+
                 Intent intent = new Intent(Splash_Activity.this, Welcome_Activity.class);
                 startActivity(intent);
                 finish();
-            }
+
+             }
         }, 1800);
 
     }

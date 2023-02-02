@@ -8,6 +8,7 @@
     <string name="dialog_message">Anew version of the app is available.\n Would you like to update them now?</string>
     <string name="dialog_title">Update available</string>
     <string name="wrong_otp">Wrong OTP Please try again</string>
+    <string name="wrong_email_phone">Wrong Email or Phone,Please try again</string>
 
 
     <string name="skip">Get Started</string>

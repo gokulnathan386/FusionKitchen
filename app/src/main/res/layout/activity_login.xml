@@ -343,6 +343,7 @@
             android:text="By continuing you agree to our"
             android:textColor="#808695"
             android:textSize="15dp"
+            android:fontFamily="@font/metropolis_medium"
             android:textStyle="normal">
         </TextView>
 

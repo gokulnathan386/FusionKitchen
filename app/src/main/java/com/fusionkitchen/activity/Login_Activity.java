@@ -303,7 +303,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
-
             }
 
             public void afterTextChanged(Editable s) {
@@ -311,13 +310,16 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                if(s.length() == 1){
                    otp2.requestFocus();
                    otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+
+                   if(otp1.getText().toString() != null && !otp1.getText().toString().isEmpty()){
+                       otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                   }else{
+                       otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+                   }
                }
 
             }
         });
-
-
-
 
 
         otp2.addTextChangedListener(new TextWatcher() {
@@ -330,6 +332,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                 if(s.length() == 1){
                     otp1.requestFocus();
+                    otp2.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
                 }
 
             }
@@ -353,6 +356,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                                           int after) {
                 if(s.length() == 1){
                     otp2.requestFocus();
+                    otp3.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
                 }
 
             }
@@ -376,6 +380,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                                           int after) {
                 if(s.length() == 1){
                     otp3.requestFocus();
+                    otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
                 }
 
             }
@@ -409,6 +414,28 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
                     sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg1));
                     sigin_button.setTextColor(Color.parseColor("#FFFFFF"));
+
+                }
+
+
+                String phoneNumber = String.valueOf(s);
+
+                if (phoneNumber.length() >= 2) {
+                    String first3 = phoneNumber.substring(0, 2);
+
+                    if (first3.equals("71") || first3.equals("72") || first3.equals("73") || first3.equals("74") ||
+                            first3.equals("75") || first3.equals("76") || first3.equals("77") || first3.equals("78") ||
+                            first3.equals("79")) {
+
+                         email_phone_edittxt.setText("+44 "+phoneNumber);
+
+                        if(email_phone_edittxt.getText().length() >= 5){
+                            email_phone_edittxt.setSelection(email_phone_edittxt.getText().length());
+                        }
+
+                    } else {
+                        Log.d("gokulnathan","Phone number is  not valid");
+                    }
                 }
 
             }
@@ -826,10 +853,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                             }
 
-
-                           // Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.message(), Snackbar.LENGTH_LONG).show();
-
-
+                        }else{
+                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),R.string.wrong_email_phone, Snackbar.LENGTH_LONG).show();
                         }
 
                     } else {
@@ -912,7 +937,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         if (slogin == null)
                             slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
 
-                        Log.d("mvjgdusjssgcugcscb"," " +response.body().getData().getUserdetails().getCid() );
                         sloginEditor = slogin.edit();
                         sloginEditor.putString("login_key_status", "true");
                         sloginEditor.putString("login_key_cid", response.body().getData().getUserdetails().getCid());
@@ -926,7 +950,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
 
-                        Log.d("gokul_else","Hoklul");
+
+                if (activity_details != null) {
 
                         //Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
                         if (activity_details.equalsIgnoreCase("pcode")) {
@@ -956,6 +981,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         }else {
                             startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                         }
+
+                }else{
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                }
 
 
                     } else {
@@ -1189,33 +1218,41 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         sloginEditor.putString("login_key_vcode", response.body().getUserdetails().getVcode());
                         sloginEditor.putString("type_of_login", response.body().getUserdetails().getType_of_login());
                         sloginEditor.putString("login_key_email", response.body().getUserdetails().getEmail());
-                        sloginEditor.putString("login_key_fname",response.body().getUserdetails().getfname());
-                        sloginEditor.putString("login_key_phone",response.body().getUserdetails().getphone());
+                        sloginEditor.putString("login_key_fname", response.body().getUserdetails().getfname());
+                        sloginEditor.putString("login_key_phone", response.body().getUserdetails().getphone());
                         sloginEditor.commit();
 
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                         signOut();
-                        if (activity_details.equalsIgnoreCase("pcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("cart")) {
-                            Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
-                            intent.putExtra("cooking_insttruction", cooking_insttructionback);
-                            startActivity(intent);
-                        } else if (activity_details.equalsIgnoreCase("address")) {
-                            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myaccount")) {
-                            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("postcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myfavourite")) {
-                            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-                        } else {
+
+                        if (activity_details != null) {
+
+                            if (activity_details.equalsIgnoreCase("pcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("cart")) {
+                                Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
+                                intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                                startActivity(intent);
+                            } else if (activity_details.equalsIgnoreCase("address")) {
+                                startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myaccount")) {
+                                startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("postcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myfavourite")) {
+                                startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            }
+                        }else{
                             startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                         }
+
                     } else {
                         hideloading();
                         Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
                     }
+
 
                 } else {
                     hideloading();
@@ -1375,23 +1412,30 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         sloginEditor.commit();
                         LoginManager.getInstance().logOut();
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                        if (activity_details.equalsIgnoreCase("pcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("cart")) {
-                            Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
-                            intent.putExtra("cooking_insttruction", cooking_insttructionback);
-                            startActivity(intent);
-                        } else if (activity_details.equalsIgnoreCase("address")) {
-                            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myaccount")) {
-                            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("postcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myfavourite")) {
-                            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-                        } else {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        }
+
+                  if (activity_details != null) {
+
+                      if (activity_details.equalsIgnoreCase("pcode")) {
+                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                      } else if (activity_details.equalsIgnoreCase("cart")) {
+                          Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
+                          intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                          startActivity(intent);
+                      } else if (activity_details.equalsIgnoreCase("address")) {
+                          startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+                      } else if (activity_details.equalsIgnoreCase("myaccount")) {
+                          startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+                      } else if (activity_details.equalsIgnoreCase("postcode")) {
+                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                      } else if (activity_details.equalsIgnoreCase("myfavourite")) {
+                          startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+                      } else {
+                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                      }
+                  }else{
+                      startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                  }
+
                     } else {
                         hideloading();
                         Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
@@ -1424,10 +1468,10 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-  /*    @Override
+   @Override
     public void onBackPressed() {
 
-      Log.e("mCount", "" + mCount);
+  /*    Log.e("mCount", "" + mCount);
         if (signuplayout.getVisibility() == View.VISIBLE) {
             if (mCount == 1) {
                 signinlayout.setVisibility(View.VISIBLE);
@@ -1454,10 +1498,26 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             finish();
         }
 
-        Toast.makeText(Login_Activity.this,"Gokulnathan",Toast.LENGTH_SHORT).show();
+        Toast.makeText(Login_Activity.this,"Gokulnathan",Toast.LENGTH_SHORT).show();*/
+
+       if (four_otp.getVisibility() == View.VISIBLE) {
+
+           decs_txt.setVisibility(View.VISIBLE);
+           email_phone_edittxt.setVisibility(View.VISIBLE);
+           sigin_button.setVisibility(View.VISIBLE);
+
+           four_otp.setVisibility(View.GONE);
+           desc_otp.setVisibility(View.GONE);
+           otp_timer.setVisibility(View.GONE);
+           otp_btn.setVisibility(View.GONE);
+
+       }else{
+           finish();
+       }
+
 
     }
 
-*/
+
 
 }

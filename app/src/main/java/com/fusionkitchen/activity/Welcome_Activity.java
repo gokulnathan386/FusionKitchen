@@ -2,6 +2,7 @@ package com.fusionkitchen.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class Welcome_Activity extends AppCompatActivity {
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     private TabLayout tabLayout;
+    SharedPreferences slogin;
+    String user_id;
 
     /*---------------------------every 5 seconds next design Call----------------------------------------------------*/
     Handler myHandler = new Handler();
@@ -87,8 +90,6 @@ public class Welcome_Activity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         tabLayout = findViewById(R.id.my_tablayout);
 
-        /*---------------------------button bg image set----------------------------------------------------*/
-        //  btnNext.setBackground(getResources().getDrawable(R.drawable.background_button_new));
 
 
         /*---------------------------layouts of all welcome sliders---------------------------------------------------*/
@@ -124,21 +125,7 @@ public class Welcome_Activity extends AppCompatActivity {
         tabLayout.setupWithViewPager(page,true);
 
 
-        /*---------------------------every 5 seconds next design Call----------------------------------------------------*/
-        //start handler as activity become visible
-      /*  myHandler.postDelayed(runnable = new Runnable() {
-            public void run() {
-                //Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_LONG).show();
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                }
-                myHandler.postDelayed(runnable, delay);
-            }
-        }, delay);*/
+
         /*---------------------------Set OnClick Listener----------------------------------------------------*/
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,47 +143,21 @@ public class Welcome_Activity extends AppCompatActivity {
     /*---------------------------already welcome sliders showed---------------------------------------------------*/
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(Welcome_Activity.this, Postcode_Activity.class));
-        finish();
+        slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+        user_id = (slogin.getString("login_key_cid", null));
+
+        if(user_id != null  && user_id.trim().length() > 0){
+            startActivity(new Intent(Welcome_Activity.this, Postcode_Activity.class));
+            finish();
+        }else{
+            startActivity(new Intent(Welcome_Activity.this, Login_Activity.class));
+            finish();
+        }
+       // startActivity(new Intent(Welcome_Activity.this, Postcode_Activity.class));
+        //startActivity(new Intent(Welcome_Activity.this, Login_Activity.class));
+       // finish();
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
-
-    /*---------------------------viewpager change listener---------------------------------------------------*/
-/*
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            if (position == layouts.length - 1) {
-                btnNext.setText(getString(R.string.start));
-
-            } else {
-                btnNext.setText(getString(R.string.skip));
-
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-*/
-
-
-    /*---------------------------Making notification bar transparent---------------------------------------------------*/
-   /* private void changeStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }*/
 
 
     /*---------------------------View pager adapter---------------------------------------------------*/
