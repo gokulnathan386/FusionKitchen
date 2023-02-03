@@ -96,6 +96,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -417,8 +419,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                 }
 
-
-                String phoneNumber = String.valueOf(s);
+             /*   String phoneNumber = String.valueOf(s);
 
                 if (phoneNumber.length() >= 2) {
                     String first3 = phoneNumber.substring(0, 2);
@@ -436,7 +437,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     } else {
                         Log.d("gokulnathan","Phone number is  not valid");
                     }
-                }
+                }*/
 
             }
         });
@@ -592,6 +593,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 Sendotpphone(email_phone_edittxt.getText().toString().trim());
             }
         });
+
+      /*  String number = "+44 7904209867";
+        String[] separated = number.split(" ");
+
+
+        Log.d("ekhkhkfnknkshfksa"," " +  separated[0]);
+        Log.d("ekhkhkfnknkshfksa"," " +  separated[1]);*/
 
 
     }
@@ -799,12 +807,36 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         if(TextUtils.isEmpty(email_phone_edittxt.getText())){
             Snackbar.make(this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
         }else{
-            Sendotpphone(email_phone_edittxt.getText().toString().trim());
+
+            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"; // Email valid
+
+            String phonenopattern ="^(?:0|\\+?44)(?:\\d\\s?){9,10}$";   // UK Number only valid
+
+            Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
+            Matcher matcher = phoneNumberPattern.matcher(email_phone_edittxt.getText().toString().trim());
+
+            if ((email_phone_edittxt.getText().toString().trim().matches(emailPattern)))
+            {
+                Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
+                Sendotpphone(email_phone_edittxt.getText().toString().trim());
+
+            }else if(matcher.matches()){
+
+               Toast.makeText(getApplicationContext(),"valid Phone Number",Toast.LENGTH_SHORT).show();
+               Sendotpphone(email_phone_edittxt.getText().toString().trim());
+
+            }else{
+                Toast.makeText(getApplicationContext(),"Invalid Email address or Phone Number",Toast.LENGTH_SHORT).show();
+            }
+
+
         }
 
     }
 
     private void Sendotpphone(String emailphone){
+
+
 
             loadingshow();
             Map<String, String> params = new HashMap<String, String>();
@@ -816,7 +848,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
                     int statusCode = response.code();
 
-                    Log.e("Login_Activity", new Gson().toJson(response.body()));
+                    Log.e("ejmdgfgfuyewfg", new Gson().toJson(response.body()));
 
                     if (statusCode == 200) {
                         hideloading();
