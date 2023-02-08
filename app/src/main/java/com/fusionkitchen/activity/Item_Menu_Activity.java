@@ -3505,6 +3505,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                 Log.e("menu_offer", new Gson().toJson(response.body()));
 
+                Log.e("KJFJKJSUWUWW"," " + response.body().getDiscount_list().getPromocode().size() + " "
+                        +response.body().getDiscount_list().getDiscountcode().size()+ " " +response.body().getDiscount_list().getCommoncoupon().size());
+
                 if (statusCode == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 

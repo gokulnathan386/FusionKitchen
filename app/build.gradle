@@ -124,14 +124,9 @@ dependencies {
 
 
     implementation "com.stripe:stripeterminal:1.0.17"
-    //implementation 'com.stripe:stripe-android:18.2.0'
+
      implementation 'com.stripe:stripe-android:18.2.0'
-    // implementation 'com.stripe:stripe-android:10.5.0'
-    //implementation 'com.stripe:stripe-android:14.0.0'
-    //implementation "com.stripe:stripeterminal:1.0.17"
-    //implementation 'com.stripe:stripe-android:16.1.1'
-     //implementation 'com.stripe:stripe-android:16.10.2'
-    //implementation 'com.stripe:stripe-android:6.1.2'
+
 
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
 

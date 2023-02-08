@@ -207,8 +207,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         otp_timer = findViewById(R.id.otp_timer);
 
-
-
         sso_login = findViewById(R.id.sso_login);
         signin_back = findViewById(R.id.signin_back);
         prefix = findViewById(R.id.prefix);
@@ -276,13 +274,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         });
 
 
+
+
         signin_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 onBackPressed();
-
 
             }
         });
@@ -295,7 +293,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                 startActivity(intent);
             }
         });
-
 
 
         otp1.addTextChangedListener(new TextWatcher() {
@@ -355,6 +352,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         otp3.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -378,7 +376,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         otp4.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -394,6 +391,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             }
         });
+
 
         email_phone_edittxt.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -430,7 +428,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                     if (matcher.find()) {
                         prefix.setVisibility(View.VISIBLE);
-                        email_phone_edittxt.setCompoundDrawablePadding(150);
+                        email_phone_edittxt.setCompoundDrawablePadding(80);
                     }else{
                         prefix.setVisibility(View.GONE);
                         email_phone_edittxt.setCompoundDrawablePadding(30);
@@ -812,17 +810,17 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             String phonenopattern ="^(?:0|\\+?44)(?:\\d\\s?){9,10}$";   // UK Number only valid
 
             Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
-            Matcher matcher = phoneNumberPattern.matcher("+44" +email_phone_edittxt.getText().toString().trim());
+            Matcher matcher = phoneNumberPattern.matcher(email_phone_edittxt.getText().toString().trim());
+
 
             if ((email_phone_edittxt.getText().toString().trim().matches(emailPattern)))
             {
-               // Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
+
                 Sendotpphone(email_phone_edittxt.getText().toString().trim());
 
             }else if(matcher.matches()){
 
-                //email_phone_edittxt.setText("+44 " + email_phone_edittxt.getText().toString().trim());
-               //Toast.makeText(getApplicationContext(),"valid Phone Number",Toast.LENGTH_SHORT).show();
+              // Toast.makeText(getApplicationContext(),"valid Phone Number" + email_phone_edittxt.getText().toString(),Toast.LENGTH_SHORT).show();
                Sendotpphone(email_phone_edittxt.getText().toString().trim());
 
             }else{
@@ -836,19 +834,19 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     private void Sendotpphone(String emailphone){
 
-        Log.e("ejmdgfgfuyewfg","" + emailphone);
-
             loadingshow();
             Map<String, String> params = new HashMap<String, String>();
             params.put("user_name", emailphone);
             ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
             Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
+
+
             call.enqueue(new Callback<Login_mobile_email>() {
                 @Override
                 public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
                     int statusCode = response.code();
 
-                    Log.e("ejmdgfgfuyewfg", new Gson().toJson(response.body()));
+                    Log.e("ejmdgfgfuyewfg", new Gson().toJson(response.body()) + " " + params + response.raw().request().url());
 
                     if (statusCode == 200) {
                         hideloading();
@@ -862,6 +860,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                                 decs_txt.setVisibility(View.GONE);
                                 email_phone_edittxt.setVisibility(View.GONE);
                                 sigin_button.setVisibility(View.GONE);
+                                prefix.setVisibility(View.GONE);
 
                                 four_otp.setVisibility(View.VISIBLE);
                                 desc_otp.setVisibility(View.VISIBLE);
@@ -930,7 +929,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             public void onFinish() {
                 otp_timer.setText("00:00");
-                desc_resend_otp.setVisibility(View.VISIBLE);
+
+                if(four_otp.getVisibility() == View.VISIBLE){
+                    desc_resend_otp.setVisibility(View.VISIBLE);
+                }else{
+                    desc_resend_otp.setVisibility(View.GONE);
+                }
+
             }
 
         }.start();
@@ -1503,34 +1508,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
    @Override
     public void onBackPressed() {
 
-  /*    Log.e("mCount", "" + mCount);
-        if (signuplayout.getVisibility() == View.VISIBLE) {
-            if (mCount == 1) {
-                signinlayout.setVisibility(View.VISIBLE);
-                signuplayout.setVisibility(View.GONE);
-                mCount = 0;
-            } else if (mCount == 2) {
-                mCount = 1;
-                signup_page1.setVisibility(View.VISIBLE);
-                signup_page2.setVisibility(View.GONE);
-
-
-                if (mRgFirstName.getText().toString().length() != 0 && mRgLastname.getText().toString().length() != 0 && mRgPhonenumber.getText().toString().length() != 0) {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextok));
-                } else {
-                    signup_next.setBackgroundTintList(ContextCompat.getColorStateList(Login_Activity.this, R.color.btn_nextnotok));
-                }
-
-            } else if (mCount == 3) {
-                signinlayout.setVisibility(View.VISIBLE);
-                signuplayout.setVisibility(View.GONE);
-                mCount = 0;
-            }
-        } else {
-            finish();
-        }
-
-        Toast.makeText(Login_Activity.this,"Gokulnathan",Toast.LENGTH_SHORT).show();*/
 
        if (four_otp.getVisibility() == View.VISIBLE) {
 
@@ -1538,10 +1515,20 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
            email_phone_edittxt.setVisibility(View.VISIBLE);
            sigin_button.setVisibility(View.VISIBLE);
 
+
            four_otp.setVisibility(View.GONE);
            desc_otp.setVisibility(View.GONE);
            otp_timer.setVisibility(View.GONE);
            otp_btn.setVisibility(View.GONE);
+           desc_resend_otp.setVisibility(View.GONE);
+           prefix.setVisibility(View.GONE);
+           email_phone_edittxt.setText("");
+           email_phone_edittxt.requestFocus();
+           Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.ic_gmail_phone_icon );
+           email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+           sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
+           sigin_button.setTextColor(Color.parseColor("#909497"));
+           email_phone_edittxt.setCompoundDrawablePadding(30);
 
        }else{
            finish();
