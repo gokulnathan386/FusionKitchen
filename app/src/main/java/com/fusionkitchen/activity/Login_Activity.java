@@ -114,6 +114,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     TextView desc_otp;
     Boolean resend = false;
     int edit_txt;
+    TextView prefix;
 
 
     /*--------------Login store SharedPreferences------------------*/
@@ -210,6 +211,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         sso_login = findViewById(R.id.sso_login);
         signin_back = findViewById(R.id.signin_back);
+        prefix = findViewById(R.id.prefix);
 
         sigin_button = findViewById(R.id.sigin_button);
         email_phone_edittxt  = findViewById(R.id.email_phone_edittxt);
@@ -405,25 +407,9 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
                     sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
                     sigin_button.setTextColor(Color.parseColor("#909497"));
+                    prefix.setVisibility(View.GONE);
+                    email_phone_edittxt.setCompoundDrawablePadding(30);
 
-                }
-
-                String input = String.valueOf(s);
-                Pattern pattern = Pattern.compile("^[0-9]+$");
-                Matcher matcher = pattern.matcher(input);
-
-
-                if (matcher.find()) {
-
-                   Log.d("Before_text","true" + s);
-
-                }else{
-                    if (input.contains("+44")) {
-
-                        String[] output = input.split(" ");
-                        edit_txt= output[1].length();
-
-                    }
                 }
 
             }
@@ -441,20 +427,13 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     Pattern pattern = Pattern.compile("^[0-9]+$");
 
                     Matcher matcher = pattern.matcher(input.trim());
-Log.d("=====","" + input.trim());
+
                     if (matcher.find()) {
-
-                          if(email_phone_edittxt.getText().toString().length() > 2){
-                              email_phone_edittxt.setText("+44"  +email_phone_edittxt.getText().toString());
-                              email_phone_edittxt.setSelection(email_phone_edittxt.getText().toString().length());
-                          }
-                        Log.d("======"," if");
+                        prefix.setVisibility(View.VISIBLE);
+                        email_phone_edittxt.setCompoundDrawablePadding(150);
                     }else{
-                        Log.d("======"," else");
-                    }
-
-                    if(edit_txt == 2){
-                        email_phone_edittxt.setText("");
+                        prefix.setVisibility(View.GONE);
+                        email_phone_edittxt.setCompoundDrawablePadding(30);
                     }
 
                 }

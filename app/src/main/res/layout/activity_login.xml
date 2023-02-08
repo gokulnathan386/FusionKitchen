@@ -81,7 +81,7 @@
         android:layout_height="wrap_content">
     </TextView>
 
-    <EditText
+  <!--  <EditText
         android:id="@+id/email_phone_edittxt"
         android:layout_width="match_parent"
         android:drawablePadding="15dp"
@@ -95,7 +95,47 @@
         android:theme="@style/MyEditTextTheme"
         android:drawableLeft="@drawable/ic_gmail_phone_icon"
         android:layout_height="wrap_content">
-    </EditText>
+    </EditText>-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+
+        <EditText
+            android:id="@+id/email_phone_edittxt"
+            android:layout_width="match_parent"
+            android:drawablePadding="10dp"
+            android:singleLine="true"
+            android:layout_marginTop="22dp"
+            android:paddingBottom="20dp"
+            android:textSize="15dp"
+            android:maxLines="150"
+            android:textColor="#17284D"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="@string/edittext_hint_gmail_phone"
+            android:theme="@style/MyEditTextTheme"
+            android:drawableLeft="@drawable/ic_gmail_phone_icon"
+            android:layout_height="wrap_content">
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/prefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="35dp"
+            android:text="+44"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="6dp"
+            android:textColor="#17284D"
+            android:textSize="15dp"
+           />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/four_otp"
