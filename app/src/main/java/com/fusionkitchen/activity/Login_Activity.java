@@ -113,6 +113,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     TextView otp_timer,decs_txt;
     TextView desc_otp;
     Boolean resend = false;
+    int edit_txt;
 
 
     /*--------------Login store SharedPreferences------------------*/
@@ -407,6 +408,24 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
                 }
 
+                String input = String.valueOf(s);
+                Pattern pattern = Pattern.compile("^[0-9]+$");
+                Matcher matcher = pattern.matcher(input);
+
+
+                if (matcher.find()) {
+
+                   Log.d("Before_text","true" + s);
+
+                }else{
+                    if (input.contains("+44")) {
+
+                        String[] output = input.split(" ");
+                        edit_txt= output[1].length();
+
+                    }
+                }
+
             }
 
             public void afterTextChanged(Editable s) {
@@ -417,27 +436,28 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg1));
                     sigin_button.setTextColor(Color.parseColor("#FFFFFF"));
 
-                }
 
-             /*   String phoneNumber = String.valueOf(s);
+                    String input = String.valueOf(s);
+                    Pattern pattern = Pattern.compile("^[0-9]+$");
 
-                if (phoneNumber.length() >= 2) {
-                    String first3 = phoneNumber.substring(0, 2);
+                    Matcher matcher = pattern.matcher(input.trim());
+Log.d("=====","" + input.trim());
+                    if (matcher.find()) {
 
-                    if (first3.equals("71") || first3.equals("72") || first3.equals("73") || first3.equals("74") ||
-                            first3.equals("75") || first3.equals("76") || first3.equals("77") || first3.equals("78") ||
-                            first3.equals("79")) {
-
-                         email_phone_edittxt.setText("+44 "+phoneNumber);
-
-                        if(email_phone_edittxt.getText().length() >= 5){
-                            email_phone_edittxt.setSelection(email_phone_edittxt.getText().length());
-                        }
-
-                    } else {
-                        Log.d("gokulnathan","Phone number is  not valid");
+                          if(email_phone_edittxt.getText().toString().length() > 2){
+                              email_phone_edittxt.setText("+44"  +email_phone_edittxt.getText().toString());
+                              email_phone_edittxt.setSelection(email_phone_edittxt.getText().toString().length());
+                          }
+                        Log.d("======"," if");
+                    }else{
+                        Log.d("======"," else");
                     }
-                }*/
+
+                    if(edit_txt == 2){
+                        email_phone_edittxt.setText("");
+                    }
+
+                }
 
             }
         });
@@ -813,16 +833,17 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             String phonenopattern ="^(?:0|\\+?44)(?:\\d\\s?){9,10}$";   // UK Number only valid
 
             Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
-            Matcher matcher = phoneNumberPattern.matcher(email_phone_edittxt.getText().toString().trim());
+            Matcher matcher = phoneNumberPattern.matcher("+44" +email_phone_edittxt.getText().toString().trim());
 
             if ((email_phone_edittxt.getText().toString().trim().matches(emailPattern)))
             {
-                Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(),"valid email address",Toast.LENGTH_SHORT).show();
                 Sendotpphone(email_phone_edittxt.getText().toString().trim());
 
             }else if(matcher.matches()){
 
-               Toast.makeText(getApplicationContext(),"valid Phone Number",Toast.LENGTH_SHORT).show();
+                //email_phone_edittxt.setText("+44 " + email_phone_edittxt.getText().toString().trim());
+               //Toast.makeText(getApplicationContext(),"valid Phone Number",Toast.LENGTH_SHORT).show();
                Sendotpphone(email_phone_edittxt.getText().toString().trim());
 
             }else{
@@ -836,7 +857,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     private void Sendotpphone(String emailphone){
 
-
+        Log.e("ejmdgfgfuyewfg","" + emailphone);
 
             loadingshow();
             Map<String, String> params = new HashMap<String, String>();
@@ -886,7 +907,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                             }
 
                         }else{
-                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),R.string.wrong_email_phone, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.body().getMessage(), Snackbar.LENGTH_LONG).show();
                         }
 
                     } else {
