@@ -21,7 +21,9 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -273,6 +275,53 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
+
+        otp1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                otp2.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp3.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                return false;
+            }
+        });
+
+
+        otp2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                otp1.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                otp3.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                return false;
+            }
+        });
+
+
+        otp3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                otp1.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp2.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                return false;
+            }
+        });
+
+
+        otp4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                otp1.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp2.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp3.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+                otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                return false;
+            }
+        });
 
 
 
@@ -833,6 +882,16 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void Sendotpphone(String emailphone){
+
+        otp1.setText("");
+        otp2.setText("");
+        otp3.setText("");
+        otp4.setText("");
+        otp1.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+        otp2.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+        otp3.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+        otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
+
 
             loadingshow();
             Map<String, String> params = new HashMap<String, String>();
