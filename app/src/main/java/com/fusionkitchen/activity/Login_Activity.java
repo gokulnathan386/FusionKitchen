@@ -640,14 +640,6 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-      /*  String number = "+44 7904209867";
-        String[] separated = number.split(" ");
-
-
-        Log.d("ekhkhkfnknkshfksa"," " +  separated[0]);
-        Log.d("ekhkhkfnknkshfksa"," " +  separated[1]);*/
-
-
     }
 
     private void Checkotpvalidation(String txtotp,String txtgmail) {
@@ -899,6 +891,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
             Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
 
+           Log.e("ejmdgfgfuyewfg", " " +params );
 
             call.enqueue(new Callback<Login_mobile_email>() {
                 @Override

@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +44,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -68,10 +74,13 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
 
-public class Order_Status_Activity extends AppCompatActivity {
+public class Order_Status_Activity extends AppCompatActivity /*implements OnMapReadyCallback*/ {
 
     private Context mContext = Order_Status_Activity.this;
 
+    /*-----------------------------Google Map----------------------------*/
+ /*   private GoogleMap mMap;
+    MarkerOptions origin, destination;*/
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
@@ -219,6 +228,30 @@ public class Order_Status_Activity extends AppCompatActivity {
         call_client = findViewById(R.id.call_client);
 
         Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
+
+
+        /*------------------------------------Google Map -------------------------*/
+
+/*
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        int height = 100;
+        int width = 100;
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.bike);
+        Bitmap b=bitmapdraw.getBitmap();
+        Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
+
+        // Getting URL to the Google Directions API
+        String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
+
+
+        DownloadTask downloadTask = new DownloadTask();
+
+        // Start downloading json data from Google Directions API
+        downloadTask.execute(url);
+*/
 
 
 
