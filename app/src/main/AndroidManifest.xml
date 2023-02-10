@@ -34,8 +34,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
--->
+        </activity>-->
 
         <activity
             android:name=".activity.Order_Status_Activity"
@@ -47,8 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
         <activity
             android:name=".activity.Postcode_Activity"

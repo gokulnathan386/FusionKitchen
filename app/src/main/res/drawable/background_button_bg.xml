@@ -3,9 +3,6 @@
 
     <solid android:color="@color/box" />
 
-    <!--<stroke
-        android:width="0.1dp"
-        android:color="#494949" />-->
     <corners
         android:bottomRightRadius="30dp"
         android:topRightRadius="30dp"

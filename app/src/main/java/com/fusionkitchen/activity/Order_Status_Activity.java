@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,13 +48,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,19 +83,22 @@ import com.fusionkitchen.model.orderstatus.ordertracking_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
 
-public class Order_Status_Activity extends AppCompatActivity /*implements OnMapReadyCallback*/ {
+public class Order_Status_Activity extends AppCompatActivity implements OnMapReadyCallback {
+
 
     private Context mContext = Order_Status_Activity.this;
 
     /*-----------------------------Google Map----------------------------*/
- /*   private GoogleMap mMap;
-    MarkerOptions origin, destination;*/
+    private GoogleMap mMap;
+    MarkerOptions origin, destination;
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
@@ -93,7 +111,6 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
     ImageView back;
 
 
-
     String fname;
     /*---------------------------XML ID Call----------------------------------------------------*/
 
@@ -101,7 +118,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
     ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced;
     TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced;
 
-    AppCompatTextView order_date, order_id, total_amt,Delivery_Collection_time;
+    AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time;
 
     ConstraintLayout tracking_layout, bill_layout;
     AppCompatTextView view_bill, hide_bill;
@@ -136,7 +153,9 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
     boolean check_reject_btn = true;
 
     AppCompatButton chat_client, call_client;
-    String phone,gmail;
+    String phone, gmail;
+    LinearLayout botton_top;
+    CardView botton_top_vis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,9 +190,9 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
         /*--------------Login details get SharedPreferences------------------*/
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
         user_id = (slogin.getString("login_key_cid", null));
-        fname = (slogin.getString("login_key_fname",null));
-        gmail = (slogin.getString("login_key_email",null));
-        phone = (slogin.getString("login_key_phone",null));
+        fname = (slogin.getString("login_key_fname", null));
+        gmail = (slogin.getString("login_key_email", null));
+        phone = (slogin.getString("login_key_phone", null));
 
         /*---------------------------Fresh Chat----------------------------------------------------*/
 
@@ -232,7 +251,9 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
 
         /*------------------------------------Google Map -------------------------*/
 
-/*
+        botton_top =  findViewById(R.id.botton_top);
+        botton_top_vis = findViewById(R.id.botton_top_vis);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -243,6 +264,11 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
+
+        origin = new MarkerOptions().position(new LatLng(12.255373, 78.983316)).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+        destination = new MarkerOptions().position(new LatLng(12.455602, 79.340874)).title("Gokulnathan End").snippet("destination");
+
+
         // Getting URL to the Google Directions API
         String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
 
@@ -251,8 +277,26 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
 
         // Start downloading json data from Google Directions API
         downloadTask.execute(url);
-*/
 
+
+        botton_top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int height = botton_top_vis.getHeight();
+                if(height == 525){
+                    ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
+                    params.height = 1250;
+                    botton_top_vis.setLayoutParams(params);
+                }else{
+                    ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
+                    params.height = 525;
+                    botton_top_vis.setLayoutParams(params);
+                }
+            }
+        });
+
+        /*--------------------------------------End Map-----------------------*/
 
 
         chat_client.setOnClickListener(new View.OnClickListener() {
@@ -278,7 +322,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
         Log.e("itemvalue6", "" + clientphonenumber);
 
 
-     //   order_date.setText(orderdate);
+        //   order_date.setText(orderdate);
 
         order_id.setText("Order Id: " + orderid);
 
@@ -440,10 +484,10 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
 
                         order_date.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_date());
                         Delivery_Collection_time.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
-                        Log.d("order_date",response.body().getOrdertracking().getOrder().getOrder().get_order_date());
+                        Log.d("order_date", response.body().getOrdertracking().getOrder().getOrder().get_order_date());
 
 
-                        Log.d("delivery_collection_time",response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
+                        Log.d("delivery_collection_time", response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
 
                         sub_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
                         if (response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0")) {
@@ -483,9 +527,6 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                         statusshow = response.body().getOrdertracking().getOrder().getOrder().getStatus();
 
 
-
-
-
                         if (otype.equalsIgnoreCase("0")) {
                             orderprocessed.setImageResource(R.drawable.deliverybike);
                             textorderpickup.setText("Order Delivered");
@@ -505,7 +546,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 //Order recived
                                 if (check_again_btn == true) {
                                     check_again_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewwaitingDialog alert = new ViewwaitingDialog();
                                         alert.shownowaitingDialog(Order_Status_Activity.this);
                                     }
@@ -516,7 +557,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 getOrderStatus("1");
                                 if (check_confirmDialog_btn == true) {
                                     check_confirmDialog_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewconfirmDialog alert = new ViewconfirmDialog();
                                         alert.showconfirmDialog(Order_Status_Activity.this);
                                     }
@@ -541,7 +582,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
 
                                 if (check_delivedDialog_btn == true) {
                                     check_delivedDialog_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewdelivedDialog alert = new ViewdelivedDialog();
                                         alert.showdelivedDialog(Order_Status_Activity.this);
                                     }
@@ -561,7 +602,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 getOrderStatus("0");
                                 if (check_reject_btn == true) {
                                     check_reject_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewrejectDialog alert = new ViewrejectDialog();
                                         alert.showrejectDialog(Order_Status_Activity.this);
                                     }
@@ -583,7 +624,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 //Order recived
                                 if (check_again_btn == true) {
                                     check_again_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewwaitingDialog alert = new ViewwaitingDialog();
                                         alert.shownowaitingDialog(Order_Status_Activity.this);
                                     }
@@ -594,7 +635,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 getOrderStatus("1");
                                 if (check_confirmDialog_btn == true) {
                                     check_confirmDialog_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewconfirmDialog alert = new ViewconfirmDialog();
                                         alert.showconfirmDialog(Order_Status_Activity.this);
                                     }
@@ -608,7 +649,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 //Order Delived
                                 if (check_delivedDialog_btn == true) {
                                     check_delivedDialog_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewdelivedDialog alert = new ViewdelivedDialog();
                                         alert.showdelivedDialog(Order_Status_Activity.this);
                                     }
@@ -626,7 +667,7 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                                 //Order rejected
                                 if (check_reject_btn == true) {
                                     check_reject_btn = false;
-                                    if(response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
+                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
                                         ViewrejectDialog alert = new ViewrejectDialog();
                                         alert.showrejectDialog(Order_Status_Activity.this);
                                     }
@@ -865,9 +906,9 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                     Intent intent = new Intent(mContext, Feedback_Activity.class);
                     intent.putExtra("orderid", orderid);
                     intent.putExtra("clientid", clientid);
-                    intent.putExtra("Fname",fname);
-                    intent.putExtra("gmail",gmail);
-                    intent.putExtra("phone",phone);
+                    intent.putExtra("Fname", fname);
+                    intent.putExtra("gmail", gmail);
+                    intent.putExtra("phone", phone);
 
 
                     startActivity(intent);
@@ -1045,4 +1086,162 @@ public class Order_Status_Activity extends AppCompatActivity /*implements OnMapR
                 break;
         }
     }
+
+
+/*---------------------------------hoku--------------------*/
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.addMarker(origin);
+        mMap.addMarker(destination);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 15));
+
+
+    }
+
+    private class DownloadTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+
+            String data = "";
+
+            try {
+                data = downloadUrl(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+
+            parserTask.execute(result);
+
+        }
+    }
+
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                DataParser parser = new DataParser();
+
+                routes = parser.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList points = new ArrayList();
+            PolylineOptions lineOptions = new PolylineOptions();
+
+            for (int i = 0; i < result.size(); i++) {
+
+                List<HashMap<String, String>> path = result.get(i);
+
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                lineOptions.addAll(points);
+                lineOptions.width(20);
+                //lineOptions.color(Color.RED);
+                lineOptions.color(Color.BLUE);
+                lineOptions.geodesic(true);
+
+            }
+
+// Drawing polyline in the Google Map for the i-th route
+
+            if (points.size() != 0)
+                mMap.addPolyline(lineOptions);
+        }
+    }
+
+
+
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        //setting transportation mode
+        String mode = "mode=driving";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        //String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "YOUR_API_KEY";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0";
+
+        Log.d("Google_url"," " + url);
+
+        return url;
+    }
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(strUrl);
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.connect();
+
+            iStream = urlConnection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+            StringBuffer sb = new StringBuffer();
+
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            data = sb.toString();
+
+            br.close();
+
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
+        } finally {
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+
 }
