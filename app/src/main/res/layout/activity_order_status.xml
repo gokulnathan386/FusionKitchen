@@ -575,7 +575,217 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:text="Add Tip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </TextView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="90dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardMaxElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/background_button_bg"
+                        android:layout_width="80dp"
+                        android:layout_height="90dp">
+                    </ImageView>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:weightSum="2"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:text="Total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:text="£0.50"
+                                android:gravity="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:weightSum="2"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:text="Total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:layout_weight="1"
+                                android:text="£0.50"
+                                android:gravity="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:background="@drawable/background_button_bg"
+                        android:layout_width="80dp"
+                        android:layout_height="90dp">
+                    </ImageView>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/plus_minus_symbol"
+                            android:gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/minus_symbol"
+                                android:background="@drawable/circle_add_minis"
+                                android:layout_width="25dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_height="25dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="-"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="1dp"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:textColor="#17284D"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/textview_qty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="01"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="1dp"
+                                android:fontFamily="@font/poppins_bold"
+                                android:paddingRight="10dp"
+                                android:textColor="#17284D" />
+
+                            <LinearLayout
+                                android:id="@+id/plus_symbol"
+                                android:background="@drawable/circle_add_minis"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="+"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="1dp"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:textColor="#17284D"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="£0.50"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
