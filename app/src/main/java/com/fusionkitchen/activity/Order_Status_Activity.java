@@ -45,6 +45,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
@@ -115,7 +116,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     /*---------------------------XML ID Call----------------------------------------------------*/
 
     View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
-    ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced;
+    ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced,down_arrow,up_arrow;
     TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced;
 
     AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time;
@@ -156,6 +157,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String phone, gmail;
     LinearLayout botton_top;
     CardView botton_top_vis;
+    LottieAnimationView wait_confirm_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,6 +255,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         botton_top =  findViewById(R.id.botton_top);
         botton_top_vis = findViewById(R.id.botton_top_vis);
+        down_arrow = findViewById(R.id.down_arrow);
+        up_arrow = findViewById(R.id.up_arrow);
+        wait_confirm_icon = (LottieAnimationView) findViewById(R.id.wait_confirm_icon);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -288,10 +294,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
                     params.height = 1250;
                     botton_top_vis.setLayoutParams(params);
+                    up_arrow.setVisibility(View.VISIBLE);
+                    down_arrow.setVisibility(View.GONE);
+
                 }else{
                     ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
                     params.height = 525;
                     botton_top_vis.setLayoutParams(params);
+                    up_arrow.setVisibility(View.GONE);
+                    down_arrow.setVisibility(View.VISIBLE);
                 }
             }
         });
