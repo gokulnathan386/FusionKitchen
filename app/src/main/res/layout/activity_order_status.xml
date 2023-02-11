@@ -31,11 +31,13 @@
         </RelativeLayout>
 
 
-
         <TextView
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Awaitinh Confirmation"
+            android:textColor="#17284D"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Awaiting Confirmation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
         </TextView>
@@ -502,14 +504,6 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp">
-                </View>
-
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -542,7 +536,6 @@
                         </TextView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/heart_icon"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="end"
@@ -599,6 +592,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/black"></View>
 
                 <LinearLayout
                     android:orientation="horizontal"

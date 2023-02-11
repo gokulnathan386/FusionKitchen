@@ -182,17 +182,12 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         setContentView(R.layout.activity_login);
 
 
-
-
         /*---------------------------hind actionbar----------------------------------------------------*/
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
-
-
-
 
 
         /*---------------------------check internet connection----------------------------------------------------*/
