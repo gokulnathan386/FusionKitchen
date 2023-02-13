@@ -1723,7 +1723,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         requestqueue.add(stringRequest);
 
 
-
     }
 
 
