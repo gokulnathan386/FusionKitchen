@@ -151,7 +151,7 @@
 
         </androidx.cardview.widget.CardView>
 
-  <com.airbnb.lottie.LottieAnimationView
+<!--  <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/background_button_bg"
@@ -245,7 +245,7 @@
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/yourorderready"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true"/>-->
 
 
         <TextView
@@ -317,20 +317,19 @@
                             android:layout_height="wrap_content">
                         </TextView>
 
-                        <View
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="#f8f8f8"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp">
-                        </View>
-
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-
+                <View
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#f8f8f8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -356,7 +355,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:padding="5dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -380,8 +379,9 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="end"
-                            android:layout_marginTop="-35dp"
+                            android:layout_marginTop="-30dp"
                             android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp"
                             android:foregroundGravity="center"
                             app:cardCornerRadius="150dp">
 
@@ -410,9 +410,13 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:textSize="@dimen/_12sdp"
+            android:textColor="#17284D"
             android:text="Delivery details"
+            android:fontFamily="@font/metropolis_semibold"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            >
         </TextView>
 
 
@@ -437,15 +441,23 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="90dp">
+                    android:layout_height="100dp">
 
-                    <ImageView
-                        android:background="@drawable/background_button_bg"
-                        android:layout_width="80dp"
-                        android:layout_height="90dp">
-                    </ImageView>
-
+                    <LinearLayout
+                        android:background="@drawable/map_order_page_bg"
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="60dp"
+                        >
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/house_map"
+                            />
+                    </LinearLayout>
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_marginLeft="10dp"
@@ -472,6 +484,7 @@
                         </TextView>
 
                         <TextView
+                            android:layout_marginBottom="5dp"
                             android:text="Change address"
                             android:layout_width="wrap_content"
                             android:textSize="@dimen/_12sdp"
@@ -485,24 +498,33 @@
                 </LinearLayout>
 
                 <View
+                    android:layout_marginLeft="70dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/black"
+                    android:background="#f8f8f8"
                     android:layout_width="match_parent"
                     android:layout_height="1dp">
                 </View>
 
-
                 <LinearLayout
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="90dp">
 
-                    <ImageView
-                        android:background="@drawable/background_button_bg"
-                        android:layout_width="80dp"
-                        android:layout_height="90dp">
-                    </ImageView>
+                    <LinearLayout
+                        android:background="@drawable/map_order_page_bg"
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="60dp"
+                        >
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_user_mao"
+                            />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_marginLeft="10dp"
@@ -512,39 +534,24 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:text="Awaiting confirmation"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="@dimen/_12sdp"
+                            android:textColor="#4D4D4D"
+                            android:text="James Stanly, 0245 4045 234"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                         </TextView>
 
                         <TextView
-                            android:text="The restaurant will confirm your"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="@dimen/_12sdp"
+                            android:textColor="#E0467C"
+                            android:text="Add Alternate Contact"
                             android:layout_width="wrap_content"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:drawableRight="@drawable/ic_add_map"
                             android:layout_height="wrap_content">
                         </TextView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="-20dp"
-                            android:layout_marginRight="5dp"
-                            android:foregroundGravity="center"
-                            app:cardCornerRadius="150dp">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/like_icon" />
-
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
 
 
                     </LinearLayout>
@@ -557,10 +564,14 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:text="Order &amp; Payment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </TextView>
+                android:textSize="@dimen/_12sdp"
+                android:textColor="#17284D"
+                android:fontFamily="@font/metropolis_semibold"
+                android:text="Order &amp; Payment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </TextView>
+
 
 
 
@@ -583,15 +594,24 @@
 
 
                 <LinearLayout
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="90dp">
 
-                    <ImageView
-                        android:background="@drawable/background_button_bg"
-                        android:layout_width="80dp"
-                        android:layout_height="90dp">
-                    </ImageView>
+                    <LinearLayout
+                        android:background="@drawable/map_order_page_bg"
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="60dp"
+                        >
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_bill_map"
+                            />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -609,6 +629,9 @@
                             <TextView
                                 android:layout_weight="1"
                                 android:text="Total"
+                                android:fontFamily="@font/poppins_medium"
+                                android:textSize="@dimen/_12sdp"
+                                android:textColor="#4D4D4D"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                             </TextView>
@@ -617,6 +640,9 @@
                                 android:layout_weight="1"
                                 android:text="£0.50"
                                 android:gravity="end"
+                                android:fontFamily="@font/poppins_medium"
+                                android:textSize="@dimen/_12sdp"
+                                android:textColor="#4D4D4D"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                             </TextView>
@@ -633,15 +659,21 @@
 
                             <TextView
                                 android:layout_weight="1"
-                                android:text="Total"
+                                android:text="Total Items"
+                                android:textColor="#808695"
+                                android:textSize="@dimen/_12sdp"
+                                android:fontFamily="@font/poppins_regular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                             </TextView>
 
                             <TextView
                                 android:layout_weight="1"
-                                android:text="£0.50"
+                                android:text="13 Items"
                                 android:gravity="end"
+                                android:textColor="#808695"
+                                android:textSize="@dimen/_12sdp"
+                                android:fontFamily="@font/poppins_regular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                             </TextView>
@@ -656,15 +688,25 @@
 
 
                 <LinearLayout
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="90dp">
 
-                    <ImageView
-                        android:background="@drawable/background_button_bg"
-                        android:layout_width="80dp"
-                        android:layout_height="90dp">
-                    </ImageView>
+                    <LinearLayout
+                        android:background="@drawable/map_order_page_bg"
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="60dp"
+                        >
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_basket_add_map"
+                            />
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_marginLeft="10dp"
@@ -674,39 +716,23 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:text="Awaiting confirmation"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="#4D4D4D"
+                            android:textSize="@dimen/_12sdp"
+                            android:text="Add more items"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                         </TextView>
 
                         <TextView
-                            android:text="The restaurant will confirm your"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="@dimen/_12sdp"
+                            android:textColor="#808695"
+                            android:text="Get free delivery on additional items"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                         </TextView>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="-20dp"
-                            android:layout_marginRight="5dp"
-                            android:foregroundGravity="center"
-                            app:cardCornerRadius="150dp">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/like_icon" />
-
-                            </RelativeLayout>
-
-                        </androidx.cardview.widget.CardView>
 
 
                     </LinearLayout>
