@@ -13,13 +13,6 @@
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical">
 
-     <!--  <ImageView
-            android:id="@+id/favourite_image"
-            android:src="@drawable/heartgif"
-            android:layout_width="match_parent"
-           android:visibility="gone"
-            android:layout_height="250dp">
-        </ImageView>-->
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="match_parent"

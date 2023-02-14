@@ -24,8 +24,7 @@
         android:supportsRtl="true"
         tools:ignore="MissingClass">
 
-
-       <!-- <activity
+      <!--  <activity
             android:name=".activity.Splash_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">

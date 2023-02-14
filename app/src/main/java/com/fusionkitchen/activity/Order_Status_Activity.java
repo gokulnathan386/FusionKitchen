@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -100,6 +102,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
     MarkerOptions origin, destination;
+    Dialog ordershare_popup;
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
@@ -158,6 +161,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     LinearLayout botton_top;
     CardView botton_top_vis;
     LottieAnimationView wait_confirm_icon;
+    ImageView item_order_details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,6 +262,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         down_arrow = findViewById(R.id.down_arrow);
         up_arrow = findViewById(R.id.up_arrow);
         wait_confirm_icon = (LottieAnimationView) findViewById(R.id.wait_confirm_icon);
+        item_order_details = findViewById(R.id.item_order_details);
+        item_order_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Orderdetailshare();
+            }
+        });
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -425,6 +436,28 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     }
 
+    private void Orderdetailshare() {
+
+        ordershare_popup = new Dialog(this);
+        ordershare_popup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ordershare_popup.setContentView(R.layout.order_detials);
+        AppCompatButton share_now_btn = ordershare_popup.findViewById(R.id.share_now_btn);
+        share_now_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ordershare_popup.dismiss();
+            }
+        });
+
+
+        ordershare_popup.show();
+        ordershare_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ordershare_popup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ordershare_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        ordershare_popup.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+
 
 
 
@@ -483,7 +516,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
 
-                Log.e("statusstatusCode", "" + statusCode);
 
                 if (statusCode == 200) {
 
