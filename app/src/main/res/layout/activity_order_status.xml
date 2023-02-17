@@ -72,6 +72,95 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="wrap_content"
+                android:layout_height="210dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/maneating" />
+
+        </LinearLayout>
+
+
+            <TextView
+                android:textSize="@dimen/_12sdp"
+                android:textColor="#4D4D4D"
+                android:text="How was the food quality"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </TextView>
+
+          <!--  <RatingBar
+                android:id="@+id/simpleRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="3"
+                android:stepSize="1"
+                android:ratingBarStyle="@style/customRatingBar"/>-->
+
+            <TextView
+                android:textSize="@dimen/_12sdp"
+                android:textColor="#4D4D4D"
+                android:text="Restaurant service"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </TextView>
+
+
+      <!--      <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:stepSize="1"
+                android:numStars="5"
+                android:progressTint="@color/black"
+                android:layout_gravity="center_horizontal"
+                android:rating="0" />-->
+
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomRatingBar"
+                android:numStars="5"
+                android:stepSize="1" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#ffffff"
+                app:cardMaxElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+
+                 <EditText
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent">
+                 </EditText>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
         <TextView
             android:textSize="@dimen/_12sdp"
             android:textColor="#17284D"
@@ -80,6 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </TextView>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/botton_top_vis"
@@ -152,7 +242,7 @@
 
         </androidx.cardview.widget.CardView>
 
-<!--  <com.airbnb.lottie.LottieAnimationView
+  <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/background_button_bg"
@@ -171,14 +261,6 @@
         app:lottie_loop="true"/>
 
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/background_button_bg"
-        android:layout_marginLeft="10dp"
-        app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/maneating"
-        app:lottie_loop="true"/>
 
 
     <com.airbnb.lottie.LottieAnimationView
@@ -246,7 +328,7 @@
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/yourorderready"
-        app:lottie_loop="true"/>-->
+        app:lottie_loop="true"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

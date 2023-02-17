@@ -10,9 +10,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -31,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +98,7 @@ import retrofit2.Response;
 import static android.Manifest.permission.CALL_PHONE;
 
 public class Order_Status_Activity extends AppCompatActivity implements OnMapReadyCallback {
+
 
 
     private Context mContext = Order_Status_Activity.this;
@@ -253,7 +257,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         call_client = findViewById(R.id.call_client);
 
         Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
-
 
         /*------------------------------------Google Map -------------------------*/
 
