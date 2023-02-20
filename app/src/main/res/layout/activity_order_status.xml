@@ -39,8 +39,8 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Awaiting Confirmation"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-        </TextView>
+            android:layout_height="match_parent"/>
+
 
             <RelativeLayout
                 android:layout_weight="1"
@@ -117,8 +117,8 @@
                 android:text="Restaurant service"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </TextView>
+                android:layout_height="match_parent"/>
+
 
 
       <!--      <RatingBar
@@ -167,8 +167,8 @@
             android:text="Tracking details"
             android:fontFamily="@font/metropolis_semibold"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </TextView>
+            android:layout_height="match_parent"/>
+
 
 
         <androidx.cardview.widget.CardView
