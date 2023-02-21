@@ -58,7 +58,6 @@
             </RelativeLayout>
 
 
-
     </LinearLayout>
 
     <ScrollView
@@ -102,14 +101,18 @@
                 android:layout_height="match_parent">
             </TextView>
 
-          <!--  <RatingBar
-                android:id="@+id/simpleRatingBar"
+
+
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/CustomRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
-                android:rating="3"
-                android:stepSize="1"
-                android:ratingBarStyle="@style/customRatingBar"/>-->
+                android:rating="5"
+                android:stepSize="1" />
+
 
             <TextView
                 android:textSize="@dimen/_12sdp"
@@ -119,27 +122,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-
-
-      <!--      <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:stepSize="1"
-                android:numStars="5"
-                android:progressTint="@color/black"
-                android:layout_gravity="center_horizontal"
-                android:rating="0" />-->
-
-
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/ratingBar2"
+                style="@style/CustomRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/CustomRatingBar"
                 android:numStars="5"
                 android:stepSize="1" />
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -153,9 +143,37 @@
                 >
 
                  <EditText
+                     android:gravity="top"
+                     android:padding="10dp"
+                     android:background="@null"
                      android:layout_width="match_parent"
                      android:layout_height="match_parent">
                  </EditText>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardBackgroundColor="#3BB186"
+                android:background="#3BB186"
+                app:cardMaxElevation="2dp"
+                android:gravity="center_vertical"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="Submit Review"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
 
             </androidx.cardview.widget.CardView>
 

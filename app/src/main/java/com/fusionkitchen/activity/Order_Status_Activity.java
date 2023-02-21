@@ -38,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -272,6 +273,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 Orderdetailshare();
             }
         });
+
+       RatingBar ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                Toast.makeText(getApplicationContext(),Float.toString(rating),Toast.LENGTH_LONG).show();
+            }
+
+        });
+
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
