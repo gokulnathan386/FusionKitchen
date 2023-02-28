@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
     private Context mContext = Order_Status_Activity.this;
+    /*---------------------------BottomNavigationView----------------------------------------------------*/
+    BottomNavigationView bottomNav;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -256,6 +259,23 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         bag_layout = findViewById(R.id.bag_layout);
         chat_client = findViewById(R.id.chat_client);
         call_client = findViewById(R.id.call_client);
+
+
+        bottomNav = findViewById(R.id.bottom_navigation);
+
+
+        bottomNav.getMenu().findItem(R.id.home_search).setVisible(false);
+        bottomNav.getMenu().findItem(R.id.home_card).setVisible(false);
+        bottomNav.getMenu().findItem(R.id.home_bottom).setVisible(false);
+        bottomNav.getMenu().findItem(R.id.home_chat).setVisible(false);
+        bottomNav.getMenu().findItem(R.id.home_account).setVisible(true);
+
+
+      /*  bottomNav.getMenu().getItem(4).setIcon(R.drawable.discountprice);
+        bottomNav.getMenu().getItem(4).setTitle("Offers");*/
+
+     /*   bottomNav.getMenu().getItem(1).setIcon(R.drawable.orders_icon);
+        bottomNav.getMenu().getItem(1).setTitle("My Orders");*/
 
         Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
 
@@ -519,8 +539,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         // get user data from session
         Map<String, String> params = new HashMap<String, String>();
-        params.put("orderdetails", orderiding);
-        params.put("path", orderpathing);
+      /*  params.put("orderdetails", orderiding);
+        params.put("path", orderpathing);*/
+
+        params.put("orderdetails","1908");
+        params.put("path","restaurant-demo-2-if28threefield-house-sk11");
 
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
