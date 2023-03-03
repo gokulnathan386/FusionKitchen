@@ -417,8 +417,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
         /*--------------------------------------End Map-----------------------*/
-
-
         chat_client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
