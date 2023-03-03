@@ -300,8 +300,6 @@ public class MyAccount_Activity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_bottom:
-                        // finish();
-                        //startActivity(getIntent());
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
                         break;

@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:background="#ffffff"
         android:weightSum="3"
-        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_height="60dp">
 
@@ -29,6 +28,7 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/back_btn_menu" />
+
         </RelativeLayout>
 
 
@@ -63,7 +63,6 @@
 
     <ScrollView
         android:scrollbars="none"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -100,6 +99,7 @@
                 android:text="How was the food quality"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="match_parent">
             </TextView>
 
@@ -112,6 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
+                android:visibility="gone"
                 android:rating="5"
                 android:stepSize="1" />
 
@@ -120,6 +121,7 @@
                 android:textSize="@dimen/_12sdp"
                 android:textColor="#4D4D4D"
                 android:text="Restaurant service"
+                android:visibility="gone"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -127,6 +129,7 @@
             <RatingBar
                 android:id="@+id/ratingBar2"
                 style="@style/CustomRatingBar"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
@@ -262,7 +265,7 @@
 
         </androidx.cardview.widget.CardView>
 
-  <com.airbnb.lottie.LottieAnimationView
+<!--  <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/background_button_bg"
@@ -348,7 +351,7 @@
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/yourorderready"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true"/>-->
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -542,7 +545,7 @@
 
                             <TextView
                                 android:layout_weight="1"
-                                android:textSize="@dimen/_12sdp"
+                                android:textSize="@dimen/_10sdp"
                                 android:fontFamily="@font/poppins_medium"
                                 android:text="CLEAR"
                                 android:gravity="end"
@@ -554,7 +557,6 @@
                             </TextView>
 
                         </LinearLayout>
-
 
                     </LinearLayout>
 
@@ -579,7 +581,7 @@
                 android:layout_height="wrap_content">
 
                 <RadioGroup
-                    android:id="@+id/daily_weekly_button_view"
+                    android:id="@+id/tip_button_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -588,7 +590,6 @@
                     android:layout_marginRight="8dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -628,6 +629,7 @@
                         android:background="@drawable/radio_flat_selector"
                         android:button="@android:color/transparent"
                         android:text="£3"
+                        android:checked="true"
                         android:textSize="18dp"
                         android:fontFamily="@font/metropolis_semibold"
                         android:textColor="@color/radio_flat_text_selector"  />
@@ -661,18 +663,25 @@
                 </RadioGroup>
 
                 <EditText
-                    android:text="£4.50"
+                    android:id="@+id/custom_edittxt"
+                    android:text=""
                     android:textSize="@dimen/_12sdp"
                     android:background="@drawable/map_order_page_bg"
                     android:textColor="#17284D"
                     android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:hint="0.00"
+                    android:maxLength="5"
+                    android:inputType="numberDecimal"
                     android:layout_marginRight="15dp"
                     android:fontFamily="@font/metropolis_semibold"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="match_parent">
                 </EditText>
 
                 <TextView
+                    android:id="@+id/custom_tip_textview"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
@@ -700,8 +709,9 @@
                     >
 
                   <TextView
+                      android:id="@+id/tip_btn"
                       android:layout_gravity="center"
-                      android:text="Pay Rider Tip of £4.50"
+                      android:text="Pay Rider Tip of £3"
                       android:textColor="#FFFFFF"
                       android:fontFamily="@font/poppins_semibold"
                       android:textSize="@dimen/_12sdp"
@@ -908,57 +918,54 @@
 
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp">
+                    android:layout_height="110dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:background="@drawable/map_order_page_bg"
                         android:layout_width="60dp"
-                        android:gravity="center"
-                        android:layout_marginLeft="5dp"
                         android:layout_height="60dp"
-                        >
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/map_order_page_bg"
+                        android:gravity="center">
+
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/house_map"
-                            />
+                            android:src="@drawable/house_map" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:textColor="#4D4D4D"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
                             android:text="Delivery Address"
-                            android:textSize="@dimen/_12sdp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                        </TextView>
+                            android:textColor="#4D4D4D"
+                            android:textSize="@dimen/_12sdp"></TextView>
 
                         <TextView
-                           android:text="303-305 Palatine Road, Manchester, Northenden, M22 4HH"
                             android:layout_width="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="#808695"
+                            android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_regular"
-                            android:layout_height="wrap_content">
-                        </TextView>
+                            android:text="303-305 Palatine Road, Manchester, Northenden, M22 4HH"
+                            android:textColor="#808695"
+                            android:textSize="@dimen/_12sdp"></TextView>
 
                         <TextView
-                            android:layout_marginBottom="5dp"
-                            android:text="Change address"
                             android:layout_width="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="#E0467C"
+                            android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:layout_height="wrap_content">
+                            android:text="Change address"
+                            android:textColor="#E0467C"
+                            android:textSize="@dimen/_12sdp">
                         </TextView>
 
                     </LinearLayout>
@@ -1048,7 +1055,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="70dp"
             app:cardBackgroundColor="#ffffff"
             app:cardMaxElevation="2dp"
             app:cardPreventCornerOverlap="true"
@@ -1225,6 +1232,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:visibility="gone"
     android:layout_height="match_parent">
 
 
@@ -2025,7 +2033,7 @@
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/bottom_navigation_menu"
+            app:menu="@menu/bottom_navigation_list"
             android:background="@color/white"
             app:labelVisibilityMode="labeled"
             app:itemIconTint="#bcbbbc"
@@ -2034,7 +2042,5 @@
             />
 
     </LinearLayout>
-
-
 
 </LinearLayout>

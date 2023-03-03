@@ -11,8 +11,6 @@
         android:icon="@drawable/search_icon"
         android:title="@string/home_search" />
 
-
-
     <item
         android:id="@+id/home_chat"
         android:enabled="true"
@@ -26,19 +24,18 @@
         android:icon="@drawable/add_to_cart_icon"
         android:title="@string/home_card" />
 
-  <item
-        android:id="@+id/home_offer"
+<!--  <item
+        android:id="@+id/homeOffer"
         android:enabled="true"
-        android:visible="false"
+        android:visible="true"
         android:icon="@drawable/discountprice"
-        android:title="Offers" />
+        android:title="Offers" />-->
+
     <item
         android:id="@+id/home_account"
         android:enabled="true"
         android:icon="@drawable/account_icon"
         android:title="@string/home_account" />
-
-
 
 
 </menu>

@@ -14,6 +14,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +22,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -32,8 +35,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -104,6 +110,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
     private Context mContext = Order_Status_Activity.this;
+    EditText custom_edittxt;
+    String radio_selectedValue;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
 
@@ -158,6 +166,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     SharedPreferences slogin;
     SharedPreferences.Editor sloginEditor;
     String user_id;
+    RadioGroup tip_button_view;
 
     boolean check_again_btn = true;
     boolean check_confirmDialog_btn = true;
@@ -170,7 +179,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     CardView botton_top_vis;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
-
+    TextView tip_btn,custom_tip_textview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,26 +268,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         bag_layout = findViewById(R.id.bag_layout);
         chat_client = findViewById(R.id.chat_client);
         call_client = findViewById(R.id.call_client);
-
-
-        bottomNav = findViewById(R.id.bottom_navigation);
-
-
-        bottomNav.getMenu().findItem(R.id.home_search).setVisible(false);
-        bottomNav.getMenu().findItem(R.id.home_card).setVisible(false);
-        bottomNav.getMenu().findItem(R.id.home_bottom).setVisible(false);
-        bottomNav.getMenu().findItem(R.id.home_chat).setVisible(false);
-        bottomNav.getMenu().findItem(R.id.home_account).setVisible(true);
-
-
-      /*  bottomNav.getMenu().getItem(4).setIcon(R.drawable.discountprice);
-        bottomNav.getMenu().getItem(4).setTitle("Offers");*/
-
-     /*   bottomNav.getMenu().getItem(1).setIcon(R.drawable.orders_icon);
-        bottomNav.getMenu().getItem(1).setTitle("My Orders");*/
+        custom_edittxt = findViewById(R.id.custom_edittxt);
+        tip_button_view = findViewById(R.id.tip_button_view);
 
         Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
+        tip_btn = findViewById(R.id.tip_btn);
+        custom_tip_textview = findViewById(R.id.custom_tip_textview);
 
+        bottomNav = findViewById(R.id.bottom_navigation);
         /*------------------------------------Google Map -------------------------*/
 
         botton_top =  findViewById(R.id.botton_top);
@@ -306,6 +303,63 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         });
 
+        custom_tip_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tip_button_view.setVisibility(View.GONE);
+                custom_edittxt.setVisibility(View.VISIBLE);
+                tip_btn.setText("Pay Rider Tip");
+            }
+        });
+
+        custom_edittxt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                if (cs.length() != 0) {
+                    tip_btn.setText("Pay Rider Tip of £"+cs);
+
+                    Drawable drawable = getResources().getDrawable(R.drawable.pound_icon);
+                    custom_edittxt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null);
+
+                }else{
+                    tip_btn.setText("Pay Rider Tip");
+                    custom_edittxt.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
+
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+            @Override
+            public void afterTextChanged(Editable arg0) {
+            }
+
+        });
+
+
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_bottom:
+                        Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
+                        startActivity(intenthome);
+                        finish();
+                        break;
+                    case R.id.homeOffer:
+                        Toast.makeText(getApplicationContext(), "Home Offer", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.my_order:
+                        Toast.makeText(getApplicationContext(), "My Order", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.home_account:
+                        Toast.makeText(getApplicationContext(), "My Account", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -314,7 +368,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         int height = 100;
         int width = 100;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.bike);
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.restaurant);
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
@@ -338,6 +392,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onClick(View v) {
 
                 int height = botton_top_vis.getHeight();
+
                 if(height == 525){
                     ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
                     params.height = 1250;
@@ -345,6 +400,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     up_arrow.setVisibility(View.VISIBLE);
                     down_arrow.setVisibility(View.GONE);
 
+                }else if(height == 400){
+                    ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
+                    params.height = 1250;
+                    botton_top_vis.setLayoutParams(params);
+                    up_arrow.setVisibility(View.VISIBLE);
+                    down_arrow.setVisibility(View.GONE);
                 }else{
                     ViewGroup.LayoutParams params = botton_top_vis.getLayoutParams();
                     params.height = 525;
@@ -470,6 +531,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
        /* Order_Status_Activity.ViewdelivedDialog alert = new Order_Status_Activity.ViewdelivedDialog();
         alert.showdelivedDialog(Order_Status_Activity.this);*/
 
+        tip_button_view.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton selectedRadioButton = findViewById(checkedId);
+                radio_selectedValue = selectedRadioButton.getText().toString();
+                tip_btn.setText("Pay Rider Tip of " +radio_selectedValue);
+            }
+        });
 
     }
 
