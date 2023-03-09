@@ -73,6 +73,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -363,6 +364,7 @@
             app:cardMaxElevation="2dp"
             android:gravity="center_vertical"
             app:cardPreventCornerOverlap="true"
+            android:visibility="gone"
             app:cardUseCompatPadding="true"
             >
 
@@ -429,7 +431,8 @@
                    android:layout_height="35dp"
                    android:layout_marginRight="5dp"
                    android:layout_alignParentEnd="true"
-                   android:layout_centerVertical="true"                   android:foregroundGravity="center"
+                   android:layout_centerVertical="true"
+                   android:foregroundGravity="center"
                    app:cardCornerRadius="150dp">
 
                    <RelativeLayout
@@ -458,6 +461,7 @@
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="#ffffff"
             app:cardMaxElevation="2dp"
+            android:visibility="gone"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             >

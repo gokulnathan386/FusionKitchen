@@ -373,8 +373,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
 
-        origin = new MarkerOptions().position(new LatLng(12.255373, 78.983316)).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-        destination = new MarkerOptions().position(new LatLng(12.455602, 79.340874)).title("Gokulnathan End").snippet("destination");
+        origin = new MarkerOptions().position(new LatLng(51.4096757, -0.2301377)).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+        destination = new MarkerOptions().position(new LatLng(51.4196757, -0.2401398)).title("Gokulnathan End").snippet("destination");
 
 
         // Getting URL to the Google Directions API
@@ -444,12 +444,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         order_id.setText("Order Id: " + orderid);
 
-        getodertrackingdeatils(orderid, orderpath);
+       // getodertrackingdeatils(orderid, orderpath);
 
+         getstuarttracking(orderid, orderpath);
 
         handler.postDelayed(new Runnable() {
             public void run() {
-                getodertrackingdeatils(orderid, orderpath);
+               // getodertrackingdeatils(orderid, orderpath);
+                getstuarttracking(orderid, orderpath);
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -491,7 +493,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 bill_layout.setVisibility(View.GONE);
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        getodertrackingdeatils(orderid, orderpath);
+                       // getodertrackingdeatils(orderid, orderpath);
+                        getstuarttracking(orderid, orderpath);
                         handler.postDelayed(this, delay);
                     }
                 }, delay);
@@ -540,6 +543,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
     }
+
+
 
     private void Orderdetailshare() {
 
@@ -601,6 +606,59 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         }
     }
 
+    private void getstuarttracking(String orderid, String orderpath) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("orderdetails", "2186");
+        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<ordertracking_model> call = apiService.stuartordertracking(params);
+        Log.e("ur_id", "" + params);
+        call.enqueue(new Callback<ordertracking_model>() {
+
+            @Override
+            public void onResponse(Call<ordertracking_model> call, Response<ordertracking_model> response) {
+                int statusCode = response.code();
+
+
+                if (statusCode == 200) {
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        String order_status  = response.body().getOrdertracking().getOrder().getOrder().getStatus();
+
+                        if(order_status.equalsIgnoreCase("0")){
+                           // wait_confirm_icon
+                        }else if(order_status.equalsIgnoreCase("1")){
+
+                        }else if(order_status.equalsIgnoreCase("2")){
+
+                        }else if(order_status.equalsIgnoreCase("3")){
+
+                        }else if(order_status.equalsIgnoreCase("4")){
+
+                        }
+
+
+
+                    }
+
+
+                } else {
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ordertracking_model> call, Throwable t) {
+                Log.e("bugcode", "" + t.toString());
+                Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 
     /*  ---------------------------get api URL first time get type values----------------------------------------------------*/
     private void getodertrackingdeatils(String orderiding, String orderpathing) {

@@ -241,6 +241,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<ordertracking_model> ordertracking(@FieldMap Map<String, String> params);
 
+    @POST("/stuartOrderTracking")
+    @FormUrlEncoded
+    Call<ordertracking_model> stuartordertracking(@FieldMap Map<String, String> params);
+
+
 
     // @Headers("Content-Type: application/json")
     @POST("/{fullUrl}")
