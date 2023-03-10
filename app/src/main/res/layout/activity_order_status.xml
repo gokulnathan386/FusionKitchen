@@ -850,6 +850,7 @@
                             android:textSize="@dimen/_12sdp"></TextView>
 
                         <TextView
+                            android:id="@+id/rest_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_semibold"
@@ -858,6 +859,7 @@
                             android:textSize="@dimen/_12sdp"></TextView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/restaurants_mobile_no"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="end"
@@ -956,6 +958,7 @@
                             android:textSize="@dimen/_12sdp"></TextView>
 
                         <TextView
+                            android:id="@+id/user_delivery_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_regular"
@@ -964,6 +967,7 @@
                             android:textSize="@dimen/_12sdp"></TextView>
 
                         <TextView
+                            android:id="@+id/chg_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
@@ -1013,6 +1017,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/name_phoneno"
                             android:fontFamily="@font/poppins_medium"
                             android:textSize="@dimen/_12sdp"
                             android:textColor="#4D4D4D"
@@ -1022,6 +1027,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/alternative_number"
                             android:fontFamily="@font/poppins_medium"
                             android:textSize="@dimen/_12sdp"
                             android:textColor="#E0467C"
@@ -1148,6 +1154,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/total_item_count"
                                 android:layout_weight="1"
                                 android:text="13 Items"
                                 android:gravity="end"

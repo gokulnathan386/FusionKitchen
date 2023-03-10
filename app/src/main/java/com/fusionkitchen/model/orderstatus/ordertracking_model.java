@@ -61,6 +61,10 @@ public class ordertracking_model {
             private List<ordertracking_details_model.item> item;
 
 
+            @SerializedName("rest")
+            private ordertracking_details_model.rest rest;
+
+
             public ordertracking_details_model.order getOrder() {
                 return order;
             }
@@ -83,6 +87,15 @@ public class ordertracking_model {
 
             public void setUser(ordertracking_details_model.user user) {
                 this.user = user;
+            }
+
+
+            public ordertracking_details_model.rest getrest() {
+                return rest;
+            }
+
+            public void setrest(ordertracking_details_model.rest rest) {
+                this.rest =  rest;
             }
         }
 

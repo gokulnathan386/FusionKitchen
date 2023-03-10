@@ -44,6 +44,17 @@ public class ordertracking_details_model {
         @SerializedName("order_dateword")
         private String order_dateword;
 
+        @SerializedName("orderCount")
+        private String orderCount;
+
+
+        public String getorderCount() {
+            return orderCount;
+        }
+
+        public void setorderCount(String orderCount) {
+            this.orderCount = orderCount;
+        }
 
 
         public String getorderfeedback() {
@@ -163,6 +174,28 @@ public class ordertracking_details_model {
         @SerializedName("fname")
         private String fname;
 
+        @SerializedName("lname")
+        private String lname;
+
+        @SerializedName("phone")
+        private String phone;
+
+        @SerializedName("dno")
+        private String dno;
+
+        @SerializedName("add1")
+        private String add1;
+
+        @SerializedName("add2")
+        private String add2;
+
+        @SerializedName("email")
+        private String email;
+
+        @SerializedName("postcode")
+        private String postcode;
+
+
 
         public String getFname() {
             return fname;
@@ -171,6 +204,65 @@ public class ordertracking_details_model {
         public void setFname(String fname) {
             this.fname = fname;
         }
+
+        public String getLname() {
+            return lname;
+        }
+
+        public void setLname(String lname) {
+            this.lname = lname;
+        }
+
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getadd1() {
+            return add1;
+        }
+
+        public void setadd1(String add1) {
+            this.add1 = add1;
+        }
+        public String getadd2() {
+            return add2;
+        }
+
+        public void setadd2(String add2) {
+            this.add2 = add2;
+        }
+
+        public String getemail() {
+            return email;
+        }
+
+        public void setemail(String email) {
+            this.email = email;
+        }
+
+        public String getdno() {
+            return dno;
+        }
+
+        public void setdno(String dno) {
+            this.dno = dno;
+        }
+
+
+        public String getpostcode() {
+            return postcode;
+        }
+
+        public void setpostcode(String postcode) {
+            this.postcode = postcode;
+        }
+
+
 
     }
 
@@ -250,4 +342,35 @@ public class ordertracking_details_model {
         }
 
     }
+
+    public class rest {
+
+        @SerializedName("name")
+        private String name;
+
+        @SerializedName("mobile")
+        private  String mobile;
+
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getmobile() {
+            return mobile;
+        }
+
+        public void setmobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+
+
+    }
+
+
 }

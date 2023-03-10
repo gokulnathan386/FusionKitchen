@@ -1,5 +1,6 @@
 package com.fusionkitchen.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -136,13 +137,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
     ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced,down_arrow,up_arrow;
-    TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced;
+    TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced,total_item_count;
 
-    AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time;
+    AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time,user_delivery_address;
 
     ConstraintLayout tracking_layout, bill_layout;
     AppCompatTextView view_bill, hide_bill;
-    TextView listview_total, sub_amt, service_amt, coupon_amt, delivery_amt, bag_amt;
+    TextView listview_total, sub_amt, service_amt, coupon_amt, delivery_amt, bag_amt,chg_address,alternative_number;
     RelativeLayout servicel_layout, delivery_layout, coupon_layout, bag_layout;
 
     RecyclerView myorderList;
@@ -155,7 +156,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     String orderid, orderpath, orderdate, clientname, txtotype, clientid, clientphonenumber, clsstype;
 
-    String otype, statusshow, customername;
+    String otype, statusshow, customername,rest_phone_no;
 
 
     final Handler handler = new Handler();
@@ -167,7 +168,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     SharedPreferences.Editor sloginEditor;
     String user_id;
     RadioGroup tip_button_view;
-
+    TextView rest_name,name_phoneno;
     boolean check_again_btn = true;
     boolean check_confirmDialog_btn = true;
     boolean check_delivedDialog_btn = true;
@@ -176,10 +177,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     AppCompatButton chat_client, call_client;
     String phone, gmail;
     LinearLayout botton_top;
-    CardView botton_top_vis;
+    CardView botton_top_vis,restaurants_mobile_no;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
     TextView tip_btn,custom_tip_textview;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -284,6 +286,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         up_arrow = findViewById(R.id.up_arrow);
         wait_confirm_icon = (LottieAnimationView) findViewById(R.id.wait_confirm_icon);
         item_order_details = findViewById(R.id.item_order_details);
+        rest_name =  findViewById(R.id.rest_name);
+        restaurants_mobile_no = findViewById(R.id.restaurants_mobile_no);
+        user_delivery_address = findViewById(R.id.user_delivery_address);
+        name_phoneno = findViewById(R.id.name_phoneno);
+        chg_address = findViewById(R.id.chg_address);
+        alternative_number = findViewById(R.id.alternative_number);
+        total_item_count = findViewById(R.id.total_item_count);
+
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -348,13 +358,27 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         finish();
                         break;
                     case R.id.homeOffer:
-                        Toast.makeText(getApplicationContext(), "Home Offer", Toast.LENGTH_SHORT).show();
+                        if (user_id != null && !user_id.isEmpty()) {
+                            Intent offer_list = new Intent(getApplicationContext(), Show_Offer_Activity.class);
+                            startActivity(offer_list);
+                        } /*else {
+                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
+                            intent.putExtra("activity_details", "myaccount");
+                            startActivity(intent);
+                        }*/
                         break;
                     case R.id.my_order:
                         Toast.makeText(getApplicationContext(), "My Order", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.home_account:
-                        Toast.makeText(getApplicationContext(), "My Account", Toast.LENGTH_SHORT).show();
+                        if (user_id != null && !user_id.isEmpty()) {
+                            Intent intentcard = new Intent(getApplicationContext(), MyAccount_Activity.class);
+                            startActivity(intentcard);
+                        } /*else {
+                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
+                            intent.putExtra("activity_details", "myaccount");
+                            startActivity(intent);
+                        }*/
                         break;
                 }
                 return true;
@@ -542,6 +566,31 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
         });
 
+        restaurants_mobile_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+                dialIntent.setData(Uri.parse("tel:" + rest_phone_no));
+                startActivity(dialIntent);
+            }
+        });
+
+        chg_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent act_ = new Intent(Order_Status_Activity.this,MyAccount_Activity.class);
+                startActivity(act_);
+            }
+        });
+
+        alternative_number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent act_ = new Intent(Order_Status_Activity.this,MyAccount_Activity.class);
+                startActivity(act_);
+            }
+        });
+
     }
 
 
@@ -640,7 +689,34 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         }
 
+                        rest_name.setText(response.body().getOrdertracking().getOrder().getrest().getName());
 
+                        rest_phone_no = response.body().getOrdertracking().getOrder().getrest().getmobile();
+
+                        String fname = response.body().getOrdertracking().getOrder().getUser().getFname();
+
+                        String lname = response.body().getOrdertracking().getOrder().getUser().getLname();
+
+                        String dno = response.body().getOrdertracking().getOrder().getUser().getdno();
+
+                        String add1 = response.body().getOrdertracking().getOrder().getUser().getadd1();
+
+                        String add2 = response.body().getOrdertracking().getOrder().getUser().getadd2();
+
+                        String post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
+
+                        String phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
+
+                        user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
+
+                        name_phoneno.setText(fname+ " "+lname + "," +phone_number);
+
+
+                        String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
+
+                        String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
+
+                        total_item_count.setText(item_total_count);
 
                     }
 
