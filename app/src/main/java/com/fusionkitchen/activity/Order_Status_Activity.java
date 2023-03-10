@@ -168,7 +168,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     SharedPreferences.Editor sloginEditor;
     String user_id;
     RadioGroup tip_button_view;
-    TextView rest_name,name_phoneno;
+    TextView rest_name,name_phoneno,sub_amt_stuart;
     boolean check_again_btn = true;
     boolean check_confirmDialog_btn = true;
     boolean check_delivedDialog_btn = true;
@@ -293,6 +293,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         chg_address = findViewById(R.id.chg_address);
         alternative_number = findViewById(R.id.alternative_number);
         total_item_count = findViewById(R.id.total_item_count);
+        sub_amt_stuart = findViewById(R.id.sub_amt_stuart);
 
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -714,9 +715,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
 
-                        String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
+                        String item_sub_amt = response.body().getOrdertracking().getOrder().getOrder().getSub_total();
 
                         total_item_count.setText(item_total_count);
+
+                        sub_amt_stuart.setText(item_sub_amt);
 
                     }
 
