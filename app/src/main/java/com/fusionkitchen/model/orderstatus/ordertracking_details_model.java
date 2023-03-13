@@ -47,6 +47,110 @@ public class ordertracking_details_model {
         @SerializedName("orderCount")
         private String orderCount;
 
+        @SerializedName("pickup_latitude")
+        private String pickup_latitude;
+
+        @SerializedName("pickup_longitude")
+        private String pickup_longitude;
+
+        @SerializedName("dropoff_latitude")
+        private String dropoff_latitude;
+
+        @SerializedName("dropoff_longitude")
+        private String dropoff_longitude;
+
+
+        @SerializedName("driver_latitude")
+        private String driver_latitude;
+
+        @SerializedName("driver_longitude")
+        private String driver_longitude;
+
+        @SerializedName("delivery_status")
+        private String delivery_status;
+
+        @SerializedName("stuart_status")
+        private String stuart_status;
+
+        @SerializedName("delivery_status_name")
+        private String delivery_status_name;
+
+
+        public String getdelivery_status_name() {
+            return delivery_status_name;
+        }
+
+        public void setdelivery_status_name(String delivery_status_name) {
+            this.delivery_status_name = delivery_status_name;
+        }
+
+        public String getstuart_status() {
+            return stuart_status;
+        }
+
+        public void setstuart_status(String stuart_status) {
+            this.stuart_status = stuart_status;
+        }
+
+        public String getdelivery_status() {
+            return delivery_status;
+        }
+
+        public void setdelivery_status(String delivery_status) {
+            this.delivery_status = delivery_status;
+        }
+
+        public String getdriver_longitude() {
+            return driver_longitude;
+        }
+
+        public void setdriver_longitude(String driver_longitude) {
+            this.driver_longitude = driver_longitude;
+        }
+
+        public String getdriver_latitude() {
+            return driver_latitude;
+        }
+
+        public void setdriver_latitude(String driver_latitude) {
+            this.driver_latitude = driver_latitude;
+        }
+
+
+        public String getdropoff_longitude() {
+            return dropoff_longitude;
+        }
+
+        public void setdropoff_longitude(String dropoff_longitude) {
+            this.dropoff_longitude = dropoff_longitude;
+        }
+
+        public String getdropoff_latitude() {
+            return dropoff_latitude;
+        }
+
+        public void setdropoff_latitude(String dropoff_latitude) {
+            this.dropoff_latitude = dropoff_latitude;
+        }
+
+        public String getpickup_latitude() {
+            return pickup_latitude;
+        }
+
+        public void setpickup_latitude(String pickup_latitude) {
+            this.pickup_latitude = pickup_latitude;
+        }
+
+        public String getpickup_longitude() {
+            return pickup_longitude;
+        }
+
+        public void setpickup_longitude(String pickup_longitude) {
+            this.pickup_longitude = pickup_longitude;
+        }
+
+
+
 
         public String getorderCount() {
             return orderCount;

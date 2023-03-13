@@ -3821,7 +3821,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         mMap.addMarker(new MarkerOptions().position(TutorialsPoint).title("Tutorialspoint.com"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(TutorialsPoint));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p2, p3), 17.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(p2, p3), 14.0f));
     }
 
 

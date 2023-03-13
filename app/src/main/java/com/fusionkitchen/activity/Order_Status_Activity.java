@@ -1,6 +1,7 @@
 package com.fusionkitchen.activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -71,6 +72,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -97,6 +100,9 @@ import com.fusionkitchen.model.orderstatus.ordertracking_details_model;
 import com.fusionkitchen.model.orderstatus.ordertracking_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import org.json.JSONObject;
 
@@ -112,7 +118,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt;
-    String radio_selectedValue;
+    String radio_selectedValue,stuart_delivery_;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
 
@@ -133,6 +139,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
     String fname;
+    String pickup_lat,pickup_long,dropoff_lat,dropoff_long,driver_lat,driver_long;
     /*---------------------------XML ID Call----------------------------------------------------*/
 
     View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
@@ -167,8 +174,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     SharedPreferences slogin;
     SharedPreferences.Editor sloginEditor;
     String user_id;
+    String delivery_status,delivery_status_name;
     RadioGroup tip_button_view;
-    TextView rest_name,name_phoneno,sub_amt_stuart;
+    TextView rest_name,name_phoneno,sub_amt_stuart,stuart_order_tracking_share_btn;
     boolean check_again_btn = true;
     boolean check_confirmDialog_btn = true;
     boolean check_delivedDialog_btn = true;
@@ -180,7 +188,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     CardView botton_top_vis,restaurants_mobile_no;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
-    TextView tip_btn,custom_tip_textview;
+    TextView tip_btn,custom_tip_textview,stuart_textview;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +303,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         total_item_count = findViewById(R.id.total_item_count);
         sub_amt_stuart = findViewById(R.id.sub_amt_stuart);
 
+        stuart_order_tracking_share_btn = findViewById(R.id.stuart_order_tracking_share_btn);
+        stuart_textview = findViewById(R.id.stuart_textview);
+
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -387,6 +398,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
 
+/*
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -398,18 +410,24 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
 
-        origin = new MarkerOptions().position(new LatLng(51.4096757, -0.2301377)).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-        destination = new MarkerOptions().position(new LatLng(51.4196757, -0.2401398)).title("Gokulnathan End").snippet("destination");
+        BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bikestuart);
+        Bitmap b1=bitmapdraw1.getBitmap();
+        Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, width, height, false);
 
 
-        // Getting URL to the Google Directions API
+
+        Log.d("gokulnathan===="," " + pickup_lat);
+
+
+        origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+        destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
         String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
-
 
         DownloadTask downloadTask = new DownloadTask();
 
-        // Start downloading json data from Google Directions API
         downloadTask.execute(url);
+*/
 
 
         botton_top.setOnClickListener(new View.OnClickListener() {
@@ -530,13 +548,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                /*if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:+44 " + clientphonenumber));
                     startActivity(callIntent);
                 } else {
                     requestPermissions(new String[]{CALL_PHONE}, 1);
-                }
+                }*/
             }
         });
 
@@ -568,11 +586,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
         restaurants_mobile_no.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+               /* Intent dialIntent = new Intent(Intent.ACTION_DIAL);
                 dialIntent.setData(Uri.parse("tel:" + rest_phone_no));
-                startActivity(dialIntent);
+                startActivity(dialIntent);*/
+
+                if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
+                    startActivity(callIntent);
+                } else {
+                    requestPermissions(new String[]{CALL_PHONE}, 1);
+                }
+
             }
         });
 
@@ -605,7 +633,47 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         share_now_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 ordershare_popup.dismiss();
+
+           /*    // ordershare_popup.dismiss();
+                DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLink(Uri.parse("https://www.fusionkitchen.co.uk/help?_menuurl=" + menuurlpath +
+                                "&_postcode=" +key_postcode +
+                                "&_keyarea=" +key_area +
+                                "&_address=" + key_address +
+                                "&_lat="+ key_lat +
+                                "&_lng=" + key_lon
+
+                        ))
+                        .setDomainUriPrefix("https://fusionkitchen.page.link")
+
+                        .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                        .buildDynamicLink();
+                Uri dynamicLinkUri = dynamicLink.getUri();
+                Log.e("main", "  Long refer "+ dynamicLink.getUri());
+
+
+                Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                        .setLongLink(Uri.parse(""+dynamicLinkUri))  // manually
+                        .buildShortDynamicLink()
+                        .addOnCompleteListener(Order_Status_Activity.this, new OnCompleteListener<ShortDynamicLink>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                                if (task.isSuccessful()) {
+                                    Uri shortLink = task.getResult().getShortLink();
+                                    Uri flowchartLink = task.getResult().getPreviewLink();
+                                    Log.e("share_link_item_pop_up ", "short link "+ shortLink.toString());
+                                    Intent intent = new Intent();
+                                    intent.setAction(Intent.ACTION_SEND);
+                                    intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
+                                    intent.setType("text/plain");
+                                    startActivity(intent);
+                                } else {
+                                    Log.e("main", " error "+task.getException() );
+                                }
+                            }
+                        });*/
             }
         });
 
@@ -659,7 +727,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("orderdetails", "2186");
+        params.put("orderdetails", "1907");
         params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -677,18 +745,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
                         String order_status  = response.body().getOrdertracking().getOrder().getOrder().getStatus();
-
-                        if(order_status.equalsIgnoreCase("0")){
-                           // wait_confirm_icon
-                        }else if(order_status.equalsIgnoreCase("1")){
-
-                        }else if(order_status.equalsIgnoreCase("2")){
-
-                        }else if(order_status.equalsIgnoreCase("3")){
-
-                        }else if(order_status.equalsIgnoreCase("4")){
-
-                        }
 
                         rest_name.setText(response.body().getOrdertracking().getOrder().getrest().getName());
 
@@ -719,7 +775,138 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         total_item_count.setText(item_total_count);
 
-                        sub_amt_stuart.setText(item_sub_amt);
+                        sub_amt_stuart.setText("£"+item_sub_amt);
+
+
+                         pickup_lat = response.body().getOrdertracking().getOrder().getOrder().getpickup_latitude();
+                         pickup_long = response.body().getOrdertracking().getOrder().getOrder().getpickup_longitude();
+
+                         dropoff_lat = response.body().getOrdertracking().getOrder().getOrder().getdropoff_latitude();
+                         dropoff_long = response.body().getOrdertracking().getOrder().getOrder().getdropoff_longitude();
+
+                         driver_lat = response.body().getOrdertracking().getOrder().getOrder().getdriver_latitude();
+                         driver_long = response.body().getOrdertracking().getOrder().getOrder().getdriver_longitude();
+
+
+                        stuart_delivery_ = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
+
+                         delivery_status = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
+
+                         delivery_status_name = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status_name();
+
+
+                       String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
+
+                       if(Stuart_enable_disable.equalsIgnoreCase("true")){
+
+                           botton_top_vis.setVisibility(View.VISIBLE);
+
+                           SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                   .findFragmentById(R.id.map);
+                           mapFragment.getMapAsync((OnMapReadyCallback) Order_Status_Activity.this);
+
+                           int height = 100;
+                           int width = 100;
+                           BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.restaurant);
+                           Bitmap b=bitmapdraw.getBitmap();
+                           Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
+
+
+                           BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bikestuart);
+                           Bitmap b1=bitmapdraw1.getBitmap();
+                           Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, width, height, false);
+
+                           origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                           destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
+                           String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
+
+                           DownloadTask downloadTask = new DownloadTask();
+
+                           downloadTask.execute(url);
+
+
+                           if(delivery_status.equalsIgnoreCase("0")){
+                               wait_confirm_icon.setAnimation(R.raw.foodloading);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("1")){
+
+                               wait_confirm_icon.setAnimation(R.raw.orderconfirmed);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("2")){
+
+                                wait_confirm_icon.setAnimation(R.raw.delivery);
+                                wait_confirm_icon.playAnimation();
+                                stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("3")){
+
+                               wait_confirm_icon.setAnimation(R.raw.orderprepare);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("4")){
+
+                               wait_confirm_icon.setAnimation(R.raw.deliverypickup);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("5")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("6")){
+
+                               wait_confirm_icon.setAnimation(R.raw.deliverypickup);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("7")){
+
+                               wait_confirm_icon.setAnimation(R.raw.deliverypickup);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("8")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else{
+                               stuart_textview.setText(" ");
+                           }
+
+
+                       }else{
+                           botton_top_vis.setVisibility(View.GONE);
+
+                           if(delivery_status.equalsIgnoreCase("0")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("1")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("2")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else if(delivery_status.equalsIgnoreCase("3")){
+
+                               stuart_textview.setText(delivery_status_name);
+
+                           }else{
+
+                               stuart_textview.setText("");
+
+                           }
+
+                       }
+
 
                     }
 
@@ -733,7 +920,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onFailure(Call<ordertracking_model> call, Throwable t) {
                 Log.e("bugcode", "" + t.toString());
                 Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -1365,7 +1552,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             case REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:+44 " + clientphonenumber));
+                    callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
                     startActivity(callIntent);
                 } else {
 
@@ -1384,8 +1571,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         mMap.addMarker(origin);
         mMap.addMarker(destination);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 15));
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 12));
 
     }
 
@@ -1456,9 +1642,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 }
 
                 lineOptions.addAll(points);
-                lineOptions.width(20);
-                //lineOptions.color(Color.RED);
-                lineOptions.color(Color.BLUE);
+                lineOptions.width(8);
+                lineOptions.color(Color.parseColor("#2b70f7"));
                 lineOptions.geodesic(true);
 
             }
