@@ -73,7 +73,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -100,7 +99,6 @@
                 android:text="How was the food quality"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="match_parent">
             </TextView>
 
@@ -186,9 +184,11 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tracking_txt"
             android:textSize="@dimen/_12sdp"
             android:textColor="#17284D"
             android:text="Tracking details"
+            android:visibility="gone"
             android:fontFamily="@font/metropolis_semibold"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -200,6 +200,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
+            android:visibility="gone"
             app:cardBackgroundColor="#ffffff"
             app:cardMaxElevation="2dp"
             app:cardPreventCornerOverlap="true"
@@ -264,7 +265,7 @@
 
 
         </androidx.cardview.widget.CardView>
-
+<!--
   <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -315,7 +316,7 @@
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/yourorderready"
-        app:lottie_loop="true"/>
+        app:lottie_loop="true"/>-->
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

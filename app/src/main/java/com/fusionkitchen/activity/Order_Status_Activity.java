@@ -188,7 +188,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     CardView botton_top_vis,restaurants_mobile_no;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
-    TextView tip_btn,custom_tip_textview,stuart_textview;
+    TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,6 +305,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         stuart_order_tracking_share_btn = findViewById(R.id.stuart_order_tracking_share_btn);
         stuart_textview = findViewById(R.id.stuart_textview);
+        tracking_txt = findViewById(R.id.tracking_txt);
 
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -727,8 +728,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("orderdetails", "1907");
-        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
+     /*   params.put("orderdetails", "1907");
+        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");*/
+
+        params.put("orderdetails", orderid);
+        params.put("path", orderpath);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
@@ -800,6 +804,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                        if(Stuart_enable_disable.equalsIgnoreCase("true")){
 
                            botton_top_vis.setVisibility(View.VISIBLE);
+                           tracking_txt.setVisibility(View.VISIBLE);
 
                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                                    .findFragmentById(R.id.map);
@@ -816,14 +821,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            Bitmap b1=bitmapdraw1.getBitmap();
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, width, height, false);
 
-                           origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                           destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
-                           String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
-
-                           DownloadTask downloadTask = new DownloadTask();
-
-                           downloadTask.execute(url);
 
 
                            if(delivery_status.equalsIgnoreCase("0")){
@@ -837,17 +834,26 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
 
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
+
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
                                 wait_confirm_icon.setAnimation(R.raw.delivery);
                                 wait_confirm_icon.playAnimation();
                                 stuart_textview.setText(delivery_status_name);
 
+                                origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
                                wait_confirm_icon.setAnimation(R.raw.orderprepare);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_lat))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_lat))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
                            }else if(delivery_status.equalsIgnoreCase("4")){
 
@@ -855,32 +861,52 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
 
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
                            }else if(delivery_status.equalsIgnoreCase("5")){
 
                                stuart_textview.setText(delivery_status_name);
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
                            }else if(delivery_status.equalsIgnoreCase("6")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
                            }else if(delivery_status.equalsIgnoreCase("7")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
                            }else if(delivery_status.equalsIgnoreCase("8")){
 
                                stuart_textview.setText(delivery_status_name);
+                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
                            }else{
                                stuart_textview.setText(" ");
                            }
 
 
+                           String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
+
+                           DownloadTask downloadTask = new DownloadTask();
+
+                           downloadTask.execute(url);
+
+
                        }else{
+
+                           tracking_txt.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.GONE);
 
                            if(delivery_status.equalsIgnoreCase("0")){
@@ -904,9 +930,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText("");
 
                            }
-
                        }
-
 
                     }
 
@@ -1568,7 +1592,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.addMarker(origin);
         mMap.addMarker(destination);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 12));
