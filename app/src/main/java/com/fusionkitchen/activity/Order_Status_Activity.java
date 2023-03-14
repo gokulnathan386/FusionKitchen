@@ -121,6 +121,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String radio_selectedValue,stuart_delivery_;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
+    EditText comments_txt;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -185,7 +186,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     AppCompatButton chat_client, call_client;
     String phone, gmail;
     LinearLayout botton_top;
-    CardView botton_top_vis,restaurants_mobile_no;
+    CardView botton_top_vis,restaurants_mobile_no,submit_review_btn;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
     TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt;
@@ -235,8 +236,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         config.setGallerySelectionEnabled(true);
         config.setResponseExpectationEnabled(true);
         Freshchat.getInstance(getApplicationContext()).init(config);
-
-
 
         /*---------------------------XML ID Call----------------------------------------------------*/
 
@@ -306,6 +305,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         stuart_order_tracking_share_btn = findViewById(R.id.stuart_order_tracking_share_btn);
         stuart_textview = findViewById(R.id.stuart_textview);
         tracking_txt = findViewById(R.id.tracking_txt);
+        comments_txt = findViewById(R.id.comments_txt);
+        submit_review_btn =findViewById(R.id.submit_review_btn);
 
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,6 +396,17 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         break;
                 }
                 return true;
+            }
+        });
+
+        submit_review_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (comments_txt.getText().toString().equalsIgnoreCase("")) {
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Please fill out comments field.", Snackbar.LENGTH_LONG).show();
+                } else {
+                   // submitfeedback(user_id, orderid, clientid, feedback_type, comments.getText().toString(),Fname,gmail,phone); // Feedback API calling Method
+                }
             }
         });
 
