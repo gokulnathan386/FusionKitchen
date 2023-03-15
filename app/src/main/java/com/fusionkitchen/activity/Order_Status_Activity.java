@@ -3,7 +3,6 @@ package com.fusionkitchen.activity;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,12 +11,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,12 +27,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +41,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
@@ -64,6 +60,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
+import com.fusionkitchen.model.orderstatus.submitfeedback_model;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -72,8 +69,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -88,21 +83,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
-import com.fusionkitchen.adapter.OrderHistoryListAdapter;
-import com.fusionkitchen.adapter.OrderHistoryitemListAdapter;
 import com.fusionkitchen.adapter.OrderstatusitemListAdapter;
 import com.fusionkitchen.check_internet.Internet_connection_checking;
-import com.fusionkitchen.model.order_history.order_details_list_show;
-import com.fusionkitchen.model.order_history.ordhistorys_list_model;
 import com.fusionkitchen.model.orderstatus.ordertracking_details_model;
 import com.fusionkitchen.model.orderstatus.ordertracking_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import org.json.JSONObject;
 
@@ -119,12 +106,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt;
     String radio_selectedValue,stuart_delivery_;
+    int rest_rating,food_rating;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
     EditText comments_txt;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
+   // private ZoomControls mZoomControls;
     MarkerOptions origin, destination;
     Dialog ordershare_popup;
 
@@ -189,7 +178,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     CardView botton_top_vis,restaurants_mobile_no,submit_review_btn;
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
-    TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt;
+    TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt,header_txt_status;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,6 +296,22 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         tracking_txt = findViewById(R.id.tracking_txt);
         comments_txt = findViewById(R.id.comments_txt);
         submit_review_btn =findViewById(R.id.submit_review_btn);
+        header_txt_status = findViewById(R.id.header_txt_status);
+     //   mZoomControls = findViewById(R.id.zoomControls);
+
+       /* mZoomControls.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            }
+        });
+
+        mZoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.zoomOut());
+            }
+        });*/
 
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,14 +320,26 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
         });
 
-       RatingBar ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+       RatingBar foodquality_ratingBar = (RatingBar)findViewById(R.id.foodquality_ratingBar);
+       RatingBar restuarant_service = (RatingBar)findViewById(R.id.restuarant_service);
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+        restuarant_service.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating,
                                         boolean fromUser) {
-                Toast.makeText(getApplicationContext(),Float.toString(rating),Toast.LENGTH_LONG).show();
+                 rest_rating = Math.round(rating);
+
+          }
+
+        });
+
+        foodquality_ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                 food_rating = Math.round(rating);
             }
 
         });
@@ -399,13 +416,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
         });
 
+
         submit_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (comments_txt.getText().toString().equalsIgnoreCase("")) {
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Please fill out comments field.", Snackbar.LENGTH_LONG).show();
                 } else {
-                   // submitfeedback(user_id, orderid, clientid, feedback_type, comments.getText().toString(),Fname,gmail,phone); // Feedback API calling Method
+                    submitfeedback(user_id, orderid, clientid,comments_txt.getText().toString(),fname,gmail,phone); // Feedback API calling Method
                 }
             }
         });
@@ -635,8 +653,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     }
 
-
-
     private void Orderdetailshare() {
 
         ordershare_popup = new Dialog(this);
@@ -740,12 +756,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-     /*   params.put("orderdetails", "1907");
+      /*  params.put("orderdetails", "2328");
         params.put("path", "restaurant-demo-2-if28threefield-house-sk11");*/
 
         params.put("orderdetails", orderid);
         params.put("path", orderpath);
-
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
         Log.e("ur_id", "" + params);
@@ -804,7 +819,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                          driver_long = response.body().getOrdertracking().getOrder().getOrder().getdriver_longitude();
 
 
-                        stuart_delivery_ = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
+                         stuart_delivery_ = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
 
                          delivery_status = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
 
@@ -822,6 +837,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    .findFragmentById(R.id.map);
                            mapFragment.getMapAsync((OnMapReadyCallback) Order_Status_Activity.this);
 
+
+
                            int height = 100;
                            int width = 100;
                            BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.restaurant);
@@ -834,87 +851,109 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, width, height, false);
 
 
-
                            if(delivery_status.equalsIgnoreCase("0")){
+
                                wait_confirm_icon.setAnimation(R.raw.foodloading);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
                                wait_confirm_icon.setAnimation(R.raw.orderconfirmed);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               if(origin !=null && destination !=null){
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
                                 wait_confirm_icon.setAnimation(R.raw.delivery);
                                 wait_confirm_icon.playAnimation();
                                 stuart_textview.setText(delivery_status_name);
+                                header_txt_status.setText(delivery_status_name);
 
-                                origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
                                wait_confirm_icon.setAnimation(R.raw.orderprepare);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_lat))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_lat))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               header_txt_status.setText(delivery_status_name);
+
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_lat))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_lat))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("4")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
                            }else if(delivery_status.equalsIgnoreCase("5")){
 
                                stuart_textview.setText(delivery_status_name);
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               header_txt_status.setText(delivery_status_name);
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
                            }else if(delivery_status.equalsIgnoreCase("6")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               header_txt_status.setText(delivery_status_name);
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
                            }else if(delivery_status.equalsIgnoreCase("7")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               header_txt_status.setText(delivery_status_name);
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
                            }else if(delivery_status.equalsIgnoreCase("8")){
 
                                stuart_textview.setText(delivery_status_name);
-                               origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat),Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                               destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-
+                               header_txt_status.setText(delivery_status_name);
+                               if(origin !=null && destination !=null) {
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               }
                            }else{
                                stuart_textview.setText(" ");
+                               header_txt_status.setText(delivery_status_name);
                            }
 
+                          if(origin != null && destination != null){
 
-                           String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
+                              String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
 
-                           DownloadTask downloadTask = new DownloadTask();
+                              DownloadTask downloadTask = new DownloadTask();
 
-                           downloadTask.execute(url);
-
+                              downloadTask.execute(url);
+                          }
 
                        }else{
 
@@ -923,23 +962,34 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                            if(delivery_status.equalsIgnoreCase("0")){
 
+                               wait_confirm_icon.setAnimation(R.raw.foodloading);
+                               wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
+                               wait_confirm_icon.setAnimation(R.raw.orderprepare);
+                               wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
+                               wait_confirm_icon.setAnimation(R.raw.ordercancel);
+                               wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
                                stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
 
                            }else{
 
                                stuart_textview.setText("");
+                               header_txt_status.setText("");
 
                            }
                        }
@@ -1599,14 +1649,18 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     }
 
 
-/*---------------------------------hoku--------------------*/
+    /*---------------------------------gokul--------------------*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.addMarker(origin);
-        mMap.addMarker(destination);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 12));
+
+           if(origin != null && destination != null){
+                mMap = googleMap;
+                mMap.addMarker(origin);
+                mMap.addMarker(destination);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 8));
+           // mMap.getUiSettings().setZoomControlsEnabled(true);
+        }
 
     }
 
@@ -1750,6 +1804,52 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    private void submitfeedback(String struserid, String strorderid, String strclientid,String strcomment,String fname,String gmail,String phone) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user_id", struserid);
+        params.put("order_id", strorderid);
+        params.put("client_id", strclientid);
+        params.put("comments", strcomment);
+        params.put("name",fname);
+        params.put("email",gmail);
+        params.put("phone",phone);
+        params.put("foodquality", String.valueOf(food_rating));
+        params.put("restuarant_service", String.valueOf(rest_rating));
+
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<submitfeedback_model> call = apiService.submitfeedback(params);
+
+        Log.e("feedbackparametes", "" + params);
+
+        call.enqueue(new Callback<submitfeedback_model>() {
+            @Override
+            public void onResponse(Call<submitfeedback_model> call, Response<submitfeedback_model> response) {
+                //response.headers().get("Set-Cookie");
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Thank you for the feedback", Toast.LENGTH_LONG).show();
+                    } else {
+                        Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<submitfeedback_model> call, Throwable t) {
+                Log.e("bugcode", "" + t.toString());
+                Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+            }
+        });
     }
 
 }
