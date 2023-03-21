@@ -807,7 +807,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String item_sub_amt = response.body().getOrdertracking().getOrder().getOrder().getSub_total();
 
-                        total_item_count.setText(item_total_count);
+                        total_item_count.setText(item_total_count +" Items");
 
                         sub_amt_stuart.setText("£"+item_sub_amt);
 
