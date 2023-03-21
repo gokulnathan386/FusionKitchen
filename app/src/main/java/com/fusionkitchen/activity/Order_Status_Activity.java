@@ -110,6 +110,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     EditText custom_edittxt;
     String radio_selectedValue,stuart_delivery_;
     int rest_rating,food_rating;
+    LinearLayout orderlist_data,total_item;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
     EditText comments_txt;
@@ -300,6 +301,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         comments_txt = findViewById(R.id.comments_txt);
         submit_review_btn =findViewById(R.id.submit_review_btn);
         header_txt_status = findViewById(R.id.header_txt_status);
+
+        orderlist_data = findViewById(R.id.orderlist_data);
+        total_item = findViewById(R.id.total_item);
+
+        total_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (orderlist_data.getVisibility() == View.VISIBLE) {
+                    orderlist_data.setVisibility(View.GONE);
+                } else {
+                    orderlist_data.setVisibility(View.VISIBLE);
+                }
+            }
+        });
      //   mZoomControls = findViewById(R.id.zoomControls);
 
        /* mZoomControls.setOnZoomInClickListener(new View.OnClickListener() {
@@ -1148,7 +1164,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    Log.d("gokulnathan--->","pick_drop");
                                }
 
-                       }else{
+                            }else{
                                stuart_textview.setText(" ");
                                header_txt_status.setText(delivery_status_name);
 
@@ -1228,6 +1244,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            }
                        }
 
+
+                        List<ordertracking_details_model.item> orderhistory = (response.body().getOrdertracking().getOrder().getItem());
+                        OrderstatusitemListAdapter menuitemnameadapter = new OrderstatusitemListAdapter(mContext, (List<ordertracking_details_model.item>) orderhistory);
+                        myorderList.setHasFixedSize(true);
+                        myorderList.setLayoutManager(new LinearLayoutManager(Order_Status_Activity.this));
+                        myorderList.setAdapter(menuitemnameadapter);
+
                     }
 
 
@@ -1247,12 +1270,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     }
 
     /*  ---------------------------get api URL first time get type values----------------------------------------------------*/
-    private void getodertrackingdeatils(String orderiding, String orderpathing) {
+    /*private void getodertrackingdeatils(String orderiding, String orderpathing) {
 
         // get user data from session
         Map<String, String> params = new HashMap<String, String>();
-      /*  params.put("orderdetails", orderiding);
-        params.put("path", orderpathing);*/
+      *//*  params.put("orderdetails", orderiding);
+        params.put("path", orderpathing);*//*
 
         params.put("orderdetails","1908");
         params.put("path","restaurant-demo-2-if28threefield-house-sk11");
@@ -1493,7 +1516,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }*/
 
 
     /*--------------------Tracking id pass-----------------------*/

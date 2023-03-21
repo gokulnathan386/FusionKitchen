@@ -1045,6 +1045,7 @@
 
 
                 <LinearLayout
+                    android:id="@id/total_item"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -1140,6 +1141,19 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/orderlist_data"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/myorderList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -1161,6 +1175,7 @@
                             android:src="@drawable/ic_basket_add_map"
                             />
                     </LinearLayout>
+
 
 
                     <LinearLayout
@@ -1778,14 +1793,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-
+<!--
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/myorderList"
                                         android:layout_width="match_parent"
                                         android:layout_height="250dp"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_marginRight="@dimen/_10sdp"
-                                        android:background="@color/add_bg" />
+                                        android:background="@color/add_bg" />-->
 
                                 </RelativeLayout>
 
