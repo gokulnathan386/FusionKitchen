@@ -836,6 +836,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
+                        Log.d("Load_popular_Restaur", response.toString());
+
                         try {
                             hideloading();
                             JSONObject jsonobject = new JSONObject(response);

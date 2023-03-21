@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,7 +43,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomControls;
 
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
@@ -67,6 +68,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -90,6 +92,7 @@ import com.fusionkitchen.model.orderstatus.ordertracking_details_model;
 import com.fusionkitchen.model.orderstatus.ordertracking_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -114,7 +117,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
    // private ZoomControls mZoomControls;
-    MarkerOptions origin, destination;
+    MarkerOptions origin, destination,midpoint;
     Dialog ordershare_popup;
 
     /*---------------------------check internet connection----------------------------------------------------*/
@@ -158,7 +161,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     final Handler handler = new Handler();
     Runnable runnable;
-    final int delay = 5000; // 1000 milliseconds == 1 second
+    final int delay = 1000; // 5000 milliseconds == 5 second
 
     /*--------------Login details get SharedPreferences------------------*/
     SharedPreferences slogin;
@@ -745,7 +748,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         alertDialog.dismiss();
                     }
 
-
                 }
             });
             alertDialog.show();
@@ -756,11 +758,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-      /*  params.put("orderdetails", "2328");
+    /*    params.put("orderdetails", "2328");
         params.put("path", "restaurant-demo-2-if28threefield-house-sk11");*/
-
         params.put("orderdetails", orderid);
         params.put("path", orderpath);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
         Log.e("ur_id", "" + params);
@@ -770,6 +772,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onResponse(Call<ordertracking_model> call, Response<ordertracking_model> response) {
                 int statusCode = response.code();
 
+                Log.e("Order_tracking_design", new Gson().toJson(response.body()));
 
                 if (statusCode == 200) {
 
@@ -818,7 +821,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                          driver_lat = response.body().getOrdertracking().getOrder().getOrder().getdriver_latitude();
                          driver_long = response.body().getOrdertracking().getOrder().getOrder().getdriver_longitude();
 
-
                          stuart_delivery_ = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
 
                          delivery_status = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
@@ -838,9 +840,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            mapFragment.getMapAsync((OnMapReadyCallback) Order_Status_Activity.this);
 
 
-
-                           int height = 100;
-                           int width = 100;
+                           int height = 50;
+                           int width = 50;
                            BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.restaurant);
                            Bitmap b=bitmapdraw.getBitmap();
                            Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
@@ -850,6 +851,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            Bitmap b1=bitmapdraw1.getBitmap();
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, width, height, false);
 
+                           BitmapDrawable bitmapdraw2 = (BitmapDrawable)getResources().getDrawable(R.drawable.gokul);
+                           Bitmap b5=bitmapdraw2.getBitmap();
+                           Bitmap finalMarker2= Bitmap.createScaledBitmap(b5, width, height, false);
+
 
                            if(delivery_status.equalsIgnoreCase("0")){
 
@@ -858,17 +863,53 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
+
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
+                               }
+
+
+
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
-                               wait_confirm_icon.setAnimation(R.raw.orderconfirmed);
-                               wait_confirm_icon.playAnimation();
-                               stuart_textview.setText(delivery_status_name);
-                               header_txt_status.setText(delivery_status_name);
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                           && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
 
-                               if(origin !=null && destination !=null){
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat),Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
@@ -877,9 +918,24 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                 stuart_textview.setText(delivery_status_name);
                                 header_txt_status.setText(delivery_status_name);
 
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
@@ -889,10 +945,26 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_lat))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_lat))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
 
                            }else if(delivery_status.equalsIgnoreCase("4")){
 
@@ -901,59 +973,210 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
                            }else if(delivery_status.equalsIgnoreCase("5")){
 
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
                            }else if(delivery_status.equalsIgnoreCase("6")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
                            }else if(delivery_status.equalsIgnoreCase("7")){
 
                                wait_confirm_icon.setAnimation(R.raw.deliverypickup);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
+
                            }else if(delivery_status.equalsIgnoreCase("8")){
 
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-                               if(origin !=null && destination !=null) {
-                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("GokulNathan Start").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
-                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Gokulnathan End").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
                                }
-                           }else{
+
+                           }else if(delivery_status.equalsIgnoreCase("9")){
+
+                               wait_confirm_icon.setAnimation(R.raw.ordercancel);
+                               wait_confirm_icon.playAnimation();
+                               stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
+
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
+                               }
+
+                           }else if(delivery_status.equalsIgnoreCase("10")){
+
+                           wait_confirm_icon.setAnimation(R.raw.ordercancel);
+                           wait_confirm_icon.playAnimation();
+                           stuart_textview.setText(delivery_status_name);
+                           header_txt_status.setText(delivery_status_name);
+
+                               if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                       && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
+                               ) {
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+                                   midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
+                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
+                               }else if(pickup_lat !=null && pickup_long !=null
+                                       && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                       && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                                   origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
+                                   destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   Log.d("gokulnathan--->","pick_drop");
+                               }
+
+                       }else{
                                stuart_textview.setText(" ");
                                header_txt_status.setText(delivery_status_name);
+
                            }
 
-                          if(origin != null && destination != null){
 
-                              String url = getDirectionsUrl(origin.getPosition(), destination.getPosition());
+
+                           if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                                   && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                                   && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                              String url = getDirectionsUrl(origin.getPosition(),midpoint.getPosition(),destination.getPosition());
 
                               DownloadTask downloadTask = new DownloadTask();
 
                               downloadTask.execute(url);
-                          }
+
+                          }else if(pickup_lat !=null && pickup_long !=null
+                                   && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                                   && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                               String url = getDirectionsUrltwo(origin.getPosition(),destination.getPosition());
+
+                               DownloadTask downloadTask = new DownloadTask();
+
+                               downloadTask.execute(url);
+                           }
+
 
                        }else{
 
@@ -967,12 +1190,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
+
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
                                wait_confirm_icon.setAnimation(R.raw.orderprepare);
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
+
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
@@ -981,8 +1206,17 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
+
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
+                               stuart_textview.setText(delivery_status_name);
+                               header_txt_status.setText(delivery_status_name);
+
+
+                           }else if(delivery_status.equalsIgnoreCase("9")){
+
+                               wait_confirm_icon.setAnimation(R.raw.ordercancel);
+                               wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
 
@@ -1654,14 +1888,56 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-           if(origin != null && destination != null){
-                mMap = googleMap;
-                mMap.addMarker(origin);
-                mMap.addMarker(destination);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin.getPosition(), 8));
-           // mMap.getUiSettings().setZoomControlsEnabled(true);
-        }
+                   mMap = googleMap;
 
+                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                    && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                    && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                    mMap.addMarker(origin);
+                    mMap.addMarker(midpoint);
+                    mMap.addMarker(destination);
+
+                }else if(pickup_lat !=null && pickup_long !=null
+                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                    mMap.addMarker(origin);
+                    mMap.addMarker(destination);
+
+                }
+
+                   try {
+
+                       boolean success = mMap.setMapStyle(
+                               MapStyleOptions.loadRawResourceStyle(
+                                       this, R.raw.style_json));
+                       if (!success) {
+                           Log.e("Map_Order_Activity", "Style parsing failed.");
+                       }else{
+                           Log.e("Map_Order_Activity", "Style parsing success.");
+                       }
+
+                   } catch (Resources.NotFoundException e) {
+                       Log.e("Map_Order_Activity", "Can't find style.", e);
+                   }
+
+
+                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                        && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                        && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
+
+                }else if(pickup_lat !=null && pickup_long !=null
+                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));
+                }
+
+
+                // mMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
@@ -1713,6 +1989,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+
             ArrayList points = new ArrayList();
             PolylineOptions lineOptions = new PolylineOptions();
 
@@ -1720,7 +1997,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 List<HashMap<String, String>> path = result.get(i);
 
+
                 for (int j = 0; j < path.size(); j++) {
+
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
@@ -1728,12 +2007,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     LatLng position = new LatLng(lat, lng);
 
                     points.add(position);
+
+
                 }
 
+
                 lineOptions.addAll(points);
-                lineOptions.width(8);
+                lineOptions.width(5);
                 lineOptions.color(Color.parseColor("#2b70f7"));
                 lineOptions.geodesic(true);
+
 
             }
 
@@ -1741,12 +2024,35 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
             if (points.size() != 0)
                 mMap.addPolyline(lineOptions);
+
         }
+
+
+
     }
 
 
 
-    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+    private String getDirectionsUrl(LatLng origin,LatLng midpoint ,LatLng dest) {
+
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        String str_midpoint = "midpoint=" + midpoint.latitude + "," + midpoint.longitude;
+
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        String mode = "mode=driving";
+
+        String parameters = str_origin +"&"+str_midpoint +"&" + str_dest + "&" + mode;
+
+        String output = "json";
+
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0";
+
+        return url;
+    }
+
+    private String getDirectionsUrltwo(LatLng origin,LatLng dest) {
 
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -1764,13 +2070,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         String output = "json";
 
         // Building the url to the web service
-        //String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "YOUR_API_KEY";
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0";
+
 
         Log.d("Google_url"," " + url);
 
         return url;
     }
+
+
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
