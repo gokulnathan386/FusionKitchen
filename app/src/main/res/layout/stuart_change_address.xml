@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    android:layout_gravity="bottom"
+    android:gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="413dp"
+            android:layout_height="350dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/metropolis_bold"
+                android:gravity="center"
+                android:text="Change Address"
+                android:textColor="#17284D"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:text="Post Code"
+                            android:textSize="15dp"
+                            android:textColor="#66676D"
+                            android:fontFamily="@font/poppins_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <EditText
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/sturat_edittext_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+                        </EditText>
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:text="House/Door No"
+                            android:textSize="15dp"
+                            android:textColor="#66676D"
+                            android:fontFamily="@font/poppins_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <EditText
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/sturat_edittext_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+                        </EditText>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Street"
+                        android:textSize="15dp"
+                        android:textColor="#66676D"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                    <EditText
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/sturat_edittext_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                    </EditText>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="City"
+                        android:textSize="15dp"
+                        android:textColor="#66676D"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+                    <EditText
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/sturat_edittext_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                    </EditText>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:layout_marginLeft="10dp"
+        android:background="#F3F9F7"
+        app:cardCornerRadius="45dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:src="@drawable/house_map"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+</FrameLayout>

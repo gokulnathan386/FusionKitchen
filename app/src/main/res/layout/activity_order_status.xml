@@ -903,7 +903,7 @@
 
                         <ImageView
                             android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:src="@drawable/house_map" />
                     </LinearLayout>
 
@@ -1143,7 +1143,7 @@
 
                 <LinearLayout
                     android:id="@+id/orderlist_data"
-                    android:visibility="gone"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -1152,6 +1152,190 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     </androidx.recyclerview.widget.RecyclerView>
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Subtotal"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/subtotal_item"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£12.70"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Discount"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/orderlist_discount"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="-£0.70"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Restaurant tip"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/restaurant_tip"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.70"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Rider tip"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.10"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#BBC6CC"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp">
+                    </View>
+
+
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="3sp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="Total"
+                            android:layout_weight="1"
+                            android:textColor="#4D4D4D"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/total_itemlist"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="£5.70"
+                            android:layout_weight="1"
+                            android:textColor="#4D4D4D"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

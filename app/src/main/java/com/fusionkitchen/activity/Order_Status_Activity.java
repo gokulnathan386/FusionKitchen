@@ -111,6 +111,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String radio_selectedValue,stuart_delivery_;
     int rest_rating,food_rating;
     LinearLayout orderlist_data,total_item;
+    TextView orderlist_discount;
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
     EditText comments_txt;
@@ -138,7 +139,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
     ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced,down_arrow,up_arrow;
-    TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced,total_item_count;
+    TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced,total_item_count,total_itemlist;
 
     AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time,user_delivery_address;
 
@@ -162,7 +163,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     final Handler handler = new Handler();
     Runnable runnable;
-    final int delay = 1000; // 5000 milliseconds == 5 second
+    final int delay = 3000; // 1000 milliseconds == 1 second
 
     /*--------------Login details get SharedPreferences------------------*/
     SharedPreferences slogin;
@@ -170,7 +171,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String user_id;
     String delivery_status,delivery_status_name;
     RadioGroup tip_button_view;
-    TextView rest_name,name_phoneno,sub_amt_stuart,stuart_order_tracking_share_btn;
+    TextView rest_name,name_phoneno,sub_amt_stuart,stuart_order_tracking_share_btn,subtotal_item;
     boolean check_again_btn = true;
     boolean check_confirmDialog_btn = true;
     boolean check_delivedDialog_btn = true;
@@ -209,10 +210,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         /*---------------------------Back Button Click----------------------------------------------------*/
         //Back Boutton Click
         back = findViewById(R.id.back);
-
-
-
-
 
         /*--------------Login details get SharedPreferences------------------*/
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
@@ -304,6 +301,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         orderlist_data = findViewById(R.id.orderlist_data);
         total_item = findViewById(R.id.total_item);
+        total_itemlist = findViewById(R.id.total_itemlist);
+        subtotal_item = findViewById(R.id.subtotal_item);
+        orderlist_discount = findViewById(R.id.orderlist_discount);
 
         total_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -657,8 +657,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         chg_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent act_ = new Intent(Order_Status_Activity.this,MyAccount_Activity.class);
-                startActivity(act_);
+             Changeaddress();
             }
         });
 
@@ -669,6 +668,23 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 startActivity(act_);
             }
         });
+
+    }
+
+    private void Changeaddress() {
+        Dialog chnage_add = new Dialog(mContext);
+        chnage_add.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        chnage_add.setContentView(R.layout.stuart_change_address);
+
+
+
+        chnage_add.show();
+        chnage_add.setCancelable(false);
+        chnage_add.setCanceledOnTouchOutside(false);
+        chnage_add.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        chnage_add.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        chnage_add.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        chnage_add.getWindow().setGravity(Gravity.BOTTOM);
 
     }
 
@@ -821,11 +837,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
 
-                        String item_sub_amt = response.body().getOrdertracking().getOrder().getOrder().getSub_total();
+                        String item_total_amt = response.body().getOrdertracking().getOrder().getOrder().getTotal();
 
                         total_item_count.setText(item_total_count +" Items");
 
-                        sub_amt_stuart.setText("£"+item_sub_amt);
+                        sub_amt_stuart.setText("£"+item_total_amt);
 
 
                          pickup_lat = response.body().getOrdertracking().getOrder().getOrder().getpickup_latitude();
@@ -1250,6 +1266,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         myorderList.setHasFixedSize(true);
                         myorderList.setLayoutManager(new LinearLayoutManager(Order_Status_Activity.this));
                         myorderList.setAdapter(menuitemnameadapter);
+
+
+                        subtotal_item.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
+
+                        orderlist_discount.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getDiscount());
+
+                        total_itemlist.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getTotal());
 
                     }
 

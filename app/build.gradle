@@ -178,4 +178,5 @@ dependencies {
 
     compile 'com.iarcuschin:simpleratingbar:0.1.+'
 
+
 }
