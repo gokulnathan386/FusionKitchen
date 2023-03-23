@@ -15,19 +15,17 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="413dp"
-            android:layout_height="350dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
             android:layout_gravity="center"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="0dp"
             app:cardElevation="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/metropolis_bold"
                 android:gravity="center"
                 android:text="Change Address"
@@ -36,68 +34,80 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:weightSum="2">
 
 
                     <LinearLayout
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginRight="5dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
                             android:text="Post Code"
-                            android:textSize="15dp"
                             android:textColor="#66676D"
-                            android:fontFamily="@font/poppins_medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                        </TextView>
+                            android:textSize="15dp"></TextView>
 
                         <EditText
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/sturat_edittext_bg"
+                            android:id="@+id/post_code_txtview"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp">
-                        </EditText>
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:paddingStart="10dp"
+                            android:background="@drawable/sturat_edittext_bg"
+                            android:fontFamily="@font/metropolis_medium"
+                            android:padding="2dp"
+                            android:singleLine="true"
+                            android:textColor="#204356"
+                            android:textSize="@dimen/_12sdp"></EditText>
 
                     </LinearLayout>
-
 
 
                     <LinearLayout
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="2dp"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:text="House/Door No"
-                            android:textSize="15dp"
-                            android:textColor="#66676D"
-                            android:fontFamily="@font/poppins_medium"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                        </TextView>
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="House/Door No"
+                            android:textColor="#66676D"
+                            android:textSize="15dp"></TextView>
 
                         <EditText
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/sturat_edittext_bg"
+                            android:id="@+id/House_doorno_txt"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp">
-                        </EditText>
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:paddingStart="10dp"
+                            android:background="@drawable/sturat_edittext_bg"
+                            android:fontFamily="@font/metropolis_medium"
+                            android:padding="2dp"
+                            android:singleLine="true"
+                            android:textColor="#204356"
+                            android:textSize="@dimen/_12sdp"></EditText>
 
                     </LinearLayout>
 
@@ -105,57 +115,85 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="vertical"
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:text="Street"
-                        android:textSize="15dp"
-                        android:textColor="#66676D"
-                        android:fontFamily="@font/poppins_medium"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Street"
+                        android:textColor="#66676D"
+                        android:textSize="15dp"></TextView>
 
                     <EditText
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/sturat_edittext_bg"
+                        android:id="@+id/street_stuart"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
-                    </EditText>
+                        android:layout_height="50dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingStart="10dp"
+                        android:background="@drawable/sturat_edittext_bg"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:padding="2dp"
+                        android:singleLine="true"
+                        android:textColor="#204356"
+                        android:textSize="@dimen/_12sdp"></EditText>
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="vertical"
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:text="City"
-                        android:textSize="15dp"
-                        android:textColor="#66676D"
-                        android:fontFamily="@font/poppins_medium"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="City"
+                        android:textColor="#66676D"
+                        android:textSize="15dp">
                     </TextView>
 
                     <EditText
+                        android:id="@+id/city_stuart"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:background="@drawable/sturat_edittext_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-                    </EditText>
+                        android:fontFamily="@font/metropolis_medium"
+                        android:padding="2dp"
+                        android:singleLine="true"
+                        android:paddingStart="10dp"
+                        android:textColor="#204356"
+                        android:textSize="@dimen/_12sdp"></EditText>
 
                 </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/change_add_btn"
+                    android:text="Change Address"
+                    android:gravity="center"
+                    android:layout_margin="15dp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    android:backgroundTint="#0071E3"
+                    android:padding="15dp"
+                    android:background="@drawable/open_time_bg"
+                    android:fontFamily="@font/metropolis_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                </TextView>
 
 
             </LinearLayout>
@@ -169,7 +207,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:background="#F3F9F7"
         app:cardCornerRadius="45dp">

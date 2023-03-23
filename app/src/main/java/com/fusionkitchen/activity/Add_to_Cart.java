@@ -1184,17 +1184,14 @@ public class Add_to_Cart extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(edit_postcode.getWindowToken(), 0);
             edit_postcode.setError("Please fill out this field.");
-            // Snackbar.make(this.findViewById(android.R.id.content), "Please enter your mobile number", Snackbar.LENGTH_LONG).show();
         } else if (TextUtils.isEmpty(edit_doorno.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(edit_doorno.getWindowToken(), 0);
             edit_doorno.setError("Please fill out this field.");
-
         } else if (TextUtils.isEmpty(edit_town.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(edit_town.getWindowToken(), 0);
             edit_town.setError("Please fill out this field.");
-
         } else if (TextUtils.isEmpty(edit_street.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(edit_street.getWindowToken(), 0);
@@ -1862,8 +1859,6 @@ public class Add_to_Cart extends AppCompatActivity {
     //get api values
     private void getaddressforpostcode(final String post_code) {
 
-
-        //final ProgressDialog loader = ProgressDialog.show(Add_to_Cart.this, "", "Loading...", true);
         Map<String, String> params = new HashMap<String, String>();
         params.put("postcode", post_code);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);

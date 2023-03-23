@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +62,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
+import com.fusionkitchen.model.address.getaddressforpostcode_modal;
 import com.fusionkitchen.model.orderstatus.submitfeedback_model;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -112,9 +114,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     int rest_rating,food_rating;
     LinearLayout orderlist_data,total_item;
     TextView orderlist_discount;
+    String nospace,dno,add1,add2,post_code;
+
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
-    EditText comments_txt;
+    EditText comments_txt,city_stuart;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -184,6 +188,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     LottieAnimationView wait_confirm_icon;
     ImageView item_order_details;
     TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt,header_txt_status;
+    TextView change_add_btn;
+    EditText post_code_txtview,House_doorno_txt,street_stuart;
+
+
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,6 +313,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         total_itemlist = findViewById(R.id.total_itemlist);
         subtotal_item = findViewById(R.id.subtotal_item);
         orderlist_discount = findViewById(R.id.orderlist_discount);
+
 
         total_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -544,7 +554,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         handler.postDelayed(new Runnable() {
             public void run() {
                // getodertrackingdeatils(orderid, orderpath);
-                getstuarttracking(orderid, orderpath);
+               // getstuarttracking(orderid, orderpath);
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -587,7 +597,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 handler.postDelayed(new Runnable() {
                     public void run() {
                        // getodertrackingdeatils(orderid, orderpath);
-                        getstuarttracking(orderid, orderpath);
+                       // getstuarttracking(orderid, orderpath);
                         handler.postDelayed(this, delay);
                     }
                 }, delay);
@@ -657,7 +667,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         chg_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             Changeaddress();
+               Changeaddress();
             }
         });
 
@@ -672,21 +682,189 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     }
 
     private void Changeaddress() {
+
         Dialog chnage_add = new Dialog(mContext);
         chnage_add.requestWindowFeature(Window.FEATURE_NO_TITLE);
         chnage_add.setContentView(R.layout.stuart_change_address);
 
+         change_add_btn = chnage_add.findViewById(R.id.change_add_btn);
+         post_code_txtview = chnage_add.findViewById(R.id.post_code_txtview);
+         House_doorno_txt = chnage_add.findViewById(R.id.House_doorno_txt);
+         street_stuart = chnage_add.findViewById(R.id.street_stuart);
+         city_stuart = chnage_add.findViewById(R.id.city_stuart);
 
+         post_code_txtview.setText(""+post_code);
+         House_doorno_txt.setText(""+dno);
+         street_stuart.setText(""+add1);
+         city_stuart.setText(""+add2);
+
+
+
+
+        change_add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (TextUtils.isEmpty(post_code_txtview.getText())) {
+                    post_code_txtview.setBackgroundDrawable(ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.stuart_change_add_error));
+                    post_code_txtview.requestFocus();
+                } else if (TextUtils.isEmpty(House_doorno_txt.getText())) {
+                    House_doorno_txt.setBackgroundDrawable(ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.stuart_change_add_error));
+                    House_doorno_txt.requestFocus();
+                } else if (TextUtils.isEmpty(street_stuart.getText())) {
+                    street_stuart.setBackgroundDrawable(ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.stuart_change_add_error));
+                    street_stuart.requestFocus();
+                } else if (TextUtils.isEmpty(city_stuart.getText())) {
+                    city_stuart.setBackgroundDrawable(ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.stuart_change_add_error));
+                    city_stuart.requestFocus();
+                } else{
+                    chnage_add.dismiss();
+                }
+
+            }
+         });
+
+        post_code_txtview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+            }
+
+            @SuppressLint("LongLogTag")
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+
+                    Log.d("validatepostcode---"," " + s);
+
+                    nospace = s.toString().replace(" ", "");
+
+                    Log.e("nospace", "" + nospace.length());
+
+
+                    if (nospace.length() == 5) {
+
+
+                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
+
+                        if (nospace.matches(regex) == true) {
+
+                            Log.e("zipmatches", "" + nospace.matches(regex));
+
+                            validatezip(nospace);
+
+                        }
+                    }
+                    if (nospace.length() == 6) {
+
+
+                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
+
+                        if (nospace.matches(regex) == true) {
+                            Log.e("zipmatches", "" + nospace.matches(regex));
+                            validatezip(nospace);
+                        }
+                    }
+                    if (nospace.length() == 7) {
+
+                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
+                        if (nospace.matches(regex) == true) {
+                            Log.e("zipmatches", "" + nospace.matches(regex));
+                            validatezip(nospace);
+                        }
+                    }
+
+            }
+        });
 
         chnage_add.show();
-        chnage_add.setCancelable(false);
-        chnage_add.setCanceledOnTouchOutside(false);
+        chnage_add.setCancelable(true);
+        chnage_add.setCanceledOnTouchOutside(true);
         chnage_add.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         chnage_add.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         chnage_add.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         chnage_add.getWindow().setGravity(Gravity.BOTTOM);
 
     }
+
+    private void validatezip(String zipcodesp) {
+
+       String str_postcode_seperate = zipcodesp;
+       String str_postcode_seperate_str;
+
+        if (str_postcode_seperate.length() == 5) {
+            str_postcode_seperate_str = str_postcode_seperate.substring(0, 2) + " " + str_postcode_seperate.substring(2);
+        } else if (str_postcode_seperate.length() == 6) {
+            str_postcode_seperate_str = str_postcode_seperate.substring(0, 3) + " " + str_postcode_seperate.substring(3);
+        } else if (str_postcode_seperate.length() == 7) {
+            str_postcode_seperate_str = str_postcode_seperate.substring(0, 4) + " " + str_postcode_seperate.substring(4);
+        } else {
+            str_postcode_seperate_str = str_postcode_seperate;
+        }
+        getaddressforpostcode(str_postcode_seperate_str.toUpperCase());
+
+    }
+
+    private void getaddressforpostcode(final String post_code) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("postcode", post_code);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<getaddressforpostcode_modal> call = apiService.getaddressforpostcode(params);
+
+        call.enqueue(new Callback<getaddressforpostcode_modal>() {
+            @Override
+            public void onResponse(Call<getaddressforpostcode_modal> call, Response<getaddressforpostcode_modal> response) {
+
+                int statusCode = response.code();
+
+                if (statusCode == 200) {
+
+                    String error_msg =  response.body().geterror_message();
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+
+                        street_stuart.setText(response.body().getAddress().getStreet());
+
+                        city_stuart.setText(response.body().getAddress().getTown());
+
+                      //  post_code_txtview.setText(post_code);
+
+
+                    }else{
+                        Toast.makeText(Order_Status_Activity.this,error_msg,Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<getaddressforpostcode_modal> call, Throwable t) {
+
+                Log.e("Tro", "" + t);
+
+                Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+
+        });
+
+
+    }
+
 
     private void Orderdetailshare() {
 
@@ -820,17 +998,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String lname = response.body().getOrdertracking().getOrder().getUser().getLname();
 
-                        String dno = response.body().getOrdertracking().getOrder().getUser().getdno();
+                         dno = response.body().getOrdertracking().getOrder().getUser().getdno();
 
-                        String add1 = response.body().getOrdertracking().getOrder().getUser().getadd1();
+                         add1 = response.body().getOrdertracking().getOrder().getUser().getadd1();
 
-                        String add2 = response.body().getOrdertracking().getOrder().getUser().getadd2();
+                         add2 = response.body().getOrdertracking().getOrder().getUser().getadd2();
 
-                        String post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
+                         post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
 
                         String phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
 
                         user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
+
+
 
                         name_phoneno.setText(fname+ " "+lname + "," +phone_number);
 
