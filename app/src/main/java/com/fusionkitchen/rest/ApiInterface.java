@@ -60,6 +60,7 @@ import com.fusionkitchen.model.paymentgatway.getclientSecret_model;
 import com.fusionkitchen.model.paymentmethod.order_payment_model;
 import com.fusionkitchen.model.post_code_modal;
 import com.fusionkitchen.model.social_signup_model;
+import com.fusionkitchen.model.updatestuartaddress_modal;
 import com.fusionkitchen.model.version_code_modal;
 import com.fusionkitchen.model.wallet.get_wallet_amount;
 import com.fusionkitchen.model.wallet.wallet_getrefer_details;
@@ -270,6 +271,10 @@ public interface ApiInterface {
     @POST("/addresspostcode")
     @FormUrlEncoded
     Call<getaddressforpostcode_modal> getaddressforpostcode(@FieldMap Map<String, String> params);
+
+    @POST("/userdetailupdate")
+    @FormUrlEncoded
+    Call<updatestuartaddress_modal> updatestuartaddress(@FieldMap Map<String, String> params);
 
 
     @POST("/{fullUrl}")

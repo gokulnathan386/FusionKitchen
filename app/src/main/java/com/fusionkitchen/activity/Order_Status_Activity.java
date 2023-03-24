@@ -64,6 +64,7 @@ import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 import com.fusionkitchen.model.address.getaddressforpostcode_modal;
 import com.fusionkitchen.model.orderstatus.submitfeedback_model;
+import com.fusionkitchen.model.updatestuartaddress_modal;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -114,7 +115,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     int rest_rating,food_rating;
     LinearLayout orderlist_data,total_item;
     TextView orderlist_discount;
-    String nospace,dno,add1,add2,post_code;
+    String phone_number,dno,add1,add2,post_code,msg;
 
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
@@ -554,7 +555,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         handler.postDelayed(new Runnable() {
             public void run() {
                // getodertrackingdeatils(orderid, orderpath);
-               // getstuarttracking(orderid, orderpath);
+                getstuarttracking(orderid, orderpath);
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -597,7 +598,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 handler.postDelayed(new Runnable() {
                     public void run() {
                        // getodertrackingdeatils(orderid, orderpath);
-                       // getstuarttracking(orderid, orderpath);
+                        getstuarttracking(orderid, orderpath);
                         handler.postDelayed(this, delay);
                     }
                 }, delay);
@@ -718,73 +719,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     city_stuart.setBackgroundDrawable(ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.stuart_change_add_error));
                     city_stuart.requestFocus();
                 } else{
+                    Userdetails(orderpath,
+                            House_doorno_txt.getText().toString().trim(),street_stuart.getText().toString().trim(),
+                            city_stuart.getText().toString().trim(),phone_number);
+
                     chnage_add.dismiss();
                 }
 
             }
          });
 
-        post_code_txtview.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-
-
-            }
-
-            @SuppressLint("LongLogTag")
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-
-
-                    Log.d("validatepostcode---"," " + s);
-
-                    nospace = s.toString().replace(" ", "");
-
-                    Log.e("nospace", "" + nospace.length());
-
-
-                    if (nospace.length() == 5) {
-
-
-                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
-
-                        if (nospace.matches(regex) == true) {
-
-                            Log.e("zipmatches", "" + nospace.matches(regex));
-
-                            validatezip(nospace);
-
-                        }
-                    }
-                    if (nospace.length() == 6) {
-
-
-                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
-
-                        if (nospace.matches(regex) == true) {
-                            Log.e("zipmatches", "" + nospace.matches(regex));
-                            validatezip(nospace);
-                        }
-                    }
-                    if (nospace.length() == 7) {
-
-                        String regex = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\\s?[0-9][A-Za-z]{2})";
-                        if (nospace.matches(regex) == true) {
-                            Log.e("zipmatches", "" + nospace.matches(regex));
-                            validatezip(nospace);
-                        }
-                    }
-
-            }
-        });
 
         chnage_add.show();
         chnage_add.setCancelable(true);
@@ -796,53 +740,38 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     }
 
-    private void validatezip(String zipcodesp) {
-
-       String str_postcode_seperate = zipcodesp;
-       String str_postcode_seperate_str;
-
-        if (str_postcode_seperate.length() == 5) {
-            str_postcode_seperate_str = str_postcode_seperate.substring(0, 2) + " " + str_postcode_seperate.substring(2);
-        } else if (str_postcode_seperate.length() == 6) {
-            str_postcode_seperate_str = str_postcode_seperate.substring(0, 3) + " " + str_postcode_seperate.substring(3);
-        } else if (str_postcode_seperate.length() == 7) {
-            str_postcode_seperate_str = str_postcode_seperate.substring(0, 4) + " " + str_postcode_seperate.substring(4);
-        } else {
-            str_postcode_seperate_str = str_postcode_seperate;
-        }
-        getaddressforpostcode(str_postcode_seperate_str.toUpperCase());
-
-    }
-
-    private void getaddressforpostcode(final String post_code) {
+    private void Userdetails(String menu_path, String house_no, String street, String city,String user_phone) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("postcode", post_code);
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<getaddressforpostcode_modal> call = apiService.getaddressforpostcode(params);
+        params.put("path", menu_path);
+        params.put("orderdetails", orderid);
+        params.put("phone", user_phone);
+        params.put("add1", street);
+        params.put("add2", city);
+        params.put("dno", house_no);
 
-        call.enqueue(new Callback<getaddressforpostcode_modal>() {
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<updatestuartaddress_modal> call = apiService.updatestuartaddress(params);
+
+        call.enqueue(new Callback<updatestuartaddress_modal>() {
             @Override
-            public void onResponse(Call<getaddressforpostcode_modal> call, Response<getaddressforpostcode_modal> response) {
+            public void onResponse(Call<updatestuartaddress_modal> call, Response<updatestuartaddress_modal> response) {
 
                 int statusCode = response.code();
 
                 if (statusCode == 200) {
 
-                    String error_msg =  response.body().geterror_message();
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
 
-                        street_stuart.setText(response.body().getAddress().getStreet());
+                        msg = response.body().getData();
 
-                        city_stuart.setText(response.body().getAddress().getTown());
-
-                      //  post_code_txtview.setText(post_code);
-
+                        Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content),msg, Snackbar.LENGTH_LONG).show();
 
                     }else{
-                        Toast.makeText(Order_Status_Activity.this,error_msg,Toast.LENGTH_SHORT).show();
+                        Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content),msg, Snackbar.LENGTH_LONG).show();
+
                     }
 
                 } else {
@@ -853,7 +782,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
 
             @Override
-            public void onFailure(Call<getaddressforpostcode_modal> call, Throwable t) {
+            public void onFailure(Call<updatestuartaddress_modal> call, Throwable t) {
 
                 Log.e("Tro", "" + t);
 
@@ -861,10 +790,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
 
         });
-
-
     }
-
 
     private void Orderdetailshare() {
 
@@ -1006,7 +932,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                          post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
 
-                        String phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
+                         phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
 
                         user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
 
