@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    android:layout_gravity="bottom"
+    android:gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/metropolis_bold"
+                android:gravity="center"
+                android:text="Delivery Tips"
+                android:textColor="#17284D"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+
+            <LinearLayout
+                android:id="@+id/payment_type"
+                android:layout_marginTop="120dp"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/btn_credit_debit"
+                    android:orientation="horizontal"
+                    android:padding="25dp"
+                    android:weightSum="2"
+                    android:layout_gravity="center"
+                    android:background="@drawable/sturat_edittext_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:src="@drawable/credit_debit_card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </ImageView>
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:text="Credit/Debit Card"
+                        android:textSize="15dp"
+                        android:layout_gravity="center"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:weightSum="2"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:padding="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/sturat_edittext_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:src="@drawable/google_pay_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </ImageView>
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="142dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Google Pay"
+                        android:textColor="#000000"
+                        android:textSize="15dp"
+                        android:textStyle="bold"></TextView>
+
+
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+<!--            card_no_layout-->
+
+            <LinearLayout
+                android:id="@+id/card_no_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="70dp"
+                android:visibility="gone"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="#000000"
+                        android:textSize="15dp"
+                        android:text="Card Number"
+                  >
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingStart="10dp"
+                        android:maxLength="19"
+                        android:inputType="number"
+                        android:background="@drawable/sturat_edittext_bg"
+                        android:fontFamily="@font/metropolis_medium"
+                        android:padding="2dp"
+                        android:singleLine="true"
+                        android:textColor="#204356"
+                        android:textSize="@dimen/_12sdp">
+                    </EditText>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:weightSum="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="#000000"
+                        android:textSize="15dp"
+                        android:text="Expiration Date">
+                    </TextView>
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="6dp"
+                                android:maxLength="2"
+                                android:gravity="center"
+                                android:background="@drawable/sturat_edittext_bg"
+                                android:fontFamily="@font/metropolis_medium"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                android:textColor="#204356"
+                                android:textSize="@dimen/_12sdp">
+                            </EditText>
+
+                        </LinearLayout>
+
+
+                        <Space
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"/>
+
+                  <LinearLayout
+                       android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent">
+
+                       <EditText
+                           android:layout_width="match_parent"
+                           android:layout_height="50dp"
+                           android:layout_marginTop="6dp"
+                           android:maxLength="2"
+                           android:gravity="center"
+                           android:background="@drawable/sturat_edittext_bg"
+                           android:fontFamily="@font/metropolis_medium"
+                           android:inputType="number"
+                           android:singleLine="true"
+                           android:textColor="#204356"
+                           android:textSize="@dimen/_12sdp">
+                       </EditText>
+
+                   </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textColor="#000000"
+                            android:textSize="15dp"
+                            android:text="CVV"
+                      ></TextView>
+
+                        <LinearLayout
+                            android:weightSum="2"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                >
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center"
+                                    android:background="@drawable/sturat_edittext_bg"
+                                    android:fontFamily="@font/metropolis_medium"
+                                    android:padding="2dp"
+                                    android:maxLength="3"
+                                    android:inputType="numberPassword"
+                                    android:singleLine="true"
+                                    android:textColor="#204356"
+                                    android:textSize="@dimen/_12sdp"></EditText>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="bottom"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/change_add_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/open_time_bg"
+                        android:backgroundTint="#3BB186"
+                        android:fontFamily="@font/metropolis_bold"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="Pay £3"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15dp"
+                        android:textStyle="bold"></TextView>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:background="#f2f9f7"
+        app:cardCornerRadius="45dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:src="@drawable/ic_pound_map"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/card_pop_up_btn"
+        android:padding="7dp"
+        android:backgroundTint="#F3F9F7"
+        android:background="@drawable/back_payment_bg"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:text="Back to Payment"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/back_btn_pop"
+        android:fontFamily="@font/metropolis_bold"
+        android:layout_marginTop="25dp"
+        android:textColor="#17284D"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+
+</FrameLayout>

@@ -421,9 +421,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
+            android:visibility="gone"
             app:cardBackgroundColor="#ffffff"
             app:cardMaxElevation="2dp"
-            android:visibility="gone"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             >
@@ -662,8 +662,9 @@
             </LinearLayout>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/deliver_tip"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="#3BB186"
@@ -756,6 +757,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/confirm_txt_desc"
                             android:fontFamily="@font/poppins_regular"
                             android:textSize="@dimen/_12sdp"
                             android:textColor="#808695"
