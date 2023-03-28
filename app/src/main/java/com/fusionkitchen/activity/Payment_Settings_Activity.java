@@ -1525,6 +1525,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 studentsObj.put("date_string",sharedpreferences.getString("latertimestring", null));
 
                             }
+                            
                             studentsObj.put("preorder_time", "0");//ok
                             studentsObj.put("items", jsonArray1);//ok
                             studentsObj.put("discount", "0");//ok
