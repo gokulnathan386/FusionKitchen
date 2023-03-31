@@ -36,6 +36,7 @@
 
 
             <LinearLayout
+                android:visibility="visible"
                 android:id="@+id/payment_type"
                 android:layout_marginTop="120dp"
                 android:orientation="vertical"
@@ -86,6 +87,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/stuart_gpay"
                     android:weightSum="2"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
@@ -172,6 +174,7 @@
                         android:background="@drawable/sturat_edittext_bg"
                         android:fontFamily="@font/metropolis_medium"
                         android:padding="2dp"
+                        android:text="4242 4242 4242 4242"
                         android:singleLine="true"
                         android:textColor="#204356"
                         android:textSize="@dimen/_12sdp">
@@ -216,10 +219,12 @@
                             android:layout_height="match_parent">
 
                             <EditText
+                                android:id="@+id/exp_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:layout_marginTop="6dp"
                                 android:maxLength="2"
+                                android:text="06"
                                 android:gravity="center"
                                 android:background="@drawable/sturat_edittext_bg"
                                 android:fontFamily="@font/metropolis_medium"
@@ -242,10 +247,12 @@
                        android:layout_height="match_parent">
 
                        <EditText
+                           android:id="@+id/exp_month"
                            android:layout_width="match_parent"
                            android:layout_height="50dp"
                            android:layout_marginTop="6dp"
                            android:maxLength="2"
+                           android:text="26"
                            android:gravity="center"
                            android:background="@drawable/sturat_edittext_bg"
                            android:fontFamily="@font/metropolis_medium"
@@ -293,6 +300,7 @@
                                 >
 
                                 <EditText
+                                    android:id="@+id/card_cvv_no"
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
                                     android:layout_marginTop="6dp"
@@ -301,6 +309,7 @@
                                     android:fontFamily="@font/metropolis_medium"
                                     android:padding="2dp"
                                     android:maxLength="3"
+                                    android:text="123"
                                     android:inputType="numberPassword"
                                     android:singleLine="true"
                                     android:textColor="#204356"
@@ -324,7 +333,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/change_add_btn"
+                        android:id="@+id/pay_stuart_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"

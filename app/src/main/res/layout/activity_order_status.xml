@@ -74,7 +74,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -191,7 +190,6 @@
             android:textSize="@dimen/_12sdp"
             android:textColor="#17284D"
             android:text="Tracking details"
-            android:visibility="gone"
             android:fontFamily="@font/metropolis_semibold"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -421,9 +419,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
-            android:visibility="gone"
             app:cardBackgroundColor="#ffffff"
             app:cardMaxElevation="2dp"
+            android:visibility="gone"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             >
@@ -433,7 +431,6 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -480,6 +477,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/tip_u_delivery"
                                 android:text="£3"
                                 android:textSize="@dimen/_12sdp"
                                 android:textColor="#4D4D4D"

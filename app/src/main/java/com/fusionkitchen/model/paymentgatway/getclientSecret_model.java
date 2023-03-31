@@ -8,10 +8,11 @@ public class getclientSecret_model {
     @SerializedName("status")
     private String status;
 
-
-
     @SerializedName("3d_secure")
     private getclientSecret_model.secure secure;
+
+    @SerializedName("stripe_amount")
+    private String stripe_amount;
 
 
 
@@ -23,6 +24,13 @@ public class getclientSecret_model {
         this.status = status;
     }
 
+    public String getstripe_amount() {
+        return stripe_amount;
+    }
+
+    public void setstripe_amount(String stripe_amount) {
+        this.stripe_amount = stripe_amount;
+    }
 
     public getclientSecret_model.secure getSecure() {
         return secure;

@@ -175,7 +175,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
     String last_position_id;
     String del_coll_text,del_col_cooking_text,de_cl_cr;
     private static List<about_us_model.aboutdetails.openinghours> jobdetails6 = new ArrayList<>();
-    int K = 2;
+    int K = 2,menu_list_pop;
     LottieAnimationView del_col_anim;
     String takeway_closed;
 
@@ -1437,7 +1437,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         menu_page_pop_up.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                menulistpopup.show();
+
+                if(menu_list_pop > 0){
+                    menulistpopup.show();
+                }
+
             }
         });
 
@@ -3755,6 +3759,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
                         menu_page_listmodel = (response.body().getMenu().getCategoryall());
+                        menu_list_pop = menu_page_listmodel.size();
                         menuListViewAdapter = new MenuListViewAdapter(menu_page_listmodel,Item_Menu_Activity.this, menulistpopup,recyclerviewitem);
                         LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL, false);
                         menu_item_list_view.setLayoutManager(manager4);

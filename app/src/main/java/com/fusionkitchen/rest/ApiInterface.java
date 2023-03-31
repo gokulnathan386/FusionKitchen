@@ -27,6 +27,7 @@ import com.fusionkitchen.model.checkout.chechoutvalidate_model;
 
 import com.fusionkitchen.model.favorite.insertfavorite_mode;
 import com.fusionkitchen.model.gpay.getgpayclientscSecret_model;
+import com.fusionkitchen.model.gpay.getgpaystuartpayment_model;
 import com.fusionkitchen.model.home_model.location_type_modal;
 
 import com.fusionkitchen.model.home_model.order_type_modal;
@@ -383,6 +384,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<getgpayclientscSecret_model> getgpaylientsecret(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
 
+    @POST("/{fullUrl}")
+    @FormUrlEncoded
+    Call<getgpaystuartpayment_model> getstuartpayment(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
 
 
 

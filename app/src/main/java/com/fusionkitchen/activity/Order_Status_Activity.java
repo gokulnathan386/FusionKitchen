@@ -66,8 +66,15 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
+import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.model.address.getaddressforpostcode_modal;
+import com.fusionkitchen.model.cart.Cartitem;
+import com.fusionkitchen.model.gpay.getgpayclientscSecret_model;
+import com.fusionkitchen.model.gpay.getgpaystuartpayment_model;
 import com.fusionkitchen.model.orderstatus.submitfeedback_model;
+import com.fusionkitchen.model.paymentgatway.appkey;
+import com.fusionkitchen.model.paymentgatway.completpay_model;
+import com.fusionkitchen.model.paymentgatway.getclientSecret_model;
 import com.fusionkitchen.model.updatestuartaddress_modal;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -85,12 +92,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import com.fusionkitchen.R;
@@ -101,8 +111,22 @@ import com.fusionkitchen.model.orderstatus.ordertracking_model;
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.gson.Gson;
+import com.stripe.android.ApiResultCallback;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.PaymentIntentResult;
+import com.stripe.android.Stripe;
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment;
+import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher;
+import com.stripe.android.model.ConfirmPaymentIntentParams;
+import com.stripe.android.model.PaymentIntent;
+import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.PaymentMethodCreateParams;
+import com.stripe.android.view.CardInputWidget;
 import com.stripe.jetbrains.annotations.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Call;
@@ -118,15 +142,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt,card_number;
-    String radio_selectedValue,stuart_delivery_;
+    String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
+    int gpay_amount;
     LinearLayout orderlist_data,total_item;
-    TextView orderlist_discount,confirm_txt_desc;
-    String phone_number,dno,add1,add2,post_code,msg;
+    TextView orderlist_discount,confirm_txt_desc,tip_u_delivery;
+    String phone_number,dno,add1,add2,post_code,msg,E_mail;
     CardView deliver_tip;
+    RadioButton selectedRadioButton;
+    private Stripe stripe;
+    String bulkeyfullUrl,apikey,token,metdpasfullUrl,stripe_reponse_amount,intepasfullUrl,gpay_apikey;
+    String gpay_client_secret;
 
     private static final int REQUEST_READ_CONTACTS_PERMISSION = 0;
     private static final int REQUEST_CONTACT = 1;
+    GooglePayPaymentMethodLauncher googlePayLauncher;
 
 
 
@@ -139,12 +169,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
    // private ZoomControls mZoomControls;
     MarkerOptions origin, destination,midpoint;
     Dialog ordershare_popup;
+    String  tip_pay_first_name ,tip_pay_last_name,pay_amt1;
+
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
     boolean isShown = false, Connection;
     Internet_connection_checking int_chk;
     private static final int REQUEST_CODE = 101;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 102;
+    private static final int PICK_CONTACT = 104;
 
     String _ccNumber = "";
 
@@ -205,6 +239,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt,header_txt_status;
     TextView change_add_btn;
     EditText post_code_txtview,House_doorno_txt,street_stuart;
+
 
 
 
@@ -330,6 +365,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         orderlist_discount = findViewById(R.id.orderlist_discount);
         deliver_tip = findViewById(R.id.deliver_tip);
         confirm_txt_desc = findViewById(R.id.confirm_txt_desc);
+        tip_u_delivery = findViewById(R.id.tip_u_delivery);
 
 
 
@@ -397,6 +433,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 tip_button_view.setVisibility(View.GONE);
                 custom_edittxt.setVisibility(View.VISIBLE);
                 tip_btn.setText("Pay Rider Tip");
+                radio_selectedValue = null;
             }
         });
 
@@ -406,12 +443,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 if (cs.length() != 0) {
                     tip_btn.setText("Pay Rider Tip of £"+cs);
+                    tip_u_delivery.setText("£" + cs);
 
                     Drawable drawable = getResources().getDrawable(R.drawable.pound_icon);
                     custom_edittxt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null);
 
                 }else{
                     tip_btn.setText("Pay Rider Tip");
+                    tip_u_delivery.setText("£0.00");
                     custom_edittxt.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
 
                 }
@@ -552,6 +591,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         clientname = intent.getStringExtra("clientname");
         clientid = intent.getStringExtra("clientid");
         clientphonenumber = intent.getStringExtra("clientphonenumber");
+        gpay_apikey = intent.getStringExtra("gpay_apikey");
 
         Log.e("itemvalue1", "" + orderid);
         Log.e("itemvalue2", "" + orderpath);
@@ -657,11 +697,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                RadioButton selectedRadioButton = findViewById(checkedId);
+                selectedRadioButton = findViewById(checkedId);
                 radio_selectedValue = selectedRadioButton.getText().toString();
                 tip_btn.setText("Pay Rider Tip of " +radio_selectedValue);
+                tip_u_delivery.setText(radio_selectedValue);
             }
         });
+
+
+
 
         restaurants_mobile_no.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.M)
@@ -702,42 +746,204 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         deliver_tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Deliverypay();
+
+                if ((custom_edittxt.getText().toString().trim() != null && !custom_edittxt.getText().toString().isEmpty())) {
+
+                    Log.d("scbsbcbscbschjbc","" + tip_btn.getText().toString());
+
+                    String currentString = tip_btn.getText().toString();
+                    String[] separated = currentString.split("£");
+                    Deliverypay(separated[1]);
+
+                }else if(radio_selectedValue != null && !radio_selectedValue.isEmpty()){
+
+                    String currentString = tip_btn.getText().toString();
+                    String[] separated = currentString.split("£");
+                    Deliverypay(separated[1]);
+
+                }else{
+
+                  Toast.makeText(Order_Status_Activity.this,"Please enter amount",Toast.LENGTH_SHORT).show();
+
+                }
+
+
             }
         });
 
+           getpublisekey(orderpath);
+
+          /*  PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
+
+            stripe = new Stripe(
+                    Order_Status_Activity.this,
+                    Objects.requireNonNull(gpay_apikey)
+            );
+
+            Log.e("gpayapikey", "" + gpay_apikey);
+
+            googlePayLauncher = new GooglePayPaymentMethodLauncher(
+
+                    Order_Status_Activity.this,
+                    new GooglePayPaymentMethodLauncher.Config(
+                            GooglePayEnvironment.Production,
+                            "US",
+                            "Fusion Kitchen"
+                    ),
+                    Order_Status_Activity.this::onGooglePayReady,
+                    Order_Status_Activity.this::onGooglePayResult
+            );
+*/
+    }
+
+
+    private void onGooglePayReady(boolean isReady) {
+           Log.e("pay_type", "" + isReady);
+
+            if (isReady == false) {
+                   Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Google Pay not available in your device.Try another payment method", Snackbar.LENGTH_LONG).show();
+            } else {
+                 // Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Success", Snackbar.LENGTH_LONG).show();
+            }
+
+    }
+
+    private void onGooglePayResult(@NotNull GooglePayPaymentMethodLauncher.Result result) {
+        Log.e("paymentresult", "" + result);
+        if (result instanceof GooglePayPaymentMethodLauncher.Result.Completed) {
+
+            final String paymentMethodId =
+                    ((GooglePayPaymentMethodLauncher.Result.Completed) result).getPaymentMethod().id;
+            Log.e("paymentMethodId", "" + paymentMethodId);
+
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("drivertips", String.valueOf(gpay_amount));
+            params.put("app_id", "0");
+            params.put("fname", tip_pay_first_name);
+            params.put("lname", tip_pay_last_name);
+            params.put("email", E_mail);
+            params.put("cid", user_id);
+            params.put("payment_method_id", paymentMethodId);
+            params.put("url", "demo2.fusionepos.co.uk");
+
+
+
+            metdpasfullUrl = orderpath + "/gpayProcessDriverTips";
+            ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            retrofit2.Call<getgpaystuartpayment_model> call = apiService.getstuartpayment(metdpasfullUrl, params);
+            Log.e("gpaypass", "" + params + "sdjvdjsv" + metdpasfullUrl );
+            call.enqueue(new retrofit2.Callback<getgpaystuartpayment_model>() {
+                @Override
+                public void onResponse(Call<getgpaystuartpayment_model> call, Response<getgpaystuartpayment_model> response) {
+                    int statusCode = response.code();
+                    Log.e("statusCode", "" + statusCode);
+                    if (statusCode == 200) {
+                       // hideloading();
+
+                        if (response.body().getStatus().equalsIgnoreCase("true")) {
+                              gpay_client_secret = response.body().getData().getClient_secret();
+                              Log.e("gpay_client_secret", "" + gpay_client_secret);
+
+                            final ConfirmPaymentIntentParams params =
+                                    ConfirmPaymentIntentParams.createWithPaymentMethodId(
+                                            paymentMethodId,//'{{PAYMENT_METHOD_ID}}'
+                                            gpay_client_secret,
+                                            null);
+                            stripe.confirmPayment(Order_Status_Activity.this, params);
+                            Log.e("sc_params", " " + params);
+                        }
+                    } else {
+                        Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Client secret id not found", Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<getgpaystuartpayment_model> call, Throwable t) {
+                    Log.e("errorcode1", "" + t);
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            });
+
+        }
+        else if (result instanceof GooglePayPaymentMethodLauncher.Result.Canceled) {
+            Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_LONG).show();
+        } else if (result instanceof GooglePayPaymentMethodLauncher.Result.Failed) {
+            Log.e("paymentfails", "" + ((GooglePayPaymentMethodLauncher.Result.Failed) result).getError());
+            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
+
+        }
 
 
     }
+
+
+    private void getpublisekey(String menuurlpath) {
+        bulkeyfullUrl = menuurlpath + "/stripeAppId";
+        Log.d("stripeappid",bulkeyfullUrl);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<appkey> call = apiService.stripepubliskey(bulkeyfullUrl);
+        call.enqueue(new Callback<appkey>() {
+            @Override
+            public void onResponse(Call<appkey> call, Response<appkey> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+                        Log.e("api_id", "" + response.body().getData().getApi_id());
+                        Log.e("securitykey", "" + response.body().getData().getSecuritykey());
+                        token = response.body().getData().getSecuritykey();
+                        apikey = response.body().getData().getApi_id();
+
+                    }
+                } else {
+                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<appkey> call, Throwable t) {
+                Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     @TargetApi(Build.VERSION_CODES.M)
     private void PickContactList() {
 
-
-        if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-         /*   Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
-            startActivity(callIntent);*/
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, 2);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        }else{
+            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            startActivityForResult(intent, PICK_CONTACT);
         }
 
-        Toast.makeText(Order_Status_Activity.this,"test",Toast.LENGTH_SHORT).show();
 
     }
 
 
-    private void Deliverypay() {
+    private void Deliverypay(String pay_amt) {
 
         Dialog deliverytip = new Dialog(mContext);
         deliverytip.requestWindowFeature(Window.FEATURE_NO_TITLE);
         deliverytip.setContentView(R.layout.delivery_tips_pop_up);
 
         card_number = deliverytip.findViewById(R.id.card_number);
+        EditText  exp_date = deliverytip.findViewById(R.id.exp_date);
+        EditText exp_month = deliverytip.findViewById(R.id.exp_month);
         LinearLayout card_no_layout = deliverytip.findViewById(R.id.card_no_layout);
         LinearLayout btn_credit_debit = deliverytip.findViewById(R.id.btn_credit_debit);
         LinearLayout payment_type = deliverytip.findViewById(R.id.payment_type);
         TextView card_pop_up_btn = deliverytip.findViewById(R.id.card_pop_up_btn);
+        TextView pay_stuart_card = deliverytip.findViewById(R.id.pay_stuart_card);
+        EditText card_cvv_no = deliverytip.findViewById(R.id.card_cvv_no);
+        LinearLayout stuart_gpay = deliverytip.findViewById(R.id.stuart_gpay);
+
+
+       //  pay_amt
+        pay_stuart_card.setText("Pay £" + pay_amt);
+
+        pay_amt1 = pay_amt;
 
 
         btn_credit_debit.setOnClickListener(new View.OnClickListener() {
@@ -759,15 +965,242 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
 
+        pay_stuart_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String tip_cardno = card_number.getText().toString().trim();
+                String tip_expdate = exp_date.getText().toString().trim();
+                String tip_month = exp_month.getText().toString().trim();
+                String tip_cardccv = card_cvv_no.getText().toString().trim();
+
+
+                CardInputWidget cardInputWidget = new CardInputWidget(Order_Status_Activity.this);
+                cardInputWidget.setCardNumber(tip_cardno);
+                cardInputWidget.setCvcCode(tip_cardccv);
+                cardInputWidget.setExpiryDate(Integer.parseInt(tip_expdate), Integer.parseInt(tip_month));
+                cardInputWidget.setPostalCodeRequired(false);
+                PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
+
+                PaymentConfiguration.init(getApplicationContext(), apikey);//new version add this line version 17.0.0
+                   stripe = new Stripe(
+                        getApplicationContext(),
+                        Objects.requireNonNull(apikey)
+                );
+                stripe.createPaymentMethod(params, new ApiResultCallback<PaymentMethod>() {
+                    @Override
+                    public void onSuccess(PaymentMethod result) {
+                        Cardpay(result.id,pay_amt);
+                        Log.e("createmethodid", "" + result.id);
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+
+
+
+                 }
+            });
+
+
+        stuart_gpay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gpay_amount = (int) Math.round(Float.parseFloat(pay_amt1));
+                googlePayLauncher.present("GBP", gpay_amount);
+            }
+        });
+
+
         deliverytip.show();
         deliverytip.setCancelable(false);
         deliverytip.setCanceledOnTouchOutside(false);
-        deliverytip.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        deliverytip.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         deliverytip.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deliverytip.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         deliverytip.getWindow().setGravity(Gravity.BOTTOM);
 
+ }
 
+    private void Cardpay(@Nullable String paymentMethodId,String tippayamt) {
+      //  loadingshow();
+        // ...continued in the next step
+
+        Log.e("paymentMethodId", "" + paymentMethodId);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("payment_method_id", paymentMethodId);
+        params.put("total", tippayamt);
+        params.put("fname", tip_pay_first_name);
+        params.put("lname", tip_pay_last_name);
+        params.put("email", E_mail);
+        params.put("app_id", "0");
+        metdpasfullUrl = orderpath + "/stripepaymentProcess";
+
+
+//, "Bearer " + token
+        //ApiInterface apiService = ApiClient.getInstance().getClient2().create(ApiInterface.class);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        retrofit2.Call<getclientSecret_model> call = apiService.getclientSecret(metdpasfullUrl, params, "Bearer" + token);
+        Log.e("paramsintentpass", "" + params + "" + metdpasfullUrl);
+        call.enqueue(new retrofit2.Callback<getclientSecret_model>() {
+            @Override
+            public void onResponse(Call<getclientSecret_model> call, Response<getclientSecret_model> response) {
+                int statusCode = response.code();
+
+                Log.e("statusCode", "" + statusCode);
+                Log.d("Paymentissuetest", new Gson().toJson(response.body()));
+                if (statusCode == 200) {
+                   // hideloading();
+                    Log.e("ststau", "" + response.body().getStatus());
+                    Log.e("getD_secure", "" + response.body().getSecure().getD_secure());
+                    Log.e("gokulnathantest", "" + response.body().getstripe_amount());
+
+                    stripe_reponse_amount = response.body().getstripe_amount();
+
+                    String s = response.body().getSecure().getD_secure();
+                    StringTokenizer st = new StringTokenizer(s, ":");
+                    String community = st.nextToken();
+                    String helpDesk = st.nextToken();
+                    String secret = st.nextToken().replace("\"", "").replace("}", "").replace(" ", "");
+
+                    Log.e("community", "" + secret);
+
+                    Order_Status_Activity.this.runOnUiThread(() -> stripe.handleNextActionForPayment(Order_Status_Activity.this, secret));
+
+
+                //    new Order_Status_Activity.PaymentResultCallback(Order_Status_Activity.this);
+
+                    Log.e("responseData", "" + response);
+                } else {
+
+                    Log.d("cardreader---->","error");
+                   /* hideloading();
+                    // loader.dismiss();
+                    // Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                    amount_pay_button.setClickable(true);
+                    amount_pay_button.setEnabled(true);
+                    amount_pay_button.setFocusable(true);
+                    amount_pay_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.welcome_button_color));
+                    showPopup("Transaction failed if any take your money will be refunded within 3 to 4 hrs.\\nT&amp;C apply");
+               */ }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<getclientSecret_model> call, Throwable t) {
+                //hideloading();
+                Log.e("errorcode1", "" + t);
+                // loader.dismiss();
+            /*    amount_pay_button.setClickable(true);
+                amount_pay_button.setEnabled(true);
+                amount_pay_button.setFocusable(true);
+                amount_pay_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.welcome_button_color));
+                showPopup("Transaction failed if any take your money will be refunded within 3 to 4 hrs.\\nT&amp;C apply");
+               */ // Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    private final class PaymentResultCallback implements ApiResultCallback<PaymentIntentResult> {
+        private final WeakReference<Order_Status_Activity> activityRef;
+
+        PaymentResultCallback(Order_Status_Activity activity) {
+            activityRef = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onSuccess(@NonNull PaymentIntentResult result) {
+            final Order_Status_Activity activity = activityRef.get();
+            if (activity == null) {
+                return;
+            }
+            PaymentIntent paymentIntent = result.getIntent();
+            PaymentIntent.Status status = paymentIntent.getStatus();
+            Log.e("paymentstatus", "" + status);
+            Log.e("paymentIntent", "" + paymentIntent);
+            if (status == PaymentIntent.Status.Succeeded) {
+                // Payment completed successfully
+                Log.e("paymentintentidshow5", "" + paymentIntent.getId());
+                activity.paymentcompleted(paymentIntent.getId(), "true");
+
+            } else if (status == PaymentIntent.Status.RequiresPaymentMethod) {
+                Log.e("paymentIntenterror1", "" + paymentIntent.getLastPaymentError().getMessage());
+
+                Log.e("paymentIntenterror2", "" + paymentIntent.getLastErrorMessage());
+
+                Log.e("paymentIntenterror3", "" + paymentIntent);
+
+
+                //showPopup("Your card's security code is incorrect.");
+            } else if (status == PaymentIntent.Status.RequiresConfirmation) {
+
+                Log.e("paymentintentidshow2", "" + paymentIntent.getId());
+                activity.paymentcompleted(paymentIntent.getId(), "false");
+
+            } else if (status == PaymentIntent.Status.RequiresAction) {
+
+              //  showPopup("We are unable to authenticate your payment method. Please choose a different payment method and try again.");
+            }
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+            final Order_Status_Activity activity = activityRef.get();
+            if (activity == null) {
+                return;
+            }
+            Log.e("errormsg", "" + e.toString());
+
+            activity.runOnUiThread(() -> {
+                Log.e("errormsg", "" + e.toString());
+               // showPopup(e.toString());
+            });
+        }
+    }
+
+    private void paymentcompleted(String intentid, String typestatus) {
+        //loadingshow();
+        Map<String, String> paramspay = new HashMap<String, String>();
+        if (typestatus.equalsIgnoreCase("false")) {
+            paramspay.put("payment_intent_id", intentid);
+        } else {
+            paramspay.put("paymentIntent", intentid);
+        }
+
+        paramspay.put("drivertips", pay_amt1);
+        paramspay.put("fname", tip_pay_first_name);
+        paramspay.put("lname", tip_pay_last_name);
+        paramspay.put("email", E_mail);
+        paramspay.put("app_id", "0");
+        intepasfullUrl = orderpath + "/stripeProcessDriverTips";
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        retrofit2.Call<completpay_model> call = apiService.completpay(intepasfullUrl, paramspay, "Bearer" + token);
+
+        Log.e("paramspay", "" + paramspay);
+        call.enqueue(new retrofit2.Callback<completpay_model>() {
+            @Override
+            public void onResponse(retrofit2.Call<completpay_model> call, retrofit2.Response<completpay_model> response) {
+                int statusCode = response.code();
+                Log.e("completedstatusCode", "" + statusCode);
+                if (statusCode == 200) {
+                 //   hideloading();
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<completpay_model> call, Throwable t) {
+                Log.e("errorcode1", "" + t);
+                // loader.dismiss();
+                //  Snackbar.make(Payment_Settings_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     private TextWatcher creditCardNumberWatcher = new TextWatcher() {
@@ -869,6 +1302,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         params.put("add1", street);
         params.put("add2", city);
         params.put("dno", house_no);
+
+        Log.d("sfcscscgscgdcgsdchsfcsfu"," " + params);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<updatestuartaddress_modal> call = apiService.updatestuartaddress(params);
@@ -1014,10 +1449,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("orderdetails", "2328");
-        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
-       /* params.put("orderdetails", orderid);
-        params.put("path", orderpath);*/
+       /* params.put("orderdetails", "2328");
+        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");*/
+        params.put("orderdetails", orderid);
+        params.put("path", orderpath);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
@@ -1054,12 +1489,18 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                          phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
 
-                        user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
+                         E_mail = response.body().getOrdertracking().getOrder().getUser().getemail();
+
+
+
+                         user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
 
 
 
                         name_phoneno.setText(fname+ " "+lname + "," +phone_number);
 
+                        tip_pay_first_name = fname;
+                        tip_pay_last_name = lname;
 
                         String item_total_count = response.body().getOrdertracking().getOrder().getOrder().getorderCount();
 
@@ -1133,8 +1574,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
 
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
-
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -1142,10 +1581,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
-
-
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
@@ -1156,7 +1592,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                confirm_txt_desc.setText("Thanks for your order, You will see the updates along the way");
 
 
-
                                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                            && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
@@ -1165,7 +1600,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1174,7 +1609,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
 
@@ -1195,7 +1629,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1204,7 +1638,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
@@ -1224,7 +1657,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1233,7 +1666,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
 
@@ -1254,7 +1686,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1263,7 +1694,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("5")){
@@ -1282,7 +1712,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1291,7 +1720,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("6")){
@@ -1308,7 +1736,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1317,7 +1745,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("7")){
@@ -1335,7 +1762,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1344,7 +1771,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("8")){
@@ -1359,7 +1785,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1368,7 +1793,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("9")){
@@ -1386,7 +1810,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
+
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1395,7 +1819,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("10")){
@@ -1405,7 +1828,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            stuart_textview.setText(delivery_status_name);
                            header_txt_status.setText(delivery_status_name);
 
-                         confirm_txt_desc.setText("We regret to inform you that your order has been rejected");
+                             confirm_txt_desc.setText("We regret to inform you that your order has been rejected");
 
                                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
@@ -1415,7 +1838,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
-                                   Log.d("gokulnathan--->","ALL_Lat_Log");
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1424,7 +1846,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
-                                   Log.d("gokulnathan--->","pick_drop");
                                }
 
                             }else{
@@ -2171,11 +2592,66 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Please allow to call the takeaway", Snackbar.LENGTH_LONG).show();
                 }
+
                 break;
+
+                case PERMISSIONS_REQUEST_READ_CONTACTS:
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        startActivityForResult(intent, PICK_CONTACT);
+                    } else {
+                        // Permission denied, disable the functionality that depends on this permission
+                        Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Please allow to Contact List", Snackbar.LENGTH_LONG).show();
+                    }
+
+               break;
+
         }
 
 
 
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        stripe.onPaymentResult(reqCode, data, new Order_Status_Activity.PaymentResultCallback(Order_Status_Activity.this));
+
+
+        switch (reqCode) {
+            case (PICK_CONTACT) :
+                if (resultCode == Activity.RESULT_OK) {
+
+                    Uri contactData = data.getData();
+                    Cursor c =  managedQuery(contactData, null, null, null, null);
+                    if (c.moveToFirst()) {
+
+
+                        String id =c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                        @SuppressLint("Range") String hasPhone =c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                        if (hasPhone.equalsIgnoreCase("1")) {
+                            Cursor phones = getContentResolver().query(
+                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,
+                                    null, null);
+                            phones.moveToFirst();
+                           @SuppressLint("Range") String  cNumber = phones.getString(phones.getColumnIndex("data1"));
+                            System.out.println("number is:"+cNumber);
+
+                            Userdetails(orderpath,dno,add1,add2,cNumber);
+
+
+                        }
+                        //@SuppressLint("Range") String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+
+                    }
+                }
+                break;
+        }
     }
 
 

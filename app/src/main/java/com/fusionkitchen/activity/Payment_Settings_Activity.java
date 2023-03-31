@@ -123,6 +123,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
     LinearLayout cash_item, card_item, wallet_item, savecard_item, gpay_item, amount_below_btoon;
     String pay_type, pay_amount, order_types, serviceamt, cooking_insttruction, addressids, hiddencharges, gpay_apikey;
     Dialog dialog;
+    String stripe_reponse_amount;
     TextView showamt, wallet_showamt, walletaviableamt, gpay_showamt;
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
     private ListView listView;
@@ -213,7 +214,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         hiddencharges = intent.getStringExtra("hiddencharges");
         gpay_apikey = intent.getStringExtra("gpay_apikey");
 
-        Log.d("public_key",gpay_apikey);
+        Log.d("public_key",""+gpay_apikey);
 
 
 
@@ -583,6 +584,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 studentsObj.put("refno", "");//ok
                 studentsObj.put("inst", cooking_insttruction);//ok
                 studentsObj.put("bank", serviceamt);//ok
+                studentsObj.put("client_stripe_amount", stripe_reponse_amount);//ok
                 studentsObj.put("bag", bagamt);//ok
                 studentsObj.put("activetab", sharedpreferences.getString("orderactivetag", null));//ok
                 if (sharedpreferences.getString("orderactivetag", null).equalsIgnoreCase("1")) {
@@ -1003,6 +1005,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 intent.putExtra("clientname", response.body().getData().getClientname());
                                 intent.putExtra("clientid", response.body().getData().getClientid());
                                 intent.putExtra("clientphonenumber", response.body().getData().getClientphonenumber());
+                                intent.putExtra("gpay_apikey", gpay_apikey);
                                 startActivity(intent);
                             }
                         }.start();
@@ -1263,11 +1266,17 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             @Override
             public void onResponse(Call<getclientSecret_model> call, Response<getclientSecret_model> response) {
                 int statusCode = response.code();
+
                 Log.e("statusCode", "" + statusCode);
+                Log.d("Paymentissuetest", new Gson().toJson(response.body()));
                 if (statusCode == 200) {
                     hideloading();
                     Log.e("ststau", "" + response.body().getStatus());
                     Log.e("getD_secure", "" + response.body().getSecure().getD_secure());
+                    Log.e("gokulnathantest", "" + response.body().getstripe_amount());
+
+                    stripe_reponse_amount = response.body().getstripe_amount();
+
                     String s = response.body().getSecure().getD_secure();
                     StringTokenizer st = new StringTokenizer(s, ":");
                     String community = st.nextToken();
@@ -1507,6 +1516,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                             studentsObj.put("refno", refernumber);//ok
                             studentsObj.put("inst", cooking_insttruction);//ok
                             studentsObj.put("bank", serviceamt);//ok
+                            studentsObj.put("client_stripe_amount", stripe_reponse_amount);//ok
                             studentsObj.put("bag", bagamt);//ok
                             studentsObj.put("activetab", sharedpreferences.getString("orderactivetag", null));//ok
                             if (sharedpreferences.getString("orderactivetag", null).equalsIgnoreCase("1")) {
@@ -1642,7 +1652,9 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 intent.putExtra("clientname", response.body().getData().getClientname());
                                 intent.putExtra("clientid", response.body().getData().getClientid());
                                 intent.putExtra("clientphonenumber", response.body().getData().getClientphonenumber());
+                                intent.putExtra("gpay_apikey", gpay_apikey);
                                 startActivity(intent);
+
                                 // startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
                             }
                         }.start();
@@ -1813,6 +1825,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                             studentsObj.put("refno", refernumber);//ok
                             studentsObj.put("inst", cooking_insttruction);//ok
                             studentsObj.put("bank", serviceamt);//ok
+                            studentsObj.put("client_stripe_amount", stripe_reponse_amount);//ok
                             studentsObj.put("bag", bagamt);//ok
                             studentsObj.put("activetab", sharedpreferences.getString("orderactivetag", null));//ok
                             if (sharedpreferences.getString("orderactivetag", null).equalsIgnoreCase("1")) {
@@ -1940,6 +1953,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                                 intent.putExtra("clientname", response.body().getData().getClientname());
                                 intent.putExtra("clientid", response.body().getData().getClientid());
                                 intent.putExtra("clientphonenumber", response.body().getData().getClientphonenumber());
+                                intent.putExtra("gpay_apikey", gpay_apikey);
                                 startActivity(intent);
                                 // startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
                             }
