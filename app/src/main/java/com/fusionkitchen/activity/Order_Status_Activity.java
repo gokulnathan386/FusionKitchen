@@ -602,6 +602,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         clientphonenumber = intent.getStringExtra("clientphonenumber");
         gpay_apikey = intent.getStringExtra("gpay_apikey");
 
+
+        getpublisekey(orderpath);
+
         Log.e("itemvalue1", "" + orderid);
         Log.e("itemvalue2", "" + orderpath);
         Log.e("itemvalue3", "" + orderdate);
@@ -780,9 +783,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             }
         });
 
-           getpublisekey(orderpath);
 
-            PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
+
+           /* PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
 
             stripe = new Stripe(
                     Order_Status_Activity.this,
@@ -801,7 +804,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     ),
                     Order_Status_Activity.this::onGooglePayReady,
                     Order_Status_Activity.this::onGooglePayResult
-            );
+            );*/
+
+
+        Log.e("gpayapikey", "" + gpay_apikey +" " + apikey);
     }
 
 
