@@ -145,10 +145,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
     int gpay_amount;
-    LinearLayout orderlist_data,total_item;
-    TextView orderlist_discount,confirm_txt_desc,tip_u_delivery;
+    LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout;
+    TextView orderlist_discount,confirm_txt_desc,tip_u_delivery,collect_txt_msg,collection_txtmsg;
     String phone_number,dno,add1,add2,post_code,msg,E_mail;
-    CardView deliver_tip;
+    CardView deliver_tip,tip_module,driver_details;
     RadioButton selectedRadioButton;
     private Stripe stripe;
     String bulkeyfullUrl,apikey,token,metdpasfullUrl,stripe_reponse_amount,intepasfullUrl,gpay_apikey;
@@ -163,6 +163,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     /*---------------------------BottomNavigationView----------------------------------------------------*/
     BottomNavigationView bottomNav;
     EditText comments_txt,city_stuart;
+    TextView tip_txt;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -234,7 +235,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String phone, gmail;
     LinearLayout botton_top;
     CardView botton_top_vis,restaurants_mobile_no,submit_review_btn;
-    LottieAnimationView wait_confirm_icon;
+    LottieAnimationView wait_confirm_icon,collection_anim;
     ImageView item_order_details;
     TextView tip_btn,custom_tip_textview,stuart_textview,tracking_txt,header_txt_status;
     TextView change_add_btn;
@@ -366,6 +367,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         deliver_tip = findViewById(R.id.deliver_tip);
         confirm_txt_desc = findViewById(R.id.confirm_txt_desc);
         tip_u_delivery = findViewById(R.id.tip_u_delivery);
+        stuart_collection_layout = findViewById(R.id.stuart_collection_layout);
+        collection_anim = findViewById(R.id.collection_anim);
+        collect_txt_msg = findViewById(R.id.collect_txt_msg);
+        collection_txtmsg = findViewById(R.id.collection_txtmsg);
+        tip_txt = findViewById(R.id.tip_txt);
+        tip_module = findViewById(R.id.tip_module);
+        driver_details = findViewById(R.id.driver_details);
+        review_screen_layout = findViewById(R.id.review_screen_layout);
 
 
 
@@ -773,7 +782,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
            getpublisekey(orderpath);
 
-          /*  PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
+            PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
 
             stripe = new Stripe(
                     Order_Status_Activity.this,
@@ -793,7 +802,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     Order_Status_Activity.this::onGooglePayReady,
                     Order_Status_Activity.this::onGooglePayResult
             );
-*/
     }
 
 
@@ -1491,11 +1499,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                          E_mail = response.body().getOrdertracking().getOrder().getUser().getemail();
 
-
-
-                         user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
-
-
+                        user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
 
                         name_phoneno.setText(fname+ " "+lname + "," +phone_number);
 
@@ -1531,6 +1535,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                        if(Stuart_enable_disable.equalsIgnoreCase("true")){
 
+                           stuart_collection_layout.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.VISIBLE);
                            tracking_txt.setVisibility(View.VISIBLE);
 
@@ -1573,6 +1578,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1580,6 +1588,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1601,6 +1613,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1609,17 +1624,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
                                }
 
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
-                                wait_confirm_icon.setAnimation(R.raw.delivery);
+                                wait_confirm_icon.setAnimation(R.raw.orderinished);
                                 wait_confirm_icon.playAnimation();
                                 stuart_textview.setText(delivery_status_name);
                                 header_txt_status.setText(delivery_status_name);
 
-                               confirm_txt_desc.setText("your Order Scheduled will at Delivery Collection at ----- time");
+                                confirm_txt_desc.setText("your Order Scheduled will at Delivery Collection at ----- time");
 
                                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
@@ -1630,6 +1649,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1638,6 +1660,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
@@ -1658,6 +1683,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1665,6 +1693,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1687,12 +1719,20 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1713,6 +1753,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -1720,6 +1764,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("6")){
@@ -1737,6 +1784,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1745,6 +1795,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("7")){
@@ -1763,6 +1816,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1771,10 +1827,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("8")){
 
+                               wait_confirm_icon.setAnimation(R.raw.deliverypickup);
+                               wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
                                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
@@ -1786,12 +1847,35 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
+
+                                   handler.postDelayed(new Runnable() {
+                                       public void run() {
+                                           review_screen_layout.setVisibility(View.VISIBLE);
+                                           handler.postDelayed(this, delay);
+                                       }
+                                   }, delay);
+
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
+                                   handler.postDelayed(new Runnable() {
+                                       public void run() {
+                                           review_screen_layout.setVisibility(View.VISIBLE);
+                                           handler.postDelayed(this, delay);
+                                       }
+                                   }, delay);
 
                                }
 
@@ -1811,6 +1895,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1818,6 +1905,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
+
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1839,6 +1930,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
                                    midpoint = new MarkerOptions().position(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long))).title("Bike Or Car").snippet("Move Point").icon(BitmapDescriptorFactory.fromBitmap(finalMarker1));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
+
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -1846,6 +1941,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
                                    destination = new MarkerOptions().position(new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long))).title("Restaurants Address").snippet("destination").icon(BitmapDescriptorFactory.fromBitmap(finalMarker));
 
+                                   tip_txt.setVisibility(View.VISIBLE);
+                                   tip_module.setVisibility(View.VISIBLE);
+                                   driver_details.setVisibility(View.VISIBLE);
                                }
 
                             }else{
@@ -1880,49 +1978,62 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                        }else{
 
+                           stuart_collection_layout.setVisibility(View.VISIBLE);
                            tracking_txt.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.GONE);
+                           driver_details.setVisibility(View.GONE);
 
                            if(delivery_status.equalsIgnoreCase("0")){
 
-                               wait_confirm_icon.setAnimation(R.raw.foodloading);
-                               wait_confirm_icon.playAnimation();
-                               stuart_textview.setText(delivery_status_name);
+                               collection_anim.setAnimation(R.raw.foodloading);
+                               collection_anim.playAnimation();
+                               collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-
+                               collection_txtmsg.setText("The restaurant will confirm your\norder soon");
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
-                               wait_confirm_icon.setAnimation(R.raw.orderprepare);
-                               wait_confirm_icon.playAnimation();
-                               stuart_textview.setText(delivery_status_name);
+                               collection_anim.setAnimation(R.raw.orderprepare);
+                               collection_anim.playAnimation();
+                               collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-
+                               collection_txtmsg.setText("Your food is being prepared \n& can be picked up soon!");
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
-                               wait_confirm_icon.setAnimation(R.raw.ordercancel);
-                               wait_confirm_icon.playAnimation();
-                               stuart_textview.setText(delivery_status_name);
+                               collection_anim.setAnimation(R.raw.ordercancel);
+                               collection_anim.playAnimation();
+                               collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
-
+                               collection_txtmsg.setText("We regret to inform you that \nyour order has been rejected");
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
-                               stuart_textview.setText(delivery_status_name);
+                               collection_anim.setAnimation(R.raw.yourorderready);
+                               collection_anim.playAnimation();
+                               collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
+                               collection_txtmsg.setText("Your Order Is Ready & Can Be \nCollected Now!");
+
+                               handler.postDelayed(new Runnable() {
+                                   public void run() {
+                                       review_screen_layout.setVisibility(View.VISIBLE);
+                                       handler.postDelayed(this, delay);
+                                   }
+                               }, delay);
 
 
                            }else if(delivery_status.equalsIgnoreCase("9")){
 
-                               wait_confirm_icon.setAnimation(R.raw.ordercancel);
-                               wait_confirm_icon.playAnimation();
-                               stuart_textview.setText(delivery_status_name);
+                               collection_anim.setAnimation(R.raw.ordercancel);
+                               collection_anim.playAnimation();
+                               collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(delivery_status_name);
+                               collection_txtmsg.setText("We regret to inform you that \nyour order has been Cancel");
 
                            }else{
 
-                               stuart_textview.setText("");
+                               collect_txt_msg.setText("");
                                header_txt_status.setText("");
 
                            }

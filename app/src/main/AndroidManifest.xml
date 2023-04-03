@@ -26,8 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="MissingClass">
-     <!--   <activity android:name=".activity.card_payment"></activity>-->
-        <!--<activity
+
+        <activity
             android:name=".activity.Splash_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
@@ -36,18 +36,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
-      <!--  <activity
-            android:name=".activity.card_payment"
-            android:exported="true"
-            android:theme="@style/Theme.Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
-       <activity
+      <!-- <activity
             android:name=".activity.Order_Status_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
@@ -56,7 +47,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".activity.Postcode_Activity"
@@ -150,10 +141,10 @@
             android:name=".activity.Order_Status_List_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-      <!--  <activity
+        <activity
             android:name=".activity.Order_Status_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />-->
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.Show_Offer_Activity"
             android:screenOrientation="portrait"

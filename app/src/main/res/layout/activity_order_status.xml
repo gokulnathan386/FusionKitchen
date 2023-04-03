@@ -73,31 +73,80 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/stuart_collection_layout"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
             android:layout_height="wrap_content">
 
-
             <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="wrap_content"
-                android:layout_height="210dp"
+                android:id="@+id/collection_anim"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
+                android:layout_marginTop="10dp"
                 app:lottie_rawRes="@raw/maneating" />
+
+            <TextView
+                android:id="@+id/collect_txt_msg"
+                android:layout_marginTop="20dp"
+                android:text="Awaiting confirmation"
+                android:textStyle="bold"
+                android:textColor="#4D4D4D"
+                android:textSize="18dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:id="@+id/collection_txtmsg"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:text="The restaurant will confirm your order soon"
+                android:textStyle="normal"
+                android:textColor="#808695"
+                android:textSize="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
 
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/review_screen_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="195dp"
+                android:layout_height="195dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_marginTop="10dp"
+                app:lottie_rawRes="@raw/maneating" />
+
+            </LinearLayout>
+
             <TextView
                 android:textSize="@dimen/_12sdp"
                 android:textColor="#4D4D4D"
-                android:visibility="gone"
+                android:layout_marginTop="10dp"
                 android:text="How was the food quality"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_width="match_parent"
@@ -106,7 +155,6 @@
 
 
             <RatingBar
-                android:visibility="gone"
                 android:id="@+id/foodquality_ratingBar"
                 style="@style/CustomRatingBar"
                 android:layout_width="wrap_content"
@@ -115,7 +163,6 @@
                 android:stepSize="1" />
 
             <TextView
-                android:visibility="gone"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="#4D4D4D"
                 android:text="Restaurant service"
@@ -124,7 +171,6 @@
                 android:layout_height="match_parent"/>
 
             <RatingBar
-                android:visibility="gone"
                 android:id="@+id/restuarant_service"
                 style="@style/CustomRatingBar"
                 android:layout_width="wrap_content"
@@ -134,7 +180,6 @@
 
 
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
@@ -162,7 +207,6 @@
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="10dp"
-                android:visibility="gone"
                 app:cardBackgroundColor="#3BB186"
                 android:background="#3BB186"
                 app:cardMaxElevation="2dp"
@@ -273,7 +317,6 @@
 
 
         </androidx.cardview.widget.CardView>
-
 <!--
   <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
@@ -284,14 +327,86 @@
         app:lottie_rawRes="@raw/closedtakeawat"
         app:lottie_loop="true"/>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/deliverypickup"
+            app:lottie_loop="true"/>
 
-    <com.airbnb.lottie.LottieAnimationView
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/foodloading"
+            app:lottie_loop="true"/>
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/orderprepare"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/orderinished"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/orderconfirmed"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/ordercancel"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/orderaccepted"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/background_button_bg"
+            android:layout_marginLeft="10dp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/ordercancel"
+            app:lottie_loop="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/background_button_bg"
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/orderaccepted"
+        app:lottie_rawRes="@raw/yourorderready"
         app:lottie_loop="true"/>
 
 
@@ -311,10 +426,10 @@
         android:layout_marginLeft="10dp"
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/yourorderready"
-        app:lottie_loop="true"/>
--->
+        app:lottie_loop="true"/>-->
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/driver_details"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="10dp"
@@ -414,7 +529,20 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/tip_txt"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="#17284D"
+            android:fontFamily="@font/metropolis_semibold"
+            android:text="Add Tip"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </TextView>
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/tip_module"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
