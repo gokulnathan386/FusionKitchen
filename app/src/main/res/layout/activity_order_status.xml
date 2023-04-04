@@ -849,6 +849,8 @@
 
 
                 <LinearLayout
+                    android:id="@+id/OrderDetails_layout"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:layout_width="match_parent"
@@ -898,6 +900,8 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/order_details_view"
+                    android:visibility="gone"
                     android:layout_marginLeft="70dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"

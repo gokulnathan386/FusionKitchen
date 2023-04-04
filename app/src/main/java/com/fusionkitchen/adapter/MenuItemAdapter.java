@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 
 import android.os.Handler;
@@ -31,6 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
 import com.fusionkitchen.activity.Item_Menu_Activity;
@@ -226,15 +229,10 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_loading_layout);
-
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-        Glide.with(mContext)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
-
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 

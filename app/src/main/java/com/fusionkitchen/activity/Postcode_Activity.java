@@ -65,6 +65,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -932,8 +933,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         Glide.with(this)
                 .load(offer_image)
-                .placeholder(R.drawable.loading)
                 .into(offerimage);
+
+         /*.placeholder(R.drawable.loading)*/
 
         Log.d("skfkdsvkbvkjdsbv"," " + offer_image);
 
@@ -1370,12 +1372,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_loading_layout);
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-        Glide.with(Postcode_Activity.this)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 

@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
 import com.fusionkitchen.activity.Item_Menu_Activity;
@@ -118,15 +121,10 @@ public class DashboardMostPopularAdapter  extends RecyclerView.Adapter<Dashboard
         dialog.setCancelable(false);
 
         dialog.setContentView(R.layout.custom_loading_layout);
-
-
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-        Glide.with(context)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 

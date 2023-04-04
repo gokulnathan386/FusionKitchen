@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
@@ -21,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
@@ -513,17 +516,10 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_loading_layout);
-
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-
-        Glide.with(mContext)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
-
-
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 

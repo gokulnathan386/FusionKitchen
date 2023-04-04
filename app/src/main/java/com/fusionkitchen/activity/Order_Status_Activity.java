@@ -138,14 +138,13 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 public class Order_Status_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
-
-
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt,card_number;
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
     int gpay_amount;
-    LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout;
+    SupportMapFragment mapFragment;
+    LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout,OrderDetails_layout;
     TextView orderlist_discount,confirm_txt_desc,tip_u_delivery,collect_txt_msg,collection_txtmsg;
     String phone_number,dno,add1,add2,post_code,msg,E_mail;
     CardView deliver_tip,tip_module,driver_details;
@@ -153,6 +152,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private Stripe stripe;
     String bulkeyfullUrl,apikey,token,metdpasfullUrl,stripe_reponse_amount,intepasfullUrl,gpay_apikey;
     String gpay_client_secret;
+    View order_details_view;
 
     private static final int REQUEST_READ_CONTACTS_PERMISSION = 0;
     private static final int REQUEST_CONTACT = 1;
@@ -375,6 +375,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         tip_module = findViewById(R.id.tip_module);
         driver_details = findViewById(R.id.driver_details);
         review_screen_layout = findViewById(R.id.review_screen_layout);
+        OrderDetails_layout = findViewById(R.id.OrderDetails_layout);
+        order_details_view = findViewById(R.id.order_details_view);
 
 
 
@@ -785,7 +787,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
 
-           /* PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
+            PaymentConfiguration.init(Order_Status_Activity.this, gpay_apikey);
 
             stripe = new Stripe(
                     Order_Status_Activity.this,
@@ -804,11 +806,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     ),
                     Order_Status_Activity.this::onGooglePayReady,
                     Order_Status_Activity.this::onGooglePayResult
-            );*/
+            );
 
 
-        Log.e("gpayapikey", "" + gpay_apikey +" " + apikey);
+
     }
+
+
 
 
     private void onGooglePayReady(boolean isReady) {
@@ -1544,8 +1548,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            stuart_collection_layout.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.VISIBLE);
                            tracking_txt.setVisibility(View.VISIBLE);
+                           OrderDetails_layout.setVisibility(View.VISIBLE);
+                           order_details_view.setVisibility(View.VISIBLE);
 
-                           SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                           mapFragment = (SupportMapFragment) getSupportFragmentManager()
                                    .findFragmentById(R.id.map);
                            mapFragment.getMapAsync((OnMapReadyCallback) Order_Status_Activity.this);
 
@@ -1639,7 +1645,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
-                                wait_confirm_icon.setAnimation(R.raw.orderinished);
+                                wait_confirm_icon.setAnimation(R.raw.ordercancel);
                                 wait_confirm_icon.playAnimation();
                                 stuart_textview.setText(delivery_status_name);
                                 header_txt_status.setText(delivery_status_name);
@@ -1988,6 +1994,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            tracking_txt.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.GONE);
                            driver_details.setVisibility(View.GONE);
+                           OrderDetails_layout.setVisibility(View.GONE);
+                           order_details_view.setVisibility(View.GONE);
 
                            if(delivery_status.equalsIgnoreCase("0")){
 

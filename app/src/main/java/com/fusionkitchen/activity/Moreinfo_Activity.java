@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -50,6 +51,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
@@ -807,21 +809,13 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_loading_layout);
-
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-
-        Glide.with(Moreinfo_Activity.this)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
-
-        //...finaly show it
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
     public void hideloading() {
         dialog.dismiss();
     }

@@ -17,6 +17,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fusionkitchen.model.paymentgatway.appkey;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -45,6 +47,7 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
     private orderstatus_model.orderstatus[] orderhistory;
 
     private int num;
+    String bulkeyfullUrl,token,apikey;
 
     // RecyclerView recyclerView;
     public OrderstatusListAdapter(Context mContext, List<orderstatus_model.orderstatus> orderhistory, int num) {
@@ -103,15 +106,20 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
             @Override
             public void onClick(View v) {
 
-
-                Intent intent = new Intent(mContext, Order_Status_Activity.class);
+             /*   Intent intent = new Intent(mContext, Order_Status_Activity.class);
                 intent.putExtra("orderid", orderhistory[position].getOrder().getId());
                 intent.putExtra("orderpath", orderhistory[position].getClient().getPath());
                 intent.putExtra("orderdate", orderhistory[position].getOrder().getDate());
                 intent.putExtra("clientname", orderhistory[position].getClient().getClientname());
                 intent.putExtra("clientid", orderhistory[position].getClient().getCid());
                 intent.putExtra("clientphonenumber", orderhistory[position].getClient().getClientno());
-                mContext.startActivity(intent);
+                mContext.startActivity(intent);*/
+
+                getpublisekey(orderhistory[position].getOrder().getId(),orderhistory[position].getClient().getPath(),
+                        orderhistory[position].getOrder().getDate(),orderhistory[position].getClient().getClientname(),
+                        orderhistory[position].getClient().getCid(), orderhistory[position].getClient().getClientno()
+                        );
+
 
 
             }
@@ -122,6 +130,43 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
 
     }
 
+    private void getpublisekey(String id,String menuurlpath,String Date,String Clientname,String cid,String Clientno) {
+        bulkeyfullUrl = menuurlpath + "/stripeAppId";
+        Log.d("stripeappid",bulkeyfullUrl);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<appkey> call = apiService.stripepubliskey(bulkeyfullUrl);
+        call.enqueue(new Callback<appkey>() {
+            @Override
+            public void onResponse(Call<appkey> call, Response<appkey> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        Log.e("api_id", "" + response.body().getData().getApi_id());
+                        Log.e("securitykey", "" + response.body().getData().getSecuritykey());
+                        token = response.body().getData().getSecuritykey();
+                        apikey = response.body().getData().getApi_id();
+
+                        Intent intent = new Intent(mContext, Order_Status_Activity.class);
+                        intent.putExtra("orderid", id);
+                        intent.putExtra("orderpath",menuurlpath);
+                        intent.putExtra("orderdate",Date);
+                        intent.putExtra("clientname", Clientname);
+                        intent.putExtra("clientid", cid);
+                        intent.putExtra("clientphonenumber",Clientno);
+                        intent.putExtra("gpay_apikey",apikey);
+                        mContext.startActivity(intent);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<appkey> call, Throwable t) {
+                Log.d("API_Key_Error"," " + t);
+             }
+        });
+    }
 
     @Override
     public int getItemCount() {

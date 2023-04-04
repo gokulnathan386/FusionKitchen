@@ -15,7 +15,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -56,6 +58,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.fusionkitchen.DBHelper.SQLDBHelper;
 import com.fusionkitchen.R;
@@ -2242,15 +2245,10 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         imgdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         imgdialog.setCancelable(false);
         imgdialog.setContentView(R.layout.custom_loading_layout);
-
-        ImageView gifImageView = imgdialog.findViewById(R.id.custom_loading_imageView);
-
-
-        Glide.with(Payment_Settings_Activity.this)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
+        LottieAnimationView gifImageView = imgdialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        imgdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         imgdialog.show();
     }
 

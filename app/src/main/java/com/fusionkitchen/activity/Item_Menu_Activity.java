@@ -5233,14 +5233,10 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_loading_layout);
 
-        ImageView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-        Glide.with(Item_Menu_Activity.this)
-                .load(R.drawable.loading)
-                .placeholder(R.drawable.loading)
-                .centerCrop()
-                .into(gifImageView);
-
+        LottieAnimationView gifImageView = dialog.findViewById(R.id.custom_loading_imageView);
+        gifImageView.setAnimation(R.raw.newloader);
+        gifImageView.playAnimation();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
