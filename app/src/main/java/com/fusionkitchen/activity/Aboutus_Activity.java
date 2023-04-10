@@ -248,7 +248,7 @@ public class Aboutus_Activity extends AppCompatActivity {
         dialog.show();
     }
 
-    //..also create a method which will hide the dialog when some work is done
+
     public void hideloading() {
         dialog.dismiss();
     }

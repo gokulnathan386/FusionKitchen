@@ -298,7 +298,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             ViewNoNetDialog alert = new ViewNoNetDialog();
             alert.shownonetDialog(Postcode_Activity.this);
         } else {
-            versionupdate();//versionName
+          //  versionupdate();//versionName
         }
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
@@ -602,7 +602,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
         /*-------------------------------Start Auto In Update Google---------------------------*/
-/*
         mAppUpdateManager = AppUpdateManagerFactory.create(this);
         mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
             @Override
@@ -624,7 +623,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             }
         });
 
-        mAppUpdateManager.registerListener(installStateUpdatedListener);*/
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
 
         /*-------------------------------End Auto In Update Google---------------------------*/
 
@@ -635,7 +634,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     /*------------------------------  start Atuo In update-------------------*/
 
 
-  /*  private InstallStateUpdatedListener installStateUpdatedListener = new
+    private InstallStateUpdatedListener installStateUpdatedListener = new
             InstallStateUpdatedListener() {
                 @Override
                 public void onStateUpdate(InstallState state) {
@@ -695,7 +694,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-*/
     /*------------------------------  End Atuo In update-------------------*/
 
 
@@ -802,10 +800,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
             }
 
-
         }
     };
-
 
 
 

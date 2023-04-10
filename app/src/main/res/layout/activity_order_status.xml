@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#17284D"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Awaiting Confirmation"
             android:layout_width="wrap_content"
@@ -111,6 +111,7 @@
                 android:textStyle="normal"
                 android:textColor="#808695"
                 android:textSize="15dp"
+                android:gravity="center_horizontal"
                 android:fontFamily="@font/poppins_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -317,8 +318,8 @@
 
 
         </androidx.cardview.widget.CardView>
-<!--
-  <com.airbnb.lottie.LottieAnimationView
+
+<!--  <com.airbnb.lottie.LottieAnimationView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/background_button_bg"
@@ -482,6 +483,7 @@
                    android:layout_height="match_parent">
 
                    <TextView
+                       android:id="@+id/rider_name"
                        android:textColor="#FFFFFF"
                        android:textSize="12dp"
                        android:fontFamily="@font/poppins_semibold"
@@ -502,6 +504,7 @@
                </LinearLayout>
 
                <androidx.cardview.widget.CardView
+                   android:id="@+id/drive_phone_btn"
                    android:layout_width="35dp"
                    android:layout_height="35dp"
                    android:layout_marginRight="5dp"
@@ -554,6 +557,8 @@
             app:cardUseCompatPadding="true"
             >
 
+           <!-- android:visibility="gone"-->
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_margin="10dp"
@@ -595,6 +600,7 @@
                             android:layout_height="match_parent">
 
                             <TextView
+                                android:id="@+id/delivery_coll_tip_txt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
@@ -626,6 +632,7 @@
                             android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/delivery_coll_tip_desc"
                             android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

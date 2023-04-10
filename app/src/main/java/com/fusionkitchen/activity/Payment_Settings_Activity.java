@@ -1257,6 +1257,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         params.put("lname", last_name);
         params.put("email", user_email);
         params.put("app_id", "0");
+
         metdpasfullUrl = menuurlpath + "/stripepaymentProcess";
 
 

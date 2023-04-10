@@ -75,6 +75,40 @@ public class ordertracking_details_model {
         @SerializedName("delivery_status_name")
         private String delivery_status_name;
 
+        @SerializedName("order_expected_time")
+        private String order_expected_time;
+
+        @SerializedName("driver_name")
+        private String driver_name;
+
+        @SerializedName("driver_number")
+        private String driver_number;
+
+
+        public String getdriver_number() {
+            return driver_number;
+        }
+
+        public void setdriver_number(String driver_number) {
+            this.driver_number = driver_number;
+        }
+
+        public String getdriver_name() {
+            return driver_name;
+        }
+
+        public void setdriver_name(String driver_name) {
+            this.driver_name = driver_name;
+        }
+
+        public String getorder_expected_time() {
+            return order_expected_time;
+        }
+
+        public void setorder_expected_time(String order_expected_time) {
+            this.order_expected_time = order_expected_time;
+        }
+
 
         public String getdelivery_status_name() {
             return delivery_status_name;
