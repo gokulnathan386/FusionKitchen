@@ -193,9 +193,16 @@
 
                  <EditText
                      android:id="@+id/comments_txt"
-                     android:gravity="top"
+                     android:gravity="top|center_horizontal"
                      android:padding="10dp"
                      android:background="@null"
+                     android:hint="Tell us more about your experience"
+                     android:textColorHint="#4D4D4D"
+                     android:text=""
+                     android:textStyle="normal"
+                     android:textColor="#4D4D4D"
+                     android:textSize="15dp"
+                     android:fontFamily="@font/poppins_regular"
                      android:layout_width="match_parent"
                      android:layout_height="match_parent">
                  </EditText>
@@ -639,7 +646,7 @@
                             android:fontFamily="@font/poppins_regular"
                             android:text="Tip will go directly to your \ndelivery partner"
                             android:textColor="#808695"
-                            android:textSize="@dimen/_12sdp">
+                            android:textSize="@dimen/_10sdp">
                         </TextView>
 
                             <TextView
@@ -1481,6 +1488,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/add_more_item"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"

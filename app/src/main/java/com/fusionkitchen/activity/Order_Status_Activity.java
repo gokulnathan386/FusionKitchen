@@ -155,7 +155,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     TextView delivery_coll_tip_desc,delivery_coll_tip_txt;
     Boolean stuart_delivery_status = false;
     SupportMapFragment mapFragment;
-    LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout,OrderDetails_layout;
+    LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout,OrderDetails_layout,add_more_item;
     TextView orderlist_discount,confirm_txt_desc,tip_u_delivery,collect_txt_msg,collection_txtmsg;
     String phone_number,dno,add1,add2,post_code,msg,E_mail;
     CardView deliver_tip,tip_module,driver_details;
@@ -251,7 +251,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     TextView change_add_btn;
     Dialog  dialog;
     EditText post_code_txtview,House_doorno_txt,street_stuart;
-
 
 
 
@@ -392,6 +391,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         delivery_coll_tip_txt = findViewById(R.id.delivery_coll_tip_txt);
         rider_name = findViewById(R.id.rider_name);
         drive_phone_btn = findViewById(R.id.drive_phone_btn);
+        add_more_item = findViewById(R.id.add_more_item);
 
 
 
@@ -490,6 +490,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         });
 
+        add_more_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Order_Status_Activity.this,"MoreBtn",Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -511,7 +518,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         }*/
                         break;
                     case R.id.my_order:
-                        Toast.makeText(getApplicationContext(), "My Order", Toast.LENGTH_SHORT).show();
+                        if (user_id != null && !user_id.isEmpty()) {
+                            Intent offer_list = new Intent(getApplicationContext(), Order_Status_Activity.class);
+                            startActivity(offer_list);
+                        }
                         break;
                     case R.id.home_account:
                         if (user_id != null && !user_id.isEmpty()) {
@@ -639,13 +649,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         order_id.setText("Order Id: " + orderid);
 
-       // getodertrackingdeatils(orderid, orderpath);
-
          getstuarttracking(orderid, orderpath);
 
         handler.postDelayed(new Runnable() {
             public void run() {
-               // getodertrackingdeatils(orderid, orderpath);
                 getstuarttracking(orderid, orderpath);
                 handler.postDelayed(this, delay);
             }
@@ -688,7 +695,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 bill_layout.setVisibility(View.GONE);
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                       // getodertrackingdeatils(orderid, orderpath);
                         getstuarttracking(orderid, orderpath);
                         handler.postDelayed(this, delay);
                     }
@@ -753,8 +759,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         alternative_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent act_ = new Intent(Order_Status_Activity.this,MyAccount_Activity.class);
-                startActivity(act_);*/
+
                 PickContactList();
             }
         });
@@ -844,8 +849,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     private void onGooglePayResult(@NotNull GooglePayPaymentMethodLauncher.Result result) {
 
-        loadingshow();
-
         Log.e("paymentresult", "" + result);
         if (result instanceof GooglePayPaymentMethodLauncher.Result.Completed) {
 
@@ -873,7 +876,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     int statusCode = response.code();
                     Log.e("statusCode", "" + statusCode);
                     if (statusCode == 200) {
-                        hideloading();
 
                         if (response.body().getStatus().equalsIgnoreCase("true")) {
                               gpay_client_secret = response.body().getData().getClient_secret();
@@ -886,9 +888,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                             null);
                             stripe.confirmPayment(Order_Status_Activity.this, params);
                             Log.e("sc_params", " " + params);
+
+                            PaymentPop(1,pay_amt1);
+
+                        }else{
+
+                            PaymentPop(0,"");
+
                         }
                     } else {
-                        hideloading();
+
                         Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Client secret id not found", Snackbar.LENGTH_LONG).show();
 
                     }
@@ -896,7 +905,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 @Override
                 public void onFailure(retrofit2.Call<getgpaystuartpayment_model> call, Throwable t) {
-                    hideloading();
+
                     Log.e("errorcode1", "" + t);
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
@@ -911,9 +920,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         }
 
-
     }
-
 
     private void getpublisekey(String menuurlpath) {
         bulkeyfullUrl = menuurlpath + "/stripeAppId";
@@ -1209,8 +1216,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onResponse(retrofit2.Call<completpay_model> call, retrofit2.Response<completpay_model> response) {
                 int statusCode = response.code();
                 Log.e("completedstatusCode", "" + statusCode);
+                hideloading();
+
                 if (statusCode == 200) {
-                     hideloading();
+
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
                         PaymentPop(1,pay_amt1);
                     }else{
@@ -1430,7 +1439,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         .setLink(Uri.parse("https://www.fusionkitchen.co.uk/help?_order_id=" + orderid +
                                          "&_order_path=" +orderpath + "&_orderdate=" + orderdate +
                                 "&_clientname=" + clientname + "&_clientid="+clientid +"&_clientphonenumber="+clientphonenumber +
-                                "&_gpay_apikey="+gpay_apikey
+                                "&_gpay_apikey="+gpay_apikey + "&_order_status=" + true
 
                         ))
                         .setDomainUriPrefix("https://fusionkitchen.page.link")
@@ -1513,8 +1522,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-       /* params.put("orderdetails", "2328");
-        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");*/
         params.put("orderdetails", orderid);
         params.put("path", orderpath);
 
@@ -1543,21 +1550,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String lname = response.body().getOrdertracking().getOrder().getUser().getLname();
 
-                         dno = response.body().getOrdertracking().getOrder().getUser().getdno();
+                        dno = response.body().getOrdertracking().getOrder().getUser().getdno();
 
-                         add1 = response.body().getOrdertracking().getOrder().getUser().getadd1();
+                        add1 = response.body().getOrdertracking().getOrder().getUser().getadd1();
 
-                         add2 = response.body().getOrdertracking().getOrder().getUser().getadd2();
+                        add2 = response.body().getOrdertracking().getOrder().getUser().getadd2();
 
-                         post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
+                        post_code = response.body().getOrdertracking().getOrder().getUser().getpostcode();
 
-                         phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
+                        phone_number = response.body().getOrdertracking().getOrder().getUser().getPhone();
 
-                         E_mail = response.body().getOrdertracking().getOrder().getUser().getemail();
+                        E_mail = response.body().getOrdertracking().getOrder().getUser().getemail();
 
-                         user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
+                        user_delivery_address.setText(dno + "," + add1+ "," +add2+","+post_code);
 
-                         name_phoneno.setText(fname+ " "+lname + "," +phone_number);
+                        name_phoneno.setText(fname+ " "+lname + "," +phone_number);
 
                         tip_pay_first_name = fname;
                         tip_pay_last_name = lname;
@@ -1597,7 +1604,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                          }
 
 
-                         String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
+                       String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
 
                        if(Stuart_enable_disable.equalsIgnoreCase("true")){
 
@@ -1651,6 +1658,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1664,6 +1672,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1690,6 +1699,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1703,6 +1713,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1730,6 +1741,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1743,6 +1755,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
@@ -1768,6 +1781,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1781,6 +1795,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }
 
@@ -1808,6 +1823,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1821,6 +1837,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                }
 
@@ -1846,6 +1863,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1859,6 +1877,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("6")){
@@ -1881,6 +1900,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1894,6 +1914,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("7")){
@@ -1917,6 +1938,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -1930,6 +1952,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
                                }
 
                            }else if(delivery_status.equalsIgnoreCase("8")){
@@ -1952,6 +1975,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
 
                                    handler.postDelayed(new Runnable() {
@@ -1973,6 +1997,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.GONE);
 
                                    handler.postDelayed(new Runnable() {
                                        public void run() {
@@ -2004,6 +2029,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -2017,6 +2043,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }
 
@@ -2043,6 +2070,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
 
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -2056,6 +2084,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    driver_details.setVisibility(View.VISIBLE);
                                    delivery_coll_tip_txt.setText("Tip your delivery partner");
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                                   add_more_item.setVisibility(View.VISIBLE);
                                }
 
                             }else{
@@ -2110,6 +2139,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                tip_txt.setVisibility(View.GONE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               add_more_item.setVisibility(View.VISIBLE);
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
@@ -2124,6 +2154,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               add_more_item.setVisibility(View.GONE);
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
@@ -2138,6 +2169,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               add_more_item.setVisibility(View.VISIBLE);
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
@@ -2150,6 +2182,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               add_more_item.setVisibility(View.GONE);
 
                                if(stuart_delivery_status == true){
                                    stuart_delivery_status = false;
@@ -2182,6 +2215,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                stuart_delivery_status = true;
+                               add_more_item.setVisibility(View.VISIBLE);
 
                            }else{
 
@@ -2223,277 +2257,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     }
 
-    /*  ---------------------------get api URL first time get type values----------------------------------------------------*/
-    /*private void getodertrackingdeatils(String orderiding, String orderpathing) {
 
-        // get user data from session
-        Map<String, String> params = new HashMap<String, String>();
-      *//*  params.put("orderdetails", orderiding);
-        params.put("path", orderpathing);*//*
-
-        params.put("orderdetails","1908");
-        params.put("path","restaurant-demo-2-if28threefield-house-sk11");
-
-
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<ordertracking_model> call = apiService.ordertracking(params);
-        Log.e("ur_id", "" + params);
-        call.enqueue(new Callback<ordertracking_model>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(Call<ordertracking_model> call, Response<ordertracking_model> response) {
-                //response.headers().get("Set-Cookie");
-                int statusCode = response.code();
-
-
-                if (statusCode == 200) {
-
-                    if (response.body().getStatus().equalsIgnoreCase("true")) {
-
-                        customername = response.body().getOrdertracking().getOrder().getUser().getFname();
-                        total_amt.setText("Total Bill: £ " + response.body().getOrdertracking().getOrder().getOrder().getTotal());
-                        listview_total.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getTotal());
-
-                        order_date.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_date());
-                        Delivery_Collection_time.setText(response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
-                        Log.d("order_date", response.body().getOrdertracking().getOrder().getOrder().get_order_date());
-
-
-                        Log.d("delivery_collection_time", response.body().getOrdertracking().getOrder().getOrder().get_order_dateword());
-
-                        sub_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
-                        if (response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getBank().equalsIgnoreCase("0")) {
-                            servicel_layout.setVisibility(View.GONE);
-                        } else {
-                            servicel_layout.setVisibility(View.VISIBLE);
-                            service_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getBank());
-                        }
-                        if (response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().equalsIgnoreCase("0")) {
-                            delivery_layout.setVisibility(View.GONE);
-                        } else {
-                            delivery_layout.setVisibility(View.VISIBLE);
-                            delivery_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge());
-                        }
-                        if (response.body().getOrdertracking().getOrder().getOrder().getPromo_discount().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getPromo_discount().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getPromo_discount().equalsIgnoreCase("0")) {
-                            coupon_layout.setVisibility(View.GONE);
-                        } else {
-                            coupon_layout.setVisibility(View.VISIBLE);
-                            coupon_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getPromo_discount());
-                        }
-                        if (response.body().getOrdertracking().getOrder().getOrder().getBagage().equalsIgnoreCase("0.00") || response.body().getOrdertracking().getOrder().getOrder().getBagage().equalsIgnoreCase("0.0") || response.body().getOrdertracking().getOrder().getOrder().getBagage().equalsIgnoreCase("0")) {
-                            bag_layout.setVisibility(View.GONE);
-                        } else {
-                            bag_layout.setVisibility(View.VISIBLE);
-                            bag_amt.setText("£ " + response.body().getOrdertracking().getOrder().getOrder().getBagage());
-                        }
-
-
-                        List<ordertracking_details_model.item> orderhistory = (response.body().getOrdertracking().getOrder().getItem());
-                        OrderstatusitemListAdapter menuitemnameadapter = new OrderstatusitemListAdapter(mContext, (List<ordertracking_details_model.item>) orderhistory);
-                        myorderList.setHasFixedSize(true);
-                        myorderList.setLayoutManager(new LinearLayoutManager(Order_Status_Activity.this));
-                        myorderList.setAdapter(menuitemnameadapter);
-
-
-                        otype = response.body().getOrdertracking().getOrder().getOrder().getOtype();
-                        statusshow = response.body().getOrdertracking().getOrder().getOrder().getStatus();
-
-
-                        if (otype.equalsIgnoreCase("0")) {
-                            orderprocessed.setImageResource(R.drawable.deliverybike);
-                            textorderpickup.setText("Order Delivered");
-
-                            txtotype = "Delivery";
-                        } else {
-                            orderprocessed.setImageResource(R.drawable.takeawaybag);
-                            textorderpickup.setText("Order Collected");
-                            txtotype = "Collection";
-                        }
-
-
-                        if (otype.equalsIgnoreCase("0")) {
-//Delivery
-                            if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("0")) {
-                                getOrderStatus("0");
-                                //Order recived
-                                if (check_again_btn == true) {
-                                    check_again_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewwaitingDialog alert = new ViewwaitingDialog();
-                                        alert.shownowaitingDialog(Order_Status_Activity.this);
-                                    }
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("1") && response.body().getOrdertracking().getOrder().getOrder().getDrivertracking().equalsIgnoreCase("false")) {
-
-                                //   handler.removeCallbacksAndMessages(null);
-                                getOrderStatus("1");
-                                if (check_confirmDialog_btn == true) {
-                                    check_confirmDialog_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewconfirmDialog alert = new ViewconfirmDialog();
-                                        alert.showconfirmDialog(Order_Status_Activity.this);
-                                    }
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("1") && response.body().getOrdertracking().getOrder().getOrder().getDrivertracking().equalsIgnoreCase("true")) {
-                                //  handler.removeCallbacksAndMessages(null);
-                                //order accepted
-                                getOrderStatus("2");
-                                if (confirmdialog != null && confirmdialog.isShowing()) {
-                                    confirmdialog.cancel();
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("3")) {
-                                // handler.removeCallbacksAndMessages(null);
-                                //Order Delived
-                                getOrderStatus("3");
-
-                                if (check_delivedDialog_btn == true) {
-                                    check_delivedDialog_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewdelivedDialog alert = new ViewdelivedDialog();
-                                        alert.showdelivedDialog(Order_Status_Activity.this);
-                                    }
-                                }
-
-                                if (confirmdialog != null && confirmdialog.isShowing()) {
-                                    confirmdialog.cancel();
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("2")) {
-                                // handler.removeCallbacksAndMessages(null);
-                                //Order rejected
-
-
-                                getOrderStatus("0");
-                                if (check_reject_btn == true) {
-                                    check_reject_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewrejectDialog alert = new ViewrejectDialog();
-                                        alert.showrejectDialog(Order_Status_Activity.this);
-                                    }
-                                }
-
-                                if (confirmdialog != null && confirmdialog.isShowing()) {
-                                    confirmdialog.cancel();
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            }
-
-                        } else {
-
-
-                            if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("0")) {
-                                getOrderStatus("0");
-                                //Order recived
-                                if (check_again_btn == true) {
-                                    check_again_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewwaitingDialog alert = new ViewwaitingDialog();
-                                        alert.shownowaitingDialog(Order_Status_Activity.this);
-                                    }
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("1")) {
-                                //   handler.removeCallbacksAndMessages(null);
-                                //order accepted
-                                getOrderStatus("1");
-                                if (check_confirmDialog_btn == true) {
-                                    check_confirmDialog_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewconfirmDialog alert = new ViewconfirmDialog();
-                                        alert.showconfirmDialog(Order_Status_Activity.this);
-                                    }
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("3")) {
-                                //  handler.removeCallbacksAndMessages(null);
-                                getOrderStatus("3");
-                                //Order Delived
-                                if (check_delivedDialog_btn == true) {
-                                    check_delivedDialog_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewdelivedDialog alert = new ViewdelivedDialog();
-                                        alert.showdelivedDialog(Order_Status_Activity.this);
-                                    }
-
-                                    if (confirmdialog != null && confirmdialog.isShowing()) {
-                                        confirmdialog.cancel();
-                                    }
-                                    if (waitingdialog != null && waitingdialog.isShowing()) {
-                                        waitingdialog.cancel();
-                                    }
-                                }
-                            } else if (response.body().getOrdertracking().getOrder().getOrder().getStatus().equalsIgnoreCase("2")) {
-                                // handler.removeCallbacksAndMessages(null);
-                                getOrderStatus("0");
-                                //Order rejected
-                                if (check_reject_btn == true) {
-                                    check_reject_btn = false;
-                                    if (response.body().getOrdertracking().getOrder().getOrder().getorderfeedback().equalsIgnoreCase("0")) {
-                                        ViewrejectDialog alert = new ViewrejectDialog();
-                                        alert.showrejectDialog(Order_Status_Activity.this);
-                                    }
-                                }
-
-                                if (confirmdialog != null && confirmdialog.isShowing()) {
-                                    confirmdialog.cancel();
-                                }
-                                if (waitingdialog != null && waitingdialog.isShowing()) {
-                                    waitingdialog.cancel();
-                                }
-                            }
-
-
-                        }
-
-
-                    }
-                } else {
-                    Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ordertracking_model> call, Throwable t) {
-                Log.e("bugcode", "" + t.toString());
-                Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
-            }
-        });
-    }*/
-
-
-    /*--------------------Tracking id pass-----------------------*/
-    private void getOrderStatus(String orderStatus) {
-        if (orderStatus.equals("0")) {
-            float alfa = (float) 0.5;
-            setStatus(alfa);
-
-        } else if (orderStatus.equals("1")) {
-            float alfa = (float) 1;
-            setStatus1(alfa);
-
-
-        } else if (orderStatus.equals("2")) {
-            float alfa = (float) 1;
-            setStatus2(alfa);
-
-
-        } else if (orderStatus.equals("3")) {
-            float alfa = (float) 1;
-            setStatus3(alfa);
-        }
-    }
 
     //  alfa - disable  myf --enabale
     private void setStatus(float alfa) {

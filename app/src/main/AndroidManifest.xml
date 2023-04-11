@@ -138,7 +138,9 @@
         <activity
             android:name=".activity.Order_Status_List_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+
+        </activity>
         <activity
             android:name=".activity.Order_Status_Activity"
             android:screenOrientation="portrait"
