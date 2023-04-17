@@ -563,7 +563,6 @@
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             >
-
            <!-- android:visibility="gone"-->
 
             <LinearLayout

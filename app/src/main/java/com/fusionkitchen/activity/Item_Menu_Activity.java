@@ -392,7 +392,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         getTheme().applyStyle(R.style.OverlayThemeLime, true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContentView(R.layout.activity_item_menu);
-       // setContentView(R.layout.test);
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
 

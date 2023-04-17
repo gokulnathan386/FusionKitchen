@@ -461,8 +461,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             public void onClick(View v) {
                 tip_button_view.setVisibility(View.GONE);
                 custom_edittxt.setVisibility(View.VISIBLE);
-                tip_btn.setText("Pay Rider Tip");
                 radio_selectedValue = null;
+
+                String cust_txt = custom_edittxt.getText().toString();
+
+                if(cust_txt == null || cust_txt.isEmpty()){
+                    tip_u_delivery.setText("£0.00");
+                    tip_btn.setText("Pay Rider Tip");
+                    tip_u_delivery.setText("£0.00");
+                }
             }
         });
 
@@ -1172,16 +1179,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         Log.e("paymentMethodId", "" + paymentMethodId);
         Map<String, String> params = new HashMap<String, String>();
         params.put("payment_method_id", paymentMethodId);
-        params.put("total", tippayamt);
+        params.put("drivertips", tippayamt);
         params.put("fname", tip_pay_first_name);
         params.put("lname", tip_pay_last_name);
         params.put("email", E_mail);
         params.put("app_id", "0");
-        metdpasfullUrl = orderpath + "/stripepaymentProcess";
-       // metdpasfullUrl = orderpath + "/stripeProcessDriverTips";
+        //metdpasfullUrl = orderpath + "/stripepaymentProcess";
+        metdpasfullUrl = orderpath + "/stripeProcessDriverTips";
 
-
-        Log.d("hdsvjdvhdsvhsdvhv","False_Testing");
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         retrofit2.Call<getclientSecret_model> call = apiService.getclientSecret(metdpasfullUrl, params, "Bearer" + token);
@@ -1301,6 +1306,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         paramspay.put("lname", tip_pay_last_name);
         paramspay.put("email", E_mail);
         paramspay.put("app_id", "0");
+
+
         intepasfullUrl = orderpath + "/stripeProcessDriverTips";
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         retrofit2.Call<completpay_model> call = apiService.completpay(intepasfullUrl, paramspay, "Bearer" + token);
