@@ -103,6 +103,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fusionkitchen.R;
@@ -148,7 +149,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     EditText custom_edittxt,card_number;
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
+    public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
     int gpay_amount;
+    Boolean btnenable,cardpayment = false;
     TextView rider_name;
     String order_expected_time;
     String pay_descval,Stuartdrivename,Stuartdrivenumber;
@@ -226,7 +229,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String orderid, orderpath, orderdate, clientname, txtotype, clientid, clientphonenumber, clsstype;
 
     String otype, statusshow, customername,rest_phone_no;
-
+    TextView addmoreitem;
 
     final Handler handler = new Handler();
     Runnable runnable;
@@ -392,7 +395,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         rider_name = findViewById(R.id.rider_name);
         drive_phone_btn = findViewById(R.id.drive_phone_btn);
         add_more_item = findViewById(R.id.add_more_item);
-
+        addmoreitem = findViewById(R.id.addmoreitem);
 
 
         total_item.setOnClickListener(new View.OnClickListener() {
@@ -519,7 +522,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         break;
                     case R.id.my_order:
                         if (user_id != null && !user_id.isEmpty()) {
-                            Intent offer_list = new Intent(getApplicationContext(), Order_Status_Activity.class);
+                            Intent offer_list = new Intent(getApplicationContext(), Order_Status_List_Activity.class);
                             startActivity(offer_list);
                         }
                         break;
@@ -806,7 +809,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 }
 
-
             }
         });
 
@@ -831,23 +833,60 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     Order_Status_Activity.this::onGooglePayResult
             );
 
+        addmoreitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               /* getmenudata.putString("KEY_posturl","/location/"+ Menu_Url);
+                getmenudata.putString("KEY_postcode",menu_share_postcode);
+                getmenudata.putString("KEY_area",menu_share_area);
+                getmenudata.putString("KEY_address",menu_share_address);
+                getmenudata.putString("KEY_lat",lat_menu_share);
+                getmenudata.putString("KEY_lon",log_menu_share);
+                */
+
+
+                SharedPreferences sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
+
+                String key_posturl = (sharedptcode.getString("KEY_posturl", null));
+                String key_postcode = (sharedptcode.getString("KEY_postcode", null));
+                String key_area = (sharedptcode.getString("KEY_area", null));
+                String key_address = (sharedptcode.getString("KEY_address", null));
+                String key_lat = (sharedptcode.getString("KEY_lat", null));
+                String key_lon = (sharedptcode.getString("KEY_lon", null));
+
+
+                Log.d("GokulnathanTest"," test" + key_posturl + "====" + key_postcode + "====="+ key_area +"====="+key_address +"====="+key_lat + "===="+ key_lon);
+               /*
+                Intent share_redirect = new Intent(Order_Status_Activity.this, Item_Menu_Activity.class);
+                share_redirect.putExtra("menuurlpath", Menu_Url);
+                share_redirect.putExtra("reloadback", "5");
+                startActivity(share_redirect);*/
+
+
+
+
+            }
+        });
+
+
     }
-
-
 
 
     private void onGooglePayReady(boolean isReady) {
            Log.e("pay_type", "" + isReady);
 
-            if (isReady == false) {
-                   Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Google Pay not available in your device.Try another payment method", Snackbar.LENGTH_LONG).show();
+            if(isReady == false) {
+                 btnenable = false;
             } else {
-                 // Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Success", Snackbar.LENGTH_LONG).show();
+                 btnenable = true;
             }
 
     }
 
     private void onGooglePayResult(@NotNull GooglePayPaymentMethodLauncher.Result result) {
+
+        loadingshow();
 
         Log.e("paymentresult", "" + result);
         if (result instanceof GooglePayPaymentMethodLauncher.Result.Completed) {
@@ -856,8 +895,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     ((GooglePayPaymentMethodLauncher.Result.Completed) result).getPaymentMethod().id;
             Log.e("paymentMethodId", "" + paymentMethodId);
 
+            float hh = Float.parseFloat(pay_amt1);
+            float  toatlamt = (hh* 100);
+           // Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
+
             Map<String, String> params = new HashMap<String, String>();
-            params.put("drivertips", String.valueOf(gpay_amount));
+            //params.put("drivertips", String.valueOf(gpay_amount));
+            params.put("drivertips", String.valueOf(Long.valueOf(String.format("%d", (long) toatlamt))));
             params.put("app_id", "0");
             params.put("fname", tip_pay_first_name);
             params.put("lname", tip_pay_last_name);
@@ -875,9 +919,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 public void onResponse(Call<getgpaystuartpayment_model> call, Response<getgpaystuartpayment_model> response) {
                     int statusCode = response.code();
                     Log.e("statusCode", "" + statusCode);
+                    hideloading();
                     if (statusCode == 200) {
 
                         if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                              cardpayment = false;
+
                               gpay_client_secret = response.body().getData().getClient_secret();
                               Log.e("gpay_client_secret", "" + gpay_client_secret);
 
@@ -905,7 +953,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 @Override
                 public void onFailure(retrofit2.Call<getgpaystuartpayment_model> call, Throwable t) {
-
+                    hideloading();
                     Log.e("errorcode1", "" + t);
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
@@ -913,8 +961,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         }
         else if (result instanceof GooglePayPaymentMethodLauncher.Result.Canceled) {
+            hideloading();
             Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_LONG).show();
         } else if (result instanceof GooglePayPaymentMethodLauncher.Result.Failed) {
+            hideloading();
             Log.e("paymentfails", "" + ((GooglePayPaymentMethodLauncher.Result.Failed) result).getError());
             Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
 
@@ -982,6 +1032,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         TextView pay_stuart_card = deliverytip.findViewById(R.id.pay_stuart_card);
         EditText card_cvv_no = deliverytip.findViewById(R.id.card_cvv_no);
         LinearLayout stuart_gpay = deliverytip.findViewById(R.id.stuart_gpay);
+        LinearLayout card_details = deliverytip.findViewById(R.id.card_details);
+        TextView cardnumbererror = deliverytip.findViewById(R.id.cardnumbererror);
 
 
        //  pay_amt
@@ -1013,55 +1065,93 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             @Override
             public void onClick(View v) {
 
+
+
                 String tip_cardno = card_number.getText().toString().trim();
                 String tip_expdate = exp_date.getText().toString().trim();
                 String tip_month = exp_month.getText().toString().trim();
                 String tip_cardccv = card_cvv_no.getText().toString().trim();
 
+                String regexPattern = "^\\d{4}[-\\s]?\\d{4}[-\\s]?\\d{4}[-\\s]?\\d{4}$";
 
-                CardInputWidget cardInputWidget = new CardInputWidget(Order_Status_Activity.this);
-                cardInputWidget.setCardNumber(tip_cardno);
-                cardInputWidget.setCvcCode(tip_cardccv);
-                cardInputWidget.setExpiryDate(Integer.parseInt(tip_expdate), Integer.parseInt(tip_month));
-                cardInputWidget.setPostalCodeRequired(false);
-                PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
+                Pattern pattern = Pattern.compile(regexPattern);
+                Matcher matcher = pattern.matcher(tip_cardno);
 
-                PaymentConfiguration.init(getApplicationContext(), apikey);//new version add this line version 17.0.0
-                   stripe = new Stripe(
-                        getApplicationContext(),
-                        Objects.requireNonNull(apikey)
-                );
-                stripe.createPaymentMethod(params, new ApiResultCallback<PaymentMethod>() {
-                    @Override
-                    public void onSuccess(PaymentMethod result) {
-                        deliverytip.dismiss();
-                        loadingshow();
-                        Cardpay(result.id,pay_amt);
-                        Log.e("createmethodid", "" + result.id);
+                  if(tip_cardno.isEmpty()){
+                      Snackbar.make(card_details, "Card details number cannot be empty", Snackbar.LENGTH_LONG).show();
+                  }else if(tip_expdate.isEmpty() || tip_month.isEmpty()){
+                      Snackbar.make(card_details, "Expiration Date number cannot be empty", Snackbar.LENGTH_LONG).show();
+                  }else if(tip_cardccv.isEmpty()){
+                      Snackbar.make(card_details, "Cvv number cannot be empty", Snackbar.LENGTH_LONG).show();
+                  }else if(!matcher.matches()) {
+                      Drawable error_drawable = ContextCompat.getDrawable(Order_Status_Activity.this, R.drawable.sturat_edittext_bg_error);
+                      card_number.setBackground(error_drawable);
+                      cardnumbererror.setVisibility(View.VISIBLE);
+                  }else{
 
-                    }
+                      CardInputWidget cardInputWidget = new CardInputWidget(Order_Status_Activity.this);
+                      cardInputWidget.setCardNumber(tip_cardno);
+                      cardInputWidget.setCvcCode(tip_cardccv);
+                      cardInputWidget.setExpiryDate(Integer.parseInt(tip_expdate), Integer.parseInt(tip_month));
+                      cardInputWidget.setPostalCodeRequired(false);
+                      PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
 
-                    @Override
-                    public void onError(Exception e) {
 
-                    }
-                });
+                      Log.d("shdfvfsgfsjbwegflasfhsf"," " + params);
+
+                      if(params != null){
+
+                          PaymentConfiguration.init(getApplicationContext(), apikey);//new version add this line version 17.0.0
+                          stripe = new Stripe(
+                                  getApplicationContext(),
+                                  Objects.requireNonNull(apikey)
+                          );
+                          stripe.createPaymentMethod(params, new ApiResultCallback<PaymentMethod>() {
+                              @Override
+                              public void onSuccess(PaymentMethod result) {
+                                  deliverytip.dismiss();
+                                  loadingshow();
+                                  Cardpay(result.id,pay_amt);
+                                  Log.e("createmethodid", "" + result.id);
+
+                              }
+
+                              @Override
+                              public void onError(Exception e) {
+
+                              }
+                          });
+
+                     }else{
+                          Snackbar.make(card_details, " Expire date is invalid.", Snackbar.LENGTH_LONG).show();
+                       }
+                  }
 
                  }
             });
 
 
         stuart_gpay.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
                 deliverytip.dismiss();
-                gpay_amount = (int) Math.round(Float.parseFloat(pay_amt1));
-             /*   float hh = Float.parseFloat(pay_amt1);
+              // gpay_amount = (int) Math.round(Float.parseFloat(pay_amt1));
+                float hh = Float.parseFloat(pay_amt1);
                 float  toatlamt = (hh* 100);
                 Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
-              */
-                googlePayLauncher.present("GBP", gpay_amount);
+
+
+              if(btnenable == false){
+                  stuart_gpay.setClickable(false);
+                  Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), "Google Pay not available in your device.Try another payment method", Snackbar.LENGTH_LONG).show();
+              }else{
+                  stuart_gpay.setClickable(true);
+                //  googlePayLauncher.present("GBP", gpay_amount);
+                  googlePayLauncher.present("GBP", Math.toIntExact(Long.valueOf(String.format("%d", (long) toatlamt))));
+              }
+
             }
         });
 
@@ -1090,6 +1180,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         metdpasfullUrl = orderpath + "/stripepaymentProcess";
        // metdpasfullUrl = orderpath + "/stripeProcessDriverTips";
 
+
+        Log.d("hdsvjdvhdsvhsdvhv","False_Testing");
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         retrofit2.Call<getclientSecret_model> call = apiService.getclientSecret(metdpasfullUrl, params, "Bearer" + token);
         Log.e("paramsintentpass", "" + params + "" + metdpasfullUrl);
@@ -1115,6 +1208,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     String secret = st.nextToken().replace("\"", "").replace("}", "").replace(" ", "");
 
                     Log.e("community", "" + secret);
+
+                    cardpayment = true;
 
                     Order_Status_Activity.this.runOnUiThread(() -> stripe.handleNextActionForPayment(Order_Status_Activity.this, secret));
 
@@ -1210,12 +1305,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         retrofit2.Call<completpay_model> call = apiService.completpay(intepasfullUrl, paramspay, "Bearer" + token);
 
+        Log.d("hdsvjdvhdsvhsdvhv","False_Testing2");
+
         Log.e("paramspay", "" + paramspay);
         call.enqueue(new retrofit2.Callback<completpay_model>() {
             @Override
             public void onResponse(retrofit2.Call<completpay_model> call, retrofit2.Response<completpay_model> response) {
                 int statusCode = response.code();
-                Log.e("completedstatusCode", "" + statusCode);
+                Log.e("completedstatusCode", "" + statusCode + "====" + paramspay + " " + intepasfullUrl);
                 hideloading();
 
                 if (statusCode == 200) {
@@ -2656,8 +2753,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
 
-        stripe.onPaymentResult(reqCode, data, new Order_Status_Activity.PaymentResultCallback(Order_Status_Activity.this));
-
+            if(cardpayment == true){
+                stripe.onPaymentResult(reqCode, data, new Order_Status_Activity.PaymentResultCallback(Order_Status_Activity.this));
+                cardpayment = false;
+            }
 
         switch (reqCode) {
             case (PICK_CONTACT) :

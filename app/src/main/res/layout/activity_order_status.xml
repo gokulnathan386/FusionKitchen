@@ -558,8 +558,8 @@
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="#ffffff"
-            app:cardMaxElevation="2dp"
             android:visibility="gone"
+            app:cardMaxElevation="2dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
             >
@@ -650,11 +650,13 @@
                         </TextView>
 
                             <TextView
+                                android:id="@+id/clear_txt"
                                 android:layout_weight="1"
                                 android:textSize="@dimen/_10sdp"
                                 android:fontFamily="@font/poppins_medium"
                                 android:text="CLEAR"
                                 android:gravity="end"
+                                android:visibility="gone"
                                 android:layout_marginRight="2dp"
                                 android:layout_gravity="center_vertical"
                                 android:textColor="#E0467C"
@@ -1518,6 +1520,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/addmoreitem"
                             android:fontFamily="@font/poppins_semibold"
                             android:textColor="#4D4D4D"
                             android:textSize="@dimen/_12sdp"

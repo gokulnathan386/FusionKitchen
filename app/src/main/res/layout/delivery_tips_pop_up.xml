@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:gravity="bottom"
+        android:id="@+id/card_details"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -179,6 +180,20 @@
                         android:textColor="#204356"
                         android:textSize="@dimen/_12sdp">
                     </EditText>
+
+                    <TextView
+                        android:layout_marginTop="2dp"
+                        android:textSize="13dp"
+                        android:textColor="#FF0000"
+                        android:gravity="end"
+                        android:visibility="gone"
+                        android:textStyle="normal"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Please enter the valid details"
+                        android:id="@+id/cardnumbererror"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </TextView>
 
                 </LinearLayout>
 
