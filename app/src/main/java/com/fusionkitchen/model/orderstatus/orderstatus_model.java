@@ -131,6 +131,20 @@ public class orderstatus_model {
             @SerializedName("path")
             private String path;
 
+            @SerializedName("latitude")
+            private String latitude;
+
+            @SerializedName("longitude")
+            private String longitude;
+
+            @SerializedName("postcode")
+            private String postcode;
+
+
+            @SerializedName("address_location")
+            private String address_location;
+
+
             @SerializedName("logo")
             private String logo;
 
@@ -142,6 +156,9 @@ public class orderstatus_model {
 
             @SerializedName("clientno")
             private String clientno;
+
+            @SerializedName("area")
+            private String area;
 
 
             public String getPath() {
@@ -182,6 +199,46 @@ public class orderstatus_model {
 
             public void setClientno(String clientno) {
                 this.clientno = clientno;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public String getLongitude() {
+                return longitude;
+            }
+
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
+
+            public String getPostcode() {
+                return postcode;
+            }
+
+            public void setPostcode(String postcode) {
+                this.postcode = postcode;
+            }
+
+            public String getAddresslocation() {
+                return address_location;
+            }
+
+            public void setAddresslocation(String address_location) {
+                this.address_location = address_location;
+            }
+
+            public String getArea() {
+                return area;
+            }
+
+            public void setArea(String area) {
+                this.area = area;
             }
         }
 

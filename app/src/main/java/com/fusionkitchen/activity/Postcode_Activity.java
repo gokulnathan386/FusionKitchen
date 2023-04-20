@@ -746,12 +746,40 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                    String Order_client_Number_track = Order_client_Number_split[0]; // Order_client_phone_no
 
                                    String  Order_Gpay_sec = Order_client_Number_split[1];
-                                   String[] Order_Gpay_split = Order_Gpay_sec.split("&_order_status=");
+                                   String[] Order_Gpay_split = Order_Gpay_sec.split("&_orderpostcode=");
                                    String Order_Gpay = Order_Gpay_split[0];  // API Sec Key
+
+                                   String  Order_postcode_sec = Order_Gpay_split[1];
+                                   String[] Order_postcode_split = Order_postcode_sec.split("&_orderarea=");
+                                   String Order_postCode = Order_postcode_split[0];  // Order Tracking Postcode
+
+                                   String  Order_area_sec = Order_postcode_split[1];
+                                   String[] Order_area_sec_split = Order_area_sec.split("&_orderaddress=");
+                                   String Order_area = Order_area_sec_split[0];  // Order Tracking Area
+
+                                   String  Order_addresss_sec = Order_area_sec_split[1];
+                                   String[] Order_address_sec_split = Order_addresss_sec.split("&_orderlat=");
+                                   String Order_address = Order_address_sec_split[0];  // Order Tracking Address
+
+                                   String  Order_lat_sec = Order_address_sec_split[1];
+                                   String[] Order_lat_sec_split = Order_lat_sec.split("&_orderlon=");
+                                   String Order_lat = Order_lat_sec_split[0];  // Order Tracking lat
+
+                                   String  Order_log_sec = Order_lat_sec_split[1];
+                                   String[] Order_log_sec_split = Order_log_sec.split("&_order_status=");
+                                   String Order_log = Order_log_sec_split[0];  // Order Tracking log
+
+
+                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_postCode );
+                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_area );
+                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_address );
+                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_lat );
+                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_log );
+
+
 
                                    String Order_data = Order_date_track.replaceAll("\\+"," ");
                                    String Order_client_res_name = Order_Client_track.replaceAll("\\+"," ");
-
 
                                    Intent intent = new Intent(Postcode_Activity.this, Order_Status_Activity.class);
                                    intent.putExtra("orderid", Order_id_track);
@@ -761,6 +789,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                                    intent.putExtra("clientid", Order_Client_id_track);
                                    intent.putExtra("clientphonenumber",Order_client_Number_track);
                                    intent.putExtra("gpay_apikey",Order_Gpay);
+                                   /*----------------------Order Tracking--------------------*/
+                                   intent.putExtra("order_postcode",Order_postCode);
+                                   intent.putExtra("order_area",Order_area);
+                                   intent.putExtra("order_address",Order_address);
+                                   intent.putExtra("order_lat",Order_lat);
+                                   intent.putExtra("order_lon",Order_log);
+
                                    startActivity(intent);
 
 

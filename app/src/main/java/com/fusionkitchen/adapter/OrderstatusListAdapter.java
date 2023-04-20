@@ -115,9 +115,15 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
                 intent.putExtra("clientphonenumber", orderhistory[position].getClient().getClientno());
                 mContext.startActivity(intent);*/
 
+
+
+
                 getpublisekey(orderhistory[position].getOrder().getId(),orderhistory[position].getClient().getPath(),
                         orderhistory[position].getOrder().getDate(),orderhistory[position].getClient().getClientname(),
-                        orderhistory[position].getClient().getCid(), orderhistory[position].getClient().getClientno()
+                        orderhistory[position].getClient().getCid(), orderhistory[position].getClient().getClientno(),
+                        orderhistory[position].getClient().getPostcode(),orderhistory[position].getClient().getArea(),
+                        orderhistory[position].getClient().getAddresslocation(),orderhistory[position].getClient().getLatitude(),
+                        orderhistory[position].getClient().getLongitude()
                         );
 
 
@@ -130,7 +136,11 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
 
     }
 
-    private void getpublisekey(String id,String menuurlpath,String Date,String Clientname,String cid,String Clientno) {
+
+
+    private void getpublisekey(String id,String menuurlpath,String Date,String Clientname,String cid,String Clientno,
+                               String O_postcode,String O_area,String O_address,String O_lat,String O_lon
+    ) {
         bulkeyfullUrl = menuurlpath + "/stripeAppId";
         Log.d("stripeappid",bulkeyfullUrl);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -155,6 +165,13 @@ public class OrderstatusListAdapter extends RecyclerView.Adapter<OrderstatusList
                         intent.putExtra("clientid", cid);
                         intent.putExtra("clientphonenumber",Clientno);
                         intent.putExtra("gpay_apikey",apikey);
+                        /*----------------------Order Tracking--------------------*/
+                        intent.putExtra("order_postcode",O_postcode);
+                        intent.putExtra("order_area",O_area);
+                        intent.putExtra("order_address",O_address);
+                        intent.putExtra("order_lat",O_lat);
+                        intent.putExtra("order_lon",O_lon);
+
                         mContext.startActivity(intent);
 
                     }

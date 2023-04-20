@@ -24,6 +24,7 @@
             android:gravity="left">
 
             <ImageView
+                android:id="@+id/order_backbtn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
@@ -1519,7 +1520,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/addmoreitem"
                             android:fontFamily="@font/poppins_semibold"
                             android:textColor="#4D4D4D"
                             android:textSize="@dimen/_12sdp"

@@ -551,7 +551,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
             reloadback = "0";
         } else {
             reloadback = intent.getStringExtra("reloadback");
-
         }
 
         Log.d("reloadback",""+intent.getStringExtra("reloadback"));
@@ -1201,6 +1200,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 } else if(reloadback.equalsIgnoreCase("5")){
                     startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                     finish();
+                } else if(reloadback.equalsIgnoreCase("6")){
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
                 }else{
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     finish();
@@ -1241,10 +1243,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                     finish();
 
+                }else if(reloadback.equalsIgnoreCase("6")){
+                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                    finish();
                 }else {
                     startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
                     finish();
-
                 }
                 //finish();
             }
@@ -2057,6 +2061,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                 finish();
             } else if(reloadback.equalsIgnoreCase("5")){
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                finish();
+            }else if(reloadback.equalsIgnoreCase("6")){
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                 finish();
             }else{
@@ -5260,6 +5267,9 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
             } else if(reloadback.equalsIgnoreCase("5")){
                 startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+            }else if(reloadback.equalsIgnoreCase("6")){
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                finish();
             }else{
                 startActivity(new Intent(getApplicationContext(), Dashboard_Activity.class));
             }
