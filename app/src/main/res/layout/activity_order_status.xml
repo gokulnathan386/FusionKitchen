@@ -1303,6 +1303,7 @@
                     </androidx.recyclerview.widget.RecyclerView>
 
                     <LinearLayout
+                        android:id="@+id/total_layout"
                         android:weightSum="2"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3sp"
@@ -1337,6 +1338,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/dis_layout"
                         android:weightSum="2"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3sp"
@@ -1451,6 +1453,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/totallay"
                         android:weightSum="2"
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="3dp"

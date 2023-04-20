@@ -144,6 +144,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
     int gpay_amount;
     Boolean btnenable,cardpayment = false;
+    LinearLayout total_layout,dis_layout,total_lay;
     TextView rider_name;
     String order_expected_time;
     String pay_descval,Stuartdrivename,Stuartdrivenumber;
@@ -390,6 +391,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         add_more_item = findViewById(R.id.add_more_item);
         order_backbtn = findViewById(R.id.order_backbtn);
         google_api_key = getString(R.string.map_key);
+        total_layout = findViewById(R.id.total_layout);
+        dis_layout = findViewById(R.id.dis_layout);
+        total_lay = findViewById(R.id.totallay);
 
 
         total_item.setOnClickListener(new View.OnClickListener() {
@@ -1721,7 +1725,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
                           // BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bikestuart);
-                           BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.biketest);
+                           BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bike_map);
                            Bitmap b1=bitmapdraw1.getBitmap();
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, 60, 80, false);
 
@@ -2384,12 +2388,27 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         myorderList.setLayoutManager(new LinearLayoutManager(Order_Status_Activity.this));
                         myorderList.setAdapter(menuitemnameadapter);
 
+                        if(response.body().getOrdertracking().getOrder().getOrder().getSub_total().equalsIgnoreCase("0.00")){
+                            total_layout.setVisibility(View.GONE);
+                        }else{
+                            total_layout.setVisibility(View.VISIBLE);
+                            subtotal_item.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
+                        }
 
-                        subtotal_item.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
+                        if(response.body().getOrdertracking().getOrder().getOrder().getDiscount().equalsIgnoreCase("0.00")){
+                            dis_layout.setVisibility(View.GONE);
+                        }else{
+                            dis_layout.setVisibility(View.VISIBLE);
+                            orderlist_discount.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getDiscount());
+                        }
 
-                        orderlist_discount.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getDiscount());
+                        if(response.body().getOrdertracking().getOrder().getOrder().getTotal().equalsIgnoreCase("0.00")){
+                           total_lay.setVisibility(View.GONE);
+                        }else{
+                           total_lay.setVisibility(View.VISIBLE);
+                           total_itemlist.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getTotal());
+                        }
 
-                        total_itemlist.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getTotal());
 
                     }
 
