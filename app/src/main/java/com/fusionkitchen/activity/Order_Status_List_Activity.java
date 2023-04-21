@@ -263,37 +263,6 @@ public class Order_Status_List_Activity extends AppCompatActivity {
         return cursor;
     }
 
-
-   /* public void OrderPlaced(View view) {
-        //startActivity(new Intent(Order_Status_List_Activity.this,TrackActivity.class));
-        String orderStatus = "0";
-        Intent intent = new Intent(Order_Status_List_Activity.this, Order_Status_Activity.class);
-        intent.putExtra("orderStatus", orderStatus);
-        startActivity(intent);
-    }
-
-    public void OrderConfirmed(View view) {
-        String orderStatus = "1";
-        Intent intent = new Intent(Order_Status_List_Activity.this, Order_Status_Activity.class);
-        intent.putExtra("orderStatus", orderStatus);
-        startActivity(intent);
-    }
-
-    public void OrderProcessed(View view) {
-        String orderStatus = "2";
-        Intent intent = new Intent(Order_Status_List_Activity.this, Order_Status_Activity.class);
-        intent.putExtra("orderStatus", orderStatus);
-        startActivity(intent);
-    }
-
-    public void OrderPickup(View view) {
-        String orderStatus = "3";
-        Intent intent = new Intent(Order_Status_List_Activity.this, Order_Status_Activity.class);
-        intent.putExtra("orderStatus", orderStatus);
-        startActivity(intent);
-    }*/
-
-
     /*  ---------------------------get api URL first time get type values----------------------------------------------------*/
     private void orderstatus(String userid, String user_email) {
         loadingshow();

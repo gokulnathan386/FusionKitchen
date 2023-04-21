@@ -195,22 +195,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String _ccNumber = "";
 
     /*---------------------------Back Button Click----------------------------------------------------*/
-    ImageView back;
+
 
 
     String fname;
     String pickup_lat,pickup_long,dropoff_lat,dropoff_long,driver_lat,driver_long;
     /*---------------------------XML ID Call----------------------------------------------------*/
 
-    View view_order_placed, view_order_confirmed, view_order_processed, view_order_pickup, con_divider, ready_divider, placed_divider;
-    ImageView img_orderconfirmed, orderprocessed, orderpickup, orderplaced,down_arrow,up_arrow;
-    TextView textorderpickup, text_confirmed, textorderprocessed, textorderplaced,total_item_count,total_itemlist;
+    ImageView down_arrow,up_arrow;
+    TextView total_item_count,total_itemlist;
 
-    AppCompatTextView order_date, order_id, total_amt, Delivery_Collection_time,user_delivery_address;
+    AppCompatTextView  total_amt,user_delivery_address;
 
-    ConstraintLayout tracking_layout, bill_layout;
-    AppCompatTextView view_bill, hide_bill;
-    TextView listview_total, sub_amt, service_amt, coupon_amt, delivery_amt, bag_amt,chg_address,alternative_number;
+    TextView sub_amt, service_amt, coupon_amt, delivery_amt, bag_amt,chg_address,alternative_number;
     RelativeLayout servicel_layout, delivery_layout, coupon_layout, bag_layout;
 
     RecyclerView myorderList;
@@ -238,7 +235,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     RadioGroup tip_button_view;
     TextView rest_name,name_phoneno,sub_amt_stuart,stuart_order_tracking_share_btn,subtotal_item;
 
-    AppCompatButton chat_client, call_client;
     String phone, gmail;
     LinearLayout botton_top;
     CardView botton_top_vis,restaurants_mobile_no,submit_review_btn;
@@ -248,7 +244,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     TextView change_add_btn;
     Dialog  dialog;
     EditText post_code_txtview,House_doorno_txt,street_stuart;
-    int mapcon;
+    int mapcon = 0;
 
 
 
@@ -276,7 +272,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         /*---------------------------Back Button Click----------------------------------------------------*/
         //Back Boutton Click
-        back = findViewById(R.id.back);
+
 
         /*--------------Login details get SharedPreferences------------------*/
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
@@ -296,30 +292,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         /*---------------------------XML ID Call----------------------------------------------------*/
 
-        view_order_placed = findViewById(R.id.view_order_placed);
-        view_order_confirmed = findViewById(R.id.view_order_confirmed);
-        view_order_processed = findViewById(R.id.view_order_processed);
-        view_order_pickup = findViewById(R.id.view_order_pickup);
-
-        placed_divider = findViewById(R.id.placed_divider);
-        con_divider = findViewById(R.id.con_divider);
-        ready_divider = findViewById(R.id.ready_divider);
-        textorderpickup = findViewById(R.id.textorderpickup);
-
-        text_confirmed = findViewById(R.id.text_confirmed);
-        textorderprocessed = findViewById(R.id.textorderprocessed);
-        textorderplaced = findViewById(R.id.textorderplaced);
-        img_orderconfirmed = findViewById(R.id.img_orderconfirmed);
-
-        orderplaced = findViewById(R.id.orderplaced);
-        orderprocessed = findViewById(R.id.orderprocessed);
-        orderpickup = findViewById(R.id.orderpickup);
-        order_date = findViewById(R.id.order_date);
-
-        order_id = findViewById(R.id.order_id);
         total_amt = findViewById(R.id.total_amt);
         myorderList = findViewById(R.id.myorderList);
-        listview_total = findViewById(R.id.listview_total);
+
 
         sub_amt = findViewById(R.id.sub_amt);
         service_amt = findViewById(R.id.service_amt);
@@ -332,12 +307,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         coupon_layout = findViewById(R.id.coupon_layout);
 
         bag_layout = findViewById(R.id.bag_layout);
-        chat_client = findViewById(R.id.chat_client);
-        call_client = findViewById(R.id.call_client);
         custom_edittxt = findViewById(R.id.custom_edittxt);
         tip_button_view = findViewById(R.id.tip_button_view);
 
-        Delivery_Collection_time = findViewById(R.id.Delivery_Collection_time);
+
         tip_btn = findViewById(R.id.tip_btn);
         custom_tip_textview = findViewById(R.id.custom_tip_textview);
 
@@ -611,12 +584,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
         /*--------------------------------------End Map-----------------------*/
-        chat_client.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Freshchat.showConversations(getApplicationContext());
-            }
-        });
+
 
         Intent intent = getIntent();
         orderid = intent.getStringExtra("orderid");
@@ -643,10 +611,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         Log.e("itemvalue6", "" + clientphonenumber);
 
 
-        //   order_date.setText(orderdate);
-
-        order_id.setText("Order Id: " + orderid);
-
         getstuarttracking(orderid, orderpath);
 
         handler.postDelayed(new Runnable() {
@@ -667,72 +631,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         }, delay);
 
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handler.removeCallbacksAndMessages(null);
-                startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
-            }
-        });
 
-       /* String orderStatus = intent.getStringExtra("orderStatus");
-        getOrderStatus(orderStatus);*/
 
-        tracking_layout = findViewById(R.id.tracking_layout);
-        bill_layout = findViewById(R.id.bill_layout);
-
-        view_bill = findViewById(R.id.view_bill);
-        hide_bill = findViewById(R.id.hide_bill);
-
-        view_bill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view_bill.setVisibility(View.GONE);
-                hide_bill.setVisibility(View.VISIBLE);
-                tracking_layout.setVisibility(View.GONE);
-                bill_layout.setVisibility(View.VISIBLE);
-                handler.removeMessages(0);
-            }
-        });
-        hide_bill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view_bill.setVisibility(View.VISIBLE);
-                hide_bill.setVisibility(View.GONE);
-                tracking_layout.setVisibility(View.VISIBLE);
-                bill_layout.setVisibility(View.GONE);
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-
-                        int_chk = new Internet_connection_checking(Order_Status_Activity.this);
-                        Connection = int_chk.checkInternetConnection();
-
-                        if (!Connection) {
-                            ViewDialog alert = new ViewDialog();
-                            alert.showDialog(Order_Status_Activity.this);
-                        }else{
-                            getstuarttracking(orderid, orderpath);
-                        }
-
-                        handler.postDelayed(this, delay);
-                    }
-                }, delay);
-            }
-        });
-
-        call_client.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                /*if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:+44 " + clientphonenumber));
-                    startActivity(callIntent);
-                } else {
-                    requestPermissions(new String[]{CALL_PHONE}, 1);
-                }*/
-            }
-        });
 
         tip_button_view.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -1161,10 +1061,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void Cardpay(@Nullable String paymentMethodId,String tippayamt) {
       //  loadingshow();
 
-        Log.e("paymentMethodId", "" + paymentMethodId);
+        Log.e("paymentMethodId", "" + paymentMethodId + "------" + tippayamt);
+
+        float hh = Float.parseFloat(tippayamt);
+        float  toatlamt = (hh* 100);
+        // Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
+        String ant_driver_tip = String.valueOf(Long.valueOf(String.format("%d", (long) toatlamt)));
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("payment_method_id", paymentMethodId);
-        params.put("drivertips", tippayamt);
+        params.put("drivertips", ant_driver_tip);
         params.put("fname", tip_pay_first_name);
         params.put("lname", tip_pay_last_name);
         params.put("email", E_mail);
@@ -1279,6 +1185,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     private void paymentcompleted(String intentid, String typestatus) {
         loadingshow();
+
+        float hh = Float.parseFloat(pay_amt1);
+        float  toatlamt = (hh* 100);
+        String ant_driver_tip = String.valueOf(Long.valueOf(String.format("%d", (long) toatlamt)));
+
         Map<String, String> paramspay = new HashMap<String, String>();
         if (typestatus.equalsIgnoreCase("false")) {
             paramspay.put("payment_intent_id", intentid);
@@ -1286,7 +1197,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             paramspay.put("paymentIntent", intentid);
         }
 
-        paramspay.put("drivertips", pay_amt1);
+        paramspay.put("drivertips", ant_driver_tip);
         paramspay.put("fname", tip_pay_first_name);
         paramspay.put("lname", tip_pay_last_name);
         paramspay.put("email", E_mail);
@@ -2287,12 +2198,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_anim.setAnimation(R.raw.foodloading);
                                collection_anim.playAnimation();
                                collect_txt_msg.setText(delivery_status_name);
-                               header_txt_status.setText(order_expected_time);
                                collection_txtmsg.setText("The restaurant will confirm your\norder soon");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
                                tip_module.setVisibility(View.GONE);
                                tip_txt.setVisibility(View.GONE);
+                               header_txt_status.setText("Awaiting Confirmation");
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.VISIBLE);
@@ -2648,11 +2559,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 public void onClick(View v) {
 
                     delieveddialog.cancel();
-                    view_bill.setVisibility(View.GONE);
-                    hide_bill.setVisibility(View.VISIBLE);
 
-                    tracking_layout.setVisibility(View.GONE);
-                    bill_layout.setVisibility(View.VISIBLE);
 
                 }
             });
