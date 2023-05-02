@@ -159,6 +159,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
                if (holder.child_recyclerview.getVisibility() == View.GONE) {
                     holder.child_recyclerview.setVisibility(View.VISIBLE);
                     holder.dropdownindicator.setRotation((float) 180.0);
+
                 } else {
 
                     holder.child_recyclerview.setVisibility(View.GONE);
@@ -174,10 +175,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
 
             }
         });
-
-
-
-
 
         List<menu_item_sub_model.categoryall.subcat> itemsubcatname = new ArrayList<>();
 

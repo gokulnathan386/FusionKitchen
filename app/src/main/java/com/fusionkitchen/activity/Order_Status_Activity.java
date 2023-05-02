@@ -634,6 +634,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
 
+
         tip_button_view.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -2192,6 +2193,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            driver_details.setVisibility(View.GONE);
                            OrderDetails_layout.setVisibility(View.GONE);
                            order_details_view.setVisibility(View.GONE);
+                         /* <----------Driver Tip GONE Module--------> */
+                           tip_module.setVisibility(View.GONE);
+                           tip_txt.setVisibility(View.GONE);
 
                            if(delivery_status.equalsIgnoreCase("0")){
 
@@ -2201,8 +2205,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_txtmsg.setText("The restaurant will confirm your\norder soon");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
-                               tip_module.setVisibility(View.GONE);
-                               tip_txt.setVisibility(View.GONE);
                                header_txt_status.setText("Awaiting Confirmation");
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
@@ -2217,8 +2219,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_txtmsg.setText("Your food is being prepared \n& can be picked up soon!");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
-                               tip_module.setVisibility(View.VISIBLE);
-                               tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.GONE);
@@ -2232,8 +2232,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_txtmsg.setText("We regret to inform you that \nyour order has been rejected");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
-                               tip_module.setVisibility(View.VISIBLE);
-                               tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.VISIBLE);
@@ -2245,8 +2243,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(order_expected_time);
                                collection_txtmsg.setText("Your Order Is Ready & Can Be \nCollected Now!");
-                               tip_module.setVisibility(View.VISIBLE);
-                               tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.GONE);
@@ -2277,8 +2273,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                header_txt_status.setText(order_expected_time);
                                collection_txtmsg.setText("We regret to inform you that \nyour order has been Cancel");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
-                               tip_module.setVisibility(View.VISIBLE);
-                               tip_txt.setVisibility(View.VISIBLE);
                                delivery_coll_tip_txt.setText("Tips to Thank");
                                delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                stuart_delivery_status = true;

@@ -1,6 +1,8 @@
 package com.fusionkitchen.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,8 +74,6 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
         }
 
 
-
-
         TimeZone tz = TimeZone.getTimeZone("Europe/London");
         Calendar c = Calendar.getInstance(tz);
 
@@ -118,7 +118,6 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
             itemname.add(itemsubcatname[position].getItems().get(k));
 
         }
-
 
 
         MenuitemnameAdapter menuitemnameadapter = new MenuitemnameAdapter(mContext, itemname,  menuurlpath, itemsubcatname[position], listdatum,category_time,subcat_restaurants_working_time);

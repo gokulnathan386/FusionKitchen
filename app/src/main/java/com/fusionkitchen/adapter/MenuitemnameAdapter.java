@@ -168,6 +168,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
     String category_time,sub_category_time;
     String item_dayOfTheWeek,item_restaurants_working_time;
 
+
     // RecyclerView recyclerView;
     public MenuitemnameAdapter(Context mContext, List<menu_item_sub_model.categoryall.subcat.items> items, String menuurlpath, menu_item_sub_model.categoryall.subcat sub,
                                menu_item_sub_model.categoryall listdatum,String category_time,String sub_category_time) {
@@ -308,19 +309,6 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         /*---------------------------Sql Lite DataBase----------------------------------------------------*/
 
          getContactsCount();
-
-         /*if(items[position].getAvailableTime().equalsIgnoreCase("")){
-
-            holder.menu_item_add.setVisibility(View.VISIBLE);
-            holder.textview_avaliable_time.setVisibility(GONE);
-
-            }else{
-
-                holder.textview_avaliable_time.setText(items[position].getAvailableTime());
-                holder.menu_item_add.setVisibility(GONE);
-
-            }*/
-
 
              if(items[position].getBestseller().equalsIgnoreCase("true")){
 
@@ -2414,6 +2402,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
     @Override
     public int getItemCount() {
+        Log.d("kldnkaskasksansklacnss","Legth-->" + items.length);
         return items.length;
     }
 
