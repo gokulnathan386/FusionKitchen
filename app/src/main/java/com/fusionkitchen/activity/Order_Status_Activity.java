@@ -221,7 +221,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String orderid, orderpath, orderdate, clientname, txtotype, clientid, clientphonenumber;
     String m_orderpostcode,m_orderarea,m_orderaddress,m_orderlat,m_orderlon;
 
-    String otype, statusshow, customername,rest_phone_no;
+    String customername,rest_phone_no;
 
     final Handler handler = new Handler();
     Runnable runnable;
@@ -653,9 +653,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-               /* Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-                dialIntent.setData(Uri.parse("tel:" + rest_phone_no));
-                startActivity(dialIntent);*/
 
                 if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);

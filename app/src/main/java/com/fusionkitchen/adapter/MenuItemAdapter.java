@@ -3,6 +3,7 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
     private menu_item_sub_model.categoryall[] listdata;
     private static Context mContext;
     String cat_dayOfTheWeek,cat_restaurants_working_time;
+    ProgressDialog loader;
 
     List<String> itemcatname = new ArrayList<String>();
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/
@@ -154,9 +156,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
-                //loadingshow();
-
                if (holder.child_recyclerview.getVisibility() == View.GONE) {
+
                     holder.child_recyclerview.setVisibility(View.VISIBLE);
                     holder.dropdownindicator.setRotation((float) 180.0);
 
@@ -183,6 +184,9 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.ViewHo
             itemsubcatname.add(listdata[position].getSubcat().get(j));
 
         }
+
+
+
         MenuSubcatnameAdapter menuitemnameadapter = new MenuSubcatnameAdapter(mContext, itemsubcatname, listdata[position].getSubcat(),  menuurlpath, listdata[position],cat_restaurants_working_time);
 
         holder.child_recyclerview.setHasFixedSize(true);

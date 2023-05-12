@@ -1,12 +1,17 @@
 package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +25,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.Item_Menu_Activity;
 import com.fusionkitchen.model.menu_model.menu_item_sub_model;
 
 public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAdapter.ViewHolder> {
@@ -33,6 +40,8 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
     private String  menuurlpath;
     private String  category_time;
     String subcat_dayOfTheWeek,subcat_restaurants_working_time;
+
+
 
 
     // RecyclerView recyclerView;
@@ -111,6 +120,7 @@ public class MenuSubcatnameAdapter extends RecyclerView.Adapter<MenuSubcatnameAd
         }
 
         List<menu_item_sub_model.categoryall.subcat.items> itemname = new ArrayList<>();
+
 
 
         for (int k = 0; k < itemsubcatname[position].getItems().size(); k++) {
