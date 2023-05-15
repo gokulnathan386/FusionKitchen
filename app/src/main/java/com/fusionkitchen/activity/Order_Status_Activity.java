@@ -72,14 +72,19 @@ import com.fusionkitchen.model.paymentgatway.appkey;
 import com.fusionkitchen.model.paymentgatway.completpay_model;
 import com.fusionkitchen.model.paymentgatway.getclientSecret_model;
 import com.fusionkitchen.model.updatestuartaddress_modal;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -94,6 +99,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +145,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt,card_number;
+    String url;
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
@@ -164,8 +171,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     ImageView order_backbtn;
     String google_api_key;
 
-    private static final int REQUEST_READ_CONTACTS_PERMISSION = 0;
-    private static final int REQUEST_CONTACT = 1;
+
     GooglePayPaymentMethodLauncher googlePayLauncher;
 
 
@@ -174,6 +180,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     BottomNavigationView bottomNav;
     EditText comments_txt,city_stuart;
     TextView tip_txt;
+    Boolean latlogmap = true,twolatlogmap = true;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -193,6 +200,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private static final int PICK_CONTACT = 104;
 
     String _ccNumber = "";
+
 
     /*---------------------------Back Button Click----------------------------------------------------*/
 
@@ -245,7 +253,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     Dialog  dialog;
     EditText post_code_txtview,House_doorno_txt,street_stuart;
     int mapcon = 0;
-
+    String drive_Latitude,drive_Longitude,pickup_Latitude,pickup_Longitude,dropoff_Latitude,dropoff_Longitude;
 
 
     @SuppressLint("WrongViewCast")
@@ -1523,8 +1531,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("orderdetails", orderid);
-        params.put("path", orderpath);
+        /*params.put("orderdetails", orderid);
+        params.put("path", orderpath);*/
+
+        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
+        params.put("orderdetails","12851");
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
@@ -1588,6 +1599,21 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                          driver_lat = response.body().getOrdertracking().getOrder().getOrder().getdriver_latitude();
                          driver_long = response.body().getOrdertracking().getOrder().getOrder().getdriver_longitude();
 
+
+                         if(latlogmap == true){
+
+                             drive_Latitude = driver_lat;
+                             drive_Longitude = driver_long;
+                             pickup_Latitude = pickup_lat;
+                             pickup_Longitude = pickup_long;
+                             dropoff_Latitude = dropoff_lat;
+                             dropoff_Longitude = dropoff_long;
+
+                             latlogmap = false;
+
+                         }
+
+
                          stuart_delivery_ = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
 
                          delivery_status = response.body().getOrdertracking().getOrder().getOrder().getdelivery_status();
@@ -1608,6 +1634,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
                        String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
+
 
                        if(Stuart_enable_disable.equalsIgnoreCase("true")){
 
@@ -1633,7 +1660,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
 
-                          // BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bikestuart);
                            BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bike_map);
                            Bitmap b1=bitmapdraw1.getBitmap();
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, 60, 80, false);
@@ -1657,6 +1683,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                        && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()
                                ) {
 
+
                                    float bearing = getBearing(new LatLng(Double.parseDouble(driver_lat), Double.parseDouble(driver_long)),
                                            new LatLng(Double.parseDouble(pickup_lat), Double.parseDouble(pickup_long)));
 
@@ -1675,7 +1702,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
-
 
 
                                    origin = new MarkerOptions().position(new LatLng(Double.parseDouble(dropoff_lat), Double.parseDouble(dropoff_long))).title("Delivery Address").snippet("origin").icon(BitmapDescriptorFactory.fromBitmap(finalMarker2));
@@ -2152,32 +2178,47 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                                    && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                            //  String url = getDirectionsUrl(origin.getPosition(),midpoint.getPosition(),destination.getPosition());
 
-                               String url;
                                Log.d("mapcon"," " + mapcon);
-                               if(mapcon == 1){
-                                    url = getDirectionsUrl(midpoint.getPosition(),origin.getPosition(),destination.getPosition());
 
-                               }else{
-                                    url = getDirectionsUrl(midpoint.getPosition(),destination.getPosition(),origin.getPosition());
+                               if(!drive_Latitude.equalsIgnoreCase(driver_lat) && !drive_Longitude.equalsIgnoreCase(driver_long)){
+
+                                   drive_Latitude = driver_lat;
+                                   drive_Longitude = driver_long;
+                                   pickup_Latitude = pickup_lat;
+                                   pickup_Longitude = pickup_long;
+                                   dropoff_Latitude = dropoff_lat;
+                                   dropoff_Longitude = dropoff_long;
+
+                                   if(mapcon == 1){
+                                       url = getDirectionsUrl(midpoint.getPosition(),origin.getPosition(),destination.getPosition());
+                                   }else{
+                                       url = getDirectionsUrl(midpoint.getPosition(),destination.getPosition(),origin.getPosition());
+                                   }
+
+                                   DownloadTask downloadTask = new DownloadTask();
+
+                                   downloadTask.execute(url);
+
                                }
-
-
-                              DownloadTask downloadTask = new DownloadTask();
-
-                              downloadTask.execute(url);
 
 
                           }else if(pickup_lat !=null && pickup_long !=null
                                    && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                    && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                               String url = getDirectionsUrltwo(origin.getPosition(),destination.getPosition());
+                               if(twolatlogmap == true){
 
-                               DownloadTask downloadTask = new DownloadTask();
+                                   String url = getDirectionsUrltwo(origin.getPosition(),destination.getPosition());
 
-                               downloadTask.execute(url);
+                                   DownloadTask downloadTask = new DownloadTask();
+
+                                   downloadTask.execute(url);
+
+                                   twolatlogmap = false;
+                               }
+
+
 
                            }
 
@@ -2372,17 +2413,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     .placeholder(R.drawable.waiting_loader)
                     .into(waiting_img);
 
-/*
-
-            waiting_popup_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    waitingdialog.cancel();
-
-                }
-            });
-*/
 
 
             waitingdialog.show();
@@ -2671,64 +2701,67 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         }
     }
 
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-                   mMap = googleMap;
+        mMap = googleMap;
 
-                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
-                    && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
-                    && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+        if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                    mMap.clear(); // Clear the Last Position
+            mMap.clear(); // Clear the Last Position
 
-                    mMap.addMarker(origin);
-                    mMap.addMarker(midpoint);
-                    mMap.addMarker(destination);
+            mMap.addMarker(origin);
+            mMap.addMarker(midpoint);
+            mMap.addMarker(destination);
 
-                }else if(pickup_lat !=null && pickup_long !=null
-                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
-                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+        }else if(pickup_lat !=null && pickup_long !=null
+                && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                    mMap.clear(); // Clear the Last Position
-                    mMap.addMarker(origin);
-                    mMap.addMarker(destination);
+            mMap.clear(); // Clear the Last Position
+            mMap.addMarker(origin);
+            mMap.addMarker(destination);
 
-                }
+        }
 
-                   try {
+        try {
 
-                       boolean success = mMap.setMapStyle(
-                               MapStyleOptions.loadRawResourceStyle(
-                                       this, R.raw.style_json));
-                       if (!success) {
-                           Log.e("Map_Order_Activity", "Style parsing failed.");
-                       }else{
-                           Log.e("Map_Order_Activity", "Style parsing success.");
-                       }
+            boolean success = mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.style_json));
+            if (!success) {
+                Log.e("Map_Order_Activity", "Style parsing failed.");
+            }else{
+                Log.e("Map_Order_Activity", "Style parsing success.");
+            }
 
-                   } catch (Resources.NotFoundException e) {
-                       Log.e("Map_Order_Activity", "Can't find style.", e);
-                   }
+        } catch (Resources.NotFoundException e) {
+            Log.e("Map_Order_Activity", "Can't find style.", e);
+        }
 
 
-                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
-                        && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
-                        && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+        if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
+                && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
+                && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
 
-                }else if(pickup_lat !=null && pickup_long !=null
-                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
-                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+        }else if(pickup_lat !=null && pickup_long !=null
+                && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
+                && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));
-                }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));
+        }
 
-                // mMap.getUiSettings().setZoomControlsEnabled(true);
     }
+
+
+
+
+
+
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
 

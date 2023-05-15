@@ -183,9 +183,6 @@ public class ordertracking_details_model {
             this.pickup_longitude = pickup_longitude;
         }
 
-
-
-
         public String getorderCount() {
             return orderCount;
         }
@@ -415,7 +412,6 @@ public class ordertracking_details_model {
 
         @SerializedName("total")
         private String total;
-
 
         @SerializedName("addon")
         private List<ordertracking_details_model.item.addonlist> addon;
