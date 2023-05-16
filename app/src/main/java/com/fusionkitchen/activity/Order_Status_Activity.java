@@ -1531,11 +1531,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private void getstuarttracking(String orderid, String orderpath) {
 
         Map<String, String> params = new HashMap<String, String>();
-        /*params.put("orderdetails", orderid);
-        params.put("path", orderpath);*/
+        params.put("orderdetails", orderid);
+        params.put("path", orderpath);
 
-        params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
-        params.put("orderdetails","12851");
+      /*  params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
+        params.put("orderdetails","12851");*/
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
