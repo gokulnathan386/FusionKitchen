@@ -514,7 +514,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 getmenudata.commit();
 
-                
+
                 Intent share_redirect = new Intent(Order_Status_Activity.this, Item_Menu_Activity.class);
                 share_redirect.putExtra("menuurlpath",orderpath);
                 share_redirect.putExtra("reloadback", "6");
