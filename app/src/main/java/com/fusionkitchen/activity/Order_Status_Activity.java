@@ -169,7 +169,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     View order_details_view;
     CardView drive_phone_btn;
     ImageView order_backbtn;
-    String google_api_key;
+    String google_api_key,transport_stuart;
 
 
     GooglePayPaymentMethodLauncher googlePayLauncher;
@@ -181,6 +181,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     EditText comments_txt,city_stuart;
     TextView tip_txt;
     Boolean latlogmap = true,twolatlogmap = true;
+    BitmapDrawable bitmapdraw1;
 
     /*-----------------------------Google Map----------------------------*/
     private GoogleMap mMap;
@@ -189,6 +190,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     Dialog ordershare_popup;
     String  tip_pay_first_name ,tip_pay_last_name,pay_amt1;
 
+    String ordertra_address,ordertra_area,ordertra_lat,ordertra_log,ordertra_postcode;
 
     /*---------------------------check internet connection----------------------------------------------------*/
 
@@ -486,15 +488,33 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 SharedPreferences sharedptcode;
                 sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
                 SharedPreferences.Editor getmenudata = sharedptcode.edit();
-                getmenudata.putString("KEY_posturl","/location/"+ orderpath);
-                getmenudata.putString("KEY_postcode",m_orderpostcode);
-                getmenudata.putString("KEY_area",m_orderarea);
-                getmenudata.putString("KEY_address",m_orderaddress);
-                getmenudata.putString("KEY_lat",m_orderlat);
-                getmenudata.putString("KEY_lon",m_orderlon);
+
+                 getmenudata.putString("KEY_posturl","/location/"+ orderpath);
+
+                if(ordertra_address != null && !ordertra_address.isEmpty() &&
+                     ordertra_area != null && !ordertra_area.isEmpty()  &&
+                     ordertra_lat != null && !ordertra_lat.isEmpty()  &&
+                     ordertra_log != null && !ordertra_log.isEmpty()  &&
+                     ordertra_postcode != null && !ordertra_postcode.isEmpty()){
+
+                    getmenudata.putString("KEY_postcode",ordertra_postcode);
+                    getmenudata.putString("KEY_area",ordertra_area);
+                    getmenudata.putString("KEY_address",ordertra_address);
+                    getmenudata.putString("KEY_lat",ordertra_lat);
+                    getmenudata.putString("KEY_lon",ordertra_log);
+
+
+                }else{
+                    getmenudata.putString("KEY_postcode",m_orderpostcode);
+                    getmenudata.putString("KEY_area",m_orderarea);
+                    getmenudata.putString("KEY_address",m_orderaddress);
+                    getmenudata.putString("KEY_lat",m_orderlat);
+                    getmenudata.putString("KEY_lon",m_orderlon);
+                }
+
                 getmenudata.commit();
 
-
+                
                 Intent share_redirect = new Intent(Order_Status_Activity.this, Item_Menu_Activity.class);
                 share_redirect.putExtra("menuurlpath",orderpath);
                 share_redirect.putExtra("reloadback", "6");
@@ -664,7 +684,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
+                   // callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
+                    callIntent.setData(Uri.parse("tel:" + rest_phone_no));
                     startActivity(callIntent);
                 } else {
                     requestPermissions(new String[]{CALL_PHONE}, 1);
@@ -696,7 +717,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                 if (ContextCompat.checkSelfPermission(Order_Status_Activity.this, CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:+44 " + Stuartdrivenumber));
+                   // callIntent.setData(Uri.parse("tel:+44 " + Stuartdrivenumber));
+                    callIntent.setData(Uri.parse("tel:" + Stuartdrivenumber));
                     startActivity(callIntent);
                 } else {
                     requestPermissions(new String[]{CALL_PHONE}, 125);
@@ -1585,6 +1607,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                         String item_total_amt = response.body().getOrdertracking().getOrder().getOrder().getTotal();
 
+                         ordertra_address = response.body().getOrdertracking().getClientsdetails().getAddresslocation();
+                         ordertra_area = response.body().getOrdertracking().getClientsdetails().getarea();
+                         ordertra_lat = response.body().getOrdertracking().getClientsdetails().getLatitude();
+                         ordertra_log = response.body().getOrdertracking().getClientsdetails().getLongitude();
+                         ordertra_postcode = response.body().getOrdertracking().getClientsdetails().getPostcode();
+
+
+
                         total_item_count.setText(item_total_count +" Items");
 
                         sub_amt_stuart.setText("£"+item_total_amt);
@@ -1598,6 +1628,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                          driver_lat = response.body().getOrdertracking().getOrder().getOrder().getdriver_latitude();
                          driver_long = response.body().getOrdertracking().getOrder().getOrder().getdriver_longitude();
+
+
+                         transport_stuart = response.body().getOrdertracking().getOrder().getOrder().gettransport();
 
 
                          if(latlogmap == true){
@@ -1660,7 +1693,28 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            Bitmap finalMarker= Bitmap.createScaledBitmap(b, width, height, false);
 
 
-                           BitmapDrawable bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bike_map);
+
+                           if(transport_stuart.equalsIgnoreCase("0") ||
+                                    transport_stuart.equalsIgnoreCase("1")){
+
+                                bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.cycle_stuart);
+
+                           }else if(transport_stuart.toLowerCase().equalsIgnoreCase("2") ||
+                                           transport_stuart.equalsIgnoreCase("3") ||
+                                                   transport_stuart.equalsIgnoreCase("5")){
+
+                                bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.car_stuart);
+
+                           }else if(transport_stuart.equalsIgnoreCase("4")){
+
+                                bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bike_map);
+
+                           }else if(transport_stuart.equalsIgnoreCase("6")){
+
+                               bitmapdraw1 = (BitmapDrawable)getResources().getDrawable(R.drawable.bike_map);
+                           }
+
+
                            Bitmap b1=bitmapdraw1.getBitmap();
                            Bitmap finalMarker1= Bitmap.createScaledBitmap(b1, 60, 80, false);
 
@@ -2618,7 +2672,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             case REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
+                   // callIntent.setData(Uri.parse("tel:+44 " + rest_phone_no));
+                    callIntent.setData(Uri.parse("tel:" + rest_phone_no));
                     startActivity(callIntent);
                 } else {
 
@@ -2630,7 +2685,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
               case REQUEST_CODE_DRIVER:
                     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
-                        callIntent.setData(Uri.parse("tel:+44 " + Stuartdrivenumber));
+                        //callIntent.setData(Uri.parse("tel:+44 " + Stuartdrivenumber));
+                        callIntent.setData(Uri.parse("tel:" + Stuartdrivenumber));
                         startActivity(callIntent);
                     } else {
 
@@ -2710,17 +2766,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-            mMap.clear(); // Clear the Last Position
+         //   mMap.clear(); // Clear the Last Position
 
             mMap.addMarker(origin);
             mMap.addMarker(midpoint);
             mMap.addMarker(destination);
 
+
+
         }else if(pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                 && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-            mMap.clear(); // Clear the Last Position
+          //  mMap.clear(); // Clear the Last Position
             mMap.addMarker(origin);
             mMap.addMarker(destination);
 
@@ -2746,12 +2804,14 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
 
         }else if(pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                 && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(destination.getPosition()));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));
         }
 
@@ -2902,6 +2962,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         // Building the url to the web service
        // String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "AIzaSyDoG0FlQiIJX5MlCrEG_U3vHZmZDfEdww0";
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + google_api_key;
+
+
+
 
 
         Log.d("Google_url"," " + url);

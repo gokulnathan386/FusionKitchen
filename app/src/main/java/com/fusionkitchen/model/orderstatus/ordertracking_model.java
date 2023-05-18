@@ -37,6 +37,10 @@ public class ordertracking_model {
         @SerializedName("order")
         private ordertracking_model.ordertracking.order order;
 
+        @SerializedName("clientsdetails")
+        private ordertracking_details_model.clientsdetails clientsdetails;
+
+
         public ordertracking_model.ordertracking.order getOrder() {
             return order;
         }
@@ -44,6 +48,21 @@ public class ordertracking_model {
         public void setOrder(ordertracking_model.ordertracking.order order) {
             this.order = order;
         }
+
+
+        public ordertracking_details_model.clientsdetails getClientsdetails() {
+            return clientsdetails;
+        }
+
+        public void setClientsdetails(ordertracking_details_model.clientsdetails clientsdetails) {
+            this.clientsdetails = clientsdetails;
+        }
+
+
+
+
+
+
 
         public class order{
 

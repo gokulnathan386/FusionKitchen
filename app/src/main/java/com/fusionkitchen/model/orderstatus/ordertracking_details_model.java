@@ -84,6 +84,19 @@ public class ordertracking_details_model {
         @SerializedName("driver_number")
         private String driver_number;
 
+        @SerializedName("transport")
+        private String transport;
+
+
+        public String gettransport() {
+            return transport;
+        }
+
+        public void settransport(String transport) {
+            this.transport = transport;
+        }
+
+
 
         public String getdriver_number() {
             return driver_number;
@@ -301,6 +314,67 @@ public class ordertracking_details_model {
         public void set_order_dateword(String order_dateword) {
             this.order_dateword = order_dateword;
         }
+
+
+    }
+
+    public class clientsdetails{
+
+        @SerializedName("latitude")
+        private String latitude;
+
+        @SerializedName("longitude")
+        private String longitude;
+
+        @SerializedName("postcode")
+        private String postcode;
+
+        @SerializedName("area")
+        private String area;
+
+        @SerializedName("address_location")
+        private String address_location;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getPostcode() {
+            return postcode;
+        }
+
+        public void setPostcode(String postcode) {
+            this.postcode = postcode;
+        }
+
+        public String getarea() {
+            return area;
+        }
+
+        public void setarea(String area) {
+            this.area = area;
+        }
+
+        public String getAddresslocation() {
+            return address_location;
+        }
+
+        public void setAddresslocation(String address_location) {
+            this.address_location = address_location;
+        }
+
 
     }
 
