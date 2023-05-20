@@ -80,11 +80,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -146,6 +149,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     private Context mContext = Order_Status_Activity.this;
     EditText custom_edittxt,card_number;
     String url;
+    Polyline polyline;
+    Marker marker;
+    Marker marker2;
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
@@ -1556,9 +1562,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         params.put("orderdetails", orderid);
         params.put("path", orderpath);
 
-      /*  params.put("path", "restaurant-demo-2-if28threefield-house-sk11");
-        params.put("orderdetails","12851");*/
-
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<ordertracking_model> call = apiService.stuartordertracking(params);
         Log.e("ur_id_", "" + params);
@@ -2766,11 +2769,22 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-         //   mMap.clear(); // Clear the Last Position
+           // mMap.clear(); // Clear the Last Position
 
             mMap.addMarker(origin);
-            mMap.addMarker(midpoint);
+            //mMap.addMarker(midpoint);
             mMap.addMarker(destination);
+
+            if (marker != null) {
+                marker.remove();
+                marker = mMap.addMarker(midpoint);
+                mMap.setMaxZoomPreference(20);
+
+            } else {
+                marker = mMap.addMarker(midpoint);
+                mMap.setMaxZoomPreference(20);
+
+            }
 
 
 
@@ -2778,7 +2792,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                 && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-          //  mMap.clear(); // Clear the Last Position
+            mMap.clear(); // Clear the Last Position
             mMap.addMarker(origin);
             mMap.addMarker(destination);
 
@@ -2803,6 +2817,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
+
+
+          /*  LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(origin.getPosition());
+            builder.include(midpoint.getPosition());
+            builder.include(destination.getPosition());
+
+            LatLngBounds bounds = builder.build();
+
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));*/
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
@@ -2902,18 +2926,29 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 }
 
 
-                lineOptions.addAll(points);
-                lineOptions.width(5);
-                lineOptions.color(Color.parseColor("#2b70f7"));
-                lineOptions.geodesic(true);
+                if (polyline != null) {
+                    polyline.setPoints(points);
+
+                } else {
+                   // polyline = mMap.addPolyline(new PolylineOptions().addAll(points).color(Color.MAGENTA).jointType(JointType.ROUND).width(3.0f));
+                    polyline = mMap.addPolyline(new PolylineOptions().addAll(points).color(Color.parseColor("#2b70f7")).jointType(JointType.ROUND).width(10.0f).geodesic(true));
+                }
+
+
+              //  lineOptions.addAll(points);
+               // lineOptions.width(5);
+               // lineOptions.color(Color.parseColor("#2b70f7"));
+               // lineOptions.geodesic(true);
 
 
             }
 
 // Drawing polyline in the Google Map for the i-th route
 
-            if (points.size() != 0)
-                mMap.addPolyline(lineOptions);
+          /*  if (points.size() != 0)
+                mMap.addPolyline(lineOptions);*/
+
+
 
         }
 
