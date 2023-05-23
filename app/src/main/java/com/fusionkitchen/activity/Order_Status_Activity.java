@@ -2819,32 +2819,36 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
 
-          /*  LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
             builder.include(origin.getPosition());
             builder.include(midpoint.getPosition());
             builder.include(destination.getPosition());
 
             LatLngBounds bounds = builder.build();
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));*/
-
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));
+
+      /*      mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));*/
 
         }else if(pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                 && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(destination.getPosition()));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(origin.getPosition());
+            builder.include(destination.getPosition());
+            LatLngBounds bounds = builder.build();
+
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+
+            /*mMap.moveCamera(CameraUpdateFactory.newLatLng(destination.getPosition()));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));*/
         }
 
     }
-
-
-
-
-
 
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
