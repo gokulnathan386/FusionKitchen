@@ -88,6 +88,7 @@ public class ordertracking_details_model {
         private String transport;
 
 
+
         public String gettransport() {
             return transport;
         }
@@ -421,7 +422,6 @@ public class ordertracking_details_model {
         public void setLname(String lname) {
             this.lname = lname;
         }
-
 
         public String getPhone() {
             return phone;

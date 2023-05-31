@@ -1670,9 +1670,10 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
                        String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
+                       String order_type = response.body().getOrdertracking().getOrder().getOrder().getOtype();
 
 
-                       if(Stuart_enable_disable.equalsIgnoreCase("true")){
+                       if(Stuart_enable_disable.equalsIgnoreCase("true") && order_type.equalsIgnoreCase("0")){
 
                            stuart_collection_layout.setVisibility(View.GONE);
                            botton_top_vis.setVisibility(View.VISIBLE);
@@ -2289,8 +2290,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                            OrderDetails_layout.setVisibility(View.GONE);
                            order_details_view.setVisibility(View.GONE);
                          /* <----------Driver Tip GONE Module--------> */
-                           tip_module.setVisibility(View.GONE);
-                           tip_txt.setVisibility(View.GONE);
+                           tip_module.setVisibility(View.VISIBLE);
+                           tip_txt.setVisibility(View.VISIBLE);
 
                            if(delivery_status.equalsIgnoreCase("0")){
 

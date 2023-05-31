@@ -439,7 +439,7 @@
             android:textColor="#17284D"
             android:fontFamily="@font/metropolis_semibold"
             android:text="Add Tip"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -452,7 +452,7 @@
             android:layout_marginTop="10dp"
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="#ffffff"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardMaxElevation="2dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"

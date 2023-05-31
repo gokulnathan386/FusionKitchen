@@ -1762,6 +1762,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
         fullUrl = menuurlpath + "/about";
 
+        Log.d("Abount-Info"," " +fullUrl +"---" +params);
+
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<about_us_model> call = apiService.getaboutus(fullUrl, params);
         call.enqueue(new Callback<about_us_model>() {
