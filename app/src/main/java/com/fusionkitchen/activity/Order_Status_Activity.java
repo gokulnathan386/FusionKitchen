@@ -176,6 +176,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     CardView drive_phone_btn;
     ImageView order_backbtn;
     String google_api_key,transport_stuart;
+    String order_type;
 
 
     GooglePayPaymentMethodLauncher googlePayLauncher;
@@ -449,7 +450,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 tip_button_view.setVisibility(View.GONE);
                 custom_edittxt.setVisibility(View.VISIBLE);
                 radio_selectedValue = null;
-
                 String cust_txt = custom_edittxt.getText().toString();
 
                 if(cust_txt == null || cust_txt.isEmpty()){
@@ -1670,7 +1670,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
                        String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
-                       String order_type = response.body().getOrdertracking().getOrder().getOrder().getOtype();
+                       order_type = response.body().getOrdertracking().getOrder().getOrder().getOtype();
 
 
                        if(Stuart_enable_disable.equalsIgnoreCase("true") && order_type.equalsIgnoreCase("0")){
@@ -2302,9 +2302,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
                                header_txt_status.setText("Awaiting Confirmation");
-                               delivery_coll_tip_txt.setText("Tips to Thank");
-                               delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.VISIBLE);
+
+                               if(order_type.equalsIgnoreCase("0")){
+                                   delivery_coll_tip_txt.setText("Tip your delivery partner");
+                                   delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                               }else{
+                                   delivery_coll_tip_txt.setText("Tips to Thank");
+                                   delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("1")){
 
@@ -2315,9 +2321,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_txtmsg.setText("Your food is being prepared \n& can be picked up soon!");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
-                               delivery_coll_tip_txt.setText("Tips to Thank");
-                               delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
                                add_more_item.setVisibility(View.GONE);
+
+                               if(order_type.equalsIgnoreCase("0")){
+                                   delivery_coll_tip_txt.setText("Tip your delivery partner");
+                                   delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                               }else{
+                                   delivery_coll_tip_txt.setText("Tips to Thank");
+                                   delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("2")){
 
@@ -2328,9 +2340,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collection_txtmsg.setText("We regret to inform you that \nyour order has been rejected");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
                                stuart_delivery_status = true;
-                               delivery_coll_tip_txt.setText("Tips to Thank");
-                               delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+
                                add_more_item.setVisibility(View.VISIBLE);
+
+                               if(order_type.equalsIgnoreCase("0")){
+                                   delivery_coll_tip_txt.setText("Tip your delivery partner");
+                                   delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                               }else{
+                                   delivery_coll_tip_txt.setText("Tips to Thank");
+                                   delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               }
 
                            }else if(delivery_status.equalsIgnoreCase("3")){
 
@@ -2339,9 +2358,15 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                collect_txt_msg.setText(delivery_status_name);
                                header_txt_status.setText(order_expected_time);
                                collection_txtmsg.setText("Your Order Is Ready & Can Be \nCollected Now!");
-                               delivery_coll_tip_txt.setText("Tips to Thank");
-                               delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+
                                add_more_item.setVisibility(View.GONE);
+                               if(order_type.equalsIgnoreCase("0")){
+                                   delivery_coll_tip_txt.setText("Tip your delivery partner");
+                                   delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                               }else{
+                                   delivery_coll_tip_txt.setText("Tips to Thank");
+                                   delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               }
 
                                if(stuart_delivery_status == true){
                                    stuart_delivery_status = false;
@@ -2369,8 +2394,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                header_txt_status.setText(order_expected_time);
                                collection_txtmsg.setText("We regret to inform you that \nyour order has been Cancel");
                                stuart_collection_layout.setVisibility(View.VISIBLE);
-                               delivery_coll_tip_txt.setText("Tips to Thank");
-                               delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               if(order_type.equalsIgnoreCase("0")){
+                                   delivery_coll_tip_txt.setText("Tip your delivery partner");
+                                   delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
+                               }else{
+                                   delivery_coll_tip_txt.setText("Tips to Thank");
+                                   delivery_coll_tip_desc.setText("Tip will go directly \nto takeaway");
+                               }
                                stuart_delivery_status = true;
                                add_more_item.setVisibility(View.VISIBLE);
 
