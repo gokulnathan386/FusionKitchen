@@ -1681,6 +1681,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     @Override
                     public void onResponse(String response) {
 
+                        Log.d("kjhjdkhfdkvdkdjvf"," " + response + user_id+"====" +favourite_client);
+
                         try {
 
                             JSONObject jsonobject = new JSONObject(response);
@@ -4575,11 +4577,15 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
         }
 
 
+
+
         Map<String, String> params = new HashMap<String, String>();
         params.put("id", ItemName);
         params.put("aid", addonids);
         params.put("items", addonitemid);
         params.put("extra", addonitemarrayextraData);
+
+        Log.d("dlkjnvkdnvkdnvkdnvkdnv","Gokulnathan"+ params);
 
         if (backnum.equalsIgnoreCase("1")) {
             aidlist.add(addonids);
@@ -4635,6 +4641,8 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                 //response.headers().get("Set-Cookie");
                 int statusCode = response.code();
                 Log.e("addoncode1", ": " + statusCode);
+
+                Log.d("djbvdbdbvjbdvbjdvjdbvj"," " + new Gson().toJson(response.body()));
 
                 if (statusCode == 200) {
                     Log.e("addoncode2", ": " + response.body().getSTATUS());

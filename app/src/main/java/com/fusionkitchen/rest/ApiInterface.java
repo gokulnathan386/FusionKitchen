@@ -138,8 +138,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<login_model> logininterfas(@FieldMap Map<String, String> params);
 
-
-
     @POST("/registerprocess")
     @FormUrlEncoded
     Call<signup_model> signupinterfas(@FieldMap Map<String, String> params);

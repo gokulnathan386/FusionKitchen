@@ -713,7 +713,7 @@
                   <TextView
                       android:id="@+id/tip_btn"
                       android:layout_gravity="center"
-                      android:text="Pay Rider Tip of £3"
+                      android:text="Pay Rider Tip of £0.00"
                       android:textColor="#FFFFFF"
                       android:fontFamily="@font/poppins_semibold"
                       android:textSize="@dimen/_12sdp"

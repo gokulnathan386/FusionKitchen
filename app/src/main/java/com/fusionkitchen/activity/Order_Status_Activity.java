@@ -1244,7 +1244,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         Log.d("hdsvjdvhdsvhsdvhv","False_Testing2");
 
-        Log.e("paramspay", "" + paramspay);
+        Log.e("skdhcbscbscbjscbhjcbshjcbhjcbscbssdcbjh", "" + paramspay + "+++++" + intepasfullUrl+"++++"+token);
         call.enqueue(new retrofit2.Callback<completpay_model>() {
             @Override
             public void onResponse(retrofit2.Call<completpay_model> call, retrofit2.Response<completpay_model> response) {
