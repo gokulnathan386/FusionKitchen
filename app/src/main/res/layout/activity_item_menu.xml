@@ -499,6 +499,7 @@
                                 android:layout_weight="1">
 
                                 <ImageView
+                                    android:id="@+id/coll_deli_icon"
                                     android:layout_width="17dp"
                                     android:layout_height="14dp"
                                     android:layout_gravity="center"

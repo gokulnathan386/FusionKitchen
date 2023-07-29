@@ -984,6 +984,14 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             timer.scheduleAtFixedRate(new The_slide_timer(),2000,3000);
                             tabLayout.setupWithViewPager(page,true);
 
+                            Log.d("Banner_Image"," " + banner_image.length());
+                            if(banner_image.length() == 1){
+                                tabLayout.setVisibility(View.GONE);
+                                // tabLayout.setVisibility(View.VISIBLE);
+                            }else{
+                                tabLayout.setVisibility(View.VISIBLE);
+                            }
+
                         }catch (JSONException e) {
                             e.printStackTrace();
                             hideloading();

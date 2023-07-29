@@ -280,8 +280,61 @@ public class Address_Book_Activity extends AppCompatActivity {
             }
         });
 
-
         add_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("ideuser_ids", "" + user_id);
+
+                if (user_id != null && !user_id.isEmpty()) {
+
+                    address_book.setVisibility(View.GONE);
+                    address_add.setVisibility(View.VISIBLE);
+
+                    add_new.setVisibility(View.GONE);
+                    new_save.setVisibility(View.VISIBLE);
+                    update_save.setVisibility(View.GONE);
+
+                    no_address.setVisibility(View.GONE);
+
+                    edit_home_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_one));
+                    edit_home_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_type));
+
+                    edit_office_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                    edit_office_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                    edit_other_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                    edit_other_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                    address_type = "1";
+
+                  /*  address_type = "0";
+                    edit_home_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                    edit_home_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                    edit_office_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                    edit_office_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                    edit_other_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                    edit_other_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));*/
+
+                    edit_postcode.setText("");
+                    edit_doorno.setText("");
+                    edit_town.setText("");
+                    edit_street.setText("");
+
+                } else {
+
+                    Intent intent = new Intent(Address_Book_Activity.this, Login_Activity.class);
+                    intent.putExtra("activity_details", "address");
+                    startActivity(intent);
+
+
+                }
+
+            }
+        });
+
+    /*    add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("ideuser_ids", "" + user_id);
@@ -322,7 +375,8 @@ public class Address_Book_Activity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
+
         new_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -965,6 +965,1037 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
         ShimmerFrameLayout  update_layout_shimmer = dialog.findViewById(R.id.update_layout_shimmer);
 
+        // CardView ordermode_popup_view  =dialog.findViewById(R.id.ordermode_popup_view);
+        TextView colloetion_tattime = dialog.findViewById(R.id.colloetion_tattime);
+        TextView delivery_tattime = dialog.findViewById(R.id.delivery_tattime);
+        RelativeLayout delivery_but = dialog.findViewById(R.id.delivery_but);
+        RelativeLayout collection_but = dialog.findViewById(R.id.collection_but);
+        TextView delivery_txt = dialog.findViewById(R.id.delivery_txt);
+        TextView colli_txt = dialog.findViewById(R.id.colli_txt);
+        GifImageView loading_imageView1 = dialog.findViewById(R.id.loading_imageView1);
+        GifImageView loading_imageView2 = dialog.findViewById(R.id.loading_imageView2);
+        AppCompatButton update_mode = dialog.findViewById(R.id.update_mode);
+        AppCompatButton bun_asap = dialog.findViewById(R.id.bun_asap);
+        TextView sevenday_txt =dialog.findViewById(R.id.sevenday_txt);
+        LinearLayout card_change = dialog.findViewById(R.id.card_change);
+        LinearLayout today_time_layer = dialog.findViewById(R.id.today_time_layer);
+        LinearLayout later_time_layer = dialog.findViewById(R.id.later_time_layer);
+        AppCompatButton bun_later = dialog.findViewById(R.id.bun_later);
+        AppCompatButton  bun_today = dialog.findViewById(R.id.bun_today);
+        Spinner today_time = dialog.findViewById(R.id.today_time);
+        Spinner later_time = dialog.findViewById(R.id.later_time);
+        Spinner later_date = dialog.findViewById(R.id.later_date);
+        RelativeLayout later_timing_layer =dialog.findViewById(R.id.later_timing_layer);
+
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        metdpasfullUrl = menuurlpath + "/loadPreOrderPop";
+        Log.e("LoadPreOrderPop->","" + metdpasfullUrl);
+        //ordermode_popup_view.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<modeof_order_popup_model> call = apiService.modeofordershow(metdpasfullUrl);
+        call.enqueue(new Callback<modeof_order_popup_model>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<modeof_order_popup_model> call, Response<modeof_order_popup_model> response) {
+                //response.headers().get("Set-Cookie");
+                // ordermode_popup_view.setVisibility(View.VISIBLE);
+                int statusCode = response.code();
+
+                if (statusCode == 200) {
+
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        colloetion_tattime.setText(response.body().getData().getCollection().getCooking_time());
+                        delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
+
+
+
+                        menu_delivery_tattime = response.body().getData().getDelivery().getCooking_time();
+                        menu_collection_tattime = response.body().getData().getCollection().getCooking_time();
+
+
+                        if (!response.body().getData().getDelivery().getStatus().equalsIgnoreCase("0")) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    delivery_but.performClick();
+
+                                }
+                            }, 1000);
+
+
+                        } else if (!response.body().getData().getCollection().getStatus().equalsIgnoreCase("0")) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    collection_but.performClick();
+
+                                }
+                            }, 1000);
+
+                        }
+
+                        //Top button click
+                        delivery_but.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        update_mode.setVisibility(View.GONE);
+                                        delivery_but.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.pre_mode_bg_one));
+                                        collection_but.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.pre_mode_bg_two));
+                                        delivery_txt.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
+                                        delivery_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
+                                        colli_txt.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_two));
+                                        colloetion_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_two));
+
+                                        loading_imageView1.setVisibility(View.VISIBLE);
+                                        loading_imageView2.setVisibility(GONE);
+
+                                        order_mode = "0";//Delivery
+
+                                        if (response.body().getData().getDelivery().getLater_array().getStatus().equalsIgnoreCase("0")) {
+                                            sevenday_txt.setVisibility(GONE);
+                                        } else {
+                                            // sevenday_txt.setVisibility(View.VISIBLE);
+                                            sevenday_txt.setText("Select a delivery time" + "\n" + " up to 7 days in advance");
+                                        }
+
+                                        if (response.body().getData().getDelivery().getStatus().equalsIgnoreCase("0")) {
+                                            today_time_layer.setVisibility(GONE);
+                                            later_time_layer.setVisibility(GONE);
+                                            update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                            update_mode.setClickable(false);
+                                            update_mode.setFocusable(false);
+                                            update_mode.setEnabled(false);
+                                            delivery_tattime.setText("Unavailable");
+                                            update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                            update_mode.setText("Takeaway Closed for Delivery");
+
+                                            shimmer_view_preorder.stopShimmerAnimation();
+                                            shimmer_view_preorder.setVisibility(View.GONE);
+                                            sevenday_txt.setVisibility(View.VISIBLE);
+                                            card_change.setVisibility(GONE);
+                                            update_mode.setVisibility(View.VISIBLE);
+
+
+
+                                        } else {
+                                            delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
+                                            if (response.body().getData().getDelivery().getAsap().getStatus().equalsIgnoreCase("0")) {
+                                                if (response.body().getData().getDelivery().getToday().getStatus().equalsIgnoreCase("0")) {
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            bun_later.performClick();
+                                                        }
+                                                    }, 1000);
+                                                } else {
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            bun_today.performClick();
+                                                        }
+                                                    }, 1000);
+                                                }
+                                            } else {
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        bun_asap.performClick();
+                                                    }
+                                                }, 1000);
+                                            }
+                                        }
+                                    }
+                                });
+
+
+                        collection_but.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        update_mode.setVisibility(View.GONE);
+                                        delivery_but.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.pre_mode_bg_two));
+                                        collection_but.setBackgroundTintList(ContextCompat.getColorStateList(mContext, R.color.pre_mode_bg_one));
+                                        delivery_txt.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_two));
+                                        delivery_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_two));
+                                        colli_txt.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
+                                        colloetion_tattime.setTextColor(ContextCompat.getColor(mContext, R.color.pre_mode_txt_one));
+
+                                        loading_imageView1.setVisibility(GONE);
+                                        loading_imageView2.setVisibility(View.VISIBLE);
+                                        order_mode = "1";//Collection
+
+                                        if (response.body().getData().getCollection().getLater_array().getStatus().equalsIgnoreCase("0")) {
+                                            sevenday_txt.setVisibility(GONE);
+
+                                        } else {
+                                            //sevenday_txt.setVisibility(View.VISIBLE);
+                                            sevenday_txt.setText("Select a collection time" + "\n" + " up to 7 days in advance");
+                                        }
+
+                                        if (response.body().getData().getCollection().getStatus().equalsIgnoreCase("0")) {
+                                            today_time_layer.setVisibility(GONE);
+                                            later_time_layer.setVisibility(GONE);
+                                            update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                            update_mode.setClickable(false);
+                                            update_mode.setFocusable(false);
+                                            update_mode.setEnabled(false);
+                                            colloetion_tattime.setText("Unavailable");
+                                            update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                            update_mode.setText("Takeaway Closed for Collection");
+
+                                            shimmer_view_preorder.stopShimmerAnimation();
+                                            shimmer_view_preorder.setVisibility(View.GONE);
+                                            sevenday_txt.setVisibility(View.VISIBLE);
+                                            card_change.setVisibility(GONE);
+                                            update_mode.setVisibility(View.VISIBLE);
+
+                                        } else {
+                                            colloetion_tattime.setText(response.body().getData().getCollection().getCooking_time());
+                                            if (response.body().getData().getCollection().getAsap().getStatus().equalsIgnoreCase("0")) {
+                                                if (response.body().getData().getCollection().getToday().getStatus().equalsIgnoreCase("0")) {
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            bun_later.performClick();
+
+                                                        }
+                                                    }, 1000);
+
+                                                } else {
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                            bun_today.performClick();
+                                                        }
+                                                    }, 1000);
+                                                }
+                                            } else {
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        bun_asap.performClick();
+                                                    }
+                                                }, 1000);
+
+
+                                            }
+
+                                        }
+
+                                    }
+                                });
+
+
+                        bun_asap.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        update_mode.setVisibility(View.GONE);
+                                        activetagstr = "1";
+
+                                        todaytimestr = "";
+                                        laterdatestr = "";
+                                        latertimestr = "";
+
+
+                                        if (order_mode.equalsIgnoreCase("0")) {
+                                            if (response.body().getData().getDelivery().getAsap().getStatus().equalsIgnoreCase("0")) {
+
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap_active);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getDelivery().getAsap().getMessage());
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            } else {
+
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap_active);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                update_mode.setText("Deliver ASAP");
+
+                                                menu_time_update = "Deliver " + menu_delivery_tattime;
+                                                coll_del_time= menu_delivery_tattime;
+
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            }
+                                        } else {
+                                            if (response.body().getData().getCollection().getAsap().getStatus().equalsIgnoreCase("0")) {
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap_active);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getCollection().getAsap().getMessage());
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            } else {
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap_active);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                update_mode.setText("Collection ASAP");
+
+                                                menu_time_update = "Collection " + menu_collection_tattime;
+                                                coll_del_time= menu_collection_tattime;
+
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            }
+                                        }
+
+                                    }
+                                });
+
+
+                        bun_today.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        update_mode.setVisibility(View.GONE);
+
+                                        activetagstr = "2";
+                                        laterdatestr = "";
+                                        latertimestr = "";
+
+
+
+
+                                        if (order_mode.equalsIgnoreCase("0")) {
+                                            if (response.body().getData().getDelivery().getToday().getStatus().equalsIgnoreCase("0")) {
+
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today_active);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getDelivery().getToday().getMessage());
+
+
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            } else {
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today_active);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                // update_mode.setText("Deliver today at " + response.body().getData().getDelivery().getToday().getToday_time().get(0).getToday_time());
+
+
+                                                today_time_layer.setVisibility(View.VISIBLE);
+                                                later_time_layer.setVisibility(GONE);
+
+                                                ArrayList<AdapterListData> todaytimeitem = new ArrayList<AdapterListData>();
+
+                                                for (int i = 0; i < response.body().getData().getDelivery().getToday().getToday_time().size(); i++) {
+                                                    //Storing names to string array
+                                                    todaytimeitem.add(new AdapterListData(
+                                                            response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time_string(),
+                                                            response.body().getData().getDelivery().getToday().getToday_time().get(i).getToday_time(),
+                                                            response.body().getData().getDelivery().getToday().getToday_time().get(i).gettoday_label()
+
+                                                    ));
+
+                                                }
+
+
+                                                ArrayAdapter<AdapterListData> todaytimeadapter;
+                                                todaytimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, todaytimeitem);
+                                                //setting adapter to spinner
+                                                today_time.setAdapter(todaytimeadapter);
+
+                                                today_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                        // selectedtodaytimeItem = parent.getItemAtPosition(position).toString();
+
+                                                        AdapterListData  todaytime = (AdapterListData)parent.getItemAtPosition(position);
+
+                                                        update_mode.setText("Deliver "+ todaytime.label +" at " + todaytime.today_time);
+
+                                                        todaytimestr =todaytime.today_time;
+                                                        todaytimestring = todaytime.today_time_string;
+
+                                                        menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                        coll_del_time= todaytime.label +" at " + todaytime.today_time;
+
+                                                        if(todaytimestr.equalsIgnoreCase("Mid Night")){
+                                                            update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
+
+                                                            menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                            coll_del_time= todaytime.label +" at 12:00";
+                                                        }
+
+
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
+                                                        sevenday_txt.setVisibility(View.VISIBLE);
+                                                        card_change.setVisibility(View.VISIBLE);
+                                                        update_mode.setVisibility(View.VISIBLE);
+
+                                                    }
+
+                                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                                    }
+                                                });
+
+                                            }
+                                        } else {
+
+                                            if (response.body().getData().getCollection().getToday().getStatus().equalsIgnoreCase("0")) {
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today_active);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getCollection().getToday().getMessage());
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+                                                update_mode.setVisibility(View.VISIBLE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+
+
+                                            } else {
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today_active);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                bun_later.setBackgroundResource(R.drawable.background_later);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                //  update_mode.setText("Collection today at " + response.body().getData().getCollection().getToday().getToday_time().get(0).getToday_time());
+                                                today_time_layer.setVisibility(View.VISIBLE);
+                                                later_time_layer.setVisibility(GONE);
+
+
+                                                ArrayList<AdapterListData> todaytimeitem = new ArrayList<AdapterListData>();
+
+                                                for (int i = 0; i < response.body().getData().getCollection().getToday().getToday_time().size(); i++) {
+                                                    //Storing names to string array
+                                                    todaytimeitem.add(new AdapterListData(
+                                                            response.body().getData().getCollection().getToday().getToday_time().get(i).getToday_time_string(),
+                                                            response.body().getData().getCollection().getToday().getToday_time().get(i).getToday_time(),
+                                                            response.body().getData().getCollection().getToday().getToday_time().get(i).gettoday_label()
+                                                    ));
+
+                                                }
+
+                                                ArrayAdapter<AdapterListData> todaytimeadapter;
+                                                todaytimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, todaytimeitem);
+                                                today_time.setAdapter(todaytimeadapter);
+
+
+                                                today_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                        // selectedtodaytimeItem = parent.getItemAtPosition(position).toString();
+
+                                                        AdapterListData  todaytime = (AdapterListData)parent.getItemAtPosition(position);
+                                                        //  Toast.makeText(getApplicationContext(),todaytime.today_time_string, Toast.LENGTH_LONG).show();
+                                                        update_mode.setText("Collection "+todaytime.label+" at " + todaytime.today_time);
+
+                                                        menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
+
+                                                        coll_del_time = todaytime.label +" at " + todaytime.today_time;
+
+                                                        todaytimestr = todaytime.today_time;
+                                                        todaytimestring = todaytime.today_time_string;
+                                                        if(todaytimestr.equalsIgnoreCase("Mid Night")){
+                                                            update_mode.setText("Collection "+ todaytime.label +" at 12:00 " );
+
+                                                            menu_time_update = "Collection "+ todaytime.label +" at " + todaytime.today_time;
+
+                                                            coll_del_time = todaytime.label +" at 12:00 ";
+                                                        }
+
+
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
+                                                        update_mode.setVisibility(View.VISIBLE);
+                                                        sevenday_txt.setVisibility(View.VISIBLE);
+                                                        card_change.setVisibility(View.VISIBLE);
+
+                                                    } // to close the onItemSelected
+
+                                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                                    }
+                                                });
+
+                                            }
+                                        }
+
+
+                                    }
+
+                                });
+
+
+                        bun_later.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        shimmer_view_preorder.stopShimmerAnimation();
+                                        shimmer_view_preorder.setVisibility(View.GONE);
+
+
+                                        update_layout_shimmer.setVisibility(View.VISIBLE);
+                                        update_layout_shimmer.startShimmerAnimation();
+
+                                        update_mode.setVisibility(View.GONE);
+                                        activetagstr = "3";
+                                        todaytimestr = "";
+
+                                        if (order_mode.equalsIgnoreCase("0")) {
+                                            if (response.body().getData().getDelivery().getLater_array().getStatus().equalsIgnoreCase("0")) {
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later_active);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getDelivery().getLater_array().getMessage());
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                update_mode.setVisibility(View.VISIBLE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
+
+
+                                            } else {
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later_active);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(View.VISIBLE);
+
+
+                                                String[] laterdateitem = new String[response.body().getData().getDelivery().getLater_array().getLater_date().size()];
+                                                for (int i = 0; i < response.body().getData().getDelivery().getLater_array().getLater_date().size(); i++) {
+                                                    //Storing names to string array
+                                                    laterdateitem[i] = response.body().getData().getDelivery().getLater_array().getLater_date().get(i).getLater_date();
+                                                }
+
+                                                ArrayAdapter<String> laterdateadapter;
+                                                laterdateadapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, laterdateitem);
+                                                //setting adapter to spinner
+                                                later_date.setAdapter(laterdateadapter);
+
+
+                                                card_change.setVisibility(VISIBLE);
+
+                                                later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                        selectedlaterdateItem = parent.getItemAtPosition(position).toString();
+                                                        // Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_LONG).show();
+
+                                                        // update_mode.setText("Deliver at " + selectedlaterdateItem);
+                                                        laterdatestr = selectedlaterdateItem;
+                                                        loadLatertime("0", selectedlaterdateItem);
+                                                    } // to close the onItemSelected
+
+                                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            if (response.body().getData().getCollection().getLater_array().getStatus().equalsIgnoreCase("0")) {
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later_active);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                update_mode.setClickable(false);
+                                                update_mode.setFocusable(false);
+                                                update_mode.setEnabled(false);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                update_mode.setText(response.body().getData().getCollection().getLater_array().getMessage());
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(GONE);
+
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+                                                sevenday_txt.setVisibility(View.VISIBLE);
+                                                card_change.setVisibility(View.VISIBLE);
+
+                                                update_layout_shimmer.setVisibility(View.GONE);
+                                                update_layout_shimmer.stopShimmerAnimation();
+                                                update_mode.setVisibility(View.VISIBLE);
+
+
+                                            } else {
+
+                                                shimmer_view_preorder.stopShimmerAnimation();
+                                                shimmer_view_preorder.setVisibility(View.GONE);
+
+                                                bun_asap.setBackgroundResource(R.drawable.background_asap);
+                                                bun_asap.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_today.setBackgroundResource(R.drawable.background_today);
+                                                bun_today.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_per_order));
+                                                bun_later.setBackgroundResource(R.drawable.background_later_active);
+                                                bun_later.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                                                update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                update_mode.setClickable(true);
+                                                update_mode.setFocusable(true);
+                                                update_mode.setEnabled(true);
+                                                update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+
+                                                today_time_layer.setVisibility(GONE);
+                                                later_time_layer.setVisibility(View.VISIBLE);
+
+
+                                                String[] laterdateitem = new String[response.body().getData().getCollection().getLater_array().getLater_date().size()];
+                                                for (int i = 0; i < response.body().getData().getCollection().getLater_array().getLater_date().size(); i++) {
+                                                    laterdateitem[i] = response.body().getData().getCollection().getLater_array().getLater_date().get(i).getLater_date();
+                                                }
+
+                                                ArrayAdapter<String> laterdateadapter;
+                                                laterdateadapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, laterdateitem);
+                                                //setting adapter to spinner
+                                                later_date.setAdapter(laterdateadapter);
+
+                                                card_change.setVisibility(VISIBLE);
+
+                                                later_date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                        selectedlaterdateItem = parent.getItemAtPosition(position).toString();
+                                                        laterdatestr = selectedlaterdateItem;
+                                                        loadLatertime("1", selectedlaterdateItem);
+                                                    } // to close the onItemSelected
+
+                                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                    }
+
+                                    /*---------------------------load Later Time----------------------------------------------------*/
+                                    private void loadLatertime(String ordermodeing, String laterdates) {
+
+                                        // get user data from session
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        params.put("later_time", laterdates);
+                                        params.put("order_type", ordermodeing);
+
+
+                                        mlaterdatefullUrl = menuurlpath + "/loadLaterTime";
+
+
+                                        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+                                        Call<getlatertime_model> call = apiService.loadLaterTime(mlaterdatefullUrl, params);
+                                        call.enqueue(new Callback<getlatertime_model>() {
+                                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                            @Override
+                                            public void onResponse(Call<getlatertime_model> call, Response<getlatertime_model> response) {
+
+                                                //response.headers().get("Set-Cookie");
+                                                int statusCode = response.code();
+                                                if (statusCode == 200) {
+                                                    if (response.body().getData().getStatus().equalsIgnoreCase("true")) {
+
+                                                        later_timing_layer.setVisibility(View.VISIBLE);
+
+
+                                                        ArrayList<AdapterListData> latertimeitem = new ArrayList<AdapterListData>();
+
+                                                        for (int i = 0; i <response.body().getData().getLater_time().size(); i++) {
+                                                            //Storing names to string array
+
+                                                            latertimeitem.add(new AdapterListData(
+                                                                    response.body().getData().getLater_time().get(i).getLater_time_string(),
+                                                                    response.body().getData().getLater_time().get(i).getLater_time(),""
+                                                            ));
+
+                                                        }
+
+
+                                                        ArrayAdapter<AdapterListData> latertimeadapter;
+                                                        latertimeadapter = new ArrayAdapter<AdapterListData>(mContext, android.R.layout.simple_list_item_1, latertimeitem);
+                                                        //setting adapter to spinner
+                                                        later_time.setAdapter(latertimeadapter);
+
+                                                        later_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                                                                AdapterListData  latertime = (AdapterListData)parent.getItemAtPosition(position);
+
+
+                                                                if (ordermodeing.equalsIgnoreCase("0")) {
+                                                                    update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                                    update_mode.setClickable(true);
+                                                                    update_mode.setFocusable(true);
+                                                                    update_mode.setEnabled(true);
+                                                                    update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                                                                    update_mode.setText("Deliver " +laterdates+ " at " +latertime.today_time);
+
+                                                                    menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
+
+                                                                    coll_del_time = laterdates+" at " + latertime.today_time;
+
+                                                                    update_mode.setVisibility(View.VISIBLE);
+                                                                    latertimestr = latertime.today_time;
+                                                                    latertimestring = latertime.today_time_string;
+
+                                                                } else {
+                                                                    update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.pre_mode_txt_one));
+                                                                    update_mode.setClickable(true);
+                                                                    update_mode.setFocusable(true);
+                                                                    update_mode.setEnabled(true);
+                                                                    update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+
+                                                                    update_mode.setText("Collection " +laterdates+ " at " + latertime.today_time);
+
+                                                                    menu_time_update = "Collection "+ laterdates+" at " + latertime.today_time;
+
+                                                                    coll_del_time =laterdates+" at " + latertime.today_time;
+
+                                                                    update_mode.setVisibility(View.VISIBLE);
+                                                                    latertimestr = latertime.today_time;
+                                                                    latertimestring = latertime.today_time_string;
+
+                                                                }
+                                                            } // to close the onItemSelected
+
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+                                                            }
+                                                        });
+
+
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
+
+                                                        update_mode.setVisibility(View.VISIBLE);
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
+
+                                                    } else {
+                                                        later_timing_layer.setVisibility(GONE);
+                                                        update_mode.setBackgroundColor(update_mode.getContext().getResources().getColor(R.color.modeofitem_disable));
+                                                        update_mode.setClickable(false);
+                                                        update_mode.setFocusable(false);
+                                                        update_mode.setEnabled(false);
+                                                        update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.modeofitem_disable_txt));
+                                                        update_mode.setText("Later Unavailable");
+                                                        shimmer_view_preorder.stopShimmerAnimation();
+                                                        shimmer_view_preorder.setVisibility(View.GONE);
+                                                        update_layout_shimmer.setVisibility(View.GONE);
+                                                        update_layout_shimmer.stopShimmerAnimation();
+                                                        update_mode.setVisibility(View.VISIBLE);
+
+                                                    }
+                                                }
+                                            }
+
+
+                                            @Override
+                                            public void onFailure(Call<getlatertime_model> call, Throwable t) {
+
+
+                                            }
+                                        });
+                                    }
+                                });
+
+
+                        update_mode.setOnClickListener(
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        if(sharedpreferences.getString("pop_up_show", null).equalsIgnoreCase("2")){
+                                            addonitem(view,position,holder);
+                                            SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                                            editor_extra.putString("pop_up_show","3");
+                                            editor_extra.commit();
+                                        }
+
+                                        holder.menu_item_add.setEnabled(true);
+
+                                        SharedPreferences.Editor editor_extra = sharedpreferences.edit();
+                                        editor_extra.putString("ordermodetype", order_mode);
+                                        editor_extra.putString("orderactivetag", activetagstr);
+                                        editor_extra.putString("ordertodattime", todaytimestr);
+                                        editor_extra.putString("orderlaterdate", laterdatestr);
+                                        editor_extra.putString("orderlatertime", latertimestr);
+                                        editor_extra.putString("todaytimestring",todaytimestring);
+                                        editor_extra.putString("latertimestring",latertimestring);
+                                        editor_extra.commit();
+
+                                        if (order_mode.equalsIgnoreCase("0")) {
+
+                                            SharedPreferences.Editor pop_up_details = order_popup_data.edit();
+                                            pop_up_details.putString("Pre_order_collection_delivery", "Delivery");
+                                            pop_up_details.putString("Pre_order_menu_time_update",coll_del_time);
+                                            pop_up_details.putString("col_del_text","Delivery");
+                                            pop_up_details.commit();
+
+                                            Intent intent = new Intent("Pre_order_pop_up_update");
+                                            intent.putExtra("Pre_order_collection_delivery","Delivery");
+                                            intent.putExtra("Pre_order_menu_time_update",coll_del_time);
+                                            intent.putExtra("col_del_text","Delivery");
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+
+                                        }else{
+
+
+                                            SharedPreferences.Editor pop_up_details = order_popup_data.edit();
+                                            pop_up_details.putString("Pre_order_collection_delivery", "Collection");
+                                            pop_up_details.putString("Pre_order_menu_time_update",coll_del_time);
+                                            pop_up_details.putString("col_del_text","Collection");
+                                            pop_up_details.commit();
+
+
+                                            Intent intent = new Intent("Pre_order_pop_up_update");
+                                            intent.putExtra("Pre_order_collection_delivery","Collection");
+                                            intent.putExtra("Pre_order_menu_time_update",coll_del_time);
+                                            intent.putExtra("col_del_text","Collection");
+                                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+
+                                        }
+
+                                        // menugetitem(menuurlpath, sharedpreferences.getString("ordermodetype", null), key_postcode, key_area, key_address);//menu item call api
+                                        Log.e("order_mode_details1", "" + order_mode);
+                                        Log.e("order_mode_details2", "" + activetagstr);
+                                        Log.e("order_mode_details3", "" + todaytimestr);
+                                        Log.e("order_mode_details4", "" + laterdatestr);
+                                        Log.e("order_mode_details5", "" + latertimestr);
+
+                                        dialog.dismiss();
+
+                                    }
+                                });
+
+                    } else {
+
+                        dialog.dismiss();
+
+                        Dialog takeway_colse = new Dialog(mContext);
+                        takeway_colse.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        takeway_colse.setContentView(R.layout.takeway_status);
+
+                        TextView browse_menu_textview = takeway_colse.findViewById(R.id.browse_menu_textview);
+                        TextView brower_others = takeway_colse.findViewById(R.id.brower_others);
+
+                        browse_menu_textview.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                takeway_colse.dismiss();
+                            }
+                        });
+
+                        brower_others.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), Dashboard_Activity.class);
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+
+                        takeway_colse.show();
+                        takeway_colse.setCancelable(false);
+                        takeway_colse.setCanceledOnTouchOutside(false);
+                        takeway_colse.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                        takeway_colse.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        takeway_colse.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                        takeway_colse.getWindow().setGravity(Gravity.BOTTOM);
+
+
+                    }
+
+
+                } else {
+                    //Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<modeof_order_popup_model> call, Throwable t) {
+                //  Snackbar.make(Item_Menu_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                //  Toast.makeText(SupportlistActivity.this, R.string.somthinnot_right, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+   /* private void Order_mode_popup(View view, ViewHolder holder, int position) {
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.pre_order);
+
+        ShimmerFrameLayout shimmer_view_preorder = dialog.findViewById(R.id.shimmer_view_preorder);
+        shimmer_view_preorder.startShimmerAnimation();
+
+        ShimmerFrameLayout  update_layout_shimmer = dialog.findViewById(R.id.update_layout_shimmer);
+
         CardView ordermode_popup_view  =dialog.findViewById(R.id.ordermode_popup_view);
         TextView colloetion_tattime = dialog.findViewById(R.id.colloetion_tattime);
         TextView delivery_tattime = dialog.findViewById(R.id.delivery_tattime);
@@ -1725,7 +2756,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                     }
 
-                                    /*---------------------------load Later Time----------------------------------------------------*/
+                                    *//*---------------------------load Later Time----------------------------------------------------*//*
                                     private void loadLatertime(String ordermodeing, String laterdates) {
 
                                         // get user data from session
@@ -1980,7 +3011,7 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
-    }
+    }*/
 
     /*-------------------Loading Images------------------*/
     public void loading() {

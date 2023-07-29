@@ -469,6 +469,36 @@ public class Add_to_Cart extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                address_item_view.setVisibility(View.GONE);
+                edit_address_popup.setVisibility(View.VISIBLE);
+                edit_save_address.setVisibility(View.GONE);//update address button
+                add_save_new_address.setVisibility(View.VISIBLE);//add new address
+
+                edit_postcode.setText("");
+                edit_doorno.setText("");
+                edit_town.setText("");
+                edit_street.setText("");
+
+
+                edit_home_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.txt_one));
+                edit_home_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_type));
+
+                edit_office_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                edit_office_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                edit_other_button.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.edit_address_notxt));
+                edit_other_button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.card_no_delivery));
+
+                address_type = "1";
+
+            }
+        });
+
+     /*   add_new_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
                 address_item_view.setVisibility(View.GONE);
                 edit_address_popup.setVisibility(View.VISIBLE);
                 edit_save_address.setVisibility(View.GONE);//update address button
@@ -492,7 +522,7 @@ public class Add_to_Cart extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
         address_item_view.setOnClickListener(new View.OnClickListener() {
             @Override
