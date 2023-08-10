@@ -195,6 +195,7 @@ public class Privacy_Policy_Activity extends AppCompatActivity {
                 hideloading();
             }
         }.start();
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

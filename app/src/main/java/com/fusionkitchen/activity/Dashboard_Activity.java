@@ -521,6 +521,8 @@ public class Dashboard_Activity extends AppCompatActivity {
         Most_Popular_Listview = findViewById(R.id.Most_Popular_Listview);
         DashboardMostPopular();
 
+        startService(new Intent(getBaseContext(),MyService.class));
+
     }
 
     private void DashboardMostPopular() {

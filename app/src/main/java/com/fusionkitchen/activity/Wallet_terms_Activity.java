@@ -59,7 +59,7 @@ public class Wallet_terms_Activity extends AppCompatActivity {
             }
         });
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     @Override

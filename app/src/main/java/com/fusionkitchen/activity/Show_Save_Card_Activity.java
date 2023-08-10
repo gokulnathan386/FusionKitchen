@@ -133,6 +133,7 @@ public class Show_Save_Card_Activity extends AppCompatActivity {
         getwalletamount(user_id);
         /*-------------------View save Crd--------------------*/
         viewsavecard(user_id);
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

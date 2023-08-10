@@ -187,6 +187,7 @@ public class Add_new_savecard_Activity extends AppCompatActivity {
                 cartvalidate();
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     /*-------------------card number validation----------------*/

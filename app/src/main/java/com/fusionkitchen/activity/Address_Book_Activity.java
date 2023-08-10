@@ -538,6 +538,7 @@ public class Address_Book_Activity extends AppCompatActivity {
         /*---------------------------update primery value----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageupdateprimeryvalue, new IntentFilter("update_primery-message"));
 
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

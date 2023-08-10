@@ -875,6 +875,8 @@ public class Add_to_Cart extends AppCompatActivity {
 
         delivery_pay_button.setClickable(false);
         processto_pay_button.setClickable(false);
+
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     /*---------------------------collection only----------------------------------------------------*/

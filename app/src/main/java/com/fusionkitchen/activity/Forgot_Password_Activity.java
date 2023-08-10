@@ -3,6 +3,7 @@ package com.fusionkitchen.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -128,6 +129,7 @@ public class Forgot_Password_Activity extends AppCompatActivity {
 
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

@@ -194,7 +194,7 @@ public class Help_Activity extends AppCompatActivity {
             }
         }.start();
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

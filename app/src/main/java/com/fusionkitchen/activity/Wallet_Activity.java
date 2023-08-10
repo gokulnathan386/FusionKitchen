@@ -204,6 +204,7 @@ public class Wallet_Activity extends AppCompatActivity {
 
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

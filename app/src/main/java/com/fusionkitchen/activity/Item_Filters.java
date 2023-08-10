@@ -2,6 +2,7 @@ package com.fusionkitchen.activity;
 
 import android.annotation.SuppressLint;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,7 +52,7 @@ public class Item_Filters extends AppCompatActivity implements View.OnClickListe
 
         initview();
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

@@ -319,7 +319,7 @@ public class Show_Offer_Activity extends AppCompatActivity {
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiverreload, new IntentFilter("custom-message-reloadlist"));
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

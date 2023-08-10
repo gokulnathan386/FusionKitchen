@@ -739,6 +739,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         /*---------------------------save_card_get_methodid----------------------------------------------------*/
         LocalBroadcastManager.getInstance(this).registerReceiver(Save_card_get_details, new IntentFilter("Save_card_details"));
 
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     /*---------------------------Google Pay----------------------------*/

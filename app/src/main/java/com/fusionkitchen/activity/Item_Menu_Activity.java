@@ -1496,6 +1496,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
            LocalBroadcastManager.getInstance(this).registerReceiver(mPreOrderpopup, new IntentFilter("Pre_order_pop_up_update"));
 
+           startService(new Intent(getBaseContext(),MyService.class));
     }
 
     public BroadcastReceiver  mmenu_data_update_category = new BroadcastReceiver() {

@@ -468,6 +468,7 @@ public class Moreinfo_Activity extends AppCompatActivity implements OnMapReadyCa
         about_deatils = findViewById(R.id.about_deatils);
         cusines_details = findViewById(R.id.cusines_details);
 
+        startService(new Intent(getBaseContext(),MyService.class));
 
     }
 

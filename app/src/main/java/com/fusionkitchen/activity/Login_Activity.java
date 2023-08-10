@@ -637,6 +637,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
+        startService(new Intent(getBaseContext(),MyService.class));
+
     }
 
     private void Checkotpvalidation(String txtotp,String txtgmail) {

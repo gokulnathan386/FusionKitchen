@@ -221,6 +221,7 @@ public class Feedback_Activity extends AppCompatActivity {
                 }
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     public void onRadioButtonClicked(View view) {

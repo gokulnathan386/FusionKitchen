@@ -169,6 +169,7 @@ public class Notification_Activity extends AppCompatActivity {
             }
         });
 
+        startService(new Intent(getBaseContext(),MyService.class));
 
     }
 

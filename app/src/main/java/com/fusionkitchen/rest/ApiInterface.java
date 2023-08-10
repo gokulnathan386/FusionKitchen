@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 
+import com.fusionkitchen.model.App_download_record_Tracking;
 import com.fusionkitchen.model.Login.Login_mobile_email;
 import com.fusionkitchen.model.Savecard.addnewsavecard_model;
 import com.fusionkitchen.model.Savecard.deletesavecard_model;
@@ -397,7 +398,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<getlatertime_model> loadLaterTime(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
 
-
+    @POST("/appTracking")
+    @FormUrlEncoded
+    Call<App_download_record_Tracking> getappcountrecord(@FieldMap Map<String, String> params);
 
    /* @POST
    @Header("Cookie")

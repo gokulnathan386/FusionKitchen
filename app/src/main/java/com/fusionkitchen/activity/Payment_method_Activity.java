@@ -757,7 +757,7 @@ public class Payment_method_Activity extends AppCompatActivity {
             }
         }, 3000);
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     /*---------------------------Payment type showing----------------------------------------------------*/

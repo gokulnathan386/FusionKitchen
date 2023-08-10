@@ -339,6 +339,7 @@ public class MyAccount_Activity extends AppCompatActivity {
 
         getaccountdetails(user_id, login_type_id);
 
+        startService(new Intent(getBaseContext(),MyService.class));
 
     }
 

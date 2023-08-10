@@ -226,6 +226,7 @@ public class Order_Status_List_Activity extends AppCompatActivity {
                 return true;
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     /*------------------------------------------check internet connection----------------------------------------------------*/

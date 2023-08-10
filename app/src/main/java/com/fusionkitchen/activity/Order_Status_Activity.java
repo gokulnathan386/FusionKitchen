@@ -794,7 +794,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             );
 
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
 
     }
 

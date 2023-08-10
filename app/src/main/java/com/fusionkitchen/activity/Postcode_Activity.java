@@ -627,7 +627,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*-------------------------------End Auto In Update Google---------------------------*/
 
-
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
 

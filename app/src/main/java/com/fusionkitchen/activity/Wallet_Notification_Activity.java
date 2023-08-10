@@ -59,6 +59,7 @@ public class Wallet_Notification_Activity extends AppCompatActivity {
                 startActivity(intenthome);
             }
         });
+        startService(new Intent(getBaseContext(),MyService.class));
     }
 
     @Override
