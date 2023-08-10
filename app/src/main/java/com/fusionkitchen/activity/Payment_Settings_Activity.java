@@ -1405,6 +1405,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
 
     private void paymentcompleted(String intentid, String typestatus) {
         loadingshow();
+        Log.d("Gokulnathan-->2","+++++++"+ intentid);
         Map<String, String> paramspay = new HashMap<String, String>();
 //typestatus is false to direct stripe payment type true to save card payment process
         if (typestatus.equalsIgnoreCase("false")) {
