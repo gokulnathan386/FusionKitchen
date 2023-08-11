@@ -40,6 +40,17 @@ public class ordertracking_model {
         @SerializedName("clientsdetails")
         private ordertracking_details_model.clientsdetails clientsdetails;
 
+        @SerializedName("feedback")
+        private String feedback;
+
+        public String getFeedback() {
+            return feedback;
+        }
+
+        public void setFeedback(String feedback) {
+            this.feedback = feedback;
+        }
+
 
         public ordertracking_model.ordertracking.order getOrder() {
             return order;
@@ -60,13 +71,7 @@ public class ordertracking_model {
 
 
 
-
-
-
-
         public class order{
-
-
 
             @SerializedName("order")
             private ordertracking_details_model.order order;

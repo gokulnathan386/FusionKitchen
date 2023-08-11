@@ -7,9 +7,8 @@ import java.util.List;
 import com.fusionkitchen.model.order_history.order_details_list_show;
 
 public class ordertracking_details_model {
+    
     public class order {
-
-
         @SerializedName("total")
         private String total;
         @SerializedName("status")
@@ -87,7 +86,27 @@ public class ordertracking_details_model {
         @SerializedName("transport")
         private String transport;
 
+        @SerializedName("ride_amt")
+        private String ride_amt;
 
+        @SerializedName("roundamount")
+        private String roundamount;
+
+        public String getRoundAmount() {
+            return roundamount;
+        }
+
+        public void setRoundAmount(String roundamount) {
+            this.roundamount = roundamount;
+        }
+
+        public String getRideAmt() {
+            return ride_amt;
+        }
+
+        public void setRideAmt(String ride_amt) {
+            this.ride_amt = ride_amt;
+        }
 
         public String gettransport() {
             return transport;

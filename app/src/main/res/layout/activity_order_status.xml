@@ -281,7 +281,6 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                 </fragment>
 
                 <LinearLayout
@@ -713,7 +712,7 @@
                   <TextView
                       android:id="@+id/tip_btn"
                       android:layout_gravity="center"
-                      android:text="Pay Rider Tip of £0.00"
+                      android:text="Pay Rider Tip of £3"
                       android:textColor="#FFFFFF"
                       android:fontFamily="@font/poppins_semibold"
                       android:textSize="@dimen/_12sdp"
@@ -1265,18 +1264,21 @@
 
                     </LinearLayout>
 
+                    <!--start Restaurant tip-->
                     <LinearLayout
+                        android:id="@+id/restuarantAmt"
                         android:weightSum="2"
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3sp"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
                             android:fontFamily="@font/poppins_regular"
-                            android:text="Restaurant tip"
+                            android:text="Restaurant Tip"
                             android:layout_weight="1"
                             android:textColor="#808695"
                             android:textSize="12dp"
@@ -1285,7 +1287,7 @@
                         </TextView>
 
                         <TextView
-                            android:id="@+id/restaurant_tip"
+                            android:id="@+id/restaurantTip"
                             android:fontFamily="@font/poppins_regular"
                             android:text="£0.70"
                             android:layout_weight="1"
@@ -1298,20 +1300,21 @@
 
 
                     </LinearLayout>
-
-
+                    <!--start Rider tip-->
                     <LinearLayout
+                        android:id="@+id/rideTipLayout"
                         android:weightSum="2"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3sp"
                         android:layout_marginTop="5dp"
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
                             android:fontFamily="@font/poppins_regular"
-                            android:text="Rider tip"
+                            android:text="Rider Tip"
                             android:layout_weight="1"
                             android:textColor="#808695"
                             android:textSize="12dp"
@@ -1320,8 +1323,9 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/rideTipAmount"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="£0.10"
+                            android:text="£0.00"
                             android:layout_weight="1"
                             android:textColor="#808695"
                             android:textSize="12dp"
@@ -1332,6 +1336,120 @@
 
 
                     </LinearLayout>
+                    <!--start Bag charge-->
+                    <LinearLayout
+                        android:id="@+id/bagTipLayout"
+                        android:weightSum="2"
+                        android:visibility="gone"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Bag Charge"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/bagTipAmount"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.00"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+                    <!--start Delivery charge-->
+                    <LinearLayout
+                        android:id="@+id/deliveryTipLayout"
+                        android:weightSum="2"
+                        android:visibility="gone"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Delivery Charge"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/deliveryTipAmount"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.00"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+                    <!--start service charge-->
+                    <LinearLayout
+                        android:id="@+id/serviceTipLayout"
+                        android:weightSum="2"
+                        android:visibility="gone"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Service Charge"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/serviceTipAmount"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.00"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
+
+
+
+
 
                     <View
                         android:layout_marginLeft="3dp"
