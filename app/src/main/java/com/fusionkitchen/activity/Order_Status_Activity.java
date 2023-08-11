@@ -31,10 +31,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -78,6 +81,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Gap;
@@ -153,6 +157,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     Polyline polyline;
     Marker marker;
     Marker marker2;
+    private GestureDetector mGestureDetector;
+
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
@@ -265,7 +271,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     int mapcon = 0;
     String drive_Latitude,drive_Longitude,pickup_Latitude,pickup_Longitude,dropoff_Latitude,dropoff_Longitude;
 
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,6 +292,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             ViewDialog alert = new ViewDialog();
             alert.showDialog(Order_Status_Activity.this);
         }
+
 
         /*---------------------------Back Button Click----------------------------------------------------*/
         //Back Boutton Click
@@ -408,21 +414,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 }
             }
         });
-     //   mZoomControls = findViewById(R.id.zoomControls);
 
-       /* mZoomControls.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-            }
-        });
-
-        mZoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMap.animateCamera(CameraUpdateFactory.zoomOut());
-            }
-        });*/
 
         item_order_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2932,6 +2924,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         mMap = googleMap;
 
+      /*  UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);*/
+       /* uiSettings.setCompassEnabled(true);
+        uiSettings.setZoomGesturesEnabled(true);
+        uiSettings.setScrollGesturesEnabled(true);
+        uiSettings.setRotateGesturesEnabled(true);
+        LatLng location = new LatLng(37.7749, -122.4194); // San Francisco coordinates
+        mMap.addMarker(new MarkerOptions().position(location).title("Marker in San Francisco"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));*/
+
         if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !driver_lat.isEmpty() && !driver_long.isEmpty()
                 && !pickup_lat.isEmpty() && !pickup_long.isEmpty() && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -2996,8 +2998,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
 
-      /*      mMap.moveCamera(CameraUpdateFactory.newLatLng(midpoint.getPosition()));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(midpoint.getPosition(), 16));*/
 
         }else if(pickup_lat !=null && pickup_long !=null
                 && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
@@ -3009,11 +3009,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             builder.include(destination.getPosition());
             LatLngBounds bounds = builder.build();
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+           mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
-            /*mMap.moveCamera(CameraUpdateFactory.newLatLng(destination.getPosition()));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination.getPosition(), 16));*/
         }
+
+
 
     }
 

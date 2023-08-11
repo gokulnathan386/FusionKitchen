@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "255012633887-04113cpq77vc1cbom77nb577qsvr9r2p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fusionkitchen",
+            "certificate_hash": "7cbdeb145d22675e858a546d10f252b54fa25e4d"
+          }
+        },
+        {
+          "client_id": "255012633887-208qsi951n6kumlg3l4drd2e2o8mkv99.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fusionkitchen",
+            "certificate_hash": "26f859cb18a80ea4405ceaca108bee9606cf53ab"
+          }
+        },
+        {
+          "client_id": "255012633887-j81o8p5chjmkl1f1c8ranspltt57f4tc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fusionkitchen",
+            "certificate_hash": "a9d595de9f48670fefeb020e4fc82844eda4ddf0"
+          }
+        },
+        {
           "client_id": "255012633887-7o76riiil3rf7rk3k9ricocfcb4577jl.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +53,13 @@
             {
               "client_id": "255012633887-7o76riiil3rf7rk3k9ricocfcb4577jl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "255012633887-ag2u3acis22vsn2meo4igaaahkj2itda.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fusionkitchen"
+              }
             }
           ]
         }

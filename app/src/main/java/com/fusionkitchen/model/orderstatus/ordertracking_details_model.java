@@ -7,7 +7,7 @@ import java.util.List;
 import com.fusionkitchen.model.order_history.order_details_list_show;
 
 public class ordertracking_details_model {
-    
+
     public class order {
         @SerializedName("total")
         private String total;

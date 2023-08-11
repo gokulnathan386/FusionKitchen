@@ -543,7 +543,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         gmail_login_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d("gokulloginjbcsjdbcsd","Gokulnathan--->");
                 signIn();
 
             }
@@ -1154,6 +1154,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     /*---------------------------G-mail Login----------------------------------------------------*/
 
     private void signIn() {
+        Log.d("gokulloginjbcsjdbcsd","Gokulnathan--->2");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -1161,6 +1162,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
 
     private void handleSignInResult(GoogleSignInResult result) {
+
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
 
@@ -1189,8 +1191,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             // updateUI(true);
         } else {
-            // Signed out, show unauthenticated UI.
-            //  updateUI(false);
+            Log.d(TAG, "handleSignInResult: Failed-Google Login");
         }
     }
 
