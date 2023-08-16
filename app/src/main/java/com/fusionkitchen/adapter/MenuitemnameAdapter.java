@@ -1246,9 +1246,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                 update_mode.setFocusable(true);
                                                 update_mode.setEnabled(true);
                                                 update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                                                update_mode.setText("Deliver ASAP");
+                                                update_mode.setText("Delivery ASAP");
 
-                                                menu_time_update = "Deliver " + menu_delivery_tattime;
+                                                menu_time_update = "Delivery " + menu_delivery_tattime;
                                                 coll_del_time= menu_delivery_tattime;
 
                                                 today_time_layer.setVisibility(GONE);
@@ -1414,18 +1414,18 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
 
                                                         AdapterListData  todaytime = (AdapterListData)parent.getItemAtPosition(position);
 
-                                                        update_mode.setText("Deliver "+ todaytime.label +" at " + todaytime.today_time);
+                                                        update_mode.setText("Delivery "+ todaytime.label +" at " + todaytime.today_time);
 
                                                         todaytimestr =todaytime.today_time;
                                                         todaytimestring = todaytime.today_time_string;
 
-                                                        menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                        menu_time_update = "Delivery "+ todaytime.label +" at " + todaytime.today_time;
                                                         coll_del_time= todaytime.label +" at " + todaytime.today_time;
 
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
-                                                            update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
+                                                            update_mode.setText("Delivery "+ todaytime.label +" at 12:00" );
 
-                                                            menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                            menu_time_update = "Delivery "+ todaytime.label +" at " + todaytime.today_time;
                                                             coll_del_time= todaytime.label +" at 12:00";
                                                         }
 
@@ -1783,9 +1783,9 @@ public class MenuitemnameAdapter extends RecyclerView.Adapter<MenuitemnameAdapte
                                                                     update_mode.setEnabled(true);
                                                                     update_mode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
-                                                                    update_mode.setText("Deliver " +laterdates+ " at " +latertime.today_time);
+                                                                    update_mode.setText("Delivery " +laterdates+ " at " +latertime.today_time);
 
-                                                                    menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
+                                                                    menu_time_update = "Delivery "+ laterdates+" at " + latertime.today_time;
 
                                                                     coll_del_time = laterdates+" at " + latertime.today_time;
 

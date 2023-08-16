@@ -2883,13 +2883,13 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-                                                        update_mode.setText("Deliver "+ todaytime.label +" at " + todaytime.today_time);
+                                                        update_mode.setText("Delivery "+ todaytime.label +" at " + todaytime.today_time);
 
-                                                        menu_time_update = "Deliver "+ todaytime.label +" at " + todaytime.today_time;
+                                                        menu_time_update = "Delivery "+ todaytime.label +" at " + todaytime.today_time;
                                                         del_col_cooking_text =todaytime.label +" at " + todaytime.today_time;
 
                                                         del_col_anim.setAnimation(R.raw.delivery);
-                                                        delivery_collection_textview.setText("Deliver");
+                                                        delivery_collection_textview.setText("Delivery");
                                                         cooking_time_textview.setText(del_col_cooking_text);
                                                         del_col_anim.playAnimation();
                                                         coll_deli_icon.setImageResource(R.drawable.menu_delivery);
@@ -2901,12 +2901,12 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
                                                         if(todaytimestr.equalsIgnoreCase("Mid Night")){
 
-                                                            update_mode.setText("Deliver "+ todaytime.label +" at 12:00" );
-                                                            menu_time_update = "Deliver "+ todaytime.label +" at 12:00";
+                                                            update_mode.setText("Delivery "+ todaytime.label +" at 12:00" );
+                                                            menu_time_update = "Delivery "+ todaytime.label +" at 12:00";
                                                             del_col_cooking_text =todaytime.label +" at 12:00";
 
                                                             del_col_anim.setAnimation(R.raw.delivery);
-                                                            delivery_collection_textview.setText("Deliver");
+                                                            delivery_collection_textview.setText("Delivery");
                                                             cooking_time_textview.setText(del_col_cooking_text);
                                                             del_col_anim.playAnimation();
                                                             coll_deli_icon.setImageResource(R.drawable.menu_delivery);
@@ -2915,7 +2915,7 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
 
 
 
-                                                        del_coll_text = "Deliver";
+                                                        del_coll_text = "Delivery";
                                                         // del_col_cooking_text = menu_time_update;
 
 
@@ -3259,11 +3259,11 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                                                                     update_mode.setFocusable(true);
                                                                     update_mode.setEnabled(true);
                                                                     update_mode.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                                                                    update_mode.setText("Deliver " +laterdates+ " at " +latertime.today_time);
+                                                                    update_mode.setText("Delivery " +laterdates+ " at " +latertime.today_time);
 
-                                                                    menu_time_update = "Deliver "+ laterdates+" at " + latertime.today_time;
+                                                                    menu_time_update = "Delivery "+ laterdates+" at " + latertime.today_time;
 
-                                                                    del_coll_text = "Deliver";
+                                                                    del_coll_text = "Delivery";
                                                                     del_col_cooking_text = laterdates+" at " + latertime.today_time;
 
 

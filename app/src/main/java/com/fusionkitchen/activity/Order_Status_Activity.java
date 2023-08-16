@@ -25,7 +25,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -36,8 +35,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -52,15 +49,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,22 +70,17 @@ import com.fusionkitchen.model.paymentgatway.appkey;
 import com.fusionkitchen.model.paymentgatway.completpay_model;
 import com.fusionkitchen.model.paymentgatway.getclientSecret_model;
 import com.fusionkitchen.model.updatestuartaddress_modal;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -107,7 +96,6 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +136,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
+import static com.fusionkitchen.activity.Item_Menu_Activity.MyPOSTCODEPREFERENCES;
 
 public class Order_Status_Activity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -157,20 +146,24 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     Polyline polyline;
     Marker marker;
     Marker marker2;
+    String radiocoll;
+    TextView collectionDeliverytxt;
+    EditText card_cvv_no;
+    EditText exp_date,exp_month;
     private GestureDetector mGestureDetector;
 
     String radio_selectedValue="£3",stuart_delivery_;
     int rest_rating,food_rating;
-    public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
+    public static final String MyPOSTCODEPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
     Boolean btnenable,cardpayment = false;
     LinearLayout total_layout,dis_layout,total_lay;
     TextView rider_name,restaurantTip,deliveryTipAmount;
     String order_expected_time;
     String pay_descval,Stuartdrivename,Stuartdrivenumber;
-    TextView delivery_coll_tip_desc,delivery_coll_tip_txt,bagTipAmount,serviceTipAmount;
+    TextView delivery_coll_tip_desc,delivery_coll_tip_txt,bagTipAmount,serviceTipAmount,discountTipAmount;
     Boolean stuart_delivery_status = false;
     SupportMapFragment mapFragment;
-    LinearLayout rideTipLayout,restuarantAmt,deliveryTipLayout,bagTipLayout,serviceTipLayout;
+    LinearLayout rideTipLayout,restuarantAmt,deliveryTipLayout,bagTipLayout,serviceTipLayout,discountTipLayout;
     LinearLayout orderlist_data,total_item,stuart_collection_layout,review_screen_layout,OrderDetails_layout,add_more_item;
     TextView orderlist_discount,confirm_txt_desc,tip_u_delivery,collect_txt_msg,collection_txtmsg;
     String phone_number,dno,add1,add2,post_code,msg,E_mail;
@@ -372,6 +365,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         header_txt_status = findViewById(R.id.header_txt_status);
         rideTipLayout = findViewById(R.id.rideTipLayout);
         restuarantAmt = findViewById(R.id.restuarantAmt);
+        collectionDeliverytxt = findViewById(R.id.collectionDeliverytxt);
 
         orderlist_data = findViewById(R.id.orderlist_data);
         total_item = findViewById(R.id.total_item);
@@ -401,6 +395,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         total_layout = findViewById(R.id.total_layout);
         dis_layout = findViewById(R.id.dis_layout);
         total_lay = findViewById(R.id.totallay);
+        discountTipLayout = findViewById(R.id.discountTipLayout);
+        discountTipAmount = findViewById(R.id.discountTipAmount);
 
 
         total_item.setOnClickListener(new View.OnClickListener() {
@@ -771,6 +767,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             @Override
             public void onClick(View v) {
 
+
+
                 if ((custom_edittxt.getText().toString().trim() != null && !custom_edittxt.getText().toString().isEmpty())) {
 
                     Log.d("scbsbcbscbschjbc","" + tip_btn.getText().toString());
@@ -783,7 +781,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     // Log.d("sdmbcsdckjsdckjsc"," " + String.format("%.2f",separated[1]));
 
                     if(0.1 <= floatValue){
-                        Deliverypay(separated[1]);
+                        Deliverypay(separated[1],radiocoll);
                     }else{
                         Toast.makeText(getApplicationContext(),"Please Enter your valid Amount",Toast.LENGTH_SHORT).show();
                     }
@@ -793,7 +791,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                     String currentString = tip_btn.getText().toString();
                     String[] separated = currentString.split("£");
                     Log.d("sdmbcsdckjsdckjscxgdg"," " + separated[1]);
-                    Deliverypay(separated[1]);
+                    Deliverypay(separated[1],radiocoll);
 
                 }else{
 
@@ -985,7 +983,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     }
 
 
-    private void Deliverypay(String pay_amt) {
+    private void Deliverypay(String pay_amt, String radiocoll) {
         Log.d("dkjfbjdfbvfbdvfdbvjhfd","djfj" + pay_amt);
 
         Dialog deliverytip = new Dialog(mContext);
@@ -993,18 +991,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         deliverytip.setContentView(R.layout.delivery_tips_pop_up);
 
         card_number = deliverytip.findViewById(R.id.card_number);
-        EditText  exp_date = deliverytip.findViewById(R.id.exp_date);
-        EditText exp_month = deliverytip.findViewById(R.id.exp_month);
+        exp_date = deliverytip.findViewById(R.id.exp_date);
+        exp_month = deliverytip.findViewById(R.id.exp_month);
         LinearLayout card_no_layout = deliverytip.findViewById(R.id.card_no_layout);
         LinearLayout btn_credit_debit = deliverytip.findViewById(R.id.btn_credit_debit);
         LinearLayout payment_type = deliverytip.findViewById(R.id.payment_type);
         TextView card_pop_up_btn = deliverytip.findViewById(R.id.card_pop_up_btn);
         TextView pay_stuart_card = deliverytip.findViewById(R.id.pay_stuart_card);
-        EditText card_cvv_no = deliverytip.findViewById(R.id.card_cvv_no);
+        card_cvv_no = deliverytip.findViewById(R.id.card_cvv_no);
         LinearLayout stuart_gpay = deliverytip.findViewById(R.id.stuart_gpay);
         LinearLayout card_details = deliverytip.findViewById(R.id.card_details);
         TextView cardnumbererror = deliverytip.findViewById(R.id.cardnumbererror);
-
+        TextView radierTipCollection = deliverytip.findViewById(R.id.radierTipCollection);
+        radierTipCollection.setText(radiocoll);
 
        //  pay_amt
         pay_stuart_card.setText("Pay £" + pay_amt);
@@ -1028,6 +1027,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
         card_number.addTextChangedListener(creditCardNumberWatcher);
+        exp_date.addTextChangedListener(expiryDate);
+        exp_month.addTextChangedListener(expirymonth);
 
 
 
@@ -1148,14 +1149,16 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("payment_method_id", paymentMethodId);
-        params.put("drivertips", ant_driver_tip);
+      //  params.put("drivertips", ant_driver_tip);
+        params.put("drivertips", String.valueOf(hh));
         params.put("fname", tip_pay_first_name);
         params.put("lname", tip_pay_last_name);
         params.put("email", E_mail);
         params.put("app_id", "0");
-        //metdpasfullUrl = orderpath + "/stripepaymentProcess";
+        params.put("oid", orderid);
         metdpasfullUrl = orderpath + "/stripeProcessDriverTips";
 
+        Log.d("jhbcdjcjhsbcjsbcjbc"," " + params);
 
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         retrofit2.Call<getclientSecret_model> call = apiService.getclientSecret(metdpasfullUrl, params, "Bearer" + token);
@@ -1275,11 +1278,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             paramspay.put("paymentIntent", intentid);
         }
 
-        paramspay.put("drivertips", ant_driver_tip);
+       // paramspay.put("drivertips", ant_driver_tip);
+        paramspay.put("drivertips", String.valueOf(hh));
         paramspay.put("fname", tip_pay_first_name);
         paramspay.put("lname", tip_pay_last_name);
         paramspay.put("email", E_mail);
         paramspay.put("app_id", "0");
+        paramspay.put("oid", orderid);
 
 
         intepasfullUrl = orderpath + "/stripeProcessDriverTips";
@@ -1295,7 +1300,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 int statusCode = response.code();
                 Log.e("completedstatusCode", "" + statusCode + "====" + paramspay + " " + intepasfullUrl);
                 hideloading();
-
+                Log.e("OrderDriverTips", new Gson().toJson(response.body()));
                 if (statusCode == 200) {
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
@@ -1357,6 +1362,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
     }
 
+
+
     private TextWatcher creditCardNumberWatcher = new TextWatcher() {
         private static final char space = ' ';
 
@@ -1377,6 +1384,53 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                 sb.insert(start + count - 1, space);
                 card_number.setText(sb.toString());
                 card_number.setSelection(sb.length());
+            }
+            if(s.length() == 19){
+                exp_date.requestFocus();
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    private TextWatcher expiryDate = new TextWatcher() {
+
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            if(s.length() == 2){
+                exp_month.requestFocus();
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    private TextWatcher expirymonth = new TextWatcher() {
+
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            if(s.length() == 2){
+                card_cvv_no.requestFocus();
             }
 
         }
@@ -1713,10 +1767,18 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                          }
 
 
+                         order_type = response.body().getOrdertracking().getOrder().getOrder().getOtype();
+
                          if(response.body().getOrdertracking().getOrder().getOrder().getRideAmt() != null &&
                                  !response.body().getOrdertracking().getOrder().getOrder().getRideAmt().isEmpty() &&
                                  !response.body().getOrdertracking().getOrder().getOrder().getRideAmt().equalsIgnoreCase("0.00")){
-
+                             if(order_type.equalsIgnoreCase("1")){
+                                 collectionDeliverytxt.setText("Restaurant Tip");
+                                 radiocoll = "Restaurant Tip";
+                             }else{
+                                 collectionDeliverytxt.setText("Rider Tip");
+                                 radiocoll = "Rider Tip";
+                             }
                              rideTipAmount.setText("£"+response.body().getOrdertracking().getOrder().getOrder().getRideAmt());
                              rideTipLayout.setVisibility(View.VISIBLE);
 
@@ -1724,7 +1786,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                              rideTipLayout.setVisibility(View.GONE);
                          }
 
-                        if(response.body().getOrdertracking().getOrder().getOrder().getRoundAmount() != null &&
+                        /*if(response.body().getOrdertracking().getOrder().getOrder().getRoundAmount() != null &&
                                 !response.body().getOrdertracking().getOrder().getOrder().getRoundAmount().isEmpty() &&
                                 !response.body().getOrdertracking().getOrder().getOrder().getRoundAmount().equalsIgnoreCase("0.00")){
 
@@ -1734,10 +1796,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         }else{
                             restuarantAmt.setVisibility(View.GONE);
                         }
-
-                        if(response.body().getOrdertracking().getOrder().getOrder(). getDelivery_charge() != null &&
-                                !response.body().getOrdertracking().getOrder().getOrder(). getDelivery_charge().isEmpty() &&
-                                !response.body().getOrdertracking().getOrder().getOrder(). getDelivery_charge().equalsIgnoreCase("0.00")){
+*/
+                        if(response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge() != null &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().isEmpty() &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().equalsIgnoreCase("0.00") &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge().equalsIgnoreCase("0")
+                        ){
 
                             deliveryTipAmount.setText("£"+response.body().getOrdertracking().getOrder().getOrder().getDelivery_charge());
                             deliveryTipLayout.setVisibility(View.VISIBLE);
@@ -1747,14 +1811,28 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                         }
 
                         if(response.body().getOrdertracking().getOrder().getOrder().getBagage() != null &&
-                                !response.body().getOrdertracking().getOrder().getOrder(). getBagage().isEmpty() &&
-                                !response.body().getOrdertracking().getOrder().getOrder(). getBagage().equalsIgnoreCase("0.00")){
+                                !response.body().getOrdertracking().getOrder().getOrder().getBagage().isEmpty() &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getBagage().equalsIgnoreCase("0.00") &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getBagage().equalsIgnoreCase("0")){
 
                             bagTipAmount.setText("£"+response.body().getOrdertracking().getOrder().getOrder().getBagage());
                             bagTipLayout.setVisibility(View.VISIBLE);
 
                         }else{
                             bagTipLayout.setVisibility(View.GONE);
+                        }
+
+
+                        if(response.body().getOrdertracking().getOrder().getOrder().getDiscount() != null &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDiscount().isEmpty() &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDiscount().equalsIgnoreCase("0.00") &&
+                                !response.body().getOrdertracking().getOrder().getOrder().getDiscount().equalsIgnoreCase("0") ){
+
+                            discountTipAmount.setText("-£"+response.body().getOrdertracking().getOrder().getOrder().getDiscount());
+                            discountTipLayout.setVisibility(View.VISIBLE);
+
+                        }else{
+                            discountTipLayout.setVisibility(View.GONE);
                         }
 
 
@@ -1773,7 +1851,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
 
                        String Stuart_enable_disable = response.body().getOrdertracking().getOrder().getOrder().getstuart_status();
-                       order_type = response.body().getOrdertracking().getOrder().getOrder().getOtype();
+
+
+
 
 
                        if(Stuart_enable_disable.equalsIgnoreCase("true") && order_type.equalsIgnoreCase("0")){
@@ -2212,19 +2292,19 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    add_more_item.setVisibility(View.GONE);
 
 
-                                /*   handler.postDelayed(new Runnable() {
+                                   handler.postDelayed(new Runnable() {
                                        public void run() {
                                            review_screen_layout.setVisibility(View.VISIBLE);
                                            handler.postDelayed(this, delay);
                                        }
-                                   }, delay);*/
+                                   }, delay);
                                    header_txt_status.setText("Enjoy your order");
-                                   if(feedback.equalsIgnoreCase("true")){
+                                   /*if(feedback.equalsIgnoreCase("true")){
                                        review_screen_layout.setVisibility(View.VISIBLE);
                                    }else{
                                        review_screen_layout.setVisibility(View.GONE);
                                    }
-
+*/
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -2239,18 +2319,18 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    delivery_coll_tip_desc.setText("Tip will go directly to your \ndelivery partner");
                                    add_more_item.setVisibility(View.GONE);
 
-                               /*    handler.postDelayed(new Runnable() {
+                                   handler.postDelayed(new Runnable() {
                                        public void run() {
                                            review_screen_layout.setVisibility(View.VISIBLE);
                                            handler.postDelayed(this, delay);
                                        }
-                                   }, delay);*/
+                                   }, delay);
                                    header_txt_status.setText("Enjoy your order");
-                                   if(feedback.equalsIgnoreCase("true")){
+                                   /*if(feedback.equalsIgnoreCase("true")){
                                        review_screen_layout.setVisibility(View.VISIBLE);
                                    }else{
                                        review_screen_layout.setVisibility(View.GONE);
-                                   }
+                                   }*/
 
                                }
 
@@ -2495,22 +2575,22 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                }
 
 
-                              /* handler.postDelayed(new Runnable() {
+                               handler.postDelayed(new Runnable() {
                                    public void run() {
                                        stuart_delivery_status = false;
                                        stuart_collection_layout.setVisibility(View.GONE);
                                        review_screen_layout.setVisibility(View.VISIBLE);
                                        handler.postDelayed(this, delay);
                                    }
-                               }, delay);*/
+                               }, delay);
                                header_txt_status.setText("Enjoy your order");
-                               if(feedback.equalsIgnoreCase("true")){
+                               /*if(feedback.equalsIgnoreCase("true")){
                                    stuart_delivery_status = false;
                                    stuart_collection_layout.setVisibility(View.GONE);
                                    review_screen_layout.setVisibility(View.VISIBLE);
                                }else{
                                    review_screen_layout.setVisibility(View.GONE);
-                               }
+                               }*/
 
 
                            }else if(delivery_status.equalsIgnoreCase("9")){
@@ -2554,12 +2634,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                             subtotal_item.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getSub_total());
                         }
 
-                        if(response.body().getOrdertracking().getOrder().getOrder().getDiscount().equalsIgnoreCase("0.00")){
+                        /*if(response.body().getOrdertracking().getOrder().getOrder().getDiscount().equalsIgnoreCase("0.00")){
                             dis_layout.setVisibility(View.GONE);
                         }else{
                             dis_layout.setVisibility(View.VISIBLE);
                             orderlist_discount.setText("£" + response.body().getOrdertracking().getOrder().getOrder().getDiscount());
-                        }
+                        }*/
 
                         if(response.body().getOrdertracking().getOrder().getOrder().getTotal().equalsIgnoreCase("0.00")){
                            total_lay.setVisibility(View.GONE);

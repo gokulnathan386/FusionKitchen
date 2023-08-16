@@ -23,17 +23,19 @@
             app:cardElevation="15dp">
 
             <TextView
+                android:id="@+id/radierTipCollection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/metropolis_bold"
                 android:gravity="center"
-                android:text="Delivery Tips"
+                android:text="Tips"
                 android:textColor="#17284D"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
+             <!--   Delivery -->
 
 
             <LinearLayout
@@ -176,6 +178,7 @@
                         android:fontFamily="@font/metropolis_medium"
                         android:padding="2dp"
                         android:text=""
+                        android:hint="**** **** **** ****"
                         android:singleLine="true"
                         android:textColor="#204356"
                         android:textSize="@dimen/_12sdp">
@@ -240,6 +243,7 @@
                                 android:layout_marginTop="6dp"
                                 android:maxLength="2"
                                 android:text=""
+                                android:hint="**"
                                 android:gravity="center"
                                 android:background="@drawable/sturat_edittext_bg"
                                 android:fontFamily="@font/metropolis_medium"
@@ -268,6 +272,7 @@
                            android:layout_marginTop="6dp"
                            android:maxLength="2"
                            android:text=""
+                           android:hint="**"
                            android:gravity="center"
                            android:background="@drawable/sturat_edittext_bg"
                            android:fontFamily="@font/metropolis_medium"
@@ -325,6 +330,7 @@
                                     android:padding="2dp"
                                     android:maxLength="3"
                                     android:text=""
+                                    android:hint="***"
                                     android:inputType="numberPassword"
                                     android:singleLine="true"
                                     android:textColor="#204356"

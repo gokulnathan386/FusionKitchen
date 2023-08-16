@@ -843,7 +843,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="Your order from Your order from"
+                            android:text="Your order from"
                             android:textColor="#808695"
                             android:textSize="@dimen/_12sdp"></TextView>
 
@@ -1225,6 +1225,7 @@
                     <LinearLayout
                         android:id="@+id/dis_layout"
                         android:weightSum="2"
+                        android:visibility="gone"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3sp"
                         android:layout_marginTop="5dp"
@@ -1306,6 +1307,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/collectionDeliverytxt"
                             android:fontFamily="@font/poppins_regular"
                             android:text="Rider Tip"
                             android:layout_weight="1"
@@ -1441,7 +1443,42 @@
                     </LinearLayout>
 
 
+                    <!--start Discount charge-->
+                    <LinearLayout
+                        android:id="@+id/discountTipLayout"
+                        android:weightSum="2"
+                        android:visibility="gone"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3sp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
+                        <TextView
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Discount"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/discountTipAmount"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="£0.00"
+                            android:layout_weight="1"
+                            android:textColor="#808695"
+                            android:textSize="12dp"
+                            android:gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        </TextView>
+
+
+                    </LinearLayout>
 
 
                     <View
