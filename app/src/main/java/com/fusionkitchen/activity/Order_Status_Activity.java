@@ -815,7 +815,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                     Order_Status_Activity.this,
                     new GooglePayPaymentMethodLauncher.Config(
-                            GooglePayEnvironment.Production,
+                            GooglePayEnvironment.Test,
                             "US",
                             "Fusion Kitchen"
                     ),
@@ -863,12 +863,13 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             Log.e("paymentMethodId", "" + paymentMethodId);
 
             float hh = Float.parseFloat(pay_amt1);
-            float  toatlamt = (hh* 100);
-           // Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
+            float  toatlamt = (hh);
+          //  Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d",  toatlamt)) );
 
             Map<String, String> params = new HashMap<String, String>();
-            //params.put("drivertips", String.valueOf(gpay_amount));
-            params.put("drivertips", String.valueOf(Long.valueOf(String.format("%d", (long) toatlamt))));
+            int intValue = (int) hh;
+            Log.d("sldcnslncnc"," " + pay_amt1);
+            params.put("drivertips", pay_amt1);
             params.put("app_id", "0");
             params.put("fname", tip_pay_first_name);
             params.put("lname", tip_pay_last_name);
@@ -876,6 +877,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
             params.put("cid", user_id);
             params.put("payment_method_id", paymentMethodId);
             params.put("url", "demo2.fusionepos.co.uk");
+            params.put("oid", orderid);
 
             metdpasfullUrl = orderpath + "/gpayProcessDriverTips";
             ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1111,6 +1113,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
               // gpay_amount = (int) Math.round(Float.parseFloat(pay_amt1));
                 float hh = Float.parseFloat(pay_amt1);
                 float  toatlamt = (hh* 100);
+                //float  toatlamt = (hh);
                 Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
 
 
@@ -1121,6 +1124,9 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                   stuart_gpay.setClickable(true);
                 //  googlePayLauncher.present("GBP", gpay_amount);
                   googlePayLauncher.present("GBP", Math.toIntExact(Long.valueOf(String.format("%d", (long) toatlamt))));
+                 /* int intValue = (int) hh;
+                  Log.d("sldcnslncnc--dnbkfdnvkd"," " +intValue);
+                  googlePayLauncher.present("GBP",intValue);*/
               }
 
             }
@@ -1143,6 +1149,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         Log.e("paymentMethodId", "" + paymentMethodId + "------" + tippayamt);
 
         float hh = Float.parseFloat(tippayamt);
+        //float  toatlamt = (hh* 100);
         float  toatlamt = (hh* 100);
         // Log.d("Round_point_tester"," " + Long.valueOf(String.format("%d", (long) toatlamt)) );
         String ant_driver_tip = String.valueOf(Long.valueOf(String.format("%d", (long) toatlamt)));
@@ -1330,7 +1337,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         TextView pay_txt = payment_statuspopup.findViewById(R.id.pay_txt);
         TextView pay_desc = payment_statuspopup.findViewById(R.id.pay_desc);
 
-         pay_descval = "Payment for Rider Tip of £ " + amt + " is successfully received";
+        if(!radiocoll.equalsIgnoreCase("null") && !radiocoll.isEmpty()){
+            pay_descval = "Payment for "+radiocoll+" of \n £ " + amt + " is successfully received";
+        }else{
+            pay_descval = "Payment for Tip of \n £ " + amt + " is successfully received";
+        }
 
 
         if(payment_succes_fail == 1){
