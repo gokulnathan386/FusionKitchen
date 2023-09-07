@@ -87,6 +87,7 @@ public class Payment_method_Activity extends AppCompatActivity {
     /*---------------------------Back Button Click----------------------------------------------------*/
     ImageView back;
     int list_client_id;
+    String clientdelivery_charge;
 
     /*---------------------------XML ID Call----------------------------------------------------*/
 
@@ -665,6 +666,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                                     intent.putExtra("hiddencharges", hiddencharges);
                                     intent.putExtra("wallet_amount", wallet_amount_amount.getText().toString());
                                     intent.putExtra("gpay_apikey", apikey);
+                                    intent.putExtra("clientdeliverycharge", clientdelivery_charge);
                                     startActivity(intent);
 
                                 }
@@ -710,6 +712,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                             intent.putExtra("hiddencharges", hiddencharges);
                             intent.putExtra("wallet_amount", wallet_amount_amount.getText().toString());
                             intent.putExtra("gpay_apikey", apikey);
+                            intent.putExtra("clientdeliverycharge", clientdelivery_charge);
                             startActivity(intent);
 
                         }
@@ -732,6 +735,7 @@ public class Payment_method_Activity extends AppCompatActivity {
                         intent.putExtra("hiddencharges", hiddencharges);
                         intent.putExtra("wallet_amount", wallet_amount_amount.getText().toString());
                         intent.putExtra("gpay_apikey", apikey);
+                        intent.putExtra("clientdeliverycharge", clientdelivery_charge);
                         startActivity(intent);
                     }
                 }
@@ -1445,7 +1449,7 @@ public class Payment_method_Activity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<serviceDelCharge_model> call = apiService.getserviceDelCharge(fullUrl, params);
 
-        Log.e("paramsval", "" + params);
+        Log.e("paramsvaljbjfbjfbvjfbvjvvbjfv", "" + params);
         Log.e("fullUrl", "" + fullUrl);
         call.enqueue(new Callback<serviceDelCharge_model>() {
             @Override
@@ -1498,6 +1502,8 @@ public class Payment_method_Activity extends AppCompatActivity {
                             hiddencharges = response.body().getData().getFk_servicecharge();
 
                         }*/
+
+                        clientdelivery_charge = response.body().getData().getclient_deliverycharge();
 
                         if (response.body().getData().getDelivery_charge().equalsIgnoreCase("0.00") || response.body().getData().getDelivery_charge().equalsIgnoreCase("") || response.body().getData().getDelivery_charge().isEmpty()) {
                             amt_delivery_rel.setVisibility(View.GONE);

@@ -74,6 +74,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
@@ -145,6 +147,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     String url,feedback;
     Polyline polyline;
     Marker marker;
+    Boolean loader = true;
     Marker marker2;
     String radiocoll;
     TextView collectionDeliverytxt;
@@ -1337,11 +1340,8 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         TextView pay_txt = payment_statuspopup.findViewById(R.id.pay_txt);
         TextView pay_desc = payment_statuspopup.findViewById(R.id.pay_desc);
 
-        if(!radiocoll.equalsIgnoreCase("null") && !radiocoll.isEmpty()){
-            pay_descval = "Payment for "+radiocoll+" of \n £ " + amt + " is successfully received";
-        }else{
-            pay_descval = "Payment for Tip of \n £ " + amt + " is successfully received";
-        }
+
+        pay_descval = "Payment for "+radiocoll+" of \n £ " + amt + " is successfully received";
 
 
         if(payment_succes_fail == 1){
@@ -1666,6 +1666,12 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     }
 
     private void getstuarttracking(String orderid, String orderpath) {
+
+        if(loader == true){
+            loadingshow();
+            loader = false;
+        }
+
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("orderdetails", orderid);
@@ -2111,7 +2117,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                wait_confirm_icon.playAnimation();
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(order_expected_time);
-                               confirm_txt_desc.setText("Driver ready to pick up your order from Pizza nova");
+                               confirm_txt_desc.setText("Driver ready to pick up your order from" + response.body().getOrdertracking().getOrder().getrest().getName() );
                                mapcon = 2;
 
                                if(driver_lat !=null && driver_long !=null && pickup_lat !=null && pickup_long !=null
@@ -2153,7 +2159,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                                stuart_textview.setText(delivery_status_name);
                                header_txt_status.setText(order_expected_time);
-                               confirm_txt_desc.setText("Driver ready to pick up your order from Pizza nova");
+                               confirm_txt_desc.setText("Driver ready to pick up your order from" + response.body().getOrdertracking().getOrder().getrest().getName());
                                mapcon = 2;
 
 
@@ -2310,12 +2316,11 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                        }
                                    }, delay);
                                    header_txt_status.setText("Enjoy your order");
-                                   /*if(feedback.equalsIgnoreCase("true")){
+                                  /* if(feedback.equalsIgnoreCase("true")){
                                        review_screen_layout.setVisibility(View.VISIBLE);
                                    }else{
                                        review_screen_layout.setVisibility(View.GONE);
-                                   }
-*/
+                                   }*/
                                }else if(pickup_lat !=null && pickup_long !=null
                                        && dropoff_lat != null && dropoff_long != null && !pickup_lat.isEmpty() && !pickup_long.isEmpty()
                                        && !dropoff_lat.isEmpty() && !dropoff_long.isEmpty()){
@@ -2337,7 +2342,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                        }
                                    }, delay);
                                    header_txt_status.setText("Enjoy your order");
-                                   /*if(feedback.equalsIgnoreCase("true")){
+                               /*    if(feedback.equalsIgnoreCase("true")){
                                        review_screen_layout.setVisibility(View.VISIBLE);
                                    }else{
                                        review_screen_layout.setVisibility(View.GONE);
@@ -2595,7 +2600,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
                                    }
                                }, delay);
                                header_txt_status.setText("Enjoy your order");
-                               /*if(feedback.equalsIgnoreCase("true")){
+                              /* if(feedback.equalsIgnoreCase("true")){
                                    stuart_delivery_status = false;
                                    stuart_collection_layout.setVisibility(View.GONE);
                                    review_screen_layout.setVisibility(View.VISIBLE);
@@ -2662,14 +2667,17 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
 
                     }
 
+                    hideloading();
 
                 } else {
+                    hideloading();
                     Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ordertracking_model> call, Throwable t) {
+                hideloading();
                 Log.e("bugcode", "" + t.toString());
                 Snackbar.make(Order_Status_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
 
@@ -2677,8 +2685,6 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
         });
 
     }
-
-
 
 
     public static float getBearing(LatLng begin, LatLng end) {
@@ -3014,6 +3020,7 @@ public class Order_Status_Activity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
       /*  UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);*/

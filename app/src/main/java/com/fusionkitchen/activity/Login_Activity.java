@@ -1,6 +1,7 @@
 package com.fusionkitchen.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -96,6 +97,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -119,7 +122,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     Boolean resend = false;
     int edit_txt;
     TextView prefix;
-
+    int txttosend=0;
+    Matcher matcher;
 
     /*--------------Login store SharedPreferences------------------*/
     SharedPreferences slogin;
@@ -176,6 +180,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     String url = "";
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -503,7 +508,11 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         sigin_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateLogin();
+                try {
+                    validateLogin();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -633,7 +642,25 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View v) {
                 resend = true;
-                Sendotpphone(email_phone_edittxt.getText().toString().trim());
+                try {
+                    if (txttosend==2){
+                        String firstchar = email_phone_edittxt.getText().toString().trim();
+                        String txtchar = String.valueOf(firstchar.charAt(0));
+                        if(txtchar.equalsIgnoreCase("0")){
+                            txttosend=2;
+                            Sendotpphone(email_phone_edittxt.getText().toString().trim(),txttosend,false);
+                        }else{
+                            txttosend=2;
+                            Sendotpphone("0"+email_phone_edittxt.getText().toString().trim(),txttosend,false);
+                        }
+                    }
+                    else{
+                        Sendotpphone(email_phone_edittxt.getText().toString().trim(),txttosend,false);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -839,7 +866,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     /*---------------------------Login Button----------------------------------------------------*/
     /*Check Login Details Hear...!*/
-    private void validateLogin() {
+    private void validateLogin() throws Exception {
 
         if(TextUtils.isEmpty(email_phone_edittxt.getText())){
             Snackbar.make(this.findViewById(android.R.id.content), "Please fill out this field.", Snackbar.LENGTH_LONG).show();
@@ -849,19 +876,38 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             String phonenopattern ="^(?:0|\\+?44)(?:\\d\\s?){9,10}$";   // UK Number only valid
 
-            Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
-            Matcher matcher = phoneNumberPattern.matcher(email_phone_edittxt.getText().toString().trim());
+            String str = email_phone_edittxt.getText().toString().trim();
+            String firstLetter = String.valueOf(str.charAt(0));
+
+            if(firstLetter.equalsIgnoreCase("0")){
+                Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
+                matcher = phoneNumberPattern.matcher(
+                        email_phone_edittxt.getText().toString().trim());
+            }
+            else{
+                Pattern phoneNumberPattern = Pattern.compile(phonenopattern);
+                matcher = phoneNumberPattern.matcher(
+                        "0" + email_phone_edittxt.getText().toString().trim());
+            }
+
 
 
             if ((email_phone_edittxt.getText().toString().trim().matches(emailPattern)))
             {
+                txttosend=1;
+                Sendotpphone(email_phone_edittxt.getText().toString().trim(),txttosend,true);
 
-                Sendotpphone(email_phone_edittxt.getText().toString().trim());
-
-            }else if(matcher.matches()){
-
-              // Toast.makeText(getApplicationContext(),"valid Phone Number" + email_phone_edittxt.getText().toString(),Toast.LENGTH_SHORT).show();
-               Sendotpphone(email_phone_edittxt.getText().toString().trim());
+            }
+            else if(matcher.matches()){
+                String firstchar = email_phone_edittxt.getText().toString().trim();
+                String txtchar = String.valueOf(firstchar.charAt(0));
+                if(txtchar.equalsIgnoreCase("0")){
+                    txttosend=2;
+                    Sendotpphone(email_phone_edittxt.getText().toString().trim(),txttosend,false);
+                }else{
+                    txttosend=2;
+                    Sendotpphone("0"+email_phone_edittxt.getText().toString().trim(),txttosend,false);
+                }
 
             }else{
                 Toast.makeText(getApplicationContext(),"Invalid Email address or Phone Number",Toast.LENGTH_SHORT).show();
@@ -872,7 +918,9 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-    private void Sendotpphone(String emailphone){
+    private void Sendotpphone(String emailphone,int txt,Boolean ismail) throws Exception {
+
+        loadingshow();
 
         otp1.setText("");
         otp2.setText("");
@@ -884,78 +932,91 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         otp4.setBackground(getResources().getDrawable(R.drawable.edit_text_otp));
 
 
-            loadingshow();
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("user_name", emailphone);
-            ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-            Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
 
-           Log.e("ejmdgfgfuyewfg", " " +params );
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user_name", emailphone);
+        if (txt==2){
+            String md5Hash = md5(emailphone+"fk");
 
-            call.enqueue(new Callback<Login_mobile_email>() {
-                @Override
-                public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
-                    int statusCode = response.code();
+            params.put("encreyptedKey", md5Hash);
+        }
+        Log.d("fhgbrttttttttttttttt","sdfbyhdsfguysdfguy"+params);
 
-                    Log.e("ejmdgfgfuyewfg", new Gson().toJson(response.body()) + " " + params + response.raw().request().url());
-
-                    if (statusCode == 200) {
-                        hideloading();
-                        if (response.body().getStatus().equalsIgnoreCase("true")) {
-
-                            if(resend == true){
-                                Resendtimecount();
-                                resend = false;
-                            }else{
-
-                                decs_txt.setVisibility(View.GONE);
-                                email_phone_edittxt.setVisibility(View.GONE);
-                                sigin_button.setVisibility(View.GONE);
-                                prefix.setVisibility(View.GONE);
-
-                                four_otp.setVisibility(View.VISIBLE);
-                                desc_otp.setVisibility(View.VISIBLE);
-                                otp_timer.setVisibility(View.VISIBLE);
-                                otp_btn.setVisibility(View.VISIBLE);
-
-                                Resendtimecount();
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<Login_mobile_email> call = apiService.sendotpemailphone(params);
 
 
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                otp1.postDelayed(new Runnable()
-                                {
-                                    @Override
-                                    public void run()
-                                    {
-                                        otp1.requestFocus();
-                                        imm.showSoftInput(otp1, 0);
-                                        otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
-                                    }
-                                }, 100);
+        call.enqueue(new Callback<Login_mobile_email>() {
+            @Override
+            public void onResponse(Call<Login_mobile_email> call, Response<Login_mobile_email> response) {
+                int statusCode = response.code();
 
-                            }
+                if(txt == 1){
+                    desc_otp.setText("Enter the OTP received to your email");
+                }else if(txt == 2){
+                    desc_otp.setText("Enter the OTP received to your Phone no");
+                }
 
+                Log.e("ejmdgfgfuyewfg", new Gson().toJson(response.body()) + " " + params + response.raw().request().url());
+
+                if (statusCode == 200) {
+                    hideloading();
+                    if (response.body().getStatus().equalsIgnoreCase("true")) {
+
+                        if(resend == true){
+                            otp1.requestFocus();
+                            desc_resend_otp.setVisibility(View.GONE);
+                            Resendtimecount();
+                            resend = false;
                         }else{
-                            Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.body().getMessage(), Snackbar.LENGTH_LONG).show();
+
+                            decs_txt.setVisibility(View.GONE);
+                            email_phone_edittxt.setVisibility(View.GONE);
+                            sigin_button.setVisibility(View.GONE);
+                            prefix.setVisibility(View.GONE);
+
+                            four_otp.setVisibility(View.VISIBLE);
+                            desc_otp.setVisibility(View.VISIBLE);
+                            otp_timer.setVisibility(View.VISIBLE);
+                            otp_btn.setVisibility(View.VISIBLE);
+
+                            Resendtimecount();
+
+
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            otp1.postDelayed(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    otp1.requestFocus();
+                                    imm.showSoftInput(otp1, 0);
+                                    otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                                }
+                            }, 100);
+
                         }
 
-                    } else {
-                        hideloading();
-                        Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
-
+                    }else{
+                        Snackbar.make(Login_Activity.this.findViewById(android.R.id.content),response.body().getMessage(), Snackbar.LENGTH_LONG).show();
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Login_mobile_email> call, Throwable t) {
-
-                    Log.e("Tro", "" + t);
+                } else {
                     hideloading();
                     Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
                 }
+            }
 
-            });
+            @Override
+            public void onFailure(Call<Login_mobile_email> call, Throwable t) {
 
+                Log.e("Tro", "" + t);
+                hideloading();
+                Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+            }
+
+        });
 
     }
 
@@ -1584,6 +1645,21 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     }
 
+    public static String md5(String input) {
 
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(input.getBytes());
+            byte[] digest = md.digest();
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : digest) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 }

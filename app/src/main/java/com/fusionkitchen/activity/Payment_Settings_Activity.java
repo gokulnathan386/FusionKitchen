@@ -118,6 +118,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
     //public static com.stripe.android.model.PaymentIntent.ConfirmationMethod Automatic;
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;
+    String clientdeliverycharge;
     Internet_connection_checking int_chk;
     /*---------------------------Back Button Click----------------------------------------------------*/
     ImageView back;
@@ -216,6 +217,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         cooking_insttruction = intent.getStringExtra("cooking_insttruction");
         hiddencharges = intent.getStringExtra("hiddencharges");
         gpay_apikey = intent.getStringExtra("gpay_apikey");
+        clientdeliverycharge = intent.getStringExtra("clientdeliverycharge");
 
         Log.d("public_key",""+gpay_apikey);
 
@@ -620,6 +622,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                 studentsObj.put("totalamount", amt_total);//ok
                 studentsObj.put("zero_contact", "0");
                 studentsObj.put("app_id", "0");
+                studentsObj.put("app_type", "0");
                 studentsObj.put("promo_discount", promo_discount);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -773,6 +776,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             Map<String, String> params = new HashMap<String, String>();
             params.put("total", pay_amount);
             params.put("app_id", "0");
+            params.put("app_type", "0");
             params.put("fname", first_name);
             params.put("lname", last_name);
             params.put("email", user_email);
@@ -1258,6 +1262,13 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         params.put("lname", last_name);
         params.put("email", user_email);
         params.put("app_id", "0");
+        params.put("app_type", "0");
+
+        if(clientdeliverycharge != null && !clientdeliverycharge.isEmpty()){
+            params.put("client_delivery_charge",clientdeliverycharge);
+        }else{
+            params.put("client_delivery_charge"," ");
+        }
 
         metdpasfullUrl = menuurlpath + "/stripepaymentProcess";
 
@@ -1419,6 +1430,14 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         paramspay.put("lname", last_name);
         paramspay.put("email", user_email);
         paramspay.put("app_id", "0");
+        paramspay.put("app_type", "0");
+
+        if(clientdeliverycharge != null && !clientdeliverycharge.isEmpty()){
+            paramspay.put("client_delivery_charge",clientdeliverycharge);
+        }else{
+            paramspay.put("client_delivery_charge"," ");
+        }
+
         intepasfullUrl = menuurlpath + "/stripepaymentProcess";
         // ApiInterface apiService = ApiClient.getInstance().getClient2().create(ApiInterface.class);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1557,6 +1576,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                             studentsObj.put("totalamount", amt_total);//ok
                             studentsObj.put("zero_contact", "0");
                             studentsObj.put("app_id", "0");
+                            studentsObj.put("app_type", "0");
                             studentsObj.put("promo_discount", promo_discount);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1697,10 +1717,18 @@ public class Payment_Settings_Activity extends AppCompatActivity {
         Map<String, String> paramspay = new HashMap<String, String>();
         paramspay.put("total", pay_amount);
         paramspay.put("app_id", "0");
+        paramspay.put("app_type", "0");
         paramspay.put("fname", first_name);
         paramspay.put("lname", last_name);
         paramspay.put("email", user_email);
         paramspay.put("pay_type", "9");
+
+        if(clientdeliverycharge != null && !clientdeliverycharge.isEmpty()){
+            paramspay.put("client_delivery_charge",clientdeliverycharge);
+        }else{
+            paramspay.put("client_delivery_charge"," ");
+        }
+
         intepasfullUrl = menuurlpath + "/stripepaymentProcess";
         // ApiInterface apiService = ApiClient.getInstance().getClient2().create(ApiInterface.class);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -1866,6 +1894,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
                             studentsObj.put("totalamount", amt_total);//ok
                             studentsObj.put("zero_contact", "0");
                             studentsObj.put("app_id", "0");
+                            studentsObj.put("app_type", "0");
                             studentsObj.put("promo_discount", promo_discount);
 
 
@@ -2151,6 +2180,7 @@ public class Payment_Settings_Activity extends AppCompatActivity {
             params.put("lname", last_name);
             params.put("email", user_email);
             params.put("app_id", "0");
+            params.put("app_type", "0");
             params.put("svuid", user_id);
             params.put("pmid", "1");
             params.put("token", "1");

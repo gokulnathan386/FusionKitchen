@@ -11,8 +11,6 @@ public class serviceDelCharge_model {
     private serviceDelCharge_model.data data;
 
 
-
-
     public String getStatus() {
         return status;
     }
@@ -42,6 +40,8 @@ public class serviceDelCharge_model {
         @SerializedName("fk_servicecharge")
         private String fk_servicecharge;
 
+        @SerializedName("client_deliverycharge")
+        private String client_deliverycharge;
 
         public String getService_charge() {
             return service_charge;
@@ -74,6 +74,15 @@ public class serviceDelCharge_model {
 
         public void setFk_servicecharge(String fk_servicecharge) {
             this.fk_servicecharge = fk_servicecharge;
+        }
+
+
+        public String getclient_deliverycharge() {
+            return client_deliverycharge;
+        }
+
+        public void setclient_deliverycharge(String client_deliverycharge) {
+            this.client_deliverycharge = client_deliverycharge;
         }
     }
 }
