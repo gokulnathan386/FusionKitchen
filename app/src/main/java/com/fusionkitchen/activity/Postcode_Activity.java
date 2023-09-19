@@ -58,6 +58,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -242,10 +243,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_postcodenew);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Postcode_Activity.this, R.color.txt_eight));
+        getWindow().setStatusBarColor(ContextCompat.getColor(Postcode_Activity.this, R.color.status_bar_color));
 
-        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+
 
         /*---------------------------silder start---------------------*/
 
@@ -261,6 +261,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         invalide_postcode = findViewById(R.id.invalide_postcode);
         /*---------------------------Toolbar----------------------------------------------------*/
         Toolbar toolbar = findViewById(R.id.toolbar);
+
 
         setSupportActionBar(toolbar);
 
@@ -507,6 +508,15 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*---------------------------Navigation Menu----------------------------------------------------*/
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        LinearLayout accountProfile = (LinearLayout) findViewById(R.id.accountProfile);
+        accountProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
