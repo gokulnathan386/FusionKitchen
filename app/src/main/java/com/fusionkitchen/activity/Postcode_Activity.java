@@ -3,6 +3,7 @@ package com.fusionkitchen.activity;
 import static java.lang.Integer.parseInt;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,12 +17,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -30,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -81,14 +80,22 @@ import com.bumptech.glide.Glide;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 
-import com.fusionkitchen.adapter.EatListAdapter;
 import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
 import com.fusionkitchen.adapter.Slider_adapter;
 import com.fusionkitchen.model.EatListPostelModel;
 import com.fusionkitchen.app.MyApplication;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -96,11 +103,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -139,6 +145,12 @@ import retrofit2.Response;
 public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int TIME_INTERVAL = 2000;
+
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private final static int REQUEST_CODE = 100;
+    private static final int REQUEST_CHECK_SETTINGS = 1001;
+
+
 
 
 
@@ -220,8 +232,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     /*--------------------------RecyclerView List view ------------------------*/
 
-    RecyclerView eat_listview;
-    private EatListAdapter eatListAdapter;
+
     private List<EatListPostelModel> eatListPostelModel = new ArrayList<>();
 
     /*----------------------------Most Popular RecyclerView List view-----------------*/
@@ -282,12 +293,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*------------------------------RecyclerView List view ------------------------------*/
 
-        eat_listview = findViewById(R.id.eat_listview);
-        eatListAdapter = new EatListAdapter(eatListPostelModel, Postcode_Activity.this);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        eat_listview.setLayoutManager(manager);
-        eat_listview.setAdapter(eatListAdapter);
-        EatListDataPrepare();
+
+      //  EatListDataPrepare();
 
         /*------------------------------------------------------------*/
 
@@ -573,7 +580,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*---------------Load Popular Restaurants ------------------------*/
 
-        PopularRestaurants();
+      //  PopularRestaurants();
 
 
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
@@ -650,10 +657,107 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(View v) {
 
-
+                getLastLocation();
 
             }
         });
+
+    }
+
+    private void getLastLocation(){
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest);
+
+            Task<LocationSettingsResponse> task =
+                    LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
+
+            task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                    Log.d("asbjdvhgsavdhvsadhgvc", "Location Enable");
+                    if (fusedLocationProviderClient == null) {
+                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Postcode_Activity.this);
+                    }
+
+                    fusedLocationProviderClient.getLastLocation()
+                            .addOnSuccessListener(new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    if (location != null) {
+                                        try {
+                                            Geocoder geocoder = new Geocoder(Postcode_Activity.this, Locale.getDefault());
+                                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                            Log.d("LocationAddress", "Lattitude --->" + addresses.get(0).getLatitude());
+                                            Log.d("LocationAddress", "Longitude --->" + addresses.get(0).getLongitude());
+                                            Log.d("LocationAddress", "Address --->" +addresses.get(0).getAddressLine(0));
+                                            Log.d("LocationAddress", "City --->" + addresses.get(0).getLocality());
+                                            Log.d("LocationAddress", "Country --->" + addresses.get(0).getCountryName());
+                                            Log.d("LocationAddress", "Postcode --->" +addresses.get(0).getPostalCode());
+                                            postcodecheck(""+addresses.get(0).getPostalCode());
+
+
+                                        } catch (IOException e) {
+                                            Log.d("LocationExceptionHandle", "Lattitude --->" + e.getMessage());
+                                            e.printStackTrace();
+                                        }
+                                    }else{
+                                        Toast.makeText(Postcode_Activity.this, "Location not available.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("LocationError", "Error getting location: " + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
+
+
+                }
+            });
+
+            task.addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    int statusCode = ((ApiException) e).getStatusCode();
+                    switch (statusCode) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            // Location settings are not satisfied, but this can be fixed by showing the user a dialog
+                            try {
+                                ResolvableApiException resolvable = (ResolvableApiException) e;
+                                resolvable.startResolutionForResult(Postcode_Activity.this, REQUEST_CHECK_SETTINGS);
+                            } catch (IntentSender.SendIntentException sendEx) {
+                                // Ignore the error
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            // Location settings are not satisfied, and there's no way to fix the issue
+                            break;
+                    }
+                }
+            });
+
+
+            /*------------End Location Update------------------*/
+
+        } else {
+            askPermission();
+        }
+
+
+    }
+
+    private void askPermission() {
+
+        ActivityCompat.requestPermissions(Postcode_Activity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+
 
     }
 
@@ -718,7 +822,17 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         }
 
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
+              //  Toast.makeText(this, "User enabled location, start location updates", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Please enable GPS Location", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     /*------------------------------  End Atuo In update-------------------*/
@@ -1092,7 +1206,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     }
 
 
-    private void EatListDataPrepare() {
+ /*   private void EatListDataPrepare() {
         EatListPostelModel data = new EatListPostelModel(R.drawable.pizza, "1");
         eatListPostelModel.add(data);
         data = new EatListPostelModel(R.drawable.burger, "2");
@@ -1116,7 +1230,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         data = new EatListPostelModel(R.drawable.fishchips, "11");
         eatListPostelModel.add(data);
     }
-
+*/
     /*--------------Login store SharedPreferences------------------*/
     public void CheckLogin() {
         if (slogin == null)
@@ -1165,7 +1279,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         if (TextUtils.isEmpty(post_code_edittext.getText())) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(post_code_edittext.getWindowToken(), 0);
-            post_code_edittext.setError("Please Enter Your Postcode");
+          //  post_code_edittext.setError("Please Enter Your Postcode");
             Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), "Please Enter Your Postcode", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
             str_postcode_seperate = post_code_edittext.getText().toString().replace(" ", "");
@@ -1241,12 +1355,14 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         params.put("postcode", post_code);
         ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
         Call<post_code_modal> call = apiService.getpostcode(params);
+        Log.e("paramsskjbnkjsdncksdc", " " + params);
         call.enqueue(new Callback<post_code_modal>() {
             @Override
             public void onResponse(Call<post_code_modal> call, Response<post_code_modal> response) {
                 int statusCode = response.code();
 
                 Log.e("Postcode_Activity", new Gson().toJson(response.body()));
+
 
                 /*Get Login Good Response...*/
                 if (statusCode == 200) {
@@ -1324,42 +1440,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         popupWindow.showAsDropDown(popupView, 0, 0);
     }
-
-
-    /*---------------------------Version Update----------------------------------------------------*/
-  /*  public class ViewDialog {
-        public void showDialog(Activity activity, String url) {
-            final Dialog dialog = new Dialog(activity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_version_update);
-
-            AppCompatButton notnow = dialog.findViewById(R.id.notnow);
-            AppCompatButton update = dialog.findViewById(R.id.update);
-
-            ImageView custom_loading_imageView = dialog.findViewById(R.id.custom_loading_imageView);
-
-         *//*   Animation imganim = AnimationUtils.loadAnimation(Postcode_Activity.this, R.anim.enter);
-            custom_loading_imageView.startAnimation(imganim);
-*//*
-
-            update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                    dialog.dismiss();
-                }
-            });
-            notnow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-    }*/
-
 
     /*---------------------------check internet connection----------------------------------------------------*/
     public class ViewNoNetDialog {
@@ -1600,7 +1680,117 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     }
 
-         /* End Current Location Fetch Address */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @org.jetbrains.annotations.NotNull String[] permissions, @NonNull @org.jetbrains.annotations.NotNull int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE){
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+
+                getLastLocation();
+
+            }else {
+
+                if (isGPSEnabled()) {  // Check GPS Location Enable Or Disable
+
+                    Dialog deletepopup = new Dialog(Postcode_Activity.this);
+                    deletepopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    deletepopup.setContentView(R.layout.permission_popup);
+
+                    AppCompatButton deletedBtn = deletepopup.findViewById(R.id.deletedBtn);
+                    AppCompatButton cancelBtn = deletepopup.findViewById(R.id.cancelBtn);
+                    TextView textHeadline = deletepopup.findViewById(R.id.textHeadline);
+                    textHeadline.setText("Do you want to Enable App Location Permission?");
+
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deletepopup.dismiss();
+                        }
+                    });
+
+                    deletedBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+                            deletepopup.dismiss();
+
+                        }
+                    });
+
+                    deletepopup.getWindow().setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+
+                    deletepopup.show();
+                    deletepopup.setCancelable(false);
+                    deletepopup.setCanceledOnTouchOutside(false);
+                    deletepopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    deletepopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    deletepopup.getWindow().setGravity(Gravity.CENTER);
+
+
+
+
+
+
+                }else{
+                    Dialog deletepopup = new Dialog(Postcode_Activity.this);
+                    deletepopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    deletepopup.setContentView(R.layout.permission_popup);
+
+                    AppCompatButton deletedBtn = deletepopup.findViewById(R.id.deletedBtn);
+                    AppCompatButton cancelBtn = deletepopup.findViewById(R.id.cancelBtn);
+                    TextView textHeadline = deletepopup.findViewById(R.id.textHeadline);
+                    textHeadline.setText("Do you want to Enable App Location Permission?");
+
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deletepopup.dismiss();
+                        }
+                    });
+
+                    deletedBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Intent app_intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(app_intent);
+                            Toast.makeText(Postcode_Activity.this,"Please enable GPS location",Toast.LENGTH_SHORT).show();
+                            deletepopup.dismiss();
+
+                        }
+                    });
+
+                    deletepopup.getWindow().setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+
+                    deletepopup.show();
+                    deletepopup.setCancelable(false);
+                    deletepopup.setCanceledOnTouchOutside(false);
+                    deletepopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    deletepopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    deletepopup.getWindow().setGravity(Gravity.CENTER);
+
+                      }
+
+            }
+
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    private boolean isGPSEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
 
 }
 

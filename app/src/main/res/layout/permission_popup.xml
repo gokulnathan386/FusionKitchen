@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/employee_popup_id"
+    android:layout_marginHorizontal="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                android:layout_marginHorizontal="5dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:padding="20dp"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/textHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center_horizontal"
+                        android:text="Do you want to delete this item ?"
+                        android:textSize="18dp" />
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@+id/cus_address"
+                        android:layout_weight="1"
+                        android:background="@color/white">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/cancelBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cancel"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:textAllCaps="false"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginVertical="@dimen/_20sdp"
+                            android:background="@drawable/themerect"
+                            android:textColor="#173303"
+                            android:fontFamily="@font/poppins_bold"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:layout_gravity="center"/>
+
+
+
+
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/deletedBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enable"
+                            android:layout_weight="1"
+                            android:padding="@dimen/_5sdp"
+                            android:gravity="center"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:textAllCaps="false"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginVertical="@dimen/_20sdp"
+                            android:background="@drawable/themerect"
+                            android:backgroundTint="#E04646"
+                            android:fontFamily="@font/poppins_bold"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+
+
+</RelativeLayout>

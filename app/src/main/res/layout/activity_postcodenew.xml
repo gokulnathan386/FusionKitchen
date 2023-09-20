@@ -16,7 +16,6 @@
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             tools:ignore="MissingClass">
 
             <RelativeLayout
@@ -67,8 +66,8 @@
                                 android:gravity="center">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
                                     android:src="@drawable/user_icon" />
 
                             </LinearLayout>
@@ -153,6 +152,7 @@
                                     android:inputType="textVisiblePassword|textCapCharacters"
                                     android:maxLength="10"
                                     android:text=""
+                                    android:singleLine="true"
                                     android:layout_marginLeft="10dp"
                                     android:textColor="#A0A0A0"
                                     android:textColorHint="#909497"
@@ -164,7 +164,10 @@
                                     android:layout_marginLeft="-110dp"
                                     android:text="Invalid  Postcode"
                                     android:textColor="#D02F3E"
-                                    android:textSize="13dp"
+                                    android:textSize="10dp"
+                                    android:padding="15dp"
+                                    android:textStyle="bold"
+                                    android:fontFamily="@font/poppins_bold"
                                     android:visibility="gone"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
@@ -182,8 +185,8 @@
                                     android:orientation="horizontal">
 
                                     <ImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_gravity="center"
                                         android:layout_marginTop="2dp"
                                         android:src="@drawable/location_icon_home">
@@ -314,41 +317,10 @@
 
                                 </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/eat_what_makes_you_happy"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/Office_Image"
-                                    android:layout_marginLeft="@dimen/_10sdp"
-                                    android:layout_marginTop="15dp"
-                                    android:fontFamily="@font/poppins_bold"
-                                    android:gravity="left"
-                                    android:visibility="gone"
-                                    android:text="Eat What makes you happy"
-                                    android:textColor="#204356"
-                                    android:textSize="15dp">
-                                </TextView>
-
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/eat_listview"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_below="@+id/eat_what_makes_you_happy"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginEnd="0dp"
-                                    android:layout_marginRight="10dp"
-                                    android:padding="8dp"
-                                    android:visibility="gone"
-                                    android:scrollbars="none" />
-
-
                                 <LinearLayout
                                     android:id="@+id/Most_Popular_TextView"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/eat_listview"
                                     android:orientation="horizontal"
                                     android:weightSum="2">
 
