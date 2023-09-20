@@ -2,6 +2,7 @@ package com.fusionkitchen.activity;
 
 import static java.lang.Integer.parseInt;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,6 +22,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,6 +62,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -133,6 +139,9 @@ import retrofit2.Response;
 public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int TIME_INTERVAL = 2000;
+
+
+
     private long mBackPressed;
     int bottonkey;
     Dialog offerPopup;
@@ -181,7 +190,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     SharedPreferences.Editor sloginEditor;
 
     /*--------------------------Login postcode save local------------------------*/
-    SharedPreferences sharedptcode,offer_splash;
+    SharedPreferences sharedptcode, offer_splash;
     public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
 
 
@@ -228,13 +237,14 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     LinearLayout clear_list_layout;
     AppCompatButton go_back, remove_cart;
     TextView invalide_postcode;
-   // SliderView sliderView;
+    // SliderView sliderView;
     ViewPager mViewPager;
+    LinearLayout myCurrentLocation;
 
 
 
     private AppUpdateManager mAppUpdateManager;
-    private static  final int RC_APP_UPDATE = 100;
+    private static final int RC_APP_UPDATE = 100;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -250,7 +260,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         /*---------------------------silder start---------------------*/
 
 
-        page = findViewById(R.id.my_pager) ;
+        page = findViewById(R.id.my_pager);
         tabLayout = findViewById(R.id.my_tablayout);
 
         /*---------------------------silder End---------------------*/
@@ -259,6 +269,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         go_back = findViewById(R.id.go_back);
         remove_cart = findViewById(R.id.remove_cart);
         invalide_postcode = findViewById(R.id.invalide_postcode);
+        myCurrentLocation = findViewById(R.id.myCurrentLocation);
         /*---------------------------Toolbar----------------------------------------------------*/
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -267,24 +278,24 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
 
-        baseUrl  =ApiClient.getInstance().getClient().baseUrl();
+        baseUrl = ApiClient.getInstance().getClient().baseUrl();
 
         /*------------------------------RecyclerView List view ------------------------------*/
 
         eat_listview = findViewById(R.id.eat_listview);
-        eatListAdapter = new EatListAdapter(eatListPostelModel,Postcode_Activity.this);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
+        eatListAdapter = new EatListAdapter(eatListPostelModel, Postcode_Activity.this);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         eat_listview.setLayoutManager(manager);
         eat_listview.setAdapter(eatListAdapter);
         EatListDataPrepare();
 
         /*------------------------------------------------------------*/
 
-        Most_Popular_Listview  =  findViewById(R.id.Most_Popular_Listview);
+        Most_Popular_Listview = findViewById(R.id.Most_Popular_Listview);
 
 
         offer_splash = getSharedPreferences("Offer_splash_popup", MODE_PRIVATE);
-        offervalue  = offer_splash.getBoolean("offervalue",true);
+        offervalue = offer_splash.getBoolean("offervalue", true);
 
         /*---------------------------Get App Version----------------------------------------------------*/
         try {
@@ -299,7 +310,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             ViewNoNetDialog alert = new ViewNoNetDialog();
             alert.shownonetDialog(Postcode_Activity.this);
         } else {
-          //  versionupdate();//versionName
+            //  versionupdate();//versionName
         }
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
@@ -352,17 +363,15 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         handler.postDelayed(new Runnable() {
             public void run() {
-                if(bottonkey == 2){
+                if (bottonkey == 2) {
                     bottomNav.getMenu().findItem(R.id.home_card).setChecked(true);
-                }else{
+                } else {
                     bottomNav.getMenu().findItem(R.id.home_bottom).setChecked(true);
                 }
 
                 handler.postDelayed(this, delay);
             }
         }, delay);
-
-
 
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -390,8 +399,8 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             Intent intentcard = new Intent(Postcode_Activity.this, Add_to_Cart.class);
                             startActivity(intentcard);
                             bottonkey = 1;
-                        }else{
-                            Toast.makeText(Postcode_Activity.this,"Your cart is Empty!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Postcode_Activity.this, "Your cart is Empty!", Toast.LENGTH_SHORT).show();
                         }
 
                         break;
@@ -418,13 +427,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         btn_next = findViewById(R.id.btn_next);
         clear_list_layout = findViewById(R.id.clear_list_layout);
 
-          post_code_edittext.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  invalide_postcode.setVisibility(View.GONE);
+        post_code_edittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invalide_postcode.setVisibility(View.GONE);
 
-              }
-          });
+            }
+        });
 
         post_code_check.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,8 +526,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         });
 
 
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer,
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -550,7 +557,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         navigationView.getMenu().getItem(11).setActionView(R.layout.menu_show);
 
         hideItem();
-
 
 
         nav_header_close.setOnClickListener(new View.OnClickListener() {
@@ -617,12 +623,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             @Override
             public void onSuccess(AppUpdateInfo result) {
 
-                if(result.updateAvailability() ==
-                        UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)){  // FLEXIBLE
+                if (result.updateAvailability() ==
+                        UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {  // FLEXIBLE
 
                     try {
-                        mAppUpdateManager.startUpdateFlowForResult(result,AppUpdateType.FLEXIBLE,
-                                Postcode_Activity.this,RC_APP_UPDATE);
+                        mAppUpdateManager.startUpdateFlowForResult(result, AppUpdateType.FLEXIBLE,
+                                Postcode_Activity.this, RC_APP_UPDATE);
                     } catch (IntentSender.SendIntentException e) {
                         e.printStackTrace();
                     }
@@ -637,7 +643,18 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*-------------------------------End Auto In Update Google---------------------------*/
 
-        startService(new Intent(getBaseContext(),MyService.class));
+        startService(new Intent(getBaseContext(), MyService.class));
+
+
+        myCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
+
     }
 
 
@@ -648,22 +665,23 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             InstallStateUpdatedListener() {
                 @Override
                 public void onStateUpdate(InstallState state) {
-                    if (state.installStatus() == InstallStatus.DOWNLOADED){
+                    if (state.installStatus() == InstallStatus.DOWNLOADED) {
                         showCompletedUpdate();
-                    } else if (state.installStatus() == InstallStatus.INSTALLED){
-                        if (mAppUpdateManager != null){
+                    } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                        if (mAppUpdateManager != null) {
                             mAppUpdateManager.unregisterListener(installStateUpdatedListener);
                         }
 
                     } else {
-                        Log.d("gokulnathan",""+ state.installStatus());
+                        Log.d("gokulnathan", "" + state.installStatus());
                     }
                 }
             };
 
     @Override
     protected void onStop() {
-        if(mAppUpdateManager != null) mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        if (mAppUpdateManager != null)
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
         super.onStop();
     }
 
@@ -674,7 +692,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         findViewById(android.R.id.content),
                         "New app is ready!",
                         Snackbar.LENGTH_INDEFINITE);
-
 
 
         snackbar.setAction("Install", new View.OnClickListener() {
@@ -695,7 +712,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == RC_APP_UPDATE && resultCode != RESULT_OK){
+        if (requestCode == RC_APP_UPDATE && resultCode != RESULT_OK) {
 
             Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
 
@@ -719,149 +736,147 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             deepLink = pendingDynamicLinkData.getLink();
                         }
 
-                        if(deepLink != null){
+                        if (deepLink != null) {
 
-                                String Order_tracking_share = String.valueOf(deepLink);
+                            String Order_tracking_share = String.valueOf(deepLink);
 
-                                String path_share_status = Order_tracking_share.substring(Order_tracking_share.indexOf("_order_status") + 14);
+                            String path_share_status = Order_tracking_share.substring(Order_tracking_share.indexOf("_order_status") + 14);
 
-                               if(path_share_status.equalsIgnoreCase("true")){
+                            if (path_share_status.equalsIgnoreCase("true")) {
 
-                                   String Order_tracking_status = String.valueOf(deepLink);
-                                   String order_id = Order_tracking_status.substring(Order_tracking_status.indexOf("_order_id=") + 10);
+                                String Order_tracking_status = String.valueOf(deepLink);
+                                String order_id = Order_tracking_status.substring(Order_tracking_status.indexOf("_order_id=") + 10);
 
-                                   String Order_ids =order_id;
-                                   String[] Order_id_split = Order_ids.split("&_order_path=");
-                                   String Order_id_track = Order_id_split[0];  // Order_Id
+                                String Order_ids = order_id;
+                                String[] Order_id_split = Order_ids.split("&_order_path=");
+                                String Order_id_track = Order_id_split[0];  // Order_Id
 
-                                   String Order_path = Order_id_split[1];
-                                   String[] Order_path_split = Order_path.split("&_orderdate=");
-                                   String Order_path_track = Order_path_split[0]; // Order_path
+                                String Order_path = Order_id_split[1];
+                                String[] Order_path_split = Order_path.split("&_orderdate=");
+                                String Order_path_track = Order_path_split[0]; // Order_path
 
-                                   String Order_date = Order_path_split[1];
-                                   String[] Order_date_split = Order_date.split("&_clientname=");
-                                   String Order_date_track = Order_date_split[0]; // Order_date
-
-
-                                   String Order_client_name = Order_date_split[1];
-                                   String[] Order_client_name_split = Order_client_name.split("&_clientid=");
-                                   String Order_Client_track = Order_client_name_split[0]; // Order_client_Name
-
-                                   String Order_client_id = Order_client_name_split[1];
-                                   String[] Order_client_id_split = Order_client_id.split("&_clientphonenumber=");
-                                   String Order_Client_id_track = Order_client_id_split[0]; // Order_client_Id
-
-                                   String  Order_client_Number = Order_client_id_split[1];
-                                   String[] Order_client_Number_split = Order_client_Number.split("&_gpay_apikey=");
-                                   String Order_client_Number_track = Order_client_Number_split[0]; // Order_client_phone_no
-
-                                   String  Order_Gpay_sec = Order_client_Number_split[1];
-                                   String[] Order_Gpay_split = Order_Gpay_sec.split("&_orderpostcode=");
-                                   String Order_Gpay = Order_Gpay_split[0];  // API Sec Key
-
-                                   String  Order_postcode_sec = Order_Gpay_split[1];
-                                   String[] Order_postcode_split = Order_postcode_sec.split("&_orderarea=");
-                                   String Order_postCode = Order_postcode_split[0];  // Order Tracking Postcode
-
-                                   String  Order_area_sec = Order_postcode_split[1];
-                                   String[] Order_area_sec_split = Order_area_sec.split("&_orderaddress=");
-                                   String Order_area = Order_area_sec_split[0];  // Order Tracking Area
-
-                                   String  Order_addresss_sec = Order_area_sec_split[1];
-                                   String[] Order_address_sec_split = Order_addresss_sec.split("&_orderlat=");
-                                   String Order_address = Order_address_sec_split[0];  // Order Tracking Address
-
-                                   String  Order_lat_sec = Order_address_sec_split[1];
-                                   String[] Order_lat_sec_split = Order_lat_sec.split("&_orderlon=");
-                                   String Order_lat = Order_lat_sec_split[0];  // Order Tracking lat
-
-                                   String  Order_log_sec = Order_lat_sec_split[1];
-                                   String[] Order_log_sec_split = Order_log_sec.split("&_order_status=");
-                                   String Order_log = Order_log_sec_split[0];  // Order Tracking log
+                                String Order_date = Order_path_split[1];
+                                String[] Order_date_split = Order_date.split("&_clientname=");
+                                String Order_date_track = Order_date_split[0]; // Order_date
 
 
-                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_postCode );
-                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_area );
-                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_address );
-                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_lat );
-                                   Log.d("sdjcbjscbjsdcbjsbcscb"," " + Order_log );
+                                String Order_client_name = Order_date_split[1];
+                                String[] Order_client_name_split = Order_client_name.split("&_clientid=");
+                                String Order_Client_track = Order_client_name_split[0]; // Order_client_Name
+
+                                String Order_client_id = Order_client_name_split[1];
+                                String[] Order_client_id_split = Order_client_id.split("&_clientphonenumber=");
+                                String Order_Client_id_track = Order_client_id_split[0]; // Order_client_Id
+
+                                String Order_client_Number = Order_client_id_split[1];
+                                String[] Order_client_Number_split = Order_client_Number.split("&_gpay_apikey=");
+                                String Order_client_Number_track = Order_client_Number_split[0]; // Order_client_phone_no
+
+                                String Order_Gpay_sec = Order_client_Number_split[1];
+                                String[] Order_Gpay_split = Order_Gpay_sec.split("&_orderpostcode=");
+                                String Order_Gpay = Order_Gpay_split[0];  // API Sec Key
+
+                                String Order_postcode_sec = Order_Gpay_split[1];
+                                String[] Order_postcode_split = Order_postcode_sec.split("&_orderarea=");
+                                String Order_postCode = Order_postcode_split[0];  // Order Tracking Postcode
+
+                                String Order_area_sec = Order_postcode_split[1];
+                                String[] Order_area_sec_split = Order_area_sec.split("&_orderaddress=");
+                                String Order_area = Order_area_sec_split[0];  // Order Tracking Area
+
+                                String Order_addresss_sec = Order_area_sec_split[1];
+                                String[] Order_address_sec_split = Order_addresss_sec.split("&_orderlat=");
+                                String Order_address = Order_address_sec_split[0];  // Order Tracking Address
+
+                                String Order_lat_sec = Order_address_sec_split[1];
+                                String[] Order_lat_sec_split = Order_lat_sec.split("&_orderlon=");
+                                String Order_lat = Order_lat_sec_split[0];  // Order Tracking lat
+
+                                String Order_log_sec = Order_lat_sec_split[1];
+                                String[] Order_log_sec_split = Order_log_sec.split("&_order_status=");
+                                String Order_log = Order_log_sec_split[0];  // Order Tracking log
 
 
-
-                                   String Order_data = Order_date_track.replaceAll("\\+"," ");
-                                   String Order_client_res_name = Order_Client_track.replaceAll("\\+"," ");
-
-                                   Intent intent = new Intent(Postcode_Activity.this, Order_Status_Activity.class);
-                                   intent.putExtra("orderid", Order_id_track);
-                                   intent.putExtra("orderpath",Order_path_track);
-                                   intent.putExtra("orderdate",Order_data);
-                                   intent.putExtra("clientname", Order_client_res_name);
-                                   intent.putExtra("clientid", Order_Client_id_track);
-                                   intent.putExtra("clientphonenumber",Order_client_Number_track);
-                                   intent.putExtra("gpay_apikey",Order_Gpay);
-                                   /*----------------------Order Tracking--------------------*/
-                                   intent.putExtra("order_postcode",Order_postCode);
-                                   intent.putExtra("order_area",Order_area);
-                                   intent.putExtra("order_address",Order_address);
-                                   intent.putExtra("order_lat",Order_lat);
-                                   intent.putExtra("order_lon",Order_log);
-
-                                   startActivity(intent);
+                                Log.d("sdjcbjscbjsdcbjsbcscb", " " + Order_postCode);
+                                Log.d("sdjcbjscbjsdcbjsbcscb", " " + Order_area);
+                                Log.d("sdjcbjscbjsdcbjsbcscb", " " + Order_address);
+                                Log.d("sdjcbjscbjsdcbjsbcscb", " " + Order_lat);
+                                Log.d("sdjcbjscbjsdcbjsbcscb", " " + Order_log);
 
 
+                                String Order_data = Order_date_track.replaceAll("\\+", " ");
+                                String Order_client_res_name = Order_Client_track.replaceAll("\\+", " ");
 
-                                 }else{
+                                Intent intent = new Intent(Postcode_Activity.this, Order_Status_Activity.class);
+                                intent.putExtra("orderid", Order_id_track);
+                                intent.putExtra("orderpath", Order_path_track);
+                                intent.putExtra("orderdate", Order_data);
+                                intent.putExtra("clientname", Order_client_res_name);
+                                intent.putExtra("clientid", Order_Client_id_track);
+                                intent.putExtra("clientphonenumber", Order_client_Number_track);
+                                intent.putExtra("gpay_apikey", Order_Gpay);
+                                /*----------------------Order Tracking--------------------*/
+                                intent.putExtra("order_postcode", Order_postCode);
+                                intent.putExtra("order_area", Order_area);
+                                intent.putExtra("order_address", Order_address);
+                                intent.putExtra("order_lat", Order_lat);
+                                intent.putExtra("order_lon", Order_log);
 
-                                      String menu_url_path_share = String.valueOf(deepLink);
+                                startActivity(intent);
 
-                                      menu_url_path_share = menu_url_path_share.substring(menu_url_path_share.indexOf("_menuurl=") + 9);
-                                      String postcode_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_postcode=") + 10);
-                                      String postcode_share = postcode_.replaceAll("\\+","");
-                                      String  key_area_share= menu_url_path_share.substring(menu_url_path_share.indexOf("_keyarea=") + 9);
-                                      String  key_address_= menu_url_path_share.substring(menu_url_path_share.indexOf("_address=") + 9);
-                                      String  key_lat_= menu_url_path_share.substring(menu_url_path_share.indexOf("_lat=") + 5);
 
-                                      String share_menu =menu_url_path_share;
-                                      String[] share_menu_split = share_menu.split("&_postcode=");
-                                      String Menu_Url = share_menu_split[0];
+                            } else {
 
-                                      String share_post_code =postcode_;
-                                      String[] share_post_code_split = share_post_code.split("&_keyarea=");
-                                      String share_post_code_remove = share_post_code_split[0];
-                                      String menu_share_postcode = share_post_code_remove.replaceAll("\\+"," ");
+                                String menu_url_path_share = String.valueOf(deepLink);
 
-                                      String share_key_area =key_area_share;
-                                      String[] share_key_area_split = share_key_area.split("&_address=");
-                                      String share_key_area_remove = share_key_area_split[0];
-                                      String menu_share_area = share_key_area_remove.replaceAll("\\+"," ");
+                                menu_url_path_share = menu_url_path_share.substring(menu_url_path_share.indexOf("_menuurl=") + 9);
+                                String postcode_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_postcode=") + 10);
+                                String postcode_share = postcode_.replaceAll("\\+", "");
+                                String key_area_share = menu_url_path_share.substring(menu_url_path_share.indexOf("_keyarea=") + 9);
+                                String key_address_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_address=") + 9);
+                                String key_lat_ = menu_url_path_share.substring(menu_url_path_share.indexOf("_lat=") + 5);
 
-                                      String share_key_address =key_address_;
-                                      String[] share_key_address_split = share_key_address.split("&_lat=");
-                                      String share_key_address_remove = share_key_address_split[0];
-                                      String menu_share_address = share_key_address_remove.replaceAll("\\+"," ");
+                                String share_menu = menu_url_path_share;
+                                String[] share_menu_split = share_menu.split("&_postcode=");
+                                String Menu_Url = share_menu_split[0];
 
-                                      String share_key_lat =key_lat_;
-                                      String[] share_key_lat_split = share_key_lat.split("&_lng=");
-                                      String lat_menu_share = share_key_lat_split[0];
-                                      String log_menu_share = share_key_lat_split[1];
+                                String share_post_code = postcode_;
+                                String[] share_post_code_split = share_post_code.split("&_keyarea=");
+                                String share_post_code_remove = share_post_code_split[0];
+                                String menu_share_postcode = share_post_code_remove.replaceAll("\\+", " ");
 
-                                      SharedPreferences sharedptcode;
-                                      sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
-                                      SharedPreferences.Editor getmenudata = sharedptcode.edit();
-                                      getmenudata.putString("KEY_posturl","/location/"+ Menu_Url);
-                                      getmenudata.putString("KEY_postcode",menu_share_postcode);
-                                      getmenudata.putString("KEY_area",menu_share_area);
-                                      getmenudata.putString("KEY_address",menu_share_address);
-                                      getmenudata.putString("KEY_lat",lat_menu_share);
-                                      getmenudata.putString("KEY_lon",log_menu_share);
-                                      getmenudata.commit();
+                                String share_key_area = key_area_share;
+                                String[] share_key_area_split = share_key_area.split("&_address=");
+                                String share_key_area_remove = share_key_area_split[0];
+                                String menu_share_area = share_key_area_remove.replaceAll("\\+", " ");
 
-                                      Intent share_redirect = new Intent(Postcode_Activity.this, Item_Menu_Activity.class);
-                                      share_redirect.putExtra("menuurlpath", Menu_Url);
-                                      share_redirect.putExtra("reloadback", "5");
-                                      startActivity(share_redirect);
+                                String share_key_address = key_address_;
+                                String[] share_key_address_split = share_key_address.split("&_lat=");
+                                String share_key_address_remove = share_key_address_split[0];
+                                String menu_share_address = share_key_address_remove.replaceAll("\\+", " ");
 
-                                  }
+                                String share_key_lat = key_lat_;
+                                String[] share_key_lat_split = share_key_lat.split("&_lng=");
+                                String lat_menu_share = share_key_lat_split[0];
+                                String log_menu_share = share_key_lat_split[1];
+
+                                SharedPreferences sharedptcode;
+                                sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
+                                SharedPreferences.Editor getmenudata = sharedptcode.edit();
+                                getmenudata.putString("KEY_posturl", "/location/" + Menu_Url);
+                                getmenudata.putString("KEY_postcode", menu_share_postcode);
+                                getmenudata.putString("KEY_area", menu_share_area);
+                                getmenudata.putString("KEY_address", menu_share_address);
+                                getmenudata.putString("KEY_lat", lat_menu_share);
+                                getmenudata.putString("KEY_lon", log_menu_share);
+                                getmenudata.commit();
+
+                                Intent share_redirect = new Intent(Postcode_Activity.this, Item_Menu_Activity.class);
+                                share_redirect.putExtra("menuurlpath", Menu_Url);
+                                share_redirect.putExtra("reloadback", "5");
+                                startActivity(share_redirect);
+
+                            }
 
 
                         }
@@ -909,7 +924,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     };
 
 
-
     /*---------------------------MenuItemAdapter item value get add button click----------------------------------------------------*/
     public BroadcastReceiver mInvaild_postcode = new BroadcastReceiver() {
         @Override
@@ -929,12 +943,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private void PopularRestaurants() {
 
         loadingshow();
-        popularRestaurantsListAdapter = new PopularRestaurantsListAdapter(popularlistmodule,Postcode_Activity.this);
-        RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL, false);
+        popularRestaurantsListAdapter = new PopularRestaurantsListAdapter(popularlistmodule, Postcode_Activity.this);
+        RecyclerView.LayoutManager manager4 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         Most_Popular_Listview.setLayoutManager(manager4);
         Most_Popular_Listview.setAdapter(popularRestaurantsListAdapter);
 
-          StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"loadPopularRestaurants",
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, baseUrl + "loadPopularRestaurants",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -946,43 +960,42 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             JSONObject jsonobject = new JSONObject(response);
 
 
-                            JSONObject getdata =jsonobject.getJSONObject("data");
+                            JSONObject getdata = jsonobject.getJSONObject("data");
 
                             JSONArray most_popular_list = getdata.getJSONArray("popular_restaurants");
                             JSONArray banner_image = getdata.getJSONArray("banner_image");
 
-                           JSONObject Offervalue = getdata.getJSONObject("offer_pop");
-                           String offer_status = Offervalue.getString("status");
-                            if(offer_status.equalsIgnoreCase("true")){
-                                 String offer_image = Offervalue.getString("offer_pop_image");
-                                 OfferPopup(offer_image);
+                            JSONObject Offervalue = getdata.getJSONObject("offer_pop");
+                            String offer_status = Offervalue.getString("status");
+                            if (offer_status.equalsIgnoreCase("true")) {
+                                String offer_image = Offervalue.getString("offer_pop_image");
+                                OfferPopup(offer_image);
                             }
 
-                              for (int i = 0; i < most_popular_list.length(); i++) {
+                            for (int i = 0; i < most_popular_list.length(); i++) {
 
-                                 JSONObject object = most_popular_list.getJSONObject(i);
+                                JSONObject object = most_popular_list.getJSONObject(i);
 
-                                    popular_restaurants_listmodel popularlist = new popular_restaurants_listmodel(
-                                            object.getString("name"),
-                                            object.getString("area"),
-                                            object.getString("rating_average"),
-                                            object.getString("takeawaystatus"),
-                                            object.getString("discount"),
-                                            object.getString("image_url"),
-                                            object.getString("postcode"),
-                                            object.getString("address_location"),
-                                            object.getString("menupageurl"),
-                                            object.getString("lat"),
-                                            object.getString("lang")
-                                    );
-                                  popularlistmodule.add(popularlist);
-                                }
-
+                                popular_restaurants_listmodel popularlist = new popular_restaurants_listmodel(
+                                        object.getString("name"),
+                                        object.getString("area"),
+                                        object.getString("rating_average"),
+                                        object.getString("takeawaystatus"),
+                                        object.getString("discount"),
+                                        object.getString("image_url"),
+                                        object.getString("postcode"),
+                                        object.getString("address_location"),
+                                        object.getString("menupageurl"),
+                                        object.getString("lat"),
+                                        object.getString("lang")
+                                );
+                                popularlistmodule.add(popularlist);
+                            }
 
 
                             popularRestaurantsListAdapter.notifyDataSetChanged();
 
-                            listItems = new ArrayList<>() ;
+                            listItems = new ArrayList<>();
                             for (int K = 0; K < banner_image.length(); K++) {
                                 listItems.add(String.valueOf(banner_image.get(K)));
                             }
@@ -991,18 +1004,18 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                             page.setAdapter(itemsPager_adapter);
 
                             java.util.Timer timer = new java.util.Timer();
-                            timer.scheduleAtFixedRate(new The_slide_timer(),2000,3000);
-                            tabLayout.setupWithViewPager(page,true);
+                            timer.scheduleAtFixedRate(new The_slide_timer(), 2000, 3000);
+                            tabLayout.setupWithViewPager(page, true);
 
-                            Log.d("Banner_Image"," " + banner_image.length());
-                            if(banner_image.length() == 1){
+                            Log.d("Banner_Image", " " + banner_image.length());
+                            if (banner_image.length() == 1) {
                                 tabLayout.setVisibility(View.GONE);
                                 // tabLayout.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 tabLayout.setVisibility(View.VISIBLE);
                             }
 
-                        }catch (JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                             hideloading();
                         }
@@ -1015,7 +1028,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         error.printStackTrace();
                         hideloading();
                     }
-                }){
+                }) {
 
            /* @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -1044,9 +1057,9 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 .load(offer_image)
                 .into(offerimage);
 
-         /*.placeholder(R.drawable.loading)*/
+        /*.placeholder(R.drawable.loading)*/
 
-        Log.d("skfkdsvkbvkjdsbv"," " + offer_image);
+        Log.d("skfkdsvkbvkjdsbv", " " + offer_image);
 
         close_popup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1062,16 +1075,16 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             }
         });
 
-        if(offervalue == true){
+        if (offervalue == true) {
             offerPopup.show();
             SharedPreferences.Editor splash_popup = offer_splash.edit();
-            splash_popup.putBoolean("offervalue",false);
+            splash_popup.putBoolean("offervalue", false);
             splash_popup.commit();
         }
 
         offerPopup.setCancelable(false);
         offerPopup.setCanceledOnTouchOutside(false);
-        offerPopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        offerPopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         offerPopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         offerPopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         offerPopup.getWindow().setGravity(Gravity.CENTER);
@@ -1080,7 +1093,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
     private void EatListDataPrepare() {
-            EatListPostelModel data = new EatListPostelModel(R.drawable.pizza, "1");
+        EatListPostelModel data = new EatListPostelModel(R.drawable.pizza, "1");
         eatListPostelModel.add(data);
         data = new EatListPostelModel(R.drawable.burger, "2");
         eatListPostelModel.add(data);
@@ -1109,8 +1122,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         if (slogin == null)
             slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
 
-           String login_status = slogin.getString("login_key_status", "");
-
+        String login_status = slogin.getString("login_key_status", "");
 
 
         if (login_status.equalsIgnoreCase("true")) {
@@ -1188,13 +1200,13 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 if (statusCode == 200) {
 
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
-                         apiversionname = response.body().getVersion().get(0).getVersion();
+                        apiversionname = response.body().getVersion().get(0).getVersion();
                         if (!versionName.equalsIgnoreCase(apiversionname)) {
                             url = response.body().getVersion().get(0).getApp_url();
 
                             new Handler().postDelayed(new Runnable() {
                                 public void run() {
-                                     showPopup(url);
+                                    showPopup(url);
 
                                 }
                             }, 200);
@@ -1246,7 +1258,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                         /*--------------------------Login postcode save local------------------------*/
                         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
 
-                        Log.d("hgdfhfvahsfvasfvfaf"," " + response.body().getUrl());
+                        Log.d("hgdfhfvahsfvasfvfaf", " " + response.body().getUrl());
 
                         SharedPreferences.Editor editorpostcode = sharedptcode.edit();
                         editorpostcode.putString("KEY_posturl", response.body().getUrl());
@@ -1404,10 +1416,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.nav_myaccount) {
             startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
             drawer.closeDrawers();
-        } else if(id == R.id.nav_favorite) {
-            startActivity(new Intent(getApplicationContext(),Favourite_Activity.class));
+        } else if (id == R.id.nav_favorite) {
+            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
             drawer.closeDrawers();
-        }else if (id == R.id.nav_address) {
+        } else if (id == R.id.nav_address) {
             startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
             drawer.closeDrawers();
         } else if (id == R.id.nav_wallet) {
@@ -1533,7 +1545,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                     public void onClick(DialogInterface dialog, int which) {
                         try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
-                          //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.fusionkitchen")));
+                            //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.fusionkitchen")));
                         } catch (android.content.ActivityNotFoundException e) {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
                         }
@@ -1543,29 +1555,21 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         builder.show();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MyApplication.getInstance().trackScreenView("Postcode Activity");
 
-    }
+    public void onBackPressed() {
 
-    public void onBackPressed(){
-
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             super.onBackPressed();
             Intent backbtn = new Intent(Intent.ACTION_MAIN);
             backbtn.addCategory(Intent.CATEGORY_HOME);
             backbtn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(backbtn);
             return;
-        }
-        else {
+        } else {
             Toast.makeText(getBaseContext(), "Please click Back again to exit", Toast.LENGTH_SHORT).show();
         }
 
-         mBackPressed = System.currentTimeMillis();
+        mBackPressed = System.currentTimeMillis();
 
     }
 
@@ -1577,15 +1581,26 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             Postcode_Activity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (page.getCurrentItem()< listItems.size()-1) {
-                        page.setCurrentItem(page.getCurrentItem()+1);
-                    }
-                    else
+                    if (page.getCurrentItem() < listItems.size() - 1) {
+                        page.setCurrentItem(page.getCurrentItem() + 1);
+                    } else
                         page.setCurrentItem(0);
                 }
             });
         }
     }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyApplication.getInstance().trackScreenView("Postcode Activity");
+
+
+    }
+
+         /* End Current Location Fetch Address */
 
 }
 
