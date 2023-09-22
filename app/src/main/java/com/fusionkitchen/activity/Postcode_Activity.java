@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -77,6 +78,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.freshchat.consumer.sdk.Freshchat;
 import com.freshchat.consumer.sdk.FreshchatConfig;
 
@@ -84,6 +86,7 @@ import com.fusionkitchen.adapter.PopularRestaurantsListAdapter;
 import com.fusionkitchen.adapter.Slider_adapter;
 import com.fusionkitchen.model.EatListPostelModel;
 import com.fusionkitchen.app.MyApplication;
+import com.fusionkitchen.model.HomeFetch_Detail_Model;
 import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -130,6 +133,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -182,9 +186,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     /*---------------------------Navigation Menu----------------------------------------------------*/
     DrawerLayout drawer;
-    TextView nav_header_name;
-    ImageView nav_header_close;
+    TextView nav_header_name,homeTxt;
+    ImageView nav_header_close,frontImageViewLayout;
     NavigationView navigationView;
+    RelativeLayout homePageLayout;
     TextView txtversionname;
 
     private static final char space = ' ';
@@ -251,12 +256,15 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     // SliderView sliderView;
     ViewPager mViewPager;
     LinearLayout myCurrentLocation;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
 
 
     private AppUpdateManager mAppUpdateManager;
     private static final int RC_APP_UPDATE = 100;
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +290,10 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         invalide_postcode = findViewById(R.id.invalide_postcode);
         myCurrentLocation = findViewById(R.id.myCurrentLocation);
         /*---------------------------Toolbar----------------------------------------------------*/
-        Toolbar toolbar = findViewById(R.id.toolbar);
+         Toolbar toolbar = findViewById(R.id.toolbar);
+         frontImageViewLayout = findViewById(R.id.frontImageViewLayout);
+         homeTxt = findViewById(R.id.homeTxt);
+         homePageLayout = findViewById(R.id.homePageLayout);
 
 
         setSupportActionBar(toolbar);
@@ -434,6 +445,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         btn_next = findViewById(R.id.btn_next);
         clear_list_layout = findViewById(R.id.clear_list_layout);
 
+
         post_code_edittext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -577,10 +589,12 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         /*--------------Login store SharedPreferences------------------*/
         CheckLogin();
-
         /*---------------Load Popular Restaurants ------------------------*/
 
-      //  PopularRestaurants();
+       //  PopularRestaurants();
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
+        fetchDetails();
 
 
         /*---------------------------MenuItemAdapter item value get----------------------------------------------------*/
@@ -663,6 +677,69 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         });
 
     }
+
+    private void fetchDetails() {
+
+            Map<String, String> params = new HashMap<String, String>();
+            ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+            Call<HomeFetch_Detail_Model> call = apiService.getHomePage(params);
+
+            call.enqueue(new Callback<HomeFetch_Detail_Model>() {
+                @Override
+                public void onResponse(Call<HomeFetch_Detail_Model> call, Response<HomeFetch_Detail_Model> response) {
+                    int statusCode = response.code();
+
+                    Log.e("fetchDetail", new Gson().toJson(response.body()));
+
+                    if (statusCode == 200) {
+
+
+                        if (response.body().getSTATUS() == true) {
+
+                             response.body().getRESPONSE().getBackGroundImage();
+
+                             Glide.with(Postcode_Activity.this)
+                                    .load(response.body().getRESPONSE().getFrontImage())
+                                    .into(frontImageViewLayout);
+
+                            String textColorPost = response.body().getRESPONSE().getPostTextColor();
+                            String textColorLogan = response.body().getRESPONSE().getLoganTextColor();
+                            String descriptionPost = response.body().getRESPONSE().getPostDescribtion();
+                            String sloganDescription = response.body().getRESPONSE().getSloganDescribtion();
+
+                            String styledText = "<font color=\"" + textColorPost + "\">" + descriptionPost + "</font>" + "<font color=\"" + textColorLogan + "\">" + sloganDescription + "</font>";
+                            homeTxt.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+
+                             mShimmerViewContainer.stopShimmerAnimation();
+                             mShimmerViewContainer.setVisibility(View.GONE);
+                             homePageLayout.setVisibility(View.VISIBLE);
+
+                        }
+
+
+                    } else {
+                        mShimmerViewContainer.stopShimmerAnimation();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+                        homePageLayout.setVisibility(View.VISIBLE);
+                        Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<HomeFetch_Detail_Model> call, Throwable t) {
+
+                    mShimmerViewContainer.stopShimmerAnimation();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                    homePageLayout.setVisibility(View.VISIBLE);
+                    Log.e("askjdnkasjdnkdnd", "" + t);
+                    Snackbar.make(Postcode_Activity.this.findViewById(android.R.id.content), R.string.somthinnot_right, Snackbar.LENGTH_LONG).show();
+                }
+
+            });
+
+        }
+
 
     private void getLastLocation(){
 

@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 import com.fusionkitchen.model.App_download_record_Tracking;
+import com.fusionkitchen.model.HomeFetch_Detail_Model;
 import com.fusionkitchen.model.Login.Login_mobile_email;
 import com.fusionkitchen.model.Savecard.addnewsavecard_model;
 import com.fusionkitchen.model.Savecard.deletesavecard_model;
@@ -72,6 +73,7 @@ import com.fusionkitchen.model.wallet.wallet_walletbutton_model;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
@@ -402,22 +404,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<App_download_record_Tracking> getappcountrecord(@FieldMap Map<String, String> params);
 
-   /* @POST
-   @Header("Cookie")
-    Observable<SignInResponse> signIn(@Body SignInRequest signInRequest, @Url String url);*/
-/*    //get all Clicent details dasboard page
-    @POST("/ordertype")
+
+
+    @POST("/homePage")
     @FormUrlEncoded
-    Call<client_list_modal> getclentlist(@FieldMap Map<String, Integer> params);*/
+    Call<HomeFetch_Detail_Model> getHomePage(@FieldMap Map<String, String> params);
 
-
-   /* @POST(/ordertype)
-    @FormUrlEncoded
-    Call<client_list_modal> getclentlist(@Url String posturl, @FieldMap Map<String, String> params);*/
-
-
-  /*  @POST("/{fullUrl}")
-    Call<popular_restaurants_listmodel> mostpopularlist(@Path(value = "fullUrl", encoded = true) String fullUrl);*/
 
 
 }
