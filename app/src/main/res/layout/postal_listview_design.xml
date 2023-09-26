@@ -16,18 +16,6 @@
         android:layout_height="90dp"
         >
 
-      <!--  <androidx.cardview.widget.CardView
-            android:id="@+id/circularView"
-            android:layout_width="100dp"
-            android:layout_height="110dp"
-            android:layout_margin="5dp"
-            android:elevation="20dp"
-            android:innerRadius="0dp"
-            android:shape="rectangle"
-            android:thicknessRatio="1.9"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="10dp">-->
 
             <ImageView
                 android:id="@+id/icon"

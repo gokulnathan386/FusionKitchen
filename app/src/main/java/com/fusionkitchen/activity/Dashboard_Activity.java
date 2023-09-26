@@ -524,8 +524,6 @@ public class Dashboard_Activity extends AppCompatActivity {
         Most_Popular_Listview.setLayoutManager(manager1);
         Most_Popular_Listview.setAdapter(dashboardMostPopularAdapter);
 
-        //https://www.api.fusionkitchen.co.uk/loadPopularRestaurants
-
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,baseUrl+"loadPopularRestaurants",
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -539,7 +537,7 @@ public class Dashboard_Activity extends AppCompatActivity {
 
                            for (int i = 0; i < most_popular_list.length(); i++) {
                                 JSONObject object = most_popular_list.getJSONObject(i);
-                               DashboardMostPopularModel popularlist = new DashboardMostPopularModel(
+                                DashboardMostPopularModel popularlist = new DashboardMostPopularModel(
                                             object.getString("name"),
                                             object.getString("area"),
                                             object.getString("rating_average"),
@@ -570,13 +568,6 @@ public class Dashboard_Activity extends AppCompatActivity {
                     }
                 }){
 
-
-           /* @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("user_id",userid);
-                return params;
-            }*/
         };
 
         RequestQueue requestqueue = Volley.newRequestQueue(this);

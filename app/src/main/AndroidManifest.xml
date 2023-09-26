@@ -24,7 +24,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="MissingClass">
-        <activity
+      <!--  <activity
+            android:name=".dashboardtestuidesign"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>-->
+     <!--   <activity
             android:name=".activity.Splash_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
@@ -33,9 +40,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-      <!--  <activity
-            android:name=".activity.Order_Status_Activity"
+        </activity>-->
+        <activity
+            android:name=".activity.dashboardtestuidesign"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
@@ -43,8 +50,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
-
+        </activity>
         <activity
             android:name=".activity.Postcode_Activity"
             android:label=""
@@ -136,31 +142,26 @@
         <activity
             android:name=".activity.Order_Status_List_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activity.Order_Status_Activity"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data
-                android:host="https://fusionkitchen.page.link"
-                android:scheme="http" />
-            <data
-                android:host="https://fusionkitchen.page.link"
-                android:scheme="https" />
-        </intent-filter>
-
+                <data
+                    android:host="https://fusionkitchen.page.link"
+                    android:scheme="http" />
+                <data
+                    android:host="https://fusionkitchen.page.link"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.Show_Offer_Activity"
             android:screenOrientation="portrait"
