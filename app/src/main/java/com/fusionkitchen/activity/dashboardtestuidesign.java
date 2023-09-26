@@ -33,7 +33,7 @@ public class dashboardtestuidesign extends AppCompatActivity {
     private int currentPage = 0;
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
-    Dialog currentlocationpopup,filtercategoryList;
+    Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
     RecyclerView cusionListView;
 
 
@@ -92,37 +92,8 @@ public class dashboardtestuidesign extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-                currentlocationpopup= new Dialog(dashboardtestuidesign.this);
-                currentlocationpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                currentlocationpopup.setContentView(R.layout.current_location_popup);
-
-                LinearLayout addAddressCurrentLocation = currentlocationpopup.findViewById(R.id.addAddressCurrentLocation);
-                LinearLayout manual_search_icon = currentlocationpopup.findViewById(R.id.manual_search_icon);
-                addAddressCurrentLocation.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if(manual_search_icon.getVisibility() == View.VISIBLE){
-                            manual_search_icon.setVisibility(View.GONE);
-                        }else{
-                            manual_search_icon.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                });
-
-
-                currentlocationpopup.show();
-                currentlocationpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                currentlocationpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                currentlocationpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                currentlocationpopup.getWindow().setGravity(Gravity.CENTER);
-
-
-
-
+                 preOrderPopup();
+                // changePostCodeLocation();
 
             }
         });
@@ -154,6 +125,55 @@ public class dashboardtestuidesign extends AppCompatActivity {
             }
         }, 3000, 3000);
 
+
+
+    }
+
+    private void preOrderPopup() {
+
+        preOrderPopUp = new Dialog(dashboardtestuidesign.this);
+        preOrderPopUp.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        preOrderPopUp.setContentView(R.layout.pre_order_design);
+
+
+
+        preOrderPopUp.show();
+        preOrderPopUp.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        preOrderPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        preOrderPopUp.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        preOrderPopUp.getWindow().setGravity(Gravity.BOTTOM);
+
+
+    }
+
+    private void changePostCodeLocation() {
+
+
+        currentlocationpopup= new Dialog(dashboardtestuidesign.this);
+        currentlocationpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        currentlocationpopup.setContentView(R.layout.current_location_popup);
+
+        LinearLayout addAddressCurrentLocation = currentlocationpopup.findViewById(R.id.addAddressCurrentLocation);
+        LinearLayout manual_search_icon = currentlocationpopup.findViewById(R.id.manual_search_icon);
+        addAddressCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(manual_search_icon.getVisibility() == View.VISIBLE){
+                    manual_search_icon.setVisibility(View.GONE);
+                }else{
+                    manual_search_icon.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
+
+        currentlocationpopup.show();
+        currentlocationpopup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        currentlocationpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        currentlocationpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        currentlocationpopup.getWindow().setGravity(Gravity.CENTER);
 
 
     }
