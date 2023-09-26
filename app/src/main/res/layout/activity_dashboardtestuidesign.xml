@@ -52,6 +52,8 @@
                       <TextView
                           android:text="Delivery"
                           android:textSize="10dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
                           android:textColor="#01C070"
                           android:fontFamily="@font/poppins_bold"
                           android:layout_width="wrap_content"
@@ -67,6 +69,8 @@
                           android:text="Tomorrow 01:00 - 01:30"
                           android:textSize="10dp"
                           android:textColor="#214357"
+                          android:singleLine="true"
+                          android:ellipsize="end"
                           android:fontFamily="@font/poppins_regular"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content">
@@ -122,15 +126,15 @@
 
               <LinearLayout
                   android:backgroundTint="#f4f4f4"
-                  android:layout_marginHorizontal="20dp"
+                  android:layout_marginHorizontal="10dp"
                   android:layout_width="40dp"
                   android:gravity="center"
                   android:layout_height="40dp">
 
                   <ImageView
-                      android:src="@drawable/delivery_icon_dashboard"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"/>
+                      android:src="@drawable/crt_map_icon"
+                      android:layout_width="30dp"
+                      android:layout_height="40dp"/>
 
               </LinearLayout>
 
@@ -143,13 +147,16 @@
 
 
                   <LinearLayout
+                      android:gravity="center_vertical"
                       android:orientation="horizontal"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content">
 
                       <TextView
                           android:text="SK11 6TJ"
-                          android:textSize="10dp"
+                          android:textSize="12dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
                           android:textColor="#214357"
                           android:fontFamily="@font/poppins_regular"
                           android:layout_width="wrap_content"
@@ -178,7 +185,9 @@
 
                       <TextView
                           android:text="11,Southampaton,UK"
-                          android:textSize="10dp"
+                          android:textSize="12dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
                           android:textColor="#7c7c7c"
                           android:fontFamily="@font/poppins_regular"
                           android:layout_width="wrap_content"
@@ -288,7 +297,7 @@
                   android:drawablePadding="5dp"
                   android:drawableLeft="@drawable/fi_current_location_search_icon"
                   android:singleLine="true"
-                  android:layout_marginLeft="10dp"
+                  android:layout_marginLeft="5dp"
                   android:textColor="#A0A0A0"
                   android:textColorHint="#909497"
                   android:hint="Search for restaurant, cuisine or a dis"
@@ -310,7 +319,7 @@
 
 
               <LinearLayout
-                  android:id="@+id/post_code_check"
+                  android:id="@+id/filterListCategory"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:layout_gravity="center"
@@ -320,8 +329,8 @@
                   android:orientation="horizontal">
 
                   <ImageView
-                      android:layout_width="30dp"
-                      android:layout_height="30dp"
+                      android:layout_width="25dp"
+                      android:layout_height="25dp"
                       android:layout_gravity="center"
                       android:layout_marginTop="2dp"
                       android:src="@drawable/filter_icon">
@@ -333,42 +342,54 @@
 
     </LinearLayout>
 
-      <androidx.recyclerview.widget.RecyclerView
-          tools:listitem="@layout/cuisine_layout_list"
-          android:layout_width="match_parent"
-          android:visibility="gone"
-          android:layout_height="match_parent"/>
+     <!--   Start Scroll View -->
 
-      <LinearLayout
-        android:layout_marginVertical="10dp"
+    <ScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+              tools:listitem="@layout/cuisine_layout_list"
+              android:layout_width="match_parent"
+              android:visibility="gone"
+              android:layout_height="match_parent"/>
+
+            <LinearLayout
+            android:layout_marginVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-      <LinearLayout
-        android:weightSum="3"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <LinearLayout
+            android:weightSum="3"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-      <TextView
-          android:layout_weight="1"
-          android:layout_marginLeft="50dp"
-          android:layout_marginRight="5dp"
-          android:layout_gravity="center_vertical"
-          android:background="#A0A0A0"
-          android:fontFamily="@font/poppins_bold"
-          android:layout_width="match_parent"
-          android:layout_height="1dp"/>
+            <TextView
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical"
+            android:background="#A0A0A0"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
-        <TextView
+            <TextView
             android:textSize="15dp"
             android:textColor="#A0A0A0"
             android:fontFamily="@font/poppins_bold"
@@ -379,7 +400,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <TextView
+            <TextView
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_bold"
@@ -389,78 +410,85 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
-    </LinearLayout>
+            </LinearLayout>
 
-      <TextView
-        android:textSize="15dp"
-        android:textColor="#214357"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="end"
-        android:text="View all"
-        android:layout_marginHorizontal="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:listitem="@layout/dashboard_rcommednded_design" />
-
-    <LinearLayout
-        android:weightSum="4"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_weight="1.5"
-            android:layout_marginLeft="50dp"
-            android:layout_gravity="center_vertical"
-            android:background="#A0A0A0"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-        <TextView
+            <TextView
             android:textSize="15dp"
-            android:textColor="#A0A0A0"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="Most Popular Dishes"
+            android:textColor="#214357"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="end"
+            android:text="View all"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            android:layout_weight="1.5"
-            android:fontFamily="@font/poppins_bold"
-            android:background="#A0A0A0"
-            android:layout_marginRight="50dp"
-            android:layout_gravity="center_vertical"
+             <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:listitem="@layout/dashboard_rcommednded_design" />
 
-    </LinearLayout>
+             <LinearLayout
+            android:weightSum="4"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:textSize="15dp"
-        android:textColor="#214357"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="end"
-        android:text="View all"
-        android:layout_marginHorizontal="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_weight="1.5"
+                android:layout_marginLeft="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:listitem="@layout/dashboard_rcommednded_design" />
+            <TextView
+                android:textSize="15dp"
+                android:textColor="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="Most Popular Dishes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_weight="1.5"
+                android:fontFamily="@font/poppins_bold"
+                android:background="#A0A0A0"
+                android:layout_marginRight="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        </LinearLayout>
+
+             <TextView
+            android:textSize="15dp"
+            android:textColor="#214357"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="end"
+            android:text="View all"
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+             <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:listitem="@layout/dashboard_rcommednded_design" />
+
+         </LinearLayout>
+
+    </ScrollView>
+
+
+    <!--   End Scroll View -->
+
 
 
 </LinearLayout>

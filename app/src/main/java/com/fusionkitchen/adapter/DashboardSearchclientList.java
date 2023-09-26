@@ -125,8 +125,8 @@ public class DashboardSearchclientList extends RecyclerView.Adapter<DashboardSea
        /* ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
 
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        holder.shopimg.setColorFilter(filter);*/
+        ColorMatrixColorFilter filter_popup_category.xml = new ColorMatrixColorFilter(matrix);
+        holder.shopimg.setColorFilter(filter_popup_category.xml);*/
 
 
 //client logo set

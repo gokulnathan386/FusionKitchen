@@ -35,11 +35,11 @@
             android:name=".activity.Splash_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
-            <intent-filter>
+            <intent-filter_popup_category.xml>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter_popup_category.xml>
         </activity>-->
         <activity
             android:name=".activity.dashboardtestuidesign"

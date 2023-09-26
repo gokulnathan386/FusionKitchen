@@ -32,7 +32,8 @@ public class dashboardtestuidesign extends AppCompatActivity {
     private List<String> imageUrls;
     private int currentPage = 0;
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
-    Dialog currentlocationpopup;
+    LinearLayout filterListCategory;
+    Dialog currentlocationpopup,filtercategoryList;
     RecyclerView cusionListView;
 
 
@@ -52,6 +53,26 @@ public class dashboardtestuidesign extends AppCompatActivity {
         searchRestaurantCuisine = findViewById(R.id.searchRestaurantCuisine);
         searchIconCusion = findViewById(R.id.searchIconCusion);
         cusionListView = findViewById(R.id.cusionListView);
+        filterListCategory = findViewById(R.id.filterListCategory);
+
+        filterListCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                filtercategoryList= new Dialog(dashboardtestuidesign.this);
+                filtercategoryList.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                filtercategoryList.setContentView(R.layout.filter_category_list);
+
+
+
+                filtercategoryList.show();
+                filtercategoryList.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                filtercategoryList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                filtercategoryList.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                filtercategoryList.getWindow().setGravity(Gravity.BOTTOM);
+
+            }
+        });
 
         searchIconCusion.setOnClickListener(new View.OnClickListener() {
             @Override

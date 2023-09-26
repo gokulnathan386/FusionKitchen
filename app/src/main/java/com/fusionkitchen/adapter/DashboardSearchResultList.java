@@ -128,8 +128,8 @@ public class DashboardSearchResultList<sharedpreferences> extends RecyclerView.A
        /* ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
 
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        holder.shopimg.setColorFilter(filter);*/
+        ColorMatrixColorFilter filter_popup_category.xml = new ColorMatrixColorFilter(matrix);
+        holder.shopimg.setColorFilter(filter_popup_category.xml);*/
 
 
 //client logo set
