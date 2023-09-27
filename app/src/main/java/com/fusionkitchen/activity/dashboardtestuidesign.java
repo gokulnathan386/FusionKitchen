@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,12 @@ import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
 
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -145,7 +151,22 @@ public class dashboardtestuidesign extends AppCompatActivity {
             RadioGroup deliveryPickupRadioGroup = preOrderPopUp.findViewById(R.id.deliveryPickupRadioGroup);
             RadioButton radioDelivery = preOrderPopUp.findViewById(R.id.radioDelivery);
             RadioButton radioPickUp = preOrderPopUp.findViewById(R.id.radioPickUp);
-             deliveryPickupRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            TextView confirmBtn = preOrderPopUp.findViewById(R.id.confirmBtn);
+
+            confirmBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MMM-yyyy");
+                    for (int i = 0; i < 7; i++) {
+                        Calendar calendar = new GregorianCalendar();
+                        calendar.add(Calendar.DATE, i);
+                        String day = sdf.format(calendar.getTime());
+                        Log.d("kjfnbkfnvkjfnvkdfvk", day);
+                    }
+                }
+            });
+
+            deliveryPickupRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {

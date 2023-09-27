@@ -401,6 +401,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/confirmBtn"
             android:gravity="center"
             android:padding="20dp"
             android:textColor="@color/white"
