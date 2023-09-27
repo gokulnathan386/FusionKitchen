@@ -7,14 +7,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
@@ -136,6 +141,51 @@ public class dashboardtestuidesign extends AppCompatActivity {
         preOrderPopUp.setContentView(R.layout.pre_order_design);
 
 
+            TextView changeAddressTxt = preOrderPopUp.findViewById(R.id.changeAddressTxt);
+            RadioGroup deliveryPickupRadioGroup = preOrderPopUp.findViewById(R.id.deliveryPickupRadioGroup);
+            RadioButton radioDelivery = preOrderPopUp.findViewById(R.id.radioDelivery);
+            RadioButton radioPickUp = preOrderPopUp.findViewById(R.id.radioPickUp);
+             deliveryPickupRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+
+                    case R.id.radioDelivery:
+
+                        Drawable radiodeliverychecked = getResources().getDrawable(R.drawable.fi_preorder_delivery_icon);
+                        radiodeliverychecked.setBounds(0, 0, 40, 40);
+                        radioDelivery.setCompoundDrawables(radiodeliverychecked, null, null, null);
+
+
+                        Drawable radiopickunchecked = getResources().getDrawable(R.drawable.fi_pickup_icon);
+                        radiopickunchecked.setBounds(0, 0, 40, 40);
+                        radioPickUp.setCompoundDrawables(radiopickunchecked, null, null, null);
+
+                        break;
+
+                    case R.id.radioPickUp:
+
+                        Drawable radiopickchecked = getResources().getDrawable(R.drawable.pickup_checked_icon);
+                        radiopickchecked.setBounds(0, 0, 40, 40);
+                        radioPickUp.setCompoundDrawables(radiopickchecked, null, null, null);
+
+
+                        Drawable radiodeliveryunchecked = getResources().getDrawable(R.drawable.bike_unchecked_icon);
+                        radiodeliveryunchecked.setBounds(0, 0, 40, 40);
+                        radioDelivery.setCompoundDrawables(radiodeliveryunchecked, null, null, null);
+
+                        break;
+                }
+            }
+        });
+
+            changeAddressTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changePostCodeLocation();
+                }
+            });
+
 
         preOrderPopUp.show();
         preOrderPopUp.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -147,7 +197,6 @@ public class dashboardtestuidesign extends AppCompatActivity {
     }
 
     private void changePostCodeLocation() {
-
 
         currentlocationpopup= new Dialog(dashboardtestuidesign.this);
         currentlocationpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
