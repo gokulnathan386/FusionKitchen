@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    tools:context=".activity.Dashboard_List_Activity">
+
+      <LinearLayout
+          android:weightSum="4"
+          android:orientation="horizontal"
+          android:background="@color/white"
+          android:layout_width="match_parent"
+          android:layout_height="60dp">
+
+
+          <LinearLayout
+              android:visibility="gone"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:backgroundTint="#f4f4f4"
+                  android:layout_marginHorizontal="20dp"
+                  android:background="@drawable/circle_shape"
+                  android:layout_width="40dp"
+                  android:gravity="center"
+                  android:layout_height="40dp">
+
+                  <ImageView
+                      android:src="@drawable/delivery_icon_dashboard"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+
+                  <LinearLayout
+                      android:orientation="horizontal"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+
+                      <TextView
+                          android:text="Delivery"
+                          android:textSize="10dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
+                          android:textColor="#01C070"
+                          android:fontFamily="@font/poppins_bold"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                      </TextView>
+
+                      <Space
+                          android:layout_width="10dp"
+                          android:layout_height="wrap_content">
+                      </Space>
+
+                      <TextView
+                          android:text="Tomorrow 01:00 - 01:30"
+                          android:textSize="10dp"
+                          android:textColor="#214357"
+                          android:singleLine="true"
+                          android:ellipsize="end"
+                          android:fontFamily="@font/poppins_regular"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                      </TextView>
+
+
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:orientation="horizontal"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+
+                      <TextView
+                          android:text="SK11 6TJ"
+                          android:textSize="10dp"
+                          android:textColor="#214357"
+                          android:fontFamily="@font/poppins_regular"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                      </TextView>
+
+                      <Space
+                          android:layout_width="8dp"
+                          android:layout_height="wrap_content"/>
+
+                      <ImageView
+                          android:src="@drawable/arrow_down_dashboard"
+                          android:layout_width="wrap_content"
+                          android:layout_marginBottom="2dp"
+                          android:layout_height="wrap_content">
+                      </ImageView>
+
+
+
+                  </LinearLayout>
+
+
+              </LinearLayout>
+
+
+          </LinearLayout>
+
+
+          <LinearLayout
+              android:visibility="visible"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:backgroundTint="#f4f4f4"
+                  android:layout_marginHorizontal="10dp"
+                  android:layout_width="40dp"
+                  android:gravity="center"
+                  android:layout_height="40dp">
+
+                  <ImageView
+                      android:src="@drawable/crt_map_icon"
+                      android:layout_width="30dp"
+                      android:layout_height="40dp"/>
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/currentLocationDetails"
+                  android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+
+                  <LinearLayout
+                      android:gravity="center_vertical"
+                      android:orientation="horizontal"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+
+                      <TextView
+                          android:text="SK11 6TJ"
+                          android:textSize="12dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
+                          android:textColor="#214357"
+                          android:fontFamily="@font/poppins_regular"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                      </TextView>
+
+                      <Space
+                          android:layout_width="8dp"
+                          android:layout_height="wrap_content"/>
+
+                      <ImageView
+                          android:src="@drawable/arrow_down_dashboard"
+                          android:layout_width="wrap_content"
+                          android:layout_marginBottom="2dp"
+                          android:layout_height="wrap_content">
+                      </ImageView>
+
+
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:orientation="horizontal"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+
+                      <TextView
+                          android:text="11,Southampaton,UK"
+                          android:textSize="12dp"
+                          android:singleLine="true"
+                          android:ellipsize="end"
+                          android:textColor="#7c7c7c"
+                          android:fontFamily="@font/poppins_regular"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                      </TextView>
+
+
+
+                  </LinearLayout>
+
+
+
+              </LinearLayout>
+
+
+          </LinearLayout>
+
+
+          <LinearLayout
+              android:layout_weight="3"
+              android:gravity="end|center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+
+                  <LinearLayout
+                      android:backgroundTint="#f4f4f4"
+                      android:layout_marginHorizontal="20dp"
+                      android:background="@drawable/circle_shape"
+                      android:layout_width="40dp"
+                      android:gravity="center"
+                      android:layout_height="40dp">
+
+                      <ImageView
+                          android:src="@drawable/accountprofileicon"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"/>
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:background="@drawable/circle_shape"
+                      android:backgroundTint="#C43344"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginTop="-10dp"
+                      android:layout_width="7dp"
+                      android:layout_height="7dp">
+                  </LinearLayout>
+
+
+              </LinearLayout>
+
+
+
+
+
+
+          </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cusionListView"
+            android:layout_width="match_parent"
+            android:layout_marginRight="50dp"
+            tools:listitem="@layout/filter_list"
+            android:layout_height="wrap_content"/>
+
+          <LinearLayout
+            android:id="@+id/searchIconCusion"
+            android:gravity="end"
+            android:layout_marginLeft="-50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/fi_dashboard_serach_bg"
+                android:backgroundTint="#eeeeee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/fi_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </ImageView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/searchRestaurantCuisine"
+              android:background="@drawable/edittext_bg_home"
+              android:weightSum="4"
+              android:visibility="gone"
+              android:layout_marginHorizontal="15dp"
+              android:layout_marginVertical="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+
+
+              <EditText
+                  android:padding="13dp"
+                  android:layout_weight="1"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@null"
+                  android:fontFamily="@font/poppins_regular"
+                  android:inputType="textVisiblePassword|textCapCharacters"
+                  android:maxLength="10"
+                  android:text=""
+                  android:drawablePadding="5dp"
+                  android:drawableLeft="@drawable/fi_current_location_search_icon"
+                  android:singleLine="true"
+                  android:layout_marginLeft="5dp"
+                  android:textColor="#A0A0A0"
+                  android:textColorHint="#909497"
+                  android:hint="Search for restaurant, cuisine or a dis"
+                  android:textSize="12dp" />
+
+              <TextView
+                  android:id="@+id/invalide_postcode"
+                  android:layout_marginLeft="-110dp"
+                  android:text="Invalid  Postcode"
+                  android:textColor="#D02F3E"
+                  android:textSize="10dp"
+                  android:padding="15dp"
+                  android:textStyle="bold"
+                  android:fontFamily="@font/poppins_bold"
+                  android:visibility="gone"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+              </TextView>
+
+
+              <LinearLayout
+                  android:id="@+id/filterListCategory"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+                  android:background="@drawable/search_icon_ovel"
+                  android:layout_weight="3"
+                  android:orientation="horizontal">
+
+                  <ImageView
+                      android:layout_width="25dp"
+                      android:layout_height="25dp"
+                      android:layout_gravity="center"
+                      android:layout_marginTop="2dp"
+                      android:src="@drawable/filter_icon">
+                  </ImageView>
+
+              </LinearLayout>
+
+          </LinearLayout>
+
+    </LinearLayout>
+
+     <!--   Start Scroll View -->
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+              tools:listitem="@layout/cuisine_layout_list"
+              android:layout_width="match_parent"
+              android:visibility="gone"
+              android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:layout_marginVertical="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="3"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:background="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:textSize="15dp"
+                android:textColor="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="Recommended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_bold"
+                android:background="#A0A0A0"
+                android:layout_marginRight="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:textSize="15dp"
+                android:textColor="#214357"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="end"
+                android:text="View all"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+             <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/dashboard_rcommednded_design" />
+
+             <LinearLayout
+            android:weightSum="4"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="1.5"
+                android:layout_marginLeft="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:textSize="15dp"
+                android:textColor="#A0A0A0"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="Most Popular Dishes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_weight="1.5"
+                android:fontFamily="@font/poppins_bold"
+                android:background="#A0A0A0"
+                android:layout_marginRight="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        </LinearLayout>
+
+             <TextView
+            android:textSize="15dp"
+            android:textColor="#214357"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="end"
+            android:text="View all"
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+             <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:listitem="@layout/dashboard_rcommednded_design" />
+
+         </LinearLayout>
+
+    </ScrollView>
+
+
+    <!--   End Scroll View -->
+
+
+
+</LinearLayout>

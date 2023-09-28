@@ -174,49 +174,40 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_weight="2"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:background="#108060"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
 
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:background="#108060"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"/>
+
 
                         <Spinner
                             android:id="@+id/sevenDays"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:textStyle="bold"
                             android:textSize="15dp"
+                            android:gravity="center_horizontal"
                             android:textColor="#191919"
                             android:background="@null"
                             android:layout_height="wrap_content" />
 
-                 <!--       android:background="@drawable/addplayer_border"-->
-
-
-
+                        <TextView
+                            android:background="#108060"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"/>
 
                     </LinearLayout>
-
-                    <TextView
-                        android:background="#108060"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -250,7 +241,7 @@
 
                                 <TextView
                                     android:background="#108060"
-                                    android:layout_width="65dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="1dp"/>
 
 
@@ -261,11 +252,12 @@
                                     android:textSize="15dp"
                                     android:textColor="#191919"
                                     android:background="@null"
+                                    android:scrollbars="none"
                                     android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:background="#108060"
-                                    android:layout_width="65dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="1dp"/>
 
                             </LinearLayout>

@@ -42,7 +42,7 @@
             </intent-filter_popup_category.xml>
         </activity>-->
         <activity
-            android:name=".activity.dashboardtestuidesign"
+            android:name=".activity.Dashboard_List_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
