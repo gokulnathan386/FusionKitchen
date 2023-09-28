@@ -17,9 +17,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fusionkitchen.R;
@@ -48,6 +51,7 @@ public class dashboardtestuidesign extends AppCompatActivity {
     RecyclerView cusionListView;
 
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +61,13 @@ public class dashboardtestuidesign extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(dashboardtestuidesign.this, R.color.status_bar_color));
 
-
-
         viewPager = findViewById(R.id.viewPager);
         currentLocationDetails = findViewById(R.id.currentLocationDetails);
         searchRestaurantCuisine = findViewById(R.id.searchRestaurantCuisine);
         searchIconCusion = findViewById(R.id.searchIconCusion);
         cusionListView = findViewById(R.id.cusionListView);
         filterListCategory = findViewById(R.id.filterListCategory);
+
 
         filterListCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,22 +150,117 @@ public class dashboardtestuidesign extends AppCompatActivity {
         preOrderPopUp.setContentView(R.layout.pre_order_design);
 
 
-            TextView changeAddressTxt = preOrderPopUp.findViewById(R.id.changeAddressTxt);
-            RadioGroup deliveryPickupRadioGroup = preOrderPopUp.findViewById(R.id.deliveryPickupRadioGroup);
-            RadioButton radioDelivery = preOrderPopUp.findViewById(R.id.radioDelivery);
-            RadioButton radioPickUp = preOrderPopUp.findViewById(R.id.radioPickUp);
-            TextView confirmBtn = preOrderPopUp.findViewById(R.id.confirmBtn);
 
-            confirmBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        TextView changeAddressTxt = preOrderPopUp.findViewById(R.id.changeAddressTxt);
+        RadioGroup deliveryPickupRadioGroup = preOrderPopUp.findViewById(R.id.deliveryPickupRadioGroup);
+        RadioButton radioDelivery = preOrderPopUp.findViewById(R.id.radioDelivery);
+        RadioButton radioPickUp = preOrderPopUp.findViewById(R.id.radioPickUp);
+        TextView confirmBtn = preOrderPopUp.findViewById(R.id.confirmBtn);
+        Spinner sevenDays =preOrderPopUp.findViewById(R.id.sevenDays);
+        Spinner hoursMin =preOrderPopUp.findViewById(R.id.hoursMin);
+
+        LinearLayout amPmTxt = preOrderPopUp.findViewById(R.id.amPmTxt);
+        TextView sessionAMPM = preOrderPopUp.findViewById(R.id.sessionAMPM);
+        amPmTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(sessionAMPM.getText().toString().equalsIgnoreCase("AM")){
+                    sessionAMPM.setText("PM");
+                }else{
+                    sessionAMPM.setText("AM");
+                }
+
+            }
+        });
+
+
+
+        ArrayList<String> dateDay = new ArrayList<String>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        for (int i = 0; i < 7; i++) {
+
+            if(i==0){
+                dateDay.add("Today");
+            }else if(i==1){
+                dateDay.add("Tomorrow");
+            }else{
+                Calendar calendar = new GregorianCalendar();
+                calendar.add(Calendar.DATE, i);
+                String day = sdf.format(calendar.getTime());
+                dateDay.add(day);
+            }
+
+
+        }
+
+
+
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,R.layout.my_selected_item, dateDay);
+            dataAdapter.setDropDownViewResource(R.layout.my_dropdown_item);
+
+            sevenDays.setAdapter(dataAdapter);
+            sevenDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String item_position = String.valueOf(id);
+                    int positonInt = Integer.valueOf(item_position);
+                    String hrs = dateDay.get(positonInt);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+
+        ArrayList<String> hoursmin = new ArrayList<String>();
+        //hours.add("hrs");
+        for(int i=1;i<=12;i++){
+
+            int num = 15;
+            for(int j = 1; j <= 4; j++) {
+
+                if(i<=9){
+
+                    hoursmin.add("0"+ i +" : " +num * j);
+
+                }else{
+                    hoursmin.add(i +" : " + num * j);
+                }
+
+            }
+
+        }
+
+
+        ArrayAdapter<String> hoursMinAdapter = new ArrayAdapter<String>(this,R.layout.my_selected_item, hoursmin);
+        hoursMinAdapter.setDropDownViewResource(R.layout.my_dropdown_item);
+        hoursMin.setAdapter(hoursMinAdapter);
+        hoursMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item_position = String.valueOf(id);
+                int positonInt = Integer.valueOf(item_position);
+                String im = hoursmin.get(positonInt);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MMM-yyyy");
-                    for (int i = 0; i < 7; i++) {
-                        Calendar calendar = new GregorianCalendar();
-                        calendar.add(Calendar.DATE, i);
-                        String day = sdf.format(calendar.getTime());
-                        Log.d("kjfnbkfnvkjfnvkdfvk", day);
-                    }
+
                 }
             });
 
@@ -200,12 +298,12 @@ public class dashboardtestuidesign extends AppCompatActivity {
             }
         });
 
-            changeAddressTxt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    changePostCodeLocation();
-                }
-            });
+        changeAddressTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePostCodeLocation();
+            }
+        });
 
 
         preOrderPopUp.show();
@@ -244,7 +342,6 @@ public class dashboardtestuidesign extends AppCompatActivity {
         currentlocationpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         currentlocationpopup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         currentlocationpopup.getWindow().setGravity(Gravity.CENTER);
-
 
     }
 }

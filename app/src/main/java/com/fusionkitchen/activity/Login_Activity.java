@@ -228,7 +228,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
         otp2 = findViewById(R.id.otp2);
         otp3 = findViewById(R.id.otp3);
         otp4 = findViewById(R.id.otp4);
-      
+
 
 
         otp_btn.setOnClickListener(new View.OnClickListener() {
@@ -236,7 +236,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
             public void onClick(View v) {
 
                 if(otp1.getText().toString().trim().isEmpty() && otp2.getText().toString().trim().isEmpty()
-                && otp3.getText().toString().trim().isEmpty() && otp4.getText().toString().trim().isEmpty()
+                        && otp3.getText().toString().trim().isEmpty() && otp4.getText().toString().trim().isEmpty()
                 ){
 
                     otp1.requestFocus();
@@ -269,8 +269,30 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                     otp3.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
                     otp4.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
 
-                    LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
-                            otp3.getText().toString().trim() + otp4.getText().toString().trim() , email_phone_edittxt.getText().toString().trim());
+
+                    String firstchar = email_phone_edittxt.getText().toString().trim();
+                    String txtchar = String.valueOf(firstchar.charAt(0));
+
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"; // Email valid
+
+                    if((email_phone_edittxt.getText().toString().trim().matches(emailPattern))){
+
+                        LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
+                                otp3.getText().toString().trim() + otp4.getText().toString().trim() , email_phone_edittxt.getText().toString().trim());
+
+                    }else if(txtchar.equalsIgnoreCase("0")){
+
+                        LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
+                                otp3.getText().toString().trim() + otp4.getText().toString().trim() , email_phone_edittxt.getText().toString().trim());
+
+                    }else{
+
+                        LoginAction(otp1.getText().toString().trim() + otp2.getText().toString().trim() +
+                                otp3.getText().toString().trim() + otp4.getText().toString().trim() , "0"+email_phone_edittxt.getText().toString().trim());
+
+                    }
+
+
 
                 }
 
@@ -348,7 +370,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
         otp1.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-              //  otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                //  otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
 
 
             }
@@ -360,16 +382,16 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
             public void afterTextChanged(Editable s) {
 
-               if(s.length() == 1){
-                   otp2.requestFocus();
-                   otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                if(s.length() == 1){
+                    otp2.requestFocus();
+                    otp2.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
 
-                   if(otp1.getText().toString() != null && !otp1.getText().toString().isEmpty()){
-                       otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
-                   }else{
-                       otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg));
-                   }
-               }
+                    if(otp1.getText().toString() != null && !otp1.getText().toString().isEmpty()){
+                        otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg_green));
+                    }else{
+                        otp1.setBackground(getResources().getDrawable(R.drawable.otp_bg));
+                    }
+                }
 
             }
         });
@@ -920,6 +942,8 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
 
     private void Sendotpphone(String emailphone,int txt,Boolean ismail) throws Exception {
 
+        Log.d("skdnksdnkndk"," " + emailphone);
+
         loadingshow();
 
         otp1.setText("");
@@ -1101,40 +1125,40 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
 
 
-                if (activity_details != null) {
+                        if (activity_details != null) {
 
-                        //Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
-                        if (activity_details.equalsIgnoreCase("pcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("cart")) {
-                            Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
-                            intent.putExtra("cooking_insttruction", cooking_insttructionback);
-                            startActivity(intent);
-                        } else if (activity_details.equalsIgnoreCase("address")) {
-                            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myaccount")) {
-                            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("postcode")) {
-                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                        } else if (activity_details.equalsIgnoreCase("myfavourite")) {
-                            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-                        } else if(activity_details.equalsIgnoreCase("item_menu_activity")){
+                            //Snackbar.make(Login_Activity.this.findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
+                            if (activity_details.equalsIgnoreCase("pcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("cart")) {
+                                Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
+                                intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                                startActivity(intent);
+                            } else if (activity_details.equalsIgnoreCase("address")) {
+                                startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myaccount")) {
+                                startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("postcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myfavourite")) {
+                                startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+                            } else if(activity_details.equalsIgnoreCase("item_menu_activity")){
 
-                            Intent intent = getIntent();
-                            String menuurlpath = intent.getStringExtra("menuurlpath");
+                                Intent intent = getIntent();
+                                String menuurlpath = intent.getStringExtra("menuurlpath");
 
-                            Intent item_menu_page = new Intent(getApplicationContext(), Item_Menu_Activity.class);
-                            item_menu_page.putExtra("menuurlpath",menuurlpath);
-                            startActivity(item_menu_page);
+                                Intent item_menu_page = new Intent(getApplicationContext(), Item_Menu_Activity.class);
+                                item_menu_page.putExtra("menuurlpath",menuurlpath);
+                                startActivity(item_menu_page);
 
 
-                        }else {
+                            }else {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            }
+
+                        }else{
                             startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
                         }
-
-                }else{
-                    startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                }
 
 
                     } else {
@@ -1472,7 +1496,7 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                             }else{
                                 fb_email ="";
                             }
-                           // fb_email = object.getString("email");
+                            // fb_email = object.getString("email");
                             fb_id = object.getString("id");
 
 
@@ -1558,28 +1582,28 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
                         LoginManager.getInstance().logOut();
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
 
-                  if (activity_details != null) {
+                        if (activity_details != null) {
 
-                      if (activity_details.equalsIgnoreCase("pcode")) {
-                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                      } else if (activity_details.equalsIgnoreCase("cart")) {
-                          Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
-                          intent.putExtra("cooking_insttruction", cooking_insttructionback);
-                          startActivity(intent);
-                      } else if (activity_details.equalsIgnoreCase("address")) {
-                          startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
-                      } else if (activity_details.equalsIgnoreCase("myaccount")) {
-                          startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
-                      } else if (activity_details.equalsIgnoreCase("postcode")) {
-                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                      } else if (activity_details.equalsIgnoreCase("myfavourite")) {
-                          startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-                      } else {
-                          startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                      }
-                  }else{
-                      startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                  }
+                            if (activity_details.equalsIgnoreCase("pcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("cart")) {
+                                Intent intent = new Intent(Login_Activity.this, Add_to_Cart.class);
+                                intent.putExtra("cooking_insttruction", cooking_insttructionback);
+                                startActivity(intent);
+                            } else if (activity_details.equalsIgnoreCase("address")) {
+                                startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myaccount")) {
+                                startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("postcode")) {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            } else if (activity_details.equalsIgnoreCase("myfavourite")) {
+                                startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+                            } else {
+                                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                            }
+                        }else{
+                            startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                        }
 
                     } else {
                         hideloading();
@@ -1613,34 +1637,34 @@ public class Login_Activity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-   @Override
+    @Override
     public void onBackPressed() {
 
 
-       if (four_otp.getVisibility() == View.VISIBLE) {
+        if (four_otp.getVisibility() == View.VISIBLE) {
 
-           decs_txt.setVisibility(View.VISIBLE);
-           email_phone_edittxt.setVisibility(View.VISIBLE);
-           sigin_button.setVisibility(View.VISIBLE);
+            decs_txt.setVisibility(View.VISIBLE);
+            email_phone_edittxt.setVisibility(View.VISIBLE);
+            sigin_button.setVisibility(View.VISIBLE);
 
 
-           four_otp.setVisibility(View.GONE);
-           desc_otp.setVisibility(View.GONE);
-           otp_timer.setVisibility(View.GONE);
-           otp_btn.setVisibility(View.GONE);
-           desc_resend_otp.setVisibility(View.GONE);
-           prefix.setVisibility(View.GONE);
-           email_phone_edittxt.setText("");
-           email_phone_edittxt.requestFocus();
-           Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.ic_gmail_phone_icon );
-           email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
-           sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
-           sigin_button.setTextColor(Color.parseColor("#909497"));
-           email_phone_edittxt.setCompoundDrawablePadding(30);
+            four_otp.setVisibility(View.GONE);
+            desc_otp.setVisibility(View.GONE);
+            otp_timer.setVisibility(View.GONE);
+            otp_btn.setVisibility(View.GONE);
+            desc_resend_otp.setVisibility(View.GONE);
+            prefix.setVisibility(View.GONE);
+            email_phone_edittxt.setText("");
+            email_phone_edittxt.requestFocus();
+            Drawable img = email_phone_edittxt.getContext().getResources().getDrawable( R.drawable.ic_gmail_phone_icon );
+            email_phone_edittxt.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+            sigin_button.setBackground(getResources().getDrawable(R.drawable.gmail_phone_bg));
+            sigin_button.setTextColor(Color.parseColor("#909497"));
+            email_phone_edittxt.setCompoundDrawablePadding(30);
 
-       }else{
-           finish();
-       }
+        }else{
+            finish();
+        }
 
 
     }
