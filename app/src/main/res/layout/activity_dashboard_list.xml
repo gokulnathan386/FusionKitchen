@@ -497,10 +497,11 @@
             android:layout_height="wrap_content"/>
 
              <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:listitem="@layout/dashboard_rcommednded_design" />
+                android:id="@+id/mostPopularLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/dashboard_rcommednded_design" />
 
          </LinearLayout>
 

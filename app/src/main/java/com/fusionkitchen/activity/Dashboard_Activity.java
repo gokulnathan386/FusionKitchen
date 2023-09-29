@@ -159,22 +159,10 @@ public class Dashboard_Activity extends AppCompatActivity {
 
         baseUrl  =ApiClient.getInstance().getClient().baseUrl();
 
-
-      /*  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        /*---------------------------hind actionbar----------------------------------------------------*/
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         overridePendingTransition(R.anim.enter, R.anim.exit);
-
-       /* ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#0d353d"));
-        actionBar.setBackgroundDrawable(colorDrawable);*/
-
-        /*---------------------------Session Manager Class----------------------------------------------------*/
-     /*   session = new SessionManager(getApplicationContext());
-        session.checkLogin();*/
-        // cookies = CookieManager.getInstance().getCookie("cookie");//"SK11-Macclesfield";//
 
         /*---------------------------Get Menu URL using SharedPreferences----------------------------------------------------*/
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Dashboard_Activity.this.MODE_PRIVATE);
@@ -250,15 +238,6 @@ public class Dashboard_Activity extends AppCompatActivity {
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
 
-        //   ordertypecheck(0);
-        /*---------------------------get api URL type values----------------------------------------------------*/
-
-        // get user data from session
-      /*  HashMap<String, String> user = session.getUserDetails();
-        fullUrl = user.get(SessionManager.KEY_posturl);
-        locationgetshop(user.get(SessionManager.KEY_postcode), user.get(SessionManager.KEY_lat), user.get(SessionManager.KEY_lon), "0", user.get(SessionManager.KEY_area), fullUrl);
-*/
-
         /*--------------------------Login postcode save local------------------------*/
         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
         key_postcode = (sharedptcode.getString("KEY_postcode", null));
@@ -274,9 +253,8 @@ public class Dashboard_Activity extends AppCompatActivity {
         Log.e("localstore5", "" + fullUrl);
 
         /*-----------------get Client List---------------------*/
-        locationgetshop(key_postcode, key_lat, key_lon, "0", key_area, fullUrl, user_id);
 
-        // locationgetshop(user.get(SessionManager.KEY_postcode), user.get(SessionManager.KEY_lat), user.get(SessionManager.KEY_lon), "0", user.get(SessionManager.KEY_area), fullUrl);
+        locationgetshop(key_postcode, key_lat, key_lon, "0", key_area, fullUrl, user_id);
 
         /*---------------------------BottomNavigationView----------------------------------------------------*/
 
@@ -287,57 +265,25 @@ public class Dashboard_Activity extends AppCompatActivity {
             bottomNav.getOrCreateBadge(R.id.home_card).setNumber(cursor);
         }
 
-       /* BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.home_card);
-        badge.setNumber(cursor);
-        badge.setBackgroundColor(R.color.app_color);*/
-
-        //bottomNav.getMenu().getItem(4).setIcon(R.drawable.menufavourite);
-        //bottomNav.getMenu().getItem(4).setTitle("Favourite");
-
-      //  bottomNav.getMenu().findItem(R.id.home_bottom);
-
-      /*  final Handler handler = new Handler();
-        final int delay = 2500;
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                if(bottonkey == 2){
-                    bottomNav.getMenu().findItem(R.id.home_search).setChecked(true);
-                }else if(bottonkey == 3){
-                    bottomNav.getMenu().findItem(R.id.home_card).setCheckable(true);
-                }else{
-                    bottomNav.getMenu().findItem(R.id.home_bottom).setChecked(true);
-                }
-
-                handler.postDelayed(this, delay);
-            }
-        }, delay);*/
-
-
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_bottom:
-                        // finish();
-                        //startActivity(getIntent());
-                      //  bottonkey = 1;
                         Intent intenthome = new Intent(getApplicationContext(), Postcode_Activity.class);
                         startActivity(intenthome);
                         break;
                     case R.id.home_search:
-                       // bottonkey = 2;
+
                         bottomNav.getMenu().findItem(R.id.home_search).setCheckable(true);
                         card_view_search_client.setVisibility(View.VISIBLE);
                         editTextSearchclient.requestFocus();
-                        //   bottomNav.getMenu().findItem(R.id.home_search).setChecked(true);
+
                         break;
                     case R.id.home_card:
-                       // bottonkey = 3;
+
                         bottomNav.getMenu().findItem(R.id.home_card).setCheckable(true);
-                        /*Intent intentreview = new Intent(getApplicationContext(), Review.class);
-                        startActivity(intentreview);*/
-                        // Toast.makeText(getApplicationContext(), "Card", Toast.LENGTH_SHORT).show();
+
                         if (cursor != 0) {
                             Intent intentcard = new Intent(getApplicationContext(), Add_to_Cart.class);
                             startActivity(intentcard);
@@ -347,15 +293,6 @@ public class Dashboard_Activity extends AppCompatActivity {
                         break;
                     case R.id.home_account:
                         bottomNav.getMenu().findItem(R.id.home_account).setCheckable(true);
-                       /* if (user_id != null && !user_id.isEmpty()) {
-                            Intent intent = new Intent(getApplicationContext(), Favourite_Activity.class);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
-                            intent.putExtra("activity_details", "myfavourite");
-                            startActivity(intent);
-                        }*/
-
                         if(user_id.equalsIgnoreCase("0") || user_id.isEmpty()){
                             Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
                             intent_account.putExtra("activity_details", "myaccount");
@@ -367,15 +304,6 @@ public class Dashboard_Activity extends AppCompatActivity {
                             startActivity(intentcard);
 
                         }
-
-                        /*if (user_id != null && !user_id.isEmpty()) {
-                            Intent intentcard = new Intent(getApplicationContext(), MyAccount_Activity.class);
-                            startActivity(intentcard);
-                        } else {
-                            Intent intent_account = new Intent(getApplicationContext(), Login_Activity.class);
-                            intent_account.putExtra("activity_details", "myaccount");
-                            startActivity(intent_account);
-                        }*/
 
                         break;
                 }
@@ -406,9 +334,6 @@ public class Dashboard_Activity extends AppCompatActivity {
                     dynamic_and_static_listview.setVisibility(View.GONE);
                     search_restaurants_view.setVisibility(View.VISIBLE);
                     serachgetshop(clientworking, key_lat, key_lon, key_area, key_postcode, user_id);
-                    //
-                    //
-                    // (clientworking, user.get(SessionManager.KEY_lat), user.get(SessionManager.KEY_lon), user.get(SessionManager.KEY_area), user.get(SessionManager.KEY_postcode));
 
                 } else if (clientworking.length() == 0) {
                     View view = Dashboard_Activity.this.getCurrentFocus();
@@ -506,7 +431,7 @@ public class Dashboard_Activity extends AppCompatActivity {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         Enter_your_RecyclerView.setLayoutManager(manager);
         Enter_your_RecyclerView.setAdapter(dashboardListViewAdapter);
-        DashboardDataList();
+      //  DashboardDataList();
 
 
   /*----------------------------------RecyclerView List---------------------------------------------------*/
@@ -576,7 +501,7 @@ public class Dashboard_Activity extends AppCompatActivity {
 
     }
 
-    private void DashboardDataList() {
+   /* private void DashboardDataList() {
         DashboardListViewModel data = new DashboardListViewModel(R.drawable.image1, "1");
         dashboardListViewModels.add(data);
         data = new DashboardListViewModel(R.drawable.image2, "2");
@@ -723,7 +648,7 @@ public class Dashboard_Activity extends AppCompatActivity {
         dashboardListViewModels.add(data);
 
 
-    }
+    }*/
 
     public BroadcastReceiver mMessageReceiverreload = new BroadcastReceiver() {
         @Override

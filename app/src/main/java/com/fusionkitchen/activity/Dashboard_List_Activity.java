@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -67,6 +68,7 @@ import java.util.TimerTask;
 public class Dashboard_List_Activity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
+    TextView postCodeAddress;
     FusedLocationProviderClient fusedLocationProviderClient;
     private DashboardBannerAutoScrollAdapter dashboardBannerAutoScrollAdapter;
     private List<String> imageUrls;
@@ -76,7 +78,7 @@ public class Dashboard_List_Activity extends AppCompatActivity {
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView cusionListView;
+    RecyclerView cusionListView,mostPopularLayout;
 
 
 
@@ -95,6 +97,7 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         searchIconCusion = findViewById(R.id.searchIconCusion);
         cusionListView = findViewById(R.id.cusionListView);
         filterListCategory = findViewById(R.id.filterListCategory);
+        mostPopularLayout = findViewById(R.id.mostPopularLayout);
 
 
         filterListCategory.setOnClickListener(new View.OnClickListener() {
@@ -184,6 +187,7 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         TextView confirmBtn = preOrderPopUp.findViewById(R.id.confirmBtn);
         Spinner sevenDays =preOrderPopUp.findViewById(R.id.sevenDays);
         Spinner hoursMin =preOrderPopUp.findViewById(R.id.hoursMin);
+        postCodeAddress =preOrderPopUp.findViewById(R.id.postCodeAddress);
 
         LinearLayout amPmTxt = preOrderPopUp.findViewById(R.id.amPmTxt);
         TextView sessionAMPM = preOrderPopUp.findViewById(R.id.sessionAMPM);
@@ -377,12 +381,25 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         LinearLayout addAddressCurrentLocation = currentlocationpopup.findViewById(R.id.addAddressCurrentLocation);
         LinearLayout manual_search_icon = currentlocationpopup.findViewById(R.id.manual_search_icon);
         LinearLayout myCurrentLocation = currentlocationpopup.findViewById(R.id.myCurrentLocation);
+        EditText manuallyEnterPostCode = currentlocationpopup.findViewById(R.id.manuallyEnterPostCode);
+        LinearLayout post_code_check = currentlocationpopup.findViewById(R.id.post_code_check);
+
+        post_code_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postCodeAddress.setText(manuallyEnterPostCode.getText().toString());
+                currentlocationpopup.dismiss();
+            }
+        });
+
+
         myCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getLastLocation();
             }
         });
+
         addAddressCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,11 +454,12 @@ public class Dashboard_List_Activity extends AppCompatActivity {
                                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                             Log.d("LocationAddress", "Lattitude --->" + addresses.get(0).getLatitude());
                                             Log.d("LocationAddress", "Longitude --->" + addresses.get(0).getLongitude());
-                                            Log.d("LocationAddress", "Address --->" +addresses.get(0).getAddressLine(0));
+                                            Log.d("LocationAddress", "Address --->" + addresses.get(0).getAddressLine(0));
                                             Log.d("LocationAddress", "City --->" + addresses.get(0).getLocality());
                                             Log.d("LocationAddress", "Country --->" + addresses.get(0).getCountryName());
                                             Log.d("LocationAddress", "Postcode --->" +addresses.get(0).getPostalCode());
-                                           // postcodecheck(""+addresses.get(0).getPostalCode());
+                                            postCodeAddress.setText(addresses.get(0).getPostalCode());
+                                            currentlocationpopup.dismiss();
 
 
                                         } catch (IOException e) {

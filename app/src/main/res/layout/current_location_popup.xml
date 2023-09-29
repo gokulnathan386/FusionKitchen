@@ -146,6 +146,7 @@
 
 
                 <EditText
+                    android:id="@+id/manuallyEnterPostCode"
                     android:padding="13dp"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
