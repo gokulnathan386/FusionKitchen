@@ -1282,32 +1282,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     }
 
-
- /*   private void EatListDataPrepare() {
-        EatListPostelModel data = new EatListPostelModel(R.drawable.pizza, "1");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.burger, "2");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.biryanai, "3");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.curry, "4");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.southindian, "5");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.drinks, "6");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.breakfast, "7");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.curry, "8");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.kebab, "9");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.cake, "10");
-        eatListPostelModel.add(data);
-        data = new EatListPostelModel(R.drawable.fishchips, "11");
-        eatListPostelModel.add(data);
-    }
-*/
     /*--------------Login store SharedPreferences------------------*/
     public void CheckLogin() {
         if (slogin == null)

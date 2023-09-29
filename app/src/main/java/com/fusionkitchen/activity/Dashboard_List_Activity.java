@@ -81,7 +81,6 @@ public class Dashboard_List_Activity extends AppCompatActivity {
     RecyclerView cusionListView,mostPopularLayout;
 
 
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,9 +135,7 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         currentLocationDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                  preOrderPopup();
-                // changePostCodeLocation();
 
             }
         });
@@ -169,8 +166,6 @@ public class Dashboard_List_Activity extends AppCompatActivity {
                 });
             }
         }, 3000, 3000);
-
-
 
     }
 
@@ -518,7 +513,6 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         ActivityCompat.requestPermissions(Dashboard_List_Activity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
 
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @org.jetbrains.annotations.NotNull String[] permissions, @NonNull @org.jetbrains.annotations.NotNull int[] grantResults) {
