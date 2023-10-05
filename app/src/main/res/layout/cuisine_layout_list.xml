@@ -30,10 +30,11 @@
                 android:layout_height="150dp">
 
                 <ImageView
-                    android:src="@drawable/image6"
                     android:scaleType="fitXY"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <!--  android:src="@drawable/image6"-->
 
             </LinearLayout>
 
@@ -48,14 +49,9 @@
                 android:layout_height="wrap_content"/>
 
 
-
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
-
-
-
 
 
 </LinearLayout>

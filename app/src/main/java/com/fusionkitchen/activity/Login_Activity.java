@@ -113,6 +113,8 @@ import retrofit2.Response;
 
 public class Login_Activity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private Context mContext = Login_Activity.this;
+    private long mBackPressed;
+    private static final int TIME_INTERVAL = 2000;
     //postcode
     /*---------------------------check internet connection----------------------------------------------------*/
     boolean isShown = false, Connection;

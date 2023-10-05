@@ -1,6 +1,5 @@
 package com.fusionkitchen.activity;
 
-import static java.lang.Integer.parseInt;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -18,8 +17,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -146,21 +148,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+//public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Postcode_Activity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int TIME_INTERVAL = 2000;
+    LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav;
+    LinearLayout myOrderNav,upComingOrder,myAccountNav,walletNavIcon;
+    LinearLayout notificationNav,perksNav,fkPlusNav,addressListNav;
+    LinearLayout helpNav,rateApp,aboutNav,allergyInfoNav;
+    LinearLayout termsConditionNav,termsOfUse,privacyPolicyNav,deteleAccountNav,logoutNav;
+    LinearLayout loginNav, moreHideView;
 
     FusedLocationProviderClient fusedLocationProviderClient;
     private final static int REQUEST_CODE = 100;
     private static final int REQUEST_CHECK_SETTINGS = 1001;
 
-
-
-
-
     private long mBackPressed;
     int bottonkey;
-    Dialog offerPopup;
+    Dialog offerPopup,comeingSoon;
     Bitmap myBitmap;
 
     private List<String> listItems;
@@ -246,9 +251,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private PopularRestaurantsListAdapter popularRestaurantsListAdapter;
     private List<popular_restaurants_listmodel> popularlistmodule = new ArrayList<>();
 
-
     HttpUrl baseUrl;
-
     String menuurlpath;
     LinearLayout clear_list_layout;
     AppCompatButton go_back, remove_cart;
@@ -257,9 +260,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     ViewPager mViewPager;
     LinearLayout myCurrentLocation;
     private ShimmerFrameLayout mShimmerViewContainer;
-
-
-
 
     private AppUpdateManager mAppUpdateManager;
     private static final int RC_APP_UPDATE = 100;
@@ -310,6 +310,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         /*------------------------------------------------------------*/
 
         Most_Popular_Listview = findViewById(R.id.Most_Popular_Listview);
+        logoutNav = findViewById(R.id.logoutNav);
 
 
         offer_splash = getSharedPreferences("Offer_splash_popup", MODE_PRIVATE);
@@ -555,7 +556,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
 
         PackageInfo pinfo = null;
         try {
@@ -567,25 +568,75 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
 
         txtversionname = navigationView.findViewById(R.id.txtversionname);
-        txtversionname.setText("V" + versionName + " " + "Live");
+       // txtversionname.setText("V" + versionName + " " + "Live");
+        txtversionname.setText("Version : "+versionName + " " + "FK 2.0");
 
         View header = navigationView.getHeaderView(0);
-        nav_header_close = header.findViewById(R.id.nav_header_close);
+        moreHideView = header.findViewById(R.id.moreHideView);
+        LinearLayout hideLayoutTxt = header.findViewById(R.id.hideLayoutTxt);
+        TextView textIcon = header.findViewById(R.id.textIcon);
+        referToFriend = header.findViewById(R.id.referToFriend);
+        homePageTxt = header.findViewById(R.id.homePageTxt);
+        profileDetails = header.findViewById(R.id.profileDetails);
+        favouriteNav = header.findViewById(R.id.favouriteNav);
+        myOrderNav = header.findViewById(R.id.myOrderNav);
+        upComingOrder = header.findViewById(R.id.upComingOrder);
+        myAccountNav = header.findViewById(R.id.myAccountNav);
+        walletNavIcon = header.findViewById(R.id.walletNavIcon);
+        notificationNav = header.findViewById(R.id.notificationNav);
+        perksNav = header.findViewById(R.id.perksNav);
+        fkPlusNav = header.findViewById(R.id.fkPlusNav);
+        addressListNav = header.findViewById(R.id.addressListNav);
+        helpNav = header.findViewById(R.id.helpNav);
+        rateApp = header.findViewById(R.id.rateApp);
 
-        navigationView.getMenu().getItem(10).setActionView(R.layout.menu_hide);
-        navigationView.getMenu().getItem(11).setActionView(R.layout.menu_show);
+        aboutNav = header.findViewById(R.id.aboutNav);
+        allergyInfoNav = header.findViewById(R.id.allergyInfoNav);
+        termsConditionNav = header.findViewById(R.id.termsConditionNav);
+        termsOfUse = header.findViewById(R.id.termsOfUse);
+        privacyPolicyNav = header.findViewById(R.id.privacyPolicyNav);
+        deteleAccountNav = header.findViewById(R.id.deteleAccountNav);
+        loginNav = header.findViewById(R.id.loginNav);
 
-        hideItem();
 
+        referToFriend.setOnClickListener(this);
+        homePageTxt.setOnClickListener(this);
+        profileDetails.setOnClickListener(this);
+        favouriteNav.setOnClickListener(this);
+        myOrderNav.setOnClickListener(this);
+        upComingOrder.setOnClickListener(this);
+        myAccountNav.setOnClickListener(this);
+        walletNavIcon.setOnClickListener(this);
+        notificationNav.setOnClickListener(this);
+        perksNav.setOnClickListener(this);
+        fkPlusNav.setOnClickListener(this);
+        addressListNav.setOnClickListener(this);
+        helpNav.setOnClickListener(this);
+        rateApp.setOnClickListener(this);
 
-        nav_header_close.setOnClickListener(new View.OnClickListener() {
+        aboutNav.setOnClickListener(this);
+        allergyInfoNav.setOnClickListener(this);
+        termsConditionNav.setOnClickListener(this);
+        termsOfUse.setOnClickListener(this);
+        privacyPolicyNav.setOnClickListener(this);
+        deteleAccountNav.setOnClickListener(this);
+        logoutNav.setOnClickListener(this);
+        loginNav.setOnClickListener(this);
+
+        moreHideView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer.closeDrawers();
+
+                if(hideLayoutTxt.getVisibility() == View.VISIBLE){
+                    hideLayoutTxt.setVisibility(View.GONE);
+                    textIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_download, 0, 0, 0);
+                }else{
+                    hideLayoutTxt.setVisibility(View.VISIBLE);
+                    textIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow_nav, 0, 0, 0);
+                }
+
             }
         });
-
-
 
         /*--------------Login store SharedPreferences------------------*/
         CheckLogin();
@@ -1248,10 +1299,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
                 .load(offer_image)
                 .into(offerimage);
 
-        /*.placeholder(R.drawable.loading)*/
-
-        Log.d("skfkdsvkbvkjdsbv", " " + offer_image);
-
         close_popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1298,26 +1345,37 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
         if (login_status.equalsIgnoreCase("true")) {
 
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_favorite).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_address).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(true);
+            moreHideView.setVisibility(View.VISIBLE);
+            profileDetails.setVisibility(View.VISIBLE);
+            myOrderNav.setVisibility(View.VISIBLE);
+            upComingOrder.setVisibility(View.VISIBLE);
+            myAccountNav.setVisibility(View.VISIBLE);
+            perksNav.setVisibility(View.VISIBLE);
+            fkPlusNav.setVisibility(View.VISIBLE);
+            addressListNav.setVisibility(View.VISIBLE);
+            helpNav.setVisibility(View.VISIBLE);
+            rateApp.setVisibility(View.VISIBLE);
+            logoutNav.setVisibility(View.VISIBLE);
+            loginNav.setVisibility(View.GONE);
+
+
+
 
         } else {
 //login not Successfully
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_myaccount).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_favorite).setVisible(false);
 
-            navigationView.getMenu().findItem(R.id.nav_orderhistory).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_orderstatus).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_address).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_wallet).setVisible(false);
+            moreHideView.setVisibility(View.GONE);
+            profileDetails.setVisibility(View.GONE);
+            myOrderNav.setVisibility(View.GONE);
+            upComingOrder.setVisibility(View.GONE);
+            myAccountNav.setVisibility(View.GONE);
+            perksNav.setVisibility(View.GONE);
+            fkPlusNav.setVisibility(View.GONE);
+            addressListNav.setVisibility(View.GONE);
+            helpNav.setVisibility(View.GONE);
+            rateApp.setVisibility(View.GONE);
+            loginNav.setVisibility(View.VISIBLE);
+            logoutNav.setVisibility(View.GONE);
 
 
         }
@@ -1492,6 +1550,102 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         popupWindow.showAsDropDown(popupView, 0, 0);
     }
 
+    @Override
+    public void onClick(View v) {
+
+        if (v == referToFriend){
+            drawer.close();
+            ComingSoon();
+            // startActivity(new Intent(getApplicationContext(), BussinessHoursActivity.class));
+        }else if(v == homePageTxt){
+            drawer.close();
+        }else if(v == profileDetails){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+        }else if(v == favouriteNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+        }else if(v == myOrderNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Order_History_Activity.class));
+        }else if(v == upComingOrder){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
+        }else if(v == myAccountNav){
+            drawer.close();
+            ComingSoon();
+        }else if(v == walletNavIcon){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Wallet_Activity.class));
+        }else if(v == notificationNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Notification_Activity.class));
+        }else if(v == perksNav){
+            drawer.close();
+            ComingSoon();
+        }else if(v == fkPlusNav){
+            drawer.close();
+            ComingSoon();
+        }else if(v == addressListNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+        }else if(v == helpNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Help_Activity.class));
+        }else if(v == rateApp){
+            drawer.close();
+            showRateDialog(Postcode_Activity.this);
+            // startActivity(new Intent(getApplicationContext(), Review_Activity.class));
+        }else if(v == aboutNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Aboutus_Activity.class));
+         }else if(v == allergyInfoNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Allergy_Activity.class));
+        }else if(v == termsConditionNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Terms_Conditions_Activity.class));
+        }else if(v == termsOfUse){
+            drawer.close();
+            ComingSoon();
+        }else if(v == privacyPolicyNav){
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Privacy_Policy_Activity.class));
+        }else if(v == deteleAccountNav){
+            drawer.close();
+            ComingSoon();
+        }else if(v == logoutNav){
+
+            try {
+                if (slogin == null)
+                    slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+
+                sloginEditor = slogin.edit();
+                sloginEditor.putString("login_key_status", "");
+                sloginEditor.putString("login_key_cid", "");
+                sloginEditor.putString("login_key_vcode", "");
+                sloginEditor.commit();
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                drawer.closeDrawers();
+
+            } catch (Exception ex) {
+                Toast.makeText(Postcode_Activity.this, ex.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+
+
+            drawer.close();
+
+        }else if(v == loginNav){
+
+            drawer.close();
+            startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+
+
+        }
+
+
+    }
+
     /*---------------------------check internet connection----------------------------------------------------*/
     public class ViewNoNetDialog {
         public void shownonetDialog(Activity activity) {
@@ -1531,7 +1685,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
 
     /*---------------------------Navigation Menu----------------------------------------------------*/
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+/*    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -1539,7 +1693,6 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         if (id == R.id.nav_home) {
             drawer.closeDrawers();
         } else if (id == R.id.nav_login) {
-
             Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
             intent.putExtra("activity_details", "pcode");
             startActivity(intent);
@@ -1578,7 +1731,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
             drawer.closeDrawers();
 
             showRateDialog(Postcode_Activity.this);
-            /*----------------Rateing APP-------------------*/
+            *//*----------------Rateing APP-------------------*//*
 
 
             // startActivity(new Intent(getApplicationContext(), Review_Activity.class));
@@ -1615,7 +1768,7 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
         }
 
         return true;
-    }
+    }*/
 
     /*-------------------Loading Images------------------*/
     public void loadingshow() {
@@ -1840,6 +1993,30 @@ public class Postcode_Activity extends AppCompatActivity implements NavigationVi
     private boolean isGPSEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public void ComingSoon(){
+        comeingSoon = new Dialog(Postcode_Activity.this);
+        comeingSoon.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        comeingSoon.setContentView(R.layout.comingsoon);
+
+        ImageView close= comeingSoon.findViewById(R.id.closepopup);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                comeingSoon.dismiss();
+            }
+        });
+
+
+        comeingSoon.show();
+
+        comeingSoon.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        comeingSoon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //heart_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        comeingSoon.getWindow().setGravity(Gravity.CENTER);
+
     }
 
 

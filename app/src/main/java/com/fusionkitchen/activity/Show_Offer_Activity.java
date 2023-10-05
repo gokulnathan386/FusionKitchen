@@ -521,7 +521,7 @@ public class Show_Offer_Activity extends AppCompatActivity {
     }
 
     private void DashboardDataList() {
-        DashboardListViewModel data = new DashboardListViewModel(R.drawable.image1, "1");
+       /* DashboardListViewModel data = new DashboardListViewModel(R.drawable.image1, "1");
         dashboardListViewModels.add(data);
         data = new DashboardListViewModel(R.drawable.image2, "2");
         dashboardListViewModels.add(data);
@@ -664,7 +664,7 @@ public class Show_Offer_Activity extends AppCompatActivity {
         data = new DashboardListViewModel(R.drawable.image71, "71");
         dashboardListViewModels.add(data);
         data = new DashboardListViewModel(R.drawable.image72, "72");
-        dashboardListViewModels.add(data);
+        dashboardListViewModels.add(data);*/
 
     }
 

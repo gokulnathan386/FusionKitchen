@@ -7,7 +7,10 @@
         <item name="colorAccent">@color/app_color</item>
         <item name="badgeStyle">@style/CustomBadge</item>
 
+
     </style>
+
+
 
     <style name="DialogAnimation" >
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
@@ -82,7 +85,7 @@
         <!-- item size in menu-->
         <item name="android:listPreferredItemHeightSmall">40dp</item>
         <item name="listPreferredItemHeightSmall">40dp</item>
-        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:fontFamily">@font/metropolis_regular</item>
 
 
         <!-- item padding left in menu-->
@@ -93,8 +96,9 @@
         <item name="android:listPreferredItemPaddingRight">8dp</item>
         <item name="listPreferredItemPaddingRight">8dp</item>
 
-
     </style>
+
+
     <!--select menu item-->
     <style name="myCustomMenuTextAppearance">
         <item name="android:textStyle">bold</item>
@@ -218,6 +222,11 @@
         <item name="android:progressDrawable">@drawable/ratingbar</item>
         <item name="android:minHeight">30dp</item>
         <item name="android:maxHeight">30dp</item>
+    </style>
+
+    <style name="AppTheme.NoScrollBars">
+        <item name="android:scrollbars">none</item>
+        <item name="android:scrollbarSize">0dp</item>
     </style>
 
 
