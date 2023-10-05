@@ -1554,17 +1554,29 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
 
         if (v == referToFriend){
+
+            if(user_id != null && !user_id.isEmpty()){
+                ComingSoon();
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
             drawer.close();
-            ComingSoon();
-            // startActivity(new Intent(getApplicationContext(), BussinessHoursActivity.class));
+
         }else if(v == homePageTxt){
             drawer.close();
         }else if(v == profileDetails){
             drawer.close();
             startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
         }else if(v == favouriteNav){
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+
             drawer.close();
-            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+
         }else if(v == myOrderNav){
             drawer.close();
             startActivity(new Intent(getApplicationContext(), Order_History_Activity.class));
@@ -1575,11 +1587,25 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
             drawer.close();
             ComingSoon();
         }else if(v == walletNavIcon){
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Wallet_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+
             drawer.close();
-            startActivity(new Intent(getApplicationContext(), Wallet_Activity.class));
+
         }else if(v == notificationNav){
+
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Notification_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
             drawer.close();
-            startActivity(new Intent(getApplicationContext(), Notification_Activity.class));
+
         }else if(v == perksNav){
             drawer.close();
             ComingSoon();
