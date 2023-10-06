@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -51,6 +52,15 @@ import android.widget.Toast;
 
 import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
+import com.fusionkitchen.adapter.DashboardSearchResultList;
+import com.fusionkitchen.adapter.DashboardSearchclientList;
+import com.fusionkitchen.adapter.LocationfetchDetailsRest;
+import com.fusionkitchen.model.dashboard.location_fetch_details;
+import com.fusionkitchen.model.home_model.location_type_modal;
+import com.fusionkitchen.model.home_model.location_type_sub_modal;
+import com.fusionkitchen.model.home_model.serachgetshop_modal;
+import com.fusionkitchen.rest.ApiClient;
+import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,6 +74,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 
 import java.io.IOException;
@@ -71,10 +83,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Dashboard_List_Activity extends AppCompatActivity implements View.OnClickListener {
 
@@ -103,7 +121,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView mostPopularLayout;
+    RecyclerView mostPopularLayout,cusinesListLayout;
     LinearLayout cusionListView;
 
 
@@ -126,6 +144,8 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         LinearLayout accountProfile = findViewById(R.id.profileSlider);
+        cusinesListLayout = findViewById(R.id.cusinesListLayout);
+
 
         accountProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,7 +323,56 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             }
         }, 3000, 3000);
 
+
+        locationgetshop();
+
     }
+
+    private void locationgetshop() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("postcode", "sk116tj");
+        params.put("lat", "53.2557589");
+        params.put("lng", "-2.1250864");
+        params.put("order_type", "0");
+        params.put("area", "Macclesfield");
+        params.put("user_id", "8801");
+
+        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
+        Call<location_fetch_details> call = apiService.getlocationfetchdetails("/location/SK11-Macclesfield", params);
+
+
+        call.enqueue(new Callback<location_fetch_details>() {
+            @Override
+            public void onResponse(Call<location_fetch_details> call, Response<location_fetch_details> response) {
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    if (response.body().getSTATUS().equalsIgnoreCase("true")) {
+
+                        LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getClientinfo().getAll_cuisine());
+                        cusinesListLayout.setHasFixedSize(true);
+                        cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
+                        cusinesListLayout.setAdapter(adapter);
+
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<location_fetch_details> call, Throwable t) {
+
+                Log.e("dasboarderror", "location type : " + t);
+            }
+
+        });
+
+
+
+
+
+    }
+
 
     private void preOrderPopup() {
 

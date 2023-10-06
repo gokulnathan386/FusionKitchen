@@ -529,10 +529,10 @@
                         android:layout_height="match_parent">
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/cusinesListLayout"
                             tools:listitem="@layout/cuisine_layout_list"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="wrap_content"/>
 
                         <LinearLayout
                             android:layout_marginVertical="10dp"

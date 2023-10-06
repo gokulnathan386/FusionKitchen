@@ -27,6 +27,7 @@ import com.fusionkitchen.model.cart.subcategory_printer_model;
 import com.fusionkitchen.model.checkout.CheckloginModel;
 import com.fusionkitchen.model.checkout.chechoutvalidate_model;
 
+import com.fusionkitchen.model.dashboard.location_fetch_details;
 import com.fusionkitchen.model.favorite.insertfavorite_mode;
 import com.fusionkitchen.model.gpay.getgpayclientscSecret_model;
 import com.fusionkitchen.model.gpay.getgpaystuartpayment_model;
@@ -409,6 +410,10 @@ public interface ApiInterface {
     @POST("/homePage")
     @FormUrlEncoded
     Call<HomeFetch_Detail_Model> getHomePage(@FieldMap Map<String, String> params);
+
+    @POST("{fullUrl}")
+    @FormUrlEncoded
+    Call<location_fetch_details> getlocationfetchdetails(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
 
 
 
