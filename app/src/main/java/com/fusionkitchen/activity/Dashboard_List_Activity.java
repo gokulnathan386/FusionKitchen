@@ -5,15 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,8 +29,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +41,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -53,6 +62,8 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 
 
 import java.io.IOException;
@@ -65,7 +76,21 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Dashboard_List_Activity extends AppCompatActivity {
+public class Dashboard_List_Activity extends AppCompatActivity implements View.OnClickListener {
+
+    LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav;
+    LinearLayout myOrderNav,upComingOrder,myAccountNav,walletNavIcon;
+    LinearLayout notificationNav,perksNav,fkPlusNav,addressListNav;
+    LinearLayout helpNav,rateApp,aboutNav,allergyInfoNav;
+    LinearLayout termsConditionNav,termsOfUse,privacyPolicyNav,deteleAccountNav,logoutNav;
+    LinearLayout loginNav, moreHideView;
+    DrawerLayout drawerLayout;
+    SharedPreferences slogin;
+    SharedPreferences.Editor sloginEditor;
+    String user_id;
+    Dialog comeingSoon;
+    TextView txtversionname;
+
 
     private ViewPager2 viewPager;
     TextView postCodeAddress;
@@ -78,7 +103,8 @@ public class Dashboard_List_Activity extends AppCompatActivity {
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView cusionListView,mostPopularLayout;
+    RecyclerView mostPopularLayout;
+    LinearLayout cusionListView;
 
 
     @SuppressLint("MissingInflatedId")
@@ -89,6 +115,116 @@ public class Dashboard_List_Activity extends AppCompatActivity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(Dashboard_List_Activity.this, R.color.status_bar_color));
+
+
+        slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+        user_id = (slogin.getString("login_key_cid", null));
+
+        /*-------------------NavigationView Start-------------------------*/
+
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        LinearLayout accountProfile = findViewById(R.id.profileSlider);
+
+        accountProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+
+        PackageInfo pinfo = null;
+        try {
+            pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String versionName = pinfo.versionName;
+
+
+        txtversionname = navigationView.findViewById(R.id.txtversionname);
+        txtversionname.setText("Version : "+versionName + " " + "FK 2.0");
+
+
+        View header = navigationView.getHeaderView(0);
+        moreHideView = header.findViewById(R.id.moreHideView);
+        LinearLayout hideLayoutTxt = header.findViewById(R.id.hideLayoutTxt);
+        TextView textIcon = header.findViewById(R.id.textIcon);
+        referToFriend = header.findViewById(R.id.referToFriend);
+        homePageTxt = header.findViewById(R.id.homePageTxt);
+        profileDetails = header.findViewById(R.id.profileDetails);
+        favouriteNav = header.findViewById(R.id.favouriteNav);
+        myOrderNav = header.findViewById(R.id.myOrderNav);
+        upComingOrder = header.findViewById(R.id.upComingOrder);
+        myAccountNav = header.findViewById(R.id.myAccountNav);
+        walletNavIcon = header.findViewById(R.id.walletNavIcon);
+        notificationNav = header.findViewById(R.id.notificationNav);
+        perksNav = header.findViewById(R.id.perksNav);
+        fkPlusNav = header.findViewById(R.id.fkPlusNav);
+        addressListNav = header.findViewById(R.id.addressListNav);
+        helpNav = header.findViewById(R.id.helpNav);
+        rateApp = header.findViewById(R.id.rateApp);
+
+        aboutNav = header.findViewById(R.id.aboutNav);
+        allergyInfoNav = header.findViewById(R.id.allergyInfoNav);
+        termsConditionNav = header.findViewById(R.id.termsConditionNav);
+        termsOfUse = header.findViewById(R.id.termsOfUse);
+        privacyPolicyNav = header.findViewById(R.id.privacyPolicyNav);
+        deteleAccountNav = header.findViewById(R.id.deteleAccountNav);
+        loginNav = header.findViewById(R.id.loginNav);
+        logoutNav = findViewById(R.id.logoutNav);
+
+        referToFriend.setOnClickListener(this);
+        homePageTxt.setOnClickListener(this);
+        profileDetails.setOnClickListener(this);
+        favouriteNav.setOnClickListener(this);
+        myOrderNav.setOnClickListener(this);
+        upComingOrder.setOnClickListener(this);
+        myAccountNav.setOnClickListener(this);
+        walletNavIcon.setOnClickListener(this);
+        notificationNav.setOnClickListener(this);
+        perksNav.setOnClickListener(this);
+        fkPlusNav.setOnClickListener(this);
+        addressListNav.setOnClickListener(this);
+        helpNav.setOnClickListener(this);
+        rateApp.setOnClickListener(this);
+
+        aboutNav.setOnClickListener(this);
+        allergyInfoNav.setOnClickListener(this);
+        termsConditionNav.setOnClickListener(this);
+        termsOfUse.setOnClickListener(this);
+        privacyPolicyNav.setOnClickListener(this);
+        deteleAccountNav.setOnClickListener(this);
+        logoutNav.setOnClickListener(this);
+        loginNav.setOnClickListener(this);
+
+
+        moreHideView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(hideLayoutTxt.getVisibility() == View.VISIBLE){
+                    hideLayoutTxt.setVisibility(View.GONE);
+                    textIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_download, 0, 0, 0);
+                }else{
+                    hideLayoutTxt.setVisibility(View.VISIBLE);
+                    textIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.up_arrow_nav, 0, 0, 0);
+                }
+
+            }
+        });
+
+
+        /*--------------Login store SharedPreferences------------------*/
+         CheckLogin();
+
+        /*-------------------NavigationView End-------------------------*/
+
+
+
+
 
         viewPager = findViewById(R.id.viewPager);
         currentLocationDetails = findViewById(R.id.currentLocationDetails);
@@ -625,5 +761,207 @@ public class Dashboard_List_Activity extends AppCompatActivity {
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == referToFriend){
+
+            if(user_id != null && !user_id.isEmpty()){
+                ComingSoon();
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+            drawerLayout.close();
+
+        }else if(v == homePageTxt){
+            drawerLayout.close();
+        }else if(v == profileDetails){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
+        }else if(v == favouriteNav){
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+
+            drawerLayout.close();
+
+        }else if(v == myOrderNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Order_History_Activity.class));
+        }else if(v == upComingOrder){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
+        }else if(v == myAccountNav){
+            drawerLayout.close();
+            ComingSoon();
+        }else if(v == walletNavIcon){
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Wallet_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+
+            drawerLayout.close();
+
+        }else if(v == notificationNav){
+
+
+            if(user_id != null && !user_id.isEmpty()){
+                startActivity(new Intent(getApplicationContext(), Notification_Activity.class));
+            }else{
+                startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+            }
+            drawerLayout.close();
+
+        }else if(v == perksNav){
+            drawerLayout.close();
+            ComingSoon();
+        }else if(v == fkPlusNav){
+            drawerLayout.close();
+            ComingSoon();
+        }else if(v == addressListNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
+        }else if(v == helpNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Help_Activity.class));
+        }else if(v == rateApp){
+            drawerLayout.close();
+            showRateDialog(Dashboard_List_Activity.this);
+            // startActivity(new Intent(getApplicationContext(), Review_Activity.class));
+        }else if(v == aboutNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Aboutus_Activity.class));
+        }else if(v == allergyInfoNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Allergy_Activity.class));
+        }else if(v == termsConditionNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Terms_Conditions_Activity.class));
+        }else if(v == termsOfUse){
+            drawerLayout.close();
+            ComingSoon();
+        }else if(v == privacyPolicyNav){
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Privacy_Policy_Activity.class));
+        }else if(v == deteleAccountNav){
+            drawerLayout.close();
+            ComingSoon();
+        }else if(v == logoutNav){
+
+            try {
+                if (slogin == null)
+                    slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+
+                sloginEditor = slogin.edit();
+                sloginEditor.putString("login_key_status", "");
+                sloginEditor.putString("login_key_cid", "");
+                sloginEditor.putString("login_key_vcode", "");
+                sloginEditor.commit();
+                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
+                drawerLayout.closeDrawers();
+
+            } catch (Exception ex) {
+                Toast.makeText(Dashboard_List_Activity.this, ex.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+
+
+            drawerLayout.close();
+
+        }else if(v == loginNav){
+
+            drawerLayout.close();
+            startActivity(new Intent(getApplicationContext(), Login_Activity.class));
+
+
+        }
+
+
+    }
+
+    public void ComingSoon(){
+
+        comeingSoon = new Dialog(Dashboard_List_Activity.this);
+        comeingSoon.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        comeingSoon.setContentView(R.layout.comingsoon);
+
+        ImageView close= comeingSoon.findViewById(R.id.closepopup);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                comeingSoon.dismiss();
+            }
+        });
+
+        comeingSoon.show();
+        comeingSoon.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        comeingSoon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        comeingSoon.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
+    public void showRateDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle("Fusion Kitchen")
+                .setMessage("If you enjoy using Fusion Kitchen app, please take a moment to rate it. Thanks for your support!")
+                .setPositiveButton("RATE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
+                        } catch (android.content.ActivityNotFoundException e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.fusionkitchen")));
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", null);
+        builder.show();
+    }
+
+    public void CheckLogin() {
+        if (slogin == null)
+            slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+
+          String login_status = slogin.getString("login_key_status", "");
+
+        if (login_status.equalsIgnoreCase("true")) {
+
+
+            profileDetails.setVisibility(View.VISIBLE);
+            myOrderNav.setVisibility(View.VISIBLE);
+            upComingOrder.setVisibility(View.VISIBLE);
+            myAccountNav.setVisibility(View.VISIBLE);
+            perksNav.setVisibility(View.VISIBLE);
+            fkPlusNav.setVisibility(View.VISIBLE);
+            addressListNav.setVisibility(View.VISIBLE);
+            helpNav.setVisibility(View.VISIBLE);
+            rateApp.setVisibility(View.VISIBLE);
+            logoutNav.setVisibility(View.VISIBLE);
+            deteleAccountNav.setVisibility(View.VISIBLE);
+            loginNav.setVisibility(View.GONE);
+
+        } else {
+//login not Successfully
+            deteleAccountNav.setVisibility(View.GONE);
+            profileDetails.setVisibility(View.GONE);
+            myOrderNav.setVisibility(View.GONE);
+            upComingOrder.setVisibility(View.GONE);
+            myAccountNav.setVisibility(View.GONE);
+            perksNav.setVisibility(View.GONE);
+            fkPlusNav.setVisibility(View.GONE);
+            addressListNav.setVisibility(View.GONE);
+            helpNav.setVisibility(View.GONE);
+            rateApp.setVisibility(View.GONE);
+            loginNav.setVisibility(View.VISIBLE);
+            logoutNav.setVisibility(View.GONE);
+        }
+
+    }
 
 }

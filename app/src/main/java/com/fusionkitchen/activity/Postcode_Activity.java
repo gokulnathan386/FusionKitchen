@@ -568,7 +568,6 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
 
 
         txtversionname = navigationView.findViewById(R.id.txtversionname);
-       // txtversionname.setText("V" + versionName + " " + "Live");
         txtversionname.setText("Version : "+versionName + " " + "FK 2.0");
 
         View header = navigationView.getHeaderView(0);
@@ -1345,7 +1344,7 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
 
         if (login_status.equalsIgnoreCase("true")) {
 
-            moreHideView.setVisibility(View.VISIBLE);
+
             profileDetails.setVisibility(View.VISIBLE);
             myOrderNav.setVisibility(View.VISIBLE);
             upComingOrder.setVisibility(View.VISIBLE);
@@ -1356,15 +1355,16 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
             helpNav.setVisibility(View.VISIBLE);
             rateApp.setVisibility(View.VISIBLE);
             logoutNav.setVisibility(View.VISIBLE);
+            deteleAccountNav.setVisibility(View.VISIBLE);
             loginNav.setVisibility(View.GONE);
+
 
 
 
 
         } else {
 //login not Successfully
-
-            moreHideView.setVisibility(View.GONE);
+            deteleAccountNav.setVisibility(View.GONE);
             profileDetails.setVisibility(View.GONE);
             myOrderNav.setVisibility(View.GONE);
             upComingOrder.setVisibility(View.GONE);

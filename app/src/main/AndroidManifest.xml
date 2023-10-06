@@ -42,7 +42,7 @@
             </intent-filter_popup_category.xml>
         </activity>-->
         <activity
-            android:name=".activity.Postcode_Activity"
+            android:name=".activity.Dashboard_List_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
@@ -142,7 +142,8 @@
         <activity
             android:name=".activity.Order_Status_List_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+        </activity>
         <activity
             android:name=".activity.Order_Status_Activity"
             android:exported="true"

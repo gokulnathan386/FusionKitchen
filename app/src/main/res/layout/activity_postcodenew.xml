@@ -77,6 +77,7 @@
 
                         </com.google.android.material.appbar.MaterialToolbar>
                     </com.google.android.material.appbar.AppBarLayout>
+
                 </RelativeLayout>
 
                 <LinearLayout
@@ -333,7 +334,8 @@
                                         android:visibility="gone"
                                         android:text="Most Popular"
                                         android:textColor="#204356"
-                                        android:textSize="15dp"></TextView>
+                                        android:textSize="15dp">
+                                    </TextView>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -343,7 +345,8 @@
                                         android:gravity="right"
                                         android:text="View All"
                                         android:textSize="15dp"
-                                        android:visibility="gone"></TextView>
+                                        android:visibility="gone">
+                                    </TextView>
 
 
                                 </LinearLayout>
