@@ -55,6 +55,7 @@ import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
 import com.fusionkitchen.adapter.DashboardSearchResultList;
 import com.fusionkitchen.adapter.DashboardSearchclientList;
 import com.fusionkitchen.adapter.LocationfetchDetailsRest;
+import com.fusionkitchen.adapter.RecommendedRestListAdapter;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
 import com.fusionkitchen.model.home_model.location_type_modal;
 import com.fusionkitchen.model.home_model.location_type_sub_modal;
@@ -121,7 +122,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView mostPopularLayout,cusinesListLayout;
+    RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList;
     LinearLayout cusionListView;
 
 
@@ -145,6 +146,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         NavigationView navigationView = findViewById(R.id.nav_view);
         LinearLayout accountProfile = findViewById(R.id.profileSlider);
         cusinesListLayout = findViewById(R.id.cusinesListLayout);
+        recommendRestList = findViewById(R.id.recommendRestList);
 
 
         accountProfile.setOnClickListener(new View.OnClickListener() {
@@ -352,6 +354,17 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         cusinesListLayout.setHasFixedSize(true);
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
+
+
+                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"1");
+                        recommendRestList.setHasFixedSize(true);
+                        recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
+                        recommendRestList.setAdapter(recommendList);
+
+                        RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
+                        mostPopularLayout.setHasFixedSize(true);
+                        mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        mostPopularLayout.setAdapter(mostPopularList);
 
 
                     }

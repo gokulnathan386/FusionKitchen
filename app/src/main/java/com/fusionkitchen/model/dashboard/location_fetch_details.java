@@ -35,6 +35,9 @@ public class location_fetch_details {
         @SerializedName("all_cuisine")
         private List<AllCuisineDetails> all_cuisine;
 
+        @SerializedName("clients")
+        private List<AllClientRestDetails> clients;
+
         public List<AllCuisineDetails> getAll_cuisine() {
             return all_cuisine;
         }
@@ -43,9 +46,38 @@ public class location_fetch_details {
             this.all_cuisine = all_cuisine;
         }
 
+        public List<AllClientRestDetails> getClients() {
+            return clients;
+        }
 
+        public void setClients(List<AllClientRestDetails> clients) {
+            this.clients = clients;
+        }
+    }
 
+    public  class  AllClientRestDetails{
 
+        @SerializedName("clientName")
+        private String clientName;
+
+        @SerializedName("bgimge")
+        private String bgimge;
+
+        public String getClientName() {
+            return clientName;
+        }
+
+        public void setClientName(String clientName) {
+            this.clientName = clientName;
+        }
+
+        public String getBgimge() {
+            return bgimge;
+        }
+
+        public void setBgimge(String bgimge) {
+            this.bgimge = bgimge;
+        }
     }
 
     public  class  AllCuisineDetails{
