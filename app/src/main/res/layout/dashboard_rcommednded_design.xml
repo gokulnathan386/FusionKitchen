@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="220dp"
+    android:layout_width="250dp"
     android:layout_height="230dp"
     android:gravity="center"
     android:id="@+id/linear_layout_listview"
@@ -17,13 +17,13 @@
             android:layout_gravity="center"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                  <androidx.cardview.widget.CardView
@@ -54,7 +54,7 @@
                         android:padding="2dp"
                         android:layout_marginLeft="15dp"
                         android:background="@drawable/offer_bg_dashboard"
-                        android:backgroundTint="#9ae27c"
+                        android:backgroundTint="#9FE870"
                         android:layout_height="wrap_content">
 
                        <!-- android:background="@drawable/offer_background"-->
@@ -78,8 +78,9 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins_regular"
+                                android:fontFamily="@font/poppins_medium"
                                 android:gravity="center"
+                                android:layout_marginHorizontal="10dp"
                                 android:layout_marginRight="3dp"
                                 android:text="£5 off your order of £2"
                                 android:layout_gravity="center"
@@ -265,11 +266,11 @@
                                     android:textSize="10dp"
                                     android:singleLine="true"
                                     android:ellipsize="end"
+                                    android:layout_marginHorizontal="10dp"
                                     android:text="Open"
                                     android:fontFamily="@font/poppins_semibold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
-
 
                             </LinearLayout>
 

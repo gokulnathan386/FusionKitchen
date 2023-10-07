@@ -41,7 +41,7 @@ public RecommendedRestListAdapter.MyViewHolder onCreateViewHolder(ViewGroup pare
             if(test.equalsIgnoreCase("1")){
                  listItem = layoutInflater.inflate(R.layout.dashboard_rcommednded_design, parent, false);
             }else{
-                listItem = layoutInflater.inflate(R.layout.dashboard_recommedend_mostpopular, parent, false);
+                 listItem = layoutInflater.inflate(R.layout.dashboard_recommedend_mostpopular, parent, false);
             }
 
         RecommendedRestListAdapter.MyViewHolder viewHolder = new RecommendedRestListAdapter.MyViewHolder(listItem);

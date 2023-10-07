@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -355,7 +356,6 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
 
-
                         RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"1");
                         recommendRestList.setHasFixedSize(true);
                         recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
@@ -365,6 +365,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         mostPopularLayout.setHasFixedSize(true);
                         mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
                         mostPopularLayout.setAdapter(mostPopularList);
+
 
 
                     }

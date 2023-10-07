@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="260dp"
     android:gravity="center"
-    android:background="@color/white"
+    android:background="#fafafa"
     android:id="@+id/linear_layout_listview"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -28,7 +29,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/circularView"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="150dp"
                 android:elevation="12dp"
                 android:innerRadius="0dp"
                 android:shape="rectangle"
@@ -53,10 +54,8 @@
                     android:padding="2dp"
                     android:layout_marginLeft="15dp"
                     android:background="@drawable/offer_bg_dashboard"
-                    android:backgroundTint="#9ae27c"
+                    android:backgroundTint="#9FE870"
                     android:layout_height="wrap_content">
-
-                    <!-- android:background="@drawable/offer_background"-->
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -77,8 +76,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_regular"
+                            android:fontFamily="@font/poppins_medium"
                             android:gravity="center"
+                            android:layout_marginHorizontal="10dp"
                             android:layout_marginRight="3dp"
                             android:text="£5 off your order of £2"
                             android:layout_gravity="center"
@@ -93,6 +93,7 @@
 
 
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="vertical"
                 android:layout_marginLeft="7dp"
@@ -119,12 +120,12 @@
                             android:layout_width="15dp"
                             android:layout_height="15dp">
                         </ImageView>
+
                         <TextView
                             android:id="@+id/Enter_your_Rating"
                             android:textColor="#384656"
                             android:textSize="12dp"
                             android:singleLine="true"
-
                             android:ellipsize="end"
                             android:text="4.9 Good (7+)"
                             android:layout_marginTop="2dp"
@@ -265,6 +266,7 @@
                                 android:singleLine="true"
                                 android:ellipsize="end"
                                 android:text="Open"
+                                android:layout_marginHorizontal="10dp"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -272,9 +274,7 @@
 
                         </LinearLayout>
 
-
                     </LinearLayout>
-
 
                 </LinearLayout>
 
