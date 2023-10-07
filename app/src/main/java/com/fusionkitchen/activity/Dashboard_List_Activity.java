@@ -37,6 +37,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -51,6 +52,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fusionkitchen.R;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
 import com.fusionkitchen.adapter.DashboardSearchResultList;
@@ -110,6 +112,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     String user_id;
     Dialog comeingSoon;
     TextView txtversionname;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
 
     private ViewPager2 viewPager;
@@ -124,7 +127,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
     RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList;
-    LinearLayout cusionListView;
+    LinearLayout cusionListView,loadingShimmer;
 
 
     @SuppressLint("MissingInflatedId")
@@ -135,6 +138,9 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(Dashboard_List_Activity.this, R.color.status_bar_color));
+
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        loadingShimmer = findViewById(R.id.loadingShimmer);
 
 
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
@@ -148,6 +154,8 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         LinearLayout accountProfile = findViewById(R.id.profileSlider);
         cusinesListLayout = findViewById(R.id.cusinesListLayout);
         recommendRestList = findViewById(R.id.recommendRestList);
+
+
 
 
         accountProfile.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +334,8 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             }
         }, 3000, 3000);
 
-
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.startShimmerAnimation();
         locationgetshop();
 
     }
@@ -365,6 +374,10 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         mostPopularLayout.setHasFixedSize(true);
                         mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
                         mostPopularLayout.setAdapter(mostPopularList);
+
+                        loadingShimmer.setVisibility(View.VISIBLE);
+                        mShimmerViewContainer.setVisibility(View.GONE);
+                        mShimmerViewContainer.stopShimmerAnimation();
 
 
 
@@ -1046,5 +1059,6 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         }
 
     }
+
 
 }
