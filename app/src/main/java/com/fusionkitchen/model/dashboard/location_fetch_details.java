@@ -10,8 +10,8 @@ public class location_fetch_details {
     @SerializedName("STATUS")
     private String STATUS;
 
-    @SerializedName("clientinfo")
-    private ClientInfoDetails  clientinfo;
+    @SerializedName("data")
+    private dateShow  data;
 
     public String getSTATUS() {
         return STATUS;
@@ -21,70 +21,36 @@ public class location_fetch_details {
         this.STATUS = STATUS;
     }
 
-    public ClientInfoDetails getClientinfo() {
-        return clientinfo;
+    public dateShow getDate() {
+        return data;
     }
 
-    public void setClientinfo(ClientInfoDetails clientinfo) {
-        this.clientinfo = clientinfo;
+    public void setData(dateShow data) {
+        this.data = data;
     }
 
 
-    public class ClientInfoDetails{
 
-        @SerializedName("all_cuisine")
-        private List<AllCuisineDetails> all_cuisine;
+    public class dateShow{
 
-        @SerializedName("clients")
-        private List<AllClientRestDetails> clients;
 
-        public List<AllCuisineDetails> getAll_cuisine() {
-            return all_cuisine;
+        @SerializedName("getAllActiveCuisine")
+        private List<showCuisine> getAllActiveCuisine;
+
+        public List<showCuisine> getGetAllActiveCuisine() {
+            return getAllActiveCuisine;
         }
 
-        public void setAll_cuisine(List<AllCuisineDetails> all_cuisine) {
-            this.all_cuisine = all_cuisine;
-        }
-
-        public List<AllClientRestDetails> getClients() {
-            return clients;
-        }
-
-        public void setClients(List<AllClientRestDetails> clients) {
-            this.clients = clients;
+        public void setGetAllActiveCuisine(List<showCuisine> getAllActiveCuisine) {
+            this.getAllActiveCuisine = getAllActiveCuisine;
         }
     }
 
-    public  class  AllClientRestDetails{
 
-        @SerializedName("clientName")
-        private String clientName;
+    public class showCuisine{
 
-        @SerializedName("bgimge")
-        private String bgimge;
-
-        public String getClientName() {
-            return clientName;
-        }
-
-        public void setClientName(String clientName) {
-            this.clientName = clientName;
-        }
-
-        public String getBgimge() {
-            return bgimge;
-        }
-
-        public void setBgimge(String bgimge) {
-            this.bgimge = bgimge;
-        }
-    }
-
-    public  class  AllCuisineDetails{
-
-        @SerializedName("cuisinesID")
-        private String cuisinesID;
-
+        @SerializedName("id")
+        private String id;
 
         @SerializedName("name")
         private String name;
@@ -92,12 +58,18 @@ public class location_fetch_details {
         @SerializedName("image")
         private String image;
 
-        public String getCuisinesID() {
-            return cuisinesID;
+        @SerializedName("url")
+        private String url;
+
+        @SerializedName("client")
+        private String client;
+
+        public String getId() {
+            return id;
         }
 
-        public void setCuisinesID(String cuisinesID) {
-            this.cuisinesID = cuisinesID;
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getName() {
@@ -115,5 +87,25 @@ public class location_fetch_details {
         public void setImage(String image) {
             this.image = image;
         }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getClient() {
+            return client;
+        }
+
+        public void setClient(String client) {
+            this.client = client;
+        }
     }
+
+
+
+
 }

@@ -411,10 +411,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<HomeFetch_Detail_Model> getHomePage(@FieldMap Map<String, String> params);
 
-    @POST("{fullUrl}")
+ /*   @POST("{fullUrl}")
     @FormUrlEncoded
     Call<location_fetch_details> getlocationfetchdetails(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
-
-
+*/
+    @POST("/getRestaurant")
+    Call<location_fetch_details> getlocationfetchdetails(@Body RequestBody jsonObj );
 
 }

@@ -20,9 +20,9 @@ import java.util.List;
 public class LocationfetchDetailsRest extends RecyclerView.Adapter<LocationfetchDetailsRest.MyViewHolder> {
 
     Context mcontext;
-    List<location_fetch_details.AllCuisineDetails> all_cuisine;
+    List<location_fetch_details.showCuisine> all_cuisine;
 
-    public LocationfetchDetailsRest(Context mContext, List<location_fetch_details.AllCuisineDetails> all_cuisine) {
+    public LocationfetchDetailsRest(Context mContext, List<location_fetch_details.showCuisine> all_cuisine) {
         this.mcontext = mContext;
         this.all_cuisine=all_cuisine;
 

@@ -572,7 +572,7 @@
                                 android:layout_height="1dp"/>
 
                             <TextView
-                                android:textSize="15dp"
+                                android:textSize="13dp"
                                 android:textColor="#A0A0A0"
                                 android:fontFamily="@font/poppins_bold"
                                 android:layout_weight="1"
@@ -595,7 +595,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:textSize="15dp"
+                            android:textSize="12dp"
                             android:layout_marginTop="-5dp"
                             android:textColor="#214357"
                             android:fontFamily="@font/poppins_regular"
@@ -628,7 +628,7 @@
                                 android:layout_height="1dp"/>
 
                             <TextView
-                                android:textSize="15dp"
+                                android:textSize="13dp"
                                 android:textColor="#A0A0A0"
                                 android:fontFamily="@font/poppins_bold"
                                 android:layout_weight="1"
@@ -650,7 +650,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:textSize="15dp"
+                            android:textSize="12dp"
                             android:layout_marginTop="-5dp"
                             android:textColor="#214357"
                             android:fontFamily="@font/poppins_regular"

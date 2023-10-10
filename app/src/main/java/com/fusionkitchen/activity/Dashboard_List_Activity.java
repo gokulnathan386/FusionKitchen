@@ -82,6 +82,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,6 +97,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -341,47 +346,61 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     }
 
     private void locationgetshop() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("postcode", "sk116tj");
-        params.put("lat", "53.2557589");
-        params.put("lng", "-2.1250864");
-        params.put("order_type", "0");
-        params.put("area", "Macclesfield");
-        params.put("user_id", "8801");
 
-        ApiInterface apiService = ApiClient.getInstance().getClient().create(ApiInterface.class);
-        Call<location_fetch_details> call = apiService.getlocationfetchdetails("/location/SK11-Macclesfield", params);
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("post_code", "SK116TJ");
+            jsonObj.put("order_mode", "0");
+            jsonObj.put("order_time", "2023-10-09 12:30");
+            jsonObj.put("customer_id", "48");
+            jsonObj.put("favourite", false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType, String.valueOf(jsonObj));
+        ApiInterface apiService = ApiClient.getInstance().getClientt().create(ApiInterface.class);
+        Call<location_fetch_details> call = apiService.getlocationfetchdetails(requestBody);
+
+        Log.d("adjbvdbvjdbv", " " + jsonObj);
 
         call.enqueue(new Callback<location_fetch_details>() {
             @Override
             public void onResponse(Call<location_fetch_details> call, Response<location_fetch_details> response) {
                 int statusCode = response.code();
+
+                Log.d("Success======", new Gson().toJson(response.body()) + statusCode);
+
                 if (statusCode == 200) {
+
+                    Log.d("dkfhbdjhdbvjdvdfvdf","dkhvhidhdfuhdf");
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
 
-                        LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getClientinfo().getAll_cuisine());
+                        Log.d("dkfhbdjhdbvjdvdfvdf","truemmmmmmmmmmmm");
+
+                        LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine());
                         cusinesListLayout.setHasFixedSize(true);
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
 
-                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"1");
+                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine(),"1");
                         recommendRestList.setHasFixedSize(true);
                         recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         recommendRestList.setAdapter(recommendList);
 
-                        RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
+                  /*      RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
                         mostPopularLayout.setHasFixedSize(true);
                         mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
-                        mostPopularLayout.setAdapter(mostPopularList);
+                        mostPopularLayout.setAdapter(mostPopularList);*/
 
                         loadingShimmer.setVisibility(View.VISIBLE);
                         mShimmerViewContainer.setVisibility(View.GONE);
                         mShimmerViewContainer.stopShimmerAnimation();
 
-
-
                     }
+                }else{
+                    Log.d("AGHCCFAGC", "STATUSERROR");
                 }
             }
 
@@ -389,7 +408,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<location_fetch_details> call, Throwable t) {
 
-                Log.e("dasboarderror", "location type : " + t);
+                Log.d("dasboarderror", "location type : " + t);
             }
 
         });
