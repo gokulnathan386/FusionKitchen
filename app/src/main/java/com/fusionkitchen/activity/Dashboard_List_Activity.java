@@ -351,7 +351,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         try {
             jsonObj.put("post_code", "SK116TJ");
             jsonObj.put("order_mode", "0");
-            jsonObj.put("order_time", "2023-10-09 12:30");
+            jsonObj.put("order_time", "2023-10-10 12:30");
             jsonObj.put("customer_id", "48");
             jsonObj.put("favourite", false);
         } catch (JSONException e) {
@@ -370,26 +370,26 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             public void onResponse(Call<location_fetch_details> call, Response<location_fetch_details> response) {
                 int statusCode = response.code();
 
-                Log.d("Success======", new Gson().toJson(response.body()) + statusCode);
+                Log.d("List_Page_API", new Gson().toJson(response.body()));
 
                 if (statusCode == 200) {
 
-                    Log.d("dkfhbdjhdbvjdvdfvdf","dkhvhidhdfuhdf");
-                    if (response.body().getSTATUS().equalsIgnoreCase("true")) {
+                    if (response.body().getSTATUS() == true) {
 
-                        Log.d("dkfhbdjhdbvjdvdfvdf","truemmmmmmmmmmmm");
 
                         LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine());
                         cusinesListLayout.setHasFixedSize(true);
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
 
-                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine(),"1");
+                        Log.d("sdbisnsnksnckjsc"," "+ response.body().getDate().getRestaurantList().size());
+
+                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getDate().getRestaurantList(),"1");
                         recommendRestList.setHasFixedSize(true);
                         recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         recommendRestList.setAdapter(recommendList);
 
-                  /*      RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
+                  /*    RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
                         mostPopularLayout.setHasFixedSize(true);
                         mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
                         mostPopularLayout.setAdapter(mostPopularList);*/

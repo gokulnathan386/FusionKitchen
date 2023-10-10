@@ -30,11 +30,13 @@
                 android:layout_width="100dp"
                 android:layout_height="70dp">
 
-                <ImageView
-                    android:id="@+id/cusinesImage"
-                    android:scaleType="fitXY"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+
+
+                   <ImageView
+                       android:id="@+id/cusinesImage"
+                       android:scaleType="fitXY"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"/>
 
             </LinearLayout>
 

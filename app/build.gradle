@@ -178,6 +178,7 @@ dependencies {
 
 
     compile 'com.iarcuschin:simpleratingbar:0.1.+'
+    implementation 'com.pixplicity.sharp:library:1.1.0'
 
 
 

@@ -7,17 +7,17 @@ import java.util.List;
 
 public class location_fetch_details {
 
-    @SerializedName("STATUS")
-    private String STATUS;
+    @SerializedName("status")
+    private Boolean STATUS;
 
     @SerializedName("data")
     private dateShow  data;
 
-    public String getSTATUS() {
+    public Boolean getSTATUS() {
         return STATUS;
     }
 
-    public void setSTATUS(String STATUS) {
+    public void setSTATUS(Boolean STATUS) {
         this.STATUS = STATUS;
     }
 
@@ -33,6 +33,8 @@ public class location_fetch_details {
 
     public class dateShow{
 
+        @SerializedName("restaurantList")
+        private List<showRestaurantist> restaurantList;
 
         @SerializedName("getAllActiveCuisine")
         private List<showCuisine> getAllActiveCuisine;
@@ -43,6 +45,42 @@ public class location_fetch_details {
 
         public void setGetAllActiveCuisine(List<showCuisine> getAllActiveCuisine) {
             this.getAllActiveCuisine = getAllActiveCuisine;
+        }
+
+        public List<showRestaurantist> getRestaurantList() {
+            return restaurantList;
+        }
+
+        public void setRestaurantList(List<showRestaurantist> restaurantList) {
+            this.restaurantList = restaurantList;
+        }
+    }
+
+    public class showRestaurantist{
+
+        @SerializedName("restaurant")
+        private restaurantList restaurant;
+
+        public restaurantList getRestaurant() {
+            return restaurant;
+        }
+
+        public void setRestaurant(restaurantList restaurant) {
+            this.restaurant = restaurant;
+        }
+    }
+
+    public class restaurantList{
+
+        @SerializedName("backgroundImage")
+        private String  backgroundImage;
+
+        public String getBackgroundImage() {
+            return backgroundImage;
+        }
+
+        public void setBackgroundImage(String backgroundImage) {
+            this.backgroundImage = backgroundImage;
         }
     }
 

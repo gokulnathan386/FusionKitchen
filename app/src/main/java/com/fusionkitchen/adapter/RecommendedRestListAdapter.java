@@ -22,10 +22,10 @@ import java.util.List;
 public class RecommendedRestListAdapter extends RecyclerView.Adapter<RecommendedRestListAdapter.MyViewHolder>{
 
         Context mcontext;
-        List<location_fetch_details.showCuisine> allclient;
+        List<location_fetch_details.showRestaurantist> allclient;
         String test;
 
-public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.showCuisine> allclient,String test) {
+public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.showRestaurantist> allclient,String test) {
         this.mcontext = mContext;
         this.allclient=allclient;
         this.test=test;
@@ -60,7 +60,9 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
            .into(holder.recommendRestImage);
 */
 
-
+        Glide.with(mcontext)
+                .load(allclient.get(position).getRestaurant().getBackgroundImage())
+                .into(holder.recommendRestImage);
 
 
         }

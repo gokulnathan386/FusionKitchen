@@ -2,7 +2,7 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.SVGImage;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
+
 import java.util.List;
 
 
@@ -43,10 +44,10 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
     public void onBindViewHolder(LocationfetchDetailsRest.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.cusinesName.setText(all_cuisine.get(position).getName());
-        Glide.with(mcontext)
-                .load(all_cuisine.get(position).getImage())
-                .into(holder.cusinesImage);
 
+        String url = all_cuisine.get(position).getUrl()+all_cuisine.get(position).getImage();
+        SVGImage utils = new SVGImage();
+        utils.fetchSVG(mcontext, url, holder.cusinesImage);
 
     }
 
@@ -75,10 +76,12 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
         TextView cusinesName;
         ImageView cusinesImage;
 
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             cusinesName = (TextView) itemView.findViewById(R.id.cusinesName);
             cusinesImage = (ImageView) itemView.findViewById(R.id.cusinesImage);
+
 
         }
 
