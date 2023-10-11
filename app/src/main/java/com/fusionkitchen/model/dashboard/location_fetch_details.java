@@ -75,12 +75,142 @@ public class location_fetch_details {
         @SerializedName("backgroundImage")
         private String  backgroundImage;
 
+        @SerializedName("name")
+        private String  name;
+
+        @SerializedName("miles")
+        private String  miles;
+
+        @SerializedName("cookingTimeStart")
+        private String  cookingTimeStart;
+
+        @SerializedName("cookingTimeEnd")
+        private String  cookingTimeEnd;
+
+        @SerializedName("rating")
+        private RatingDetails rating;
+
+
+        @SerializedName("restaurantStatus")
+        private TakewayCloseOpenStatus restaurantStatus;
+
+        @SerializedName("vip")
+        private Boolean vip;
+
+        public TakewayCloseOpenStatus getRestaurantStatus() {
+            return restaurantStatus;
+        }
+
+        public void setRestaurantStatus(TakewayCloseOpenStatus restaurantStatus) {
+            this.restaurantStatus = restaurantStatus;
+        }
+
+        public Boolean getVip() {
+            return vip;
+        }
+
+        public void setVip(Boolean vip) {
+            this.vip = vip;
+        }
+
         public String getBackgroundImage() {
             return backgroundImage;
         }
 
         public void setBackgroundImage(String backgroundImage) {
             this.backgroundImage = backgroundImage;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getMiles() {
+            return miles;
+        }
+
+        public void setMiles(String miles) {
+            this.miles = miles;
+        }
+
+        public String getCookingTimeStart() {
+            return cookingTimeStart;
+        }
+
+        public void setCookingTimeStart(String cookingTimeStart) {
+            this.cookingTimeStart = cookingTimeStart;
+        }
+
+        public String getCookingTimeEnd() {
+            return cookingTimeEnd;
+        }
+
+        public void setCookingTimeEnd(String cookingTimeEnd) {
+            this.cookingTimeEnd = cookingTimeEnd;
+        }
+
+        public RatingDetails getRating() {
+            return rating;
+        }
+
+        public void setRating(RatingDetails rating) {
+            this.rating = rating;
+        }
+    }
+
+
+    public class TakewayCloseOpenStatus{
+
+        @SerializedName("status")
+        private String status;
+
+        @SerializedName("msg")
+        private String msg;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+    }
+
+
+    public class RatingDetails{
+
+        @SerializedName("rate")
+        private String rate;
+
+        @SerializedName("count")
+        private String count;
+
+        public String getRate() {
+            return rate;
+        }
+
+        public void setRate(String rate) {
+            this.rate = rate;
+        }
+
+        public String getCount() {
+            return count;
+        }
+
+        public void setCount(String count) {
+            this.count = count;
         }
     }
 

@@ -135,6 +135,10 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="takeOpen">#108060</color>
+    <color name="takeClosed">#B71A2D</color>
+    <color name="takePreOrder">#FE6D1D</color>
+
 
 
 </resources>

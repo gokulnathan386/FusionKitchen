@@ -1,6 +1,5 @@
 package com.fusionkitchen.activity;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -38,7 +37,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +133,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1708,94 +1706,6 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
-
-    /*---------------------------Navigation Menu----------------------------------------------------*/
-    @SuppressWarnings("StatementWithEmptyBody")
-/*    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_login) {
-            Intent intent = new Intent(getApplicationContext(), Login_Activity.class);
-            intent.putExtra("activity_details", "pcode");
-            startActivity(intent);
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_myaccount) {
-            startActivity(new Intent(getApplicationContext(), MyAccount_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_favorite) {
-            startActivity(new Intent(getApplicationContext(), Favourite_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_address) {
-            startActivity(new Intent(getApplicationContext(), Address_Book_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_wallet) {
-            startActivity(new Intent(getApplicationContext(), Wallet_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_notifications) {
-            startActivity(new Intent(getApplicationContext(), Notification_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_orderhistory) {
-            startActivity(new Intent(getApplicationContext(), Order_History_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_orderstatus) {
-            startActivity(new Intent(getApplicationContext(), Order_Status_List_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_more_hide) {
-            hideItem();
-
-        } else if (id == R.id.nav_more_show) {
-            showItem();
-
-        } else if (id == R.id.nav_aboutus) {
-            startActivity(new Intent(getApplicationContext(), Aboutus_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_rateapp) {
-            drawer.closeDrawers();
-
-            showRateDialog(Postcode_Activity.this);
-            *//*----------------Rateing APP-------------------*//*
-
-
-            // startActivity(new Intent(getApplicationContext(), Review_Activity.class));
-        } else if (id == R.id.nav_help) {
-            startActivity(new Intent(getApplicationContext(), Help_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_termsconditions) {
-            startActivity(new Intent(getApplicationContext(), Terms_Conditions_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_privacy) {
-            startActivity(new Intent(getApplicationContext(), Privacy_Policy_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_allergy) {
-            startActivity(new Intent(getApplicationContext(), Allergy_Activity.class));
-            drawer.closeDrawers();
-        } else if (id == R.id.nav_logout) {
-
-            try {
-                if (slogin == null)
-                    slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
-
-                sloginEditor = slogin.edit();
-                sloginEditor.putString("login_key_status", "");
-                sloginEditor.putString("login_key_cid", "");
-                sloginEditor.putString("login_key_vcode", "");
-                sloginEditor.commit();
-                startActivity(new Intent(getApplicationContext(), Postcode_Activity.class));
-                drawer.closeDrawers();
-
-            } catch (Exception ex) {
-                Toast.makeText(Postcode_Activity.this, ex.getMessage().toString(), Toast.LENGTH_LONG).show();
-            }
-
-        }
-
-        return true;
-    }*/
-
     /*-------------------Loading Images------------------*/
     public void loadingshow() {
 
@@ -1812,31 +1722,6 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
 
     public void hideloading() {
         dialog.dismiss();
-    }
-
-
-    private void hideItem() {
-
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_aboutus).setVisible(false);
-        nav_Menu.findItem(R.id.nav_termsconditions).setVisible(false);
-        nav_Menu.findItem(R.id.nav_privacy).setVisible(false);
-        nav_Menu.findItem(R.id.nav_allergy).setVisible(false);
-        nav_Menu.findItem(R.id.nav_more_hide).setVisible(false);
-        nav_Menu.findItem(R.id.nav_more_show).setVisible(true);
-
-    }
-
-    private void showItem() {
-
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_aboutus).setVisible(true);
-        nav_Menu.findItem(R.id.nav_termsconditions).setVisible(true);
-        nav_Menu.findItem(R.id.nav_privacy).setVisible(true);
-        nav_Menu.findItem(R.id.nav_allergy).setVisible(true);
-        nav_Menu.findItem(R.id.nav_more_hide).setVisible(true);
-        nav_Menu.findItem(R.id.nav_more_show).setVisible(false);
-
     }
 
     /*---------------------------Sql Lite DataBase----------------------------------------------------*/

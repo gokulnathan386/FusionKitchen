@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,13 +30,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -54,15 +50,16 @@ import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fusionkitchen.R;
+import com.fusionkitchen.InternetConnection.NetworkUtils;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
-import com.fusionkitchen.adapter.DashboardSearchResultList;
-import com.fusionkitchen.adapter.DashboardSearchclientList;
+
+import com.fusionkitchen.adapter.FetchFilterDetails;
 import com.fusionkitchen.adapter.LocationfetchDetailsRest;
+import com.fusionkitchen.adapter.MostPopularRestListAdapter;
 import com.fusionkitchen.adapter.RecommendedRestListAdapter;
+import com.fusionkitchen.model.dashboard.FetchFilterListModel;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
-import com.fusionkitchen.model.home_model.location_type_modal;
-import com.fusionkitchen.model.home_model.location_type_sub_modal;
-import com.fusionkitchen.model.home_model.serachgetshop_modal;
+
 import com.fusionkitchen.rest.ApiClient;
 import com.fusionkitchen.rest.ApiInterface;
 import com.google.android.gms.common.api.ApiException;
@@ -78,7 +75,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 
@@ -90,10 +86,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -131,10 +125,12 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList;
+    RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList;
     LinearLayout cusionListView,loadingShimmer;
 
-
+    List<location_fetch_details.showRestaurantist> restaurantList;
+    List<location_fetch_details.restaurantList> vipRestaurants = new ArrayList<>();
+    List<location_fetch_details.restaurantList> nonVipRestaurants = new ArrayList<>();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +139,18 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(Dashboard_List_Activity.this, R.color.status_bar_color));
+
+
+       /*-------------------start Internet connection is available or Not-----------------*/
+
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            // Internet connection is available
+        } else {
+            // No internet connection
+        }
+
+        /*-------------------End Internet connection is available or Not-----------------*/
+
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         loadingShimmer = findViewById(R.id.loadingShimmer);
@@ -279,9 +287,13 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                 filtercategoryList.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 filtercategoryList.setContentView(R.layout.filter_category_list);
 
+                filterList = filtercategoryList.findViewById(R.id.filterList);
 
 
-                filtercategoryList.show();
+                filteList(filtercategoryList,filterList);
+
+
+              //  filtercategoryList.show();
                 filtercategoryList.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 filtercategoryList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 filtercategoryList.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -345,6 +357,61 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
     }
 
+    private void filteList(Dialog filtercategoryList, RecyclerView filterList) {
+
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("post_code", "SK116TJ");
+            jsonObj.put("order_mode", "0");
+            jsonObj.put("order_time", "2023-10-11 12:50");
+            jsonObj.put("customer_id", "48");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType, String.valueOf(jsonObj));
+        ApiInterface apiService = ApiClient.getInstance().getClientt().create(ApiInterface.class);
+        Call<FetchFilterListModel> call = apiService.getFilterList(requestBody);
+
+        Log.d("Filter-params->", " " + jsonObj);
+
+        call.enqueue(new Callback<FetchFilterListModel>() {
+            @Override
+            public void onResponse(Call<FetchFilterListModel> call, Response<FetchFilterListModel> response) {
+                int statusCode = response.code();
+
+                Log.d("List_Page_API", new Gson().toJson(response.body()));
+
+                if (statusCode == 200) {
+
+                    if (response.body().getStatus() == true) {
+
+                        FetchFilterDetails filteradapter = new FetchFilterDetails(Dashboard_List_Activity.this,response.body().getData().getGetAllActiveCuisine());
+                        filterList.setHasFixedSize(true);
+                        filterList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        filterList.setAdapter(filteradapter);
+
+                        filtercategoryList.show();
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<FetchFilterListModel> call, Throwable t) {
+
+                Log.d("Filter List", "" + t);
+            }
+
+        });
+
+
+
+
+    }
+
     private void locationgetshop() {
 
         JSONObject jsonObj = new JSONObject();
@@ -376,31 +443,39 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
                     if (response.body().getSTATUS() == true) {
 
-
                         LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine());
                         cusinesListLayout.setHasFixedSize(true);
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
 
-                        Log.d("sdbisnsnksnckjsc"," "+ response.body().getDate().getRestaurantList().size());
+                         for (int i = 0; i<response.body().getDate().getRestaurantList().size() ; i++){
 
-                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getDate().getRestaurantList(),"1");
+                             if (response.body().getDate().getRestaurantList().get(i).getRestaurant().getVip()==true){
+
+                                 vipRestaurants.add(response.body().getDate().getRestaurantList().get(i).getRestaurant());
+
+                             }else{
+                                 nonVipRestaurants.add(response.body().getDate().getRestaurantList().get(i).getRestaurant());
+
+                             }
+
+                         }
+
+                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, nonVipRestaurants);
                         recommendRestList.setHasFixedSize(true);
                         recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         recommendRestList.setAdapter(recommendList);
 
-                  /*    RecommendedRestListAdapter mostPopularList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, response.body().getClientinfo().getClients(),"2");
+                        MostPopularRestListAdapter mostPopularList = new MostPopularRestListAdapter(Dashboard_List_Activity.this, nonVipRestaurants);
                         mostPopularLayout.setHasFixedSize(true);
                         mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
-                        mostPopularLayout.setAdapter(mostPopularList);*/
+                        mostPopularLayout.setAdapter(mostPopularList);
 
                         loadingShimmer.setVisibility(View.VISIBLE);
                         mShimmerViewContainer.setVisibility(View.GONE);
                         mShimmerViewContainer.stopShimmerAnimation();
 
                     }
-                }else{
-                    Log.d("AGHCCFAGC", "STATUSERROR");
                 }
             }
 
@@ -412,8 +487,6 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             }
 
         });
-
-
 
 
 

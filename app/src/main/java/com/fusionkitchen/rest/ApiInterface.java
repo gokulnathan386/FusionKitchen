@@ -1,13 +1,11 @@
 package com.fusionkitchen.rest;
 
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.Map;
 
 
 import com.fusionkitchen.model.App_download_record_Tracking;
+import com.fusionkitchen.model.dashboard.FetchFilterListModel;
 import com.fusionkitchen.model.HomeFetch_Detail_Model;
 import com.fusionkitchen.model.Login.Login_mobile_email;
 import com.fusionkitchen.model.Savecard.addnewsavecard_model;
@@ -34,7 +32,6 @@ import com.fusionkitchen.model.gpay.getgpaystuartpayment_model;
 import com.fusionkitchen.model.home_model.location_type_modal;
 
 import com.fusionkitchen.model.home_model.order_type_modal;
-import com.fusionkitchen.model.home_model.popular_restaurants_listmodel;
 import com.fusionkitchen.model.home_model.serachgetshop_modal;
 import com.fusionkitchen.model.loginsignup.forgot_password_model;
 import com.fusionkitchen.model.loginsignup.login_model;
@@ -74,11 +71,9 @@ import com.fusionkitchen.model.wallet.wallet_walletbutton_model;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -417,5 +412,8 @@ public interface ApiInterface {
 */
     @POST("/getRestaurant")
     Call<location_fetch_details> getlocationfetchdetails(@Body RequestBody jsonObj );
+
+    @POST("/getFilterType")
+    Call<FetchFilterListModel> getFilterList(@Body RequestBody jsonObj );
 
 }

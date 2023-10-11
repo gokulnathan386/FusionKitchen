@@ -2,14 +2,20 @@ package com.fusionkitchen.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,13 +28,13 @@ import java.util.List;
 public class RecommendedRestListAdapter extends RecyclerView.Adapter<RecommendedRestListAdapter.MyViewHolder>{
 
         Context mcontext;
-        List<location_fetch_details.showRestaurantist> allclient;
-        String test;
+        List<location_fetch_details.restaurantList> allclient;
 
-public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.showRestaurantist> allclient,String test) {
+
+public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.restaurantList> allclient) {
         this.mcontext = mContext;
         this.allclient=allclient;
-        this.test=test;
+
 
         }
 
@@ -38,11 +44,9 @@ public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.
 public RecommendedRestListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
               View listItem;
-            if(test.equalsIgnoreCase("1")){
-                 listItem = layoutInflater.inflate(R.layout.dashboard_rcommednded_design, parent, false);
-            }else{
-                 listItem = layoutInflater.inflate(R.layout.dashboard_recommedend_mostpopular, parent, false);
-            }
+              listItem = layoutInflater.inflate(R.layout.dashboard_rcommednded_design, parent, false);
+
+               //  listItem = layoutInflater.inflate(R.layout.dashboard_recommedend_mostpopular, parent, false);
 
         RecommendedRestListAdapter.MyViewHolder viewHolder = new RecommendedRestListAdapter.MyViewHolder(listItem);
         return new RecommendedRestListAdapter.MyViewHolder(listItem);
@@ -53,49 +57,79 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
 
 
 
-      /*   holder.ClientName.setText(allclient.get(position).getClientName());
+         holder.ClientName.setText(allclient.get(position).getName());
+         holder.cookingTime.setText(allclient.get(position).getCookingTimeStart() + " - " + allclient.get(position).getCookingTimeEnd()+ " " + "Mins");
+         holder.milesAway.setText(allclient.get(position).getMiles() + " " +"Miles Away");
 
-         Glide.with(mcontext)
-           .load(allclient.get(position).getBgimge())
-           .into(holder.recommendRestImage);
-*/
+
+            String ratingCondition = allclient.get(position).getRating().getRate();
+
+         if(Double.parseDouble(ratingCondition) < 3){
+             holder.ratingDetailsCount.setText(allclient.get(position).getRating().getRate() + " " +"(New)");
+         }else{
+             if(Integer.parseInt(allclient.get(position).getRating().getCount()) > 1) {
+                 holder.ratingDetailsCount.setText(allclient.get(position).getRating().getRate() + " " + "Good" +" " + "(" +allclient.get(position).getRating().getCount()+")");
+             }else{
+                 holder.ratingDetailsCount.setText(allclient.get(position).getRating().getRate() + " " + "Good");
+             }
+         }
+
 
         Glide.with(mcontext)
-                .load(allclient.get(position).getRestaurant().getBackgroundImage())
+                .load(allclient.get(position).getBackgroundImage())
                 .into(holder.recommendRestImage);
+
+        if(allclient.get(position).getRestaurantStatus().getStatus().equalsIgnoreCase("0")){  // open
+            holder.takewayStatus.setText("Open");
+            holder.takewayBackgroundColor.setBackgroundTintList(ContextCompat.getColorStateList(mcontext, R.color.takeOpen));
+        }else if(allclient.get(position).getRestaurantStatus().getStatus().equalsIgnoreCase("1")){ // pre order
+            holder.takewayStatus.setText("Pre Order");
+            holder.takewayBackgroundColor.setBackgroundTintList(ContextCompat.getColorStateList(mcontext, R.color.takePreOrder));
+        }else if(allclient.get(position).getRestaurantStatus().getStatus().equalsIgnoreCase("2")){ // Closed
+            holder.takewayStatus.setText("Closed");
+            holder.takewayBackgroundColor.setBackgroundTintList(ContextCompat.getColorStateList(mcontext, R.color.takeClosed));
+        }else if(allclient.get(position).getRestaurantStatus().getStatus().equalsIgnoreCase("3")){ // collection or delivery -> closed
+            holder.takewayStatus.setText("Open");
+            holder.takewayBackgroundColor.setBackgroundTintList(ContextCompat.getColorStateList(mcontext, R.color.takeOpen));
+        }
 
 
         }
 
 
     @Override
-          public int getItemCount() {
+      public int getItemCount() {
 
+        return allclient.size();
 
-            return allclient.size();
-
-            }
+        }
 
     @Override
     public long getItemId(int position) {
-            return position;
-            }
+        return position;
+        }
 
     @Override
     public int getItemViewType(int position) {
-            return position;
-            }
+        return position;
+        }
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-
-    TextView ClientName;
+    TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus;
     ImageView recommendRestImage;
+    LinearLayout takewayBackgroundColor;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
+
         ClientName = (TextView) itemView.findViewById(R.id.ClientName);
+        milesAway = (TextView) itemView.findViewById(R.id.milesAway);
+        cookingTime = (TextView) itemView.findViewById(R.id.cookingTime);
+        ratingDetailsCount = (TextView) itemView.findViewById(R.id.ratingDetailsCount);
         recommendRestImage = (ImageView) itemView.findViewById(R.id.recommendRestImage);
+        takewayStatus = (TextView) itemView.findViewById(R.id.takewayStatus);
+        takewayBackgroundColor = (LinearLayout) itemView.findViewById(R.id.takewayBackgroundColor);
 
     }
 
