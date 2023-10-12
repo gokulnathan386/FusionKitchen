@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,24 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
             holder.takewayBackgroundColor.setBackgroundTintList(ContextCompat.getColorStateList(mcontext, R.color.takeOpen));
         }
 
+        String cuisinename = "";
+
+        for(int k=0;k<allclient.get(position).getCuisineName().size();k++){
+
+            if(k==0){
+                cuisinename = allclient.get(position).getCuisineName().get(k);
+            }else{
+                cuisinename = cuisinename + "," + allclient.get(position).getCuisineName().get(k);
+            }
+
+        }
+
+       Log.d("skncksjncksnc-Recommend"," " + cuisinename);
+
+        holder.cusinesName.setText(cuisinename);
+
+
+
 
         }
 
@@ -120,7 +139,7 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus,offerItemTxt;
+    TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus,offerItemTxt,cusinesName;
     ImageView recommendRestImage;
     LinearLayout takewayBackgroundColor;
 
@@ -135,6 +154,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         takewayStatus = (TextView) itemView.findViewById(R.id.takewayStatus);
         takewayBackgroundColor = (LinearLayout) itemView.findViewById(R.id.takewayBackgroundColor);
         offerItemTxt = (TextView) itemView.findViewById(R.id.offerItemTxt);
+        cusinesName = (TextView) itemView.findViewById(R.id.cusinesName);
 
     }
 

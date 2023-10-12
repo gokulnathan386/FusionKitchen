@@ -39,11 +39,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,7 +102,7 @@ import retrofit2.Response;
 
 public class Dashboard_List_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav;
+    LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav,locationIcon;
     LinearLayout myOrderNav,upComingOrder,myAccountNav,walletNavIcon;
     LinearLayout notificationNav,perksNav,fkPlusNav,addressListNav;
     LinearLayout helpNav,rateApp,aboutNav,allergyInfoNav;
@@ -112,6 +114,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     String user_id;
     Dialog comeingSoon;
     TextView txtversionname;
+    RelativeLayout internetConnection;
     private ShimmerFrameLayout mShimmerViewContainer;
 
 
@@ -143,18 +146,18 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
 
        /*-------------------start Internet connection is available or Not-----------------*/
+        internetConnection = findViewById(R.id.internetConnection);
 
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            // Internet connection is available
-        } else {
-            // No internet connection
-        }
+        Button retry = findViewById(R.id.retry);
+
 
         /*-------------------End Internet connection is available or Not-----------------*/
 
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         loadingShimmer = findViewById(R.id.loadingShimmer);
+
+
 
 
         slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
@@ -273,6 +276,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
         viewPager = findViewById(R.id.viewPager);
         currentLocationDetails = findViewById(R.id.currentLocationDetails);
+        locationIcon = findViewById(R.id.locationIcon);
         searchRestaurantCuisine = findViewById(R.id.searchRestaurantCuisine);
         searchIconCusion = findViewById(R.id.searchIconCusion);
         cusionListView = findViewById(R.id.cusionListView);
@@ -295,6 +299,13 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             }
         });
 
+        locationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preOrderPopup();
+
+            }
+        });
 
         currentLocationDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -341,6 +352,30 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         });
 
         /* End Filter List UI Design*/
+
+
+
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            internetConnection.setVisibility(View.GONE);
+        } else {
+            internetConnection.setVisibility(View.VISIBLE);
+            loadingShimmer.setVisibility(View.GONE);
+            mShimmerViewContainer.setVisibility(View.GONE);
+            mShimmerViewContainer.stopShimmerAnimation();
+        }
+
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!NetworkUtils.isNetworkAvailable(Dashboard_List_Activity.this)) {
+                    internetConnection.setVisibility(View.GONE);
+                    mShimmerViewContainer.setVisibility(View.VISIBLE);
+                    mShimmerViewContainer.startShimmerAnimation();
+                    locationgetshop();
+                }
+            }
+        });
+
 
 
     }

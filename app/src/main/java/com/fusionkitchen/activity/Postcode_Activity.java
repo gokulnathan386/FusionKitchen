@@ -145,8 +145,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-//public class Postcode_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 public class Postcode_Activity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int TIME_INTERVAL = 2000;
@@ -404,11 +402,6 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
                         Freshchat.showConversations(getApplicationContext());
                         bottonkey = 1;
                         break;
-                  /*  case R.id.home_chat:
-                        Intent Offer = new Intent(getApplicationContext(),Show_Offer_Activity.class);
-                        startActivity(Offer);
-                        break;*/
-
 
                     case R.id.home_card:
                         bottonkey = 2;
@@ -854,12 +847,12 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
                     int statusCode = ((ApiException) e).getStatusCode();
                     switch (statusCode) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            // Location settings are not satisfied, but this can be fixed by showing the user a dialog
+
                             try {
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
                                 resolvable.startResolutionForResult(Postcode_Activity.this, REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
-                                // Ignore the error
+
                             }
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
@@ -1269,12 +1262,7 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
                     }
                 }) {
 
-           /* @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("user_id",userid);
-                return params;
-            }*/
+
         };
 
         RequestQueue requestqueue = Volley.newRequestQueue(this);
@@ -1477,7 +1465,8 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
                     // loader.dismiss();
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
 
-                        Intent intent = new Intent(Postcode_Activity.this, Dashboard_Activity.class);
+                     //   Intent intent = new Intent(Postcode_Activity.this, Dashboard_Activity.class);
+                        Intent intent = new Intent(Postcode_Activity.this, Dashboard_List_Activity.class);
                         /*--------------------------Login postcode save local------------------------*/
                         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
 

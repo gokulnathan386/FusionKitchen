@@ -185,6 +185,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/cusinesName"
                         android:textColor="#214357"
                         android:textSize="12dp"
                         android:singleLine="true"

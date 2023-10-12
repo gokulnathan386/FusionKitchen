@@ -3,6 +3,7 @@ package com.fusionkitchen.model.dashboard;
 import com.fusionkitchen.model.home_model.location_type_sub_modal;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class location_fetch_details {
@@ -148,7 +149,16 @@ public class location_fetch_details {
         @SerializedName("discount")
         private Discount discount;
 
+        @SerializedName("cuisineName")
+        private ArrayList<String> cuisineName;
 
+        public ArrayList<String> getCuisineName() {
+            return cuisineName;
+        }
+
+        public void setCuisineName(ArrayList<String> cuisineName) {
+            this.cuisineName = cuisineName;
+        }
 
         public TakewayCloseOpenStatus getRestaurantStatus() {
             return restaurantStatus;
@@ -222,6 +232,7 @@ public class location_fetch_details {
             this.discount = discount;
         }
     }
+
 
     public class Discount{
 

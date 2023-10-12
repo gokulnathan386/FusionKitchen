@@ -24,13 +24,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="MissingClass">
-      <!--  <activity
-            android:name=".Dashboard_List_Activity"
-            android:exported="false">
+        <activity
+            android:name=".activity.Dashboard_List_Activity"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>-->
+        </activity>
         <!--<activity
             android:name=".activity.Splash_Activity"
             android:exported="true"
@@ -42,7 +43,7 @@
             </intent-filter_popup_category.xml>
         </activity>-->
         <activity
-            android:name=".activity.Dashboard_List_Activity"
+            android:name=".activity.Splash_Activity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
@@ -51,10 +52,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <!-- <activity
+        <activity
             android:name=".activity.Postcode_Activity"
             android:label=""
-            android:theme="@style/Theme.Transparent" />-->
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".activity.Dashboard_Activity"
             android:screenOrientation="portrait"
