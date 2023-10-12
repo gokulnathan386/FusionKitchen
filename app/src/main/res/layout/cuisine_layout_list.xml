@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         app:cardCornerRadius="15dp"
         android:layout_margin="5dp"
         app:cardBackgroundColor="@color/white"

@@ -1,23 +1,27 @@
 package com.fusionkitchen.adapter;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fusionkitchen.R;
+import com.fusionkitchen.model.dashboard.location_fetch_details;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class DashboardBannerAutoScrollAdapter extends RecyclerView.Adapter<DashboardBannerAutoScrollAdapter.ImageViewHolder> {
     private Context context;
-    private List<String> imageUrls;
+    private List<location_fetch_details.BannerImage> imageUrls;
 
-    public DashboardBannerAutoScrollAdapter(Context context, List<String> imageUrls) {
+    public DashboardBannerAutoScrollAdapter(Context context, List<location_fetch_details.BannerImage> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
     }
@@ -31,10 +35,15 @@ public class DashboardBannerAutoScrollAdapter extends RecyclerView.Adapter<Dashb
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        // String imageUrl = imageUrls.get(position);
-        Log.d("wsfnsdjksdn", " " + imageUrls.get(position));
-        Picasso.get().load(imageUrls.get(position)).into(holder.imageView);
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        Picasso.get().load(imageUrls.get(position).getImage()).into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, imageUrls.get(position).getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

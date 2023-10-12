@@ -54,6 +54,7 @@ import com.fusionkitchen.InternetConnection.NetworkUtils;
 import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
 
 import com.fusionkitchen.adapter.FetchFilterDetails;
+import com.fusionkitchen.adapter.FetchFilterOfferDetails;
 import com.fusionkitchen.adapter.LocationfetchDetailsRest;
 import com.fusionkitchen.adapter.MostPopularRestListAdapter;
 import com.fusionkitchen.adapter.RecommendedRestListAdapter;
@@ -125,7 +126,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout currentLocationDetails,searchRestaurantCuisine,searchIconCusion;
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
-    RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList;
+    RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList,filterOfferList;
     LinearLayout cusionListView,loadingShimmer;
 
     List<location_fetch_details.showRestaurantist> restaurantList;
@@ -279,28 +280,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         mostPopularLayout = findViewById(R.id.mostPopularLayout);
 
 
-        filterListCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                filtercategoryList= new Dialog(Dashboard_List_Activity.this);
-                filtercategoryList.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                filtercategoryList.setContentView(R.layout.filter_category_list);
-
-                filterList = filtercategoryList.findViewById(R.id.filterList);
-
-
-                filteList(filtercategoryList,filterList);
-
-
-              //  filtercategoryList.show();
-                filtercategoryList.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                filtercategoryList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                filtercategoryList.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                filtercategoryList.getWindow().setGravity(Gravity.BOTTOM);
-
-            }
-        });
 
         searchIconCusion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,39 +305,47 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         });
 
 
-        imageUrls = new ArrayList<>();
 
-        imageUrls.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/partnerapp/banner/16910563045337.png");
-        imageUrls.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/partnerapp/banner/16910563045337.png");
-        imageUrls.add("https://fusion-crm.s3.eu-west-2.amazonaws.com/partnerapp/banner/16910568692303.png");
-        // Add more image URLs as needed
-
-        dashboardBannerAutoScrollAdapter = new DashboardBannerAutoScrollAdapter(this, imageUrls);
-        viewPager.setAdapter(dashboardBannerAutoScrollAdapter);
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (currentPage == imageUrls.size()) {
-                            currentPage = 0;
-                        }
-                        viewPager.setCurrentItem(currentPage++, true);
-                    }
-                });
-            }
-        }, 3000, 3000);
 
         mShimmerViewContainer.setVisibility(View.VISIBLE);
         mShimmerViewContainer.startShimmerAnimation();
         locationgetshop();
 
+
+      /* Start Filter List UI Design*/
+
+
+        filtercategoryList= new Dialog(Dashboard_List_Activity.this);
+        filtercategoryList.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        filtercategoryList.setContentView(R.layout.filter_category_list);
+
+        filterList = filtercategoryList.findViewById(R.id.filterList);
+        filterOfferList = filtercategoryList.findViewById(R.id.filterOfferList);
+
+
+        filteList(filtercategoryList,filterList,filterOfferList);
+
+
+
+        filtercategoryList.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        filtercategoryList.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        filtercategoryList.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        filtercategoryList.getWindow().setGravity(Gravity.BOTTOM);
+
+        filterListCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filtercategoryList.show();
+
+            }
+        });
+
+        /* End Filter List UI Design*/
+
+
     }
 
-    private void filteList(Dialog filtercategoryList, RecyclerView filterList) {
+    private void filteList(Dialog filtercategoryList, RecyclerView filterList, RecyclerView filterOfferList) {
 
         JSONObject jsonObj = new JSONObject();
         try {
@@ -387,12 +375,18 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
                     if (response.body().getStatus() == true) {
 
+
+                        FetchFilterOfferDetails filterOfferadapter = new FetchFilterOfferDetails(Dashboard_List_Activity.this,response.body().getData().getOffer());
+                        filterOfferList.setHasFixedSize(true);
+                        filterOfferList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        filterOfferList.setAdapter(filterOfferadapter);
+
+
                         FetchFilterDetails filteradapter = new FetchFilterDetails(Dashboard_List_Activity.this,response.body().getData().getGetAllActiveCuisine());
                         filterList.setHasFixedSize(true);
                         filterList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
                         filterList.setAdapter(filteradapter);
 
-                        filtercategoryList.show();
 
                     }
                 }
@@ -447,6 +441,26 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         cusinesListLayout.setHasFixedSize(true);
                         cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
+
+
+                        dashboardBannerAutoScrollAdapter = new DashboardBannerAutoScrollAdapter(Dashboard_List_Activity.this, response.body().getDate().getOfferBannerDetails());
+                        viewPager.setAdapter(dashboardBannerAutoScrollAdapter);
+
+                        Timer timer = new Timer();
+                        timer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (currentPage == response.body().getDate().getOfferBannerDetails().size()) {
+                                            currentPage = 0;
+                                        }
+                                        viewPager.setCurrentItem(currentPage++, true);
+                                    }
+                                });
+                            }
+                        }, 3000, 3000);
 
                          for (int i = 0; i<response.body().getDate().getRestaurantList().size() ; i++){
 
@@ -1151,6 +1165,9 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         }
 
     }
+
+
+
 
 
 }

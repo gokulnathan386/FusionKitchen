@@ -57,6 +57,13 @@ public class MostPopularRestListAdapter extends RecyclerView.Adapter<MostPopular
         holder.cookingTime.setText(allclient.get(position).getCookingTimeStart() + " - " + allclient.get(position).getCookingTimeEnd()+ " " + "Mins");
         holder.milesAway.setText(allclient.get(position).getMiles() + " " +"Miles Away");
 
+        holder.offerItemTxt.setText(allclient.get(position).getDiscount().getMinOrder() + " " +
+                allclient.get(position).getDiscount().getDiscountType() +" " +
+                allclient.get(position).getDiscount().getDescription() +" " +
+                allclient.get(position).getDiscount().getDiscount() +" " +
+                allclient.get(position).getDiscount().getDiscountType()
+
+        );
 
         String ratingCondition = allclient.get(position).getRating().getRate();
 
@@ -115,7 +122,7 @@ public class MostPopularRestListAdapter extends RecyclerView.Adapter<MostPopular
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus;
+        TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus,offerItemTxt;
         ImageView recommendRestImage;
         LinearLayout takewayBackgroundColor;
 
@@ -128,6 +135,7 @@ public class MostPopularRestListAdapter extends RecyclerView.Adapter<MostPopular
             recommendRestImage = (ImageView) itemView.findViewById(R.id.recommendRestImage);
             takewayStatus = (TextView) itemView.findViewById(R.id.takewayStatus);
             takewayBackgroundColor = (LinearLayout) itemView.findViewById(R.id.takewayBackgroundColor);
+            offerItemTxt = (TextView) itemView.findViewById(R.id.offerItemTxt);
 
         }
 

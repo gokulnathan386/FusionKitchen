@@ -43,11 +43,7 @@ public RecommendedRestListAdapter(Context mContext, List<location_fetch_details.
 @Override
 public RecommendedRestListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-              View listItem;
-              listItem = layoutInflater.inflate(R.layout.dashboard_rcommednded_design, parent, false);
-
-               //  listItem = layoutInflater.inflate(R.layout.dashboard_recommedend_mostpopular, parent, false);
-
+              View listItem = layoutInflater.inflate(R.layout.dashboard_rcommednded_design, parent, false);
         RecommendedRestListAdapter.MyViewHolder viewHolder = new RecommendedRestListAdapter.MyViewHolder(listItem);
         return new RecommendedRestListAdapter.MyViewHolder(listItem);
         }
@@ -61,8 +57,16 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
          holder.cookingTime.setText(allclient.get(position).getCookingTimeStart() + " - " + allclient.get(position).getCookingTimeEnd()+ " " + "Mins");
          holder.milesAway.setText(allclient.get(position).getMiles() + " " +"Miles Away");
 
+         holder.offerItemTxt.setText(allclient.get(position).getDiscount().getMinOrder() + " " +
+                              allclient.get(position).getDiscount().getDiscountType() +" " +
+                              allclient.get(position).getDiscount().getDescription() +" " +
+                              allclient.get(position).getDiscount().getDiscount() +" " +
+                              allclient.get(position).getDiscount().getDiscountType()
 
-            String ratingCondition = allclient.get(position).getRating().getRate();
+         );
+
+
+         String ratingCondition = allclient.get(position).getRating().getRate();
 
          if(Double.parseDouble(ratingCondition) < 3){
              holder.ratingDetailsCount.setText(allclient.get(position).getRating().getRate() + " " +"(New)");
@@ -116,7 +120,7 @@ public void onBindViewHolder(RecommendedRestListAdapter.MyViewHolder holder, @Su
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus;
+    TextView ClientName,milesAway,cookingTime,ratingDetailsCount,takewayStatus,offerItemTxt;
     ImageView recommendRestImage;
     LinearLayout takewayBackgroundColor;
 
@@ -130,6 +134,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         recommendRestImage = (ImageView) itemView.findViewById(R.id.recommendRestImage);
         takewayStatus = (TextView) itemView.findViewById(R.id.takewayStatus);
         takewayBackgroundColor = (LinearLayout) itemView.findViewById(R.id.takewayBackgroundColor);
+        offerItemTxt = (TextView) itemView.findViewById(R.id.offerItemTxt);
 
     }
 

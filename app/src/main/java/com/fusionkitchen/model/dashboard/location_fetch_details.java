@@ -39,6 +39,9 @@ public class location_fetch_details {
         @SerializedName("getAllActiveCuisine")
         private List<showCuisine> getAllActiveCuisine;
 
+        @SerializedName("offerBannerDetails")
+        private List<BannerImage> offerBannerDetails;
+
         public List<showCuisine> getGetAllActiveCuisine() {
             return getAllActiveCuisine;
         }
@@ -53,6 +56,51 @@ public class location_fetch_details {
 
         public void setRestaurantList(List<showRestaurantist> restaurantList) {
             this.restaurantList = restaurantList;
+        }
+
+        public List<BannerImage> getOfferBannerDetails() {
+            return offerBannerDetails;
+        }
+
+        public void setOfferBannerDetails(List<BannerImage> offerBannerDetails) {
+            this.offerBannerDetails = offerBannerDetails;
+        }
+    }
+
+    public class BannerImage{
+
+        @SerializedName("id")
+        private String  id;
+
+        @SerializedName("name")
+        private String  name;
+
+        @SerializedName("image")
+        private String  image;
+
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
         }
     }
 
@@ -96,6 +144,11 @@ public class location_fetch_details {
 
         @SerializedName("vip")
         private Boolean vip;
+
+        @SerializedName("discount")
+        private Discount discount;
+
+
 
         public TakewayCloseOpenStatus getRestaurantStatus() {
             return restaurantStatus;
@@ -159,6 +212,62 @@ public class location_fetch_details {
 
         public void setRating(RatingDetails rating) {
             this.rating = rating;
+        }
+
+        public Discount getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(Discount discount) {
+            this.discount = discount;
+        }
+    }
+
+    public class Discount{
+
+        @SerializedName("description")
+        private String description;
+
+        @SerializedName("discountType")
+        private String discountType;
+
+        @SerializedName("discount")
+        private String discount;
+
+        @SerializedName("minOrder")
+        private String minOrder;
+
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getDiscountType() {
+            return discountType;
+        }
+
+        public void setDiscountType(String discountType) {
+            this.discountType = discountType;
+        }
+
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
+        }
+
+        public String getMinOrder() {
+            return minOrder;
+        }
+
+        public void setMinOrder(String minOrder) {
+            this.minOrder = minOrder;
         }
     }
 
