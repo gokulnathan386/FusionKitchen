@@ -1466,7 +1466,7 @@ public class Postcode_Activity extends AppCompatActivity implements View.OnClick
                     if (response.body().getSTATUS().equalsIgnoreCase("true")) {
 
                      //   Intent intent = new Intent(Postcode_Activity.this, Dashboard_Activity.class);
-                        Intent intent = new Intent(Postcode_Activity.this, Dashboard_List_Activity.class);
+                        Intent intent = new Intent(Postcode_Activity.this, DashboardListActivity.class);
                         /*--------------------------Login postcode save local------------------------*/
                         sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
 

@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/checkBoxListItem"
         android:orientation="horizontal"
         android:weightSum="2"
         android:padding="5dp"
@@ -36,7 +37,7 @@
 
 
                <CheckBox
-                   android:id="@+id/checkb"
+                   android:id="@+id/checkMultipleFilter"
                    android:layout_width="25dp"
                    android:layout_alignParentEnd="true"
                    android:layout_height="25dp"

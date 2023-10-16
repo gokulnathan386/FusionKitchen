@@ -100,7 +100,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Dashboard_List_Activity extends AppCompatActivity implements View.OnClickListener {
+public class DashboardListActivity extends AppCompatActivity implements View.OnClickListener {
 
     LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav,locationIcon;
     LinearLayout myOrderNav,upComingOrder,myAccountNav,walletNavIcon;
@@ -116,6 +116,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     TextView txtversionname;
     RelativeLayout internetConnection;
     private ShimmerFrameLayout mShimmerViewContainer;
+    ArrayList<String> arrayListDemo = new ArrayList<String>();
 
 
     private ViewPager2 viewPager;
@@ -130,7 +131,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
     RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList,filterOfferList;
-    LinearLayout cusionListView,loadingShimmer;
+    LinearLayout cusionListView,loadingShimmer,allFilterCategoryPopUpShow;
 
     List<location_fetch_details.showRestaurantist> restaurantList;
     List<location_fetch_details.restaurantList> vipRestaurants = new ArrayList<>();
@@ -142,13 +143,14 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_dashboard_list);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Dashboard_List_Activity.this, R.color.status_bar_color));
+        getWindow().setStatusBarColor(ContextCompat.getColor(DashboardListActivity.this, R.color.status_bar_color));
 
 
        /*-------------------start Internet connection is available or Not-----------------*/
         internetConnection = findViewById(R.id.internetConnection);
 
         Button retry = findViewById(R.id.retry);
+        allFilterCategoryPopUpShow = findViewById(R.id.allFilterCategoryPopUpShow);
 
 
         /*-------------------End Internet connection is available or Not-----------------*/
@@ -156,6 +158,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         loadingShimmer = findViewById(R.id.loadingShimmer);
+
 
 
 
@@ -326,7 +329,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
       /* Start Filter List UI Design*/
 
 
-        filtercategoryList= new Dialog(Dashboard_List_Activity.this);
+        filtercategoryList= new Dialog(DashboardListActivity.this);
         filtercategoryList.requestWindowFeature(Window.FEATURE_NO_TITLE);
         filtercategoryList.setContentView(R.layout.filter_category_list);
 
@@ -351,6 +354,8 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             }
         });
 
+
+
         /* End Filter List UI Design*/
 
 
@@ -367,12 +372,21 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!NetworkUtils.isNetworkAvailable(Dashboard_List_Activity.this)) {
+                if (!NetworkUtils.isNetworkAvailable(DashboardListActivity.this)) {
                     internetConnection.setVisibility(View.GONE);
                     mShimmerViewContainer.setVisibility(View.VISIBLE);
                     mShimmerViewContainer.startShimmerAnimation();
                     locationgetshop();
                 }
+            }
+        });
+
+        allFilterCategoryPopUpShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                filtercategoryList.show();
+
             }
         });
 
@@ -411,15 +425,15 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                     if (response.body().getStatus() == true) {
 
 
-                        FetchFilterOfferDetails filterOfferadapter = new FetchFilterOfferDetails(Dashboard_List_Activity.this,response.body().getData().getOffer());
+                        FetchFilterOfferDetails filterOfferadapter = new FetchFilterOfferDetails(DashboardListActivity.this,response.body().getData().getOffer());
                         filterOfferList.setHasFixedSize(true);
-                        filterOfferList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        filterOfferList.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.VERTICAL, false));
                         filterOfferList.setAdapter(filterOfferadapter);
 
 
-                        FetchFilterDetails filteradapter = new FetchFilterDetails(Dashboard_List_Activity.this,response.body().getData().getGetAllActiveCuisine());
+                        FetchFilterDetails filteradapter = new FetchFilterDetails(DashboardListActivity.this,response.body().getData().getGetAllActiveCuisine());
                         filterList.setHasFixedSize(true);
-                        filterList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        filterList.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.VERTICAL, false));
                         filterList.setAdapter(filteradapter);
 
 
@@ -472,13 +486,13 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
                     if (response.body().getSTATUS() == true) {
 
-                        LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(Dashboard_List_Activity.this, response.body().getDate().getGetAllActiveCuisine());
+                        LocationfetchDetailsRest adapter = new LocationfetchDetailsRest(DashboardListActivity.this, response.body().getDate().getGetAllActiveCuisine());
                         cusinesListLayout.setHasFixedSize(true);
-                        cusinesListLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
+                        cusinesListLayout.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.HORIZONTAL, false));
                         cusinesListLayout.setAdapter(adapter);
 
 
-                        dashboardBannerAutoScrollAdapter = new DashboardBannerAutoScrollAdapter(Dashboard_List_Activity.this, response.body().getDate().getOfferBannerDetails());
+                        dashboardBannerAutoScrollAdapter = new DashboardBannerAutoScrollAdapter(DashboardListActivity.this, response.body().getDate().getOfferBannerDetails());
                         viewPager.setAdapter(dashboardBannerAutoScrollAdapter);
 
                         Timer timer = new Timer();
@@ -510,14 +524,14 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
                          }
 
-                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(Dashboard_List_Activity.this, nonVipRestaurants);
+                        RecommendedRestListAdapter recommendList = new RecommendedRestListAdapter(DashboardListActivity.this, nonVipRestaurants);
                         recommendRestList.setHasFixedSize(true);
-                        recommendRestList.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.HORIZONTAL, false));
+                        recommendRestList.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.HORIZONTAL, false));
                         recommendRestList.setAdapter(recommendList);
 
-                        MostPopularRestListAdapter mostPopularList = new MostPopularRestListAdapter(Dashboard_List_Activity.this, nonVipRestaurants);
+                        MostPopularRestListAdapter mostPopularList = new MostPopularRestListAdapter(DashboardListActivity.this, nonVipRestaurants);
                         mostPopularLayout.setHasFixedSize(true);
-                        mostPopularLayout.setLayoutManager(new LinearLayoutManager(Dashboard_List_Activity.this,LinearLayoutManager.VERTICAL, false));
+                        mostPopularLayout.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.VERTICAL, false));
                         mostPopularLayout.setAdapter(mostPopularList);
 
                         loadingShimmer.setVisibility(View.VISIBLE);
@@ -544,7 +558,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
     private void preOrderPopup() {
 
-        preOrderPopUp = new Dialog(Dashboard_List_Activity.this);
+        preOrderPopUp = new Dialog(DashboardListActivity.this);
         preOrderPopUp.requestWindowFeature(Window.FEATURE_NO_TITLE);
         preOrderPopUp.setContentView(R.layout.pre_order_design);
 
@@ -742,7 +756,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
     private void changePostCodeLocation() {
 
-        currentlocationpopup= new Dialog(Dashboard_List_Activity.this);
+        currentlocationpopup= new Dialog(DashboardListActivity.this);
         currentlocationpopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
         currentlocationpopup.setContentView(R.layout.current_location_popup);
 
@@ -809,7 +823,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                     Log.d("asbjdvhgsavdhvsadhgvc", "Location Enable");
                     if (fusedLocationProviderClient == null) {
-                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Dashboard_List_Activity.this);
+                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(DashboardListActivity.this);
                     }
 
                     fusedLocationProviderClient.getLastLocation()
@@ -818,7 +832,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                                 public void onSuccess(Location location) {
                                     if (location != null) {
                                         try {
-                                            Geocoder geocoder = new Geocoder(Dashboard_List_Activity.this, Locale.getDefault());
+                                            Geocoder geocoder = new Geocoder(DashboardListActivity.this, Locale.getDefault());
                                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                             Log.d("LocationAddress", "Lattitude --->" + addresses.get(0).getLatitude());
                                             Log.d("LocationAddress", "Longitude --->" + addresses.get(0).getLongitude());
@@ -835,7 +849,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                                             e.printStackTrace();
                                         }
                                     }else{
-                                        Toast.makeText(Dashboard_List_Activity.this, "Location not available.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DashboardListActivity.this, "Location not available.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -859,7 +873,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                             // Location settings are not satisfied, but this can be fixed by showing the user a dialog
                             try {
                                 ResolvableApiException resolvable = (ResolvableApiException) e;
-                                resolvable.startResolutionForResult(Dashboard_List_Activity.this, REQUEST_CHECK_SETTINGS);
+                                resolvable.startResolutionForResult(DashboardListActivity.this, REQUEST_CHECK_SETTINGS);
                             } catch (IntentSender.SendIntentException sendEx) {
                                 // Ignore the error
                             }
@@ -883,7 +897,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
     private void askPermission() {
 
-        ActivityCompat.requestPermissions(Dashboard_List_Activity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+        ActivityCompat.requestPermissions(DashboardListActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
 
     }
 
@@ -900,7 +914,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
                 if (isGPSEnabled()) {  // Check GPS Location Enable Or Disable
 
-                    Dialog deletepopup = new Dialog(Dashboard_List_Activity.this);
+                    Dialog deletepopup = new Dialog(DashboardListActivity.this);
                     deletepopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     deletepopup.setContentView(R.layout.permission_popup);
 
@@ -945,7 +959,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
 
                 }else{
-                    Dialog deletepopup = new Dialog(Dashboard_List_Activity.this);
+                    Dialog deletepopup = new Dialog(DashboardListActivity.this);
                     deletepopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     deletepopup.setContentView(R.layout.permission_popup);
 
@@ -966,7 +980,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                         public void onClick(View v) {    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                             Intent app_intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                             startActivity(app_intent);
-                            Toast.makeText(Dashboard_List_Activity.this,"Please enable GPS location",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DashboardListActivity.this,"Please enable GPS location",Toast.LENGTH_SHORT).show();
                             deletepopup.dismiss();
 
                         }
@@ -1069,7 +1083,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
             startActivity(new Intent(getApplicationContext(), Help_Activity.class));
         }else if(v == rateApp){
             drawerLayout.close();
-            showRateDialog(Dashboard_List_Activity.this);
+            showRateDialog(DashboardListActivity.this);
             // startActivity(new Intent(getApplicationContext(), Review_Activity.class));
         }else if(v == aboutNav){
             drawerLayout.close();
@@ -1104,7 +1118,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
                 drawerLayout.closeDrawers();
 
             } catch (Exception ex) {
-                Toast.makeText(Dashboard_List_Activity.this, ex.getMessage().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardListActivity.this, ex.getMessage().toString(), Toast.LENGTH_LONG).show();
             }
 
 
@@ -1123,7 +1137,7 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
 
     public void ComingSoon(){
 
-        comeingSoon = new Dialog(Dashboard_List_Activity.this);
+        comeingSoon = new Dialog(DashboardListActivity.this);
         comeingSoon.requestWindowFeature(Window.FEATURE_NO_TITLE);
         comeingSoon.setContentView(R.layout.comingsoon);
 
@@ -1202,6 +1216,15 @@ public class Dashboard_List_Activity extends AppCompatActivity implements View.O
     }
 
 
+    public void FilterCheckBoxAdapter(String id,String str) {
+
+        if(str.equalsIgnoreCase("add")){
+            arrayListDemo.add(id);
+        }else{
+            arrayListDemo.remove(id);
+        }
+
+    }
 
 
 

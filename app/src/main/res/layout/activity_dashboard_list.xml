@@ -7,7 +7,7 @@
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="#fafafa"
-    tools:context=".activity.Dashboard_List_Activity">
+    tools:context=".activity.DashboardListActivity">
 
     <LinearLayout
         android:id="@+id/loadingShimmer"
@@ -17,10 +17,10 @@
         android:layout_height="match_parent">
 
          <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#EEEEEE">
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEEEEE">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -140,9 +140,7 @@
                                     </ImageView>
 
 
-
                                 </LinearLayout>
-
 
                             </LinearLayout>
 
@@ -277,10 +275,6 @@
                             </LinearLayout>
 
 
-
-
-
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -324,7 +318,7 @@
                               android:layout_height="wrap_content">
 
                               <LinearLayout
-                                  android:id="@+id/btn_tran_category"
+                                  android:id="@+id/allFilterCategoryPopUpShow"
                                   android:orientation="horizontal"
                                   android:layout_marginHorizontal="5dp"
                                   android:background="@drawable/filter_boarder"
@@ -408,7 +402,7 @@
                                       android:layout_height="20dp"/>
 
                                   <TextView
-                                      android:text="Today"
+                                      android:text="Offers"
                                       android:textSize="@dimen/_10sdp"
                                       android:textStyle="normal"
                                       android:layout_gravity="center"
@@ -803,7 +797,6 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-
     <RelativeLayout
         android:id="@+id/internetConnection"
         android:layout_width="match_parent"
@@ -854,7 +847,5 @@
 
 
     </RelativeLayout>
-
-
 
 </LinearLayout>
