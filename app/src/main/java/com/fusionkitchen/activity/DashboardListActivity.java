@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,9 +58,11 @@ import com.fusionkitchen.adapter.DashboardBannerAutoScrollAdapter;
 
 import com.fusionkitchen.adapter.FetchFilterDetails;
 import com.fusionkitchen.adapter.FetchFilterOfferDetails;
+import com.fusionkitchen.adapter.FilterFetchResturtantsDetails;
 import com.fusionkitchen.adapter.LocationfetchDetailsRest;
 import com.fusionkitchen.adapter.MostPopularRestListAdapter;
 import com.fusionkitchen.adapter.RecommendedRestListAdapter;
+import com.fusionkitchen.model.FilterFetchDetails;
 import com.fusionkitchen.model.dashboard.FetchFilterListModel;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
 
@@ -91,6 +94,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -107,16 +111,20 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     LinearLayout notificationNav,perksNav,fkPlusNav,addressListNav;
     LinearLayout helpNav,rateApp,aboutNav,allergyInfoNav;
     LinearLayout termsConditionNav,termsOfUse,privacyPolicyNav,deteleAccountNav,logoutNav;
-    LinearLayout loginNav, moreHideView;
+    LinearLayout loginNav, moreHideView,filterListBtn;
+    LinearLayout noRestaurantsAvailable;
     DrawerLayout drawerLayout;
     SharedPreferences slogin;
     SharedPreferences.Editor sloginEditor;
     String user_id;
+    private long mBackPressed;
+    private static final int TIME_INTERVAL = 2000;
     Dialog comeingSoon;
     TextView txtversionname;
     RelativeLayout internetConnection;
-    private ShimmerFrameLayout mShimmerViewContainer;
-    ArrayList<String> arrayListDemo = new ArrayList<String>();
+    NestedScrollView getAllRestListView;
+    private ShimmerFrameLayout mShimmerViewContainer,shimmerFilterSearchIcon;
+    ArrayList<Integer> arrayListDemo = new ArrayList<Integer>();
 
 
     private ViewPager2 viewPager;
@@ -124,6 +132,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     FusedLocationProviderClient fusedLocationProviderClient;
     private DashboardBannerAutoScrollAdapter dashboardBannerAutoScrollAdapter;
     private List<String> imageUrls;
+    String orderTime;
     private int currentPage = 0;
     private static final int REQUEST_CHECK_SETTINGS = 1001;
     private final static int REQUEST_CODE = 100;
@@ -131,6 +140,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
     RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList,filterOfferList;
+    RecyclerView filterLayoutDesign;
     LinearLayout cusionListView,loadingShimmer,allFilterCategoryPopUpShow;
 
     List<location_fetch_details.showRestaurantist> restaurantList;
@@ -151,13 +161,28 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
         Button retry = findViewById(R.id.retry);
         allFilterCategoryPopUpShow = findViewById(R.id.allFilterCategoryPopUpShow);
+        filterLayoutDesign = findViewById(R.id.filterLayoutDesign);
+        arrayListDemo.clear();  // Filter List view Clear
 
 
         /*-------------------End Internet connection is available or Not-----------------*/
 
 
+        TimeZone tz = TimeZone.getTimeZone("Europe/London");   // Current Time and date // 24 hours
+        Calendar c = Calendar.getInstance(tz);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hours = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE);
+
+        orderTime = year +"-" +month+"-"+day+ " " + hours+":"+min;
+
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        shimmerFilterSearchIcon = findViewById(R.id.shimmerFilterSearchIcon);
         loadingShimmer = findViewById(R.id.loadingShimmer);
+        getAllRestListView = findViewById(R.id.getAllRestListView);
+        noRestaurantsAvailable = findViewById(R.id.noRestaurantsAvailable);
 
 
 
@@ -174,9 +199,6 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
         LinearLayout accountProfile = findViewById(R.id.profileSlider);
         cusinesListLayout = findViewById(R.id.cusinesListLayout);
         recommendRestList = findViewById(R.id.recommendRestList);
-
-
-
 
         accountProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,10 +295,6 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
         /*-------------------NavigationView End-------------------------*/
 
-
-
-
-
         viewPager = findViewById(R.id.viewPager);
         currentLocationDetails = findViewById(R.id.currentLocationDetails);
         locationIcon = findViewById(R.id.locationIcon);
@@ -335,6 +353,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
         filterList = filtercategoryList.findViewById(R.id.filterList);
         filterOfferList = filtercategoryList.findViewById(R.id.filterOfferList);
+        filterListBtn = filtercategoryList.findViewById(R.id.filterListBtn);
 
 
         filteList(filtercategoryList,filterList,filterOfferList);
@@ -351,6 +370,24 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
                 filtercategoryList.show();
 
+            }
+        });
+
+        filterListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(!arrayListDemo.isEmpty() && arrayListDemo != null){
+                    getAllRestListView.setVisibility(View.GONE);
+
+                    filterLayoutDesign.setVisibility(View.GONE);
+                    shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
+                    mShimmerViewContainer.startShimmerAnimation();
+                    getFilterListView("","MultiChooseCuisines");
+                    filtercategoryList.dismiss();
+                }else{
+                    Toast.makeText(DashboardListActivity.this, "Please choose any one filter", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -425,7 +462,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                     if (response.body().getStatus() == true) {
 
 
-                        FetchFilterOfferDetails filterOfferadapter = new FetchFilterOfferDetails(DashboardListActivity.this,response.body().getData().getOffer());
+                        FetchFilterOfferDetails filterOfferadapter = new FetchFilterOfferDetails(DashboardListActivity.this,response.body().getData().getOffer(),filtercategoryList);
                         filterOfferList.setHasFixedSize(true);
                         filterOfferList.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.VERTICAL, false));
                         filterOfferList.setAdapter(filterOfferadapter);
@@ -461,9 +498,8 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
         try {
             jsonObj.put("post_code", "SK116TJ");
             jsonObj.put("order_mode", "0");
-            jsonObj.put("order_time", "2023-10-10 12:30");
+            jsonObj.put("order_time", orderTime);
             jsonObj.put("customer_id", "48");
-            jsonObj.put("favourite", false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -518,6 +554,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                                  vipRestaurants.add(response.body().getDate().getRestaurantList().get(i).getRestaurant());
 
                              }else{
+
                                  nonVipRestaurants.add(response.body().getDate().getRestaurantList().get(i).getRestaurant());
 
                              }
@@ -547,6 +584,97 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
             public void onFailure(Call<location_fetch_details> call, Throwable t) {
 
                 Log.d("dasboarderror", "location type : " + t);
+            }
+
+        });
+
+
+
+    }
+
+
+    public void getFilterListView(String adapterfilterid, String paramsChoose) {
+
+
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("post_code", "SK116TJ");
+            jsonObj.put("order_mode", "0");
+            jsonObj.put("order_time", "2023-10-10 12:30");
+            jsonObj.put("customer_id", "48");
+
+            if(paramsChoose.equalsIgnoreCase("MultiChooseCuisines")){
+                jsonObj.put("cuisines", arrayListDemo);
+            }else if(paramsChoose.equalsIgnoreCase("MultiChooseFilter")){
+                jsonObj.put("filter", adapterfilterid);
+            }
+
+
+            Log.d("sdllsdklslks"," " + arrayListDemo);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType, String.valueOf(jsonObj));
+        ApiInterface apiService = ApiClient.getInstance().getClientt().create(ApiInterface.class);
+        Call<FilterFetchDetails> call = apiService.getFetchFilterList(requestBody);
+
+        Log.d("adjbvdbvjdbv", " " + jsonObj);
+
+        call.enqueue(new Callback<FilterFetchDetails>() {
+            @Override
+            public void onResponse(Call<FilterFetchDetails> call, Response<FilterFetchDetails> response) {
+                int statusCode = response.code();
+
+                Log.d("Get-Fetch-Filter", new Gson().toJson(response.body()));
+
+                if (statusCode == 200) {
+
+                    if (response.body().getStatus() == true) {
+
+                        Log.d("FilterListSize","" + response.body().getData().getRestaurantList().size());
+
+                        if(response.body().getData().getRestaurantList().size() != 0){
+
+                            FilterFetchResturtantsDetails filterFetchResturtantsDetails = new FilterFetchResturtantsDetails(DashboardListActivity.this, response.body().getData().getRestaurantList());
+                            filterLayoutDesign.setHasFixedSize(true);
+                            filterLayoutDesign.setLayoutManager(new LinearLayoutManager(DashboardListActivity.this,LinearLayoutManager.VERTICAL, false));
+                            filterLayoutDesign.setAdapter(filterFetchResturtantsDetails);
+                            filterLayoutDesign.setVisibility(View.VISIBLE);
+                            shimmerFilterSearchIcon.setVisibility(View.GONE);
+                            mShimmerViewContainer.stopShimmerAnimation();
+
+                        }else{
+                            Log.d("errorelse","" + response.body().getData().getRestaurantList().size());
+                            getAllRestListView.setVisibility(View.GONE);
+                            recommendRestList.setVisibility(View.GONE);
+                            noRestaurantsAvailable.setVisibility(View.VISIBLE);
+
+                        }
+
+                    }else{
+                        Log.d("elsemnsc","" + response.body().getData().getRestaurantList().size());
+                        getAllRestListView.setVisibility(View.GONE);
+                        recommendRestList.setVisibility(View.GONE);
+                        noRestaurantsAvailable.setVisibility(View.VISIBLE);
+
+                    }
+
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<FilterFetchDetails> call, Throwable t) {
+
+                Log.d("dasboarderror", "location type : " + t);
+                Log.d("sdjbsjcbjsdsd","dvbjdfvmdnfmdnfv");
+
+                getAllRestListView.setVisibility(View.GONE);
+                recommendRestList.setVisibility(View.GONE);
+                noRestaurantsAvailable.setVisibility(View.VISIBLE);
             }
 
         });
@@ -1219,12 +1347,41 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     public void FilterCheckBoxAdapter(String id,String str) {
 
         if(str.equalsIgnoreCase("add")){
-            arrayListDemo.add(id);
+            arrayListDemo.add(Integer.valueOf(id));
         }else{
-            arrayListDemo.remove(id);
+            arrayListDemo.remove(Integer.valueOf(id));
         }
 
     }
+
+    public void onBackPressed() {
+
+
+       if (filterLayoutDesign.getVisibility() == View.VISIBLE) {
+
+           filterLayoutDesign.setVisibility(View.GONE);
+           getAllRestListView.setVisibility(View.VISIBLE);
+
+       }else{
+
+           if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+               super.onBackPressed();
+               Intent backbtn = new Intent(Intent.ACTION_MAIN);
+               backbtn.addCategory(Intent.CATEGORY_HOME);
+               backbtn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startActivity(backbtn);
+               return;
+           }
+           else {
+               Toast.makeText(getBaseContext(), "Please click Back again to exit", Toast.LENGTH_SHORT).show();
+           }
+
+           mBackPressed = System.currentTimeMillis();
+
+       }
+
+    }
+
 
 
 

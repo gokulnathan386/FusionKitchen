@@ -5,6 +5,7 @@ import java.util.Map;
 
 
 import com.fusionkitchen.model.App_download_record_Tracking;
+import com.fusionkitchen.model.FilterFetchDetails;
 import com.fusionkitchen.model.dashboard.FetchFilterListModel;
 import com.fusionkitchen.model.HomeFetch_Detail_Model;
 import com.fusionkitchen.model.Login.Login_mobile_email;
@@ -406,14 +407,15 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<HomeFetch_Detail_Model> getHomePage(@FieldMap Map<String, String> params);
 
- /*   @POST("{fullUrl}")
-    @FormUrlEncoded
-    Call<location_fetch_details> getlocationfetchdetails(@Path(value = "fullUrl", encoded = true) String fullUrl, @FieldMap Map<String, String> params);
-*/
-    @POST("/getRestaurant")
+
+    @POST("/getRestrauntList")
     Call<location_fetch_details> getlocationfetchdetails(@Body RequestBody jsonObj );
 
     @POST("/getFilterType")
     Call<FetchFilterListModel> getFilterList(@Body RequestBody jsonObj );
+
+
+    @POST("/getRestrauntList")
+    Call<FilterFetchDetails> getFetchFilterList(@Body RequestBody jsonObj );
 
 }

@@ -205,8 +205,6 @@
                                         android:layout_height="wrap_content">
                                     </ImageView>
 
-
-
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -225,11 +223,7 @@
                                         android:layout_height="wrap_content">
                                     </TextView>
 
-
-
                                 </LinearLayout>
-
-
 
                             </LinearLayout>
 
@@ -522,6 +516,8 @@
                    </LinearLayout>
 
                 <androidx.core.widget.NestedScrollView
+                    android:id="@+id/getAllRestListView"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -663,11 +659,46 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
-                            tools:listitem="@layout/dashboard_rcommednded_design" />
+                            tools:listitem="@layout/dashboard_recommedend_mostpopular" />
 
                     </LinearLayout>
 
+
                 </androidx.core.widget.NestedScrollView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/filterLayoutDesign"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    tools:listitem="@layout/dashboard_recommedend_mostpopular" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerFilterSearchIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    shimmer:duration="500"
+                    android:visibility="gone"
+                    tools:ignore="MissingConstraints">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+
+                        <include layout="@layout/search_filter_screen_shimmer_layout" />
+
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
             </LinearLayout>
@@ -787,8 +818,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <include layout="@layout/dashboard_screen_shimmer_layout" />
 
@@ -796,6 +826,8 @@
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+
 
     <RelativeLayout
         android:id="@+id/internetConnection"
@@ -847,5 +879,22 @@
 
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/noRestaurantsAvailable"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/no_imgs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/notakeaway" />
+
+
+    </LinearLayout>
 
 </LinearLayout>
