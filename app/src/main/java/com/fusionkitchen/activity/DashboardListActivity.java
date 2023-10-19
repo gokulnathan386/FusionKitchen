@@ -129,9 +129,9 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     Dialog comeingSoon;
     TextView txtversionname;
     RelativeLayout internetConnection;
-    NestedScrollView getAllRestListView;
+    public NestedScrollView getAllRestListView;
     String dateFormate,time24HourPreOrder;
-    private ShimmerFrameLayout mShimmerViewContainer,shimmerFilterSearchIcon;
+    public ShimmerFrameLayout mShimmerViewContainer,shimmerFilterSearchIcon;
     ArrayList<Integer> arrayListDemo = new ArrayList<Integer>();
 
 
@@ -148,7 +148,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     LinearLayout filterListCategory;
     Dialog currentlocationpopup,filtercategoryList,preOrderPopUp;
     RecyclerView mostPopularLayout,cusinesListLayout,recommendRestList,filterList,filterOfferList;
-    RecyclerView filterLayoutDesign;
+    public RecyclerView filterLayoutDesign;
     LinearLayout cusionListView,loadingShimmer,allFilterCategoryPopUpShow;
 
     List<location_fetch_details.showRestaurantist> restaurantList;
@@ -408,7 +408,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
                     filterLayoutDesign.setVisibility(View.GONE);
                     shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
-                    mShimmerViewContainer.startShimmerAnimation();
+                    shimmerFilterSearchIcon.startShimmerAnimation();
                     getFilterListView(0,"MultiChooseCuisines", null,"");
                     filtercategoryList.dismiss();
                 }else{
@@ -465,6 +465,13 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                 listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListSelector));
                 listOffers.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
 
+
+                getAllRestListView.setVisibility(View.GONE);
+
+                filterLayoutDesign.setVisibility(View.GONE);
+                shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
+                shimmerFilterSearchIcon.startShimmerAnimation();
+
                 getFilterListView(3,"MultiChooseFilter", null,"");
             }
         });
@@ -476,6 +483,12 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                 allFilterCategoryPopUpShow.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
                 listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
                 listOffers.getBackground().setTint(getResources().getColor(R.color.ListSelector));
+
+                getAllRestListView.setVisibility(View.GONE);
+
+                filterLayoutDesign.setVisibility(View.GONE);
+                shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
+                shimmerFilterSearchIcon.startShimmerAnimation();
 
                 getFilterListView(1,"MultiChooseFilter", null,"");
             }
@@ -925,6 +938,11 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
                    // mShimmerViewContainer.setVisibility(View.VISIBLE);
                   //  mShimmerViewContainer.startShimmerAnimation();
+                    getAllRestListView.setVisibility(View.GONE);
+
+                    filterLayoutDesign.setVisibility(View.GONE);
+                    shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
+                    shimmerFilterSearchIcon.startShimmerAnimation();
                     getFilterListView(0,"PreOrderFilter", null,"");
 
                     preOrderPopUp.dismiss();
@@ -1467,6 +1485,9 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
            filterLayoutDesign.setVisibility(View.GONE);
            getAllRestListView.setVisibility(View.VISIBLE);
+           allFilterCategoryPopUpShow.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+           listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+           listOffers.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
 
        }else{
 

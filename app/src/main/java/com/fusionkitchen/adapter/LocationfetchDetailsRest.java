@@ -60,6 +60,13 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
                 listviewcuisine.clear();
                 listviewcuisine.add(Integer.valueOf(all_cuisine.get(position).getId()));
                 if (mcontext instanceof DashboardListActivity) {
+
+                    ((DashboardListActivity) mcontext).getAllRestListView.setVisibility(View.GONE);
+
+                    ((DashboardListActivity) mcontext).filterLayoutDesign.setVisibility(View.GONE);
+                    ((DashboardListActivity) mcontext).shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
+                    ((DashboardListActivity) mcontext).shimmerFilterSearchIcon.startShimmerAnimation();
+
                     DashboardListActivity dashboardListActivity = (DashboardListActivity) mcontext;
                     dashboardListActivity.getFilterListView(0,"ListPageCuisines",listviewcuisine,"");
                 }
