@@ -88,9 +88,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -106,16 +108,21 @@ import retrofit2.Response;
 
 public class DashboardListActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String MyPOSTCODEPREFERENCES = "MyPostcodePrefs_extra";
+    SharedPreferences sharedptcode;
+    String key_postcode;
     LinearLayout referToFriend,homePageTxt,profileDetails,favouriteNav,locationIcon;
     LinearLayout myOrderNav,upComingOrder,myAccountNav,walletNavIcon;
     LinearLayout notificationNav,perksNav,fkPlusNav,addressListNav;
     LinearLayout helpNav,rateApp,aboutNav,allergyInfoNav;
     LinearLayout termsConditionNav,termsOfUse,privacyPolicyNav,deteleAccountNav,logoutNav;
     LinearLayout loginNav, moreHideView,filterListBtn;
-    LinearLayout noRestaurantsAvailable;
+    LinearLayout noRestaurantsAvailable,listFilterRating,listOffers;
     DrawerLayout drawerLayout;
     SharedPreferences slogin;
+    String orderTimeMin,orderDate;
     SharedPreferences.Editor sloginEditor;
+    int pre_order_delivery_collection = 0;
     String user_id;
     private long mBackPressed;
     private static final int TIME_INTERVAL = 2000;
@@ -123,6 +130,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     TextView txtversionname;
     RelativeLayout internetConnection;
     NestedScrollView getAllRestListView;
+    String dateFormate,time24HourPreOrder;
     private ShimmerFrameLayout mShimmerViewContainer,shimmerFilterSearchIcon;
     ArrayList<Integer> arrayListDemo = new ArrayList<Integer>();
 
@@ -155,6 +163,24 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(ContextCompat.getColor(DashboardListActivity.this, R.color.status_bar_color));
 
+      //  Session Store date postcode
+        sharedptcode = getSharedPreferences(MyPOSTCODEPREFERENCES, MODE_PRIVATE);
+        key_postcode = (sharedptcode.getString("KEY_postcode", null));
+       /* key_lat = (sharedptcode.getString("KEY_lat", null));
+        key_lon = (sharedptcode.getString("KEY_lon", null));
+        key_area = (sharedptcode.getString("KEY_area", null));
+        fullUrl = (sharedptcode.getString("KEY_posturl", null));*/
+
+
+
+
+
+
+        //  Session Store date Login details
+        slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
+        user_id = (slogin.getString("login_key_cid", null));
+
+
 
        /*-------------------start Internet connection is available or Not-----------------*/
         internetConnection = findViewById(R.id.internetConnection);
@@ -183,13 +209,13 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
         loadingShimmer = findViewById(R.id.loadingShimmer);
         getAllRestListView = findViewById(R.id.getAllRestListView);
         noRestaurantsAvailable = findViewById(R.id.noRestaurantsAvailable);
+        listFilterRating = findViewById(R.id.listFilterRating);
+        listOffers = findViewById(R.id.listOffers);
 
 
 
 
 
-        slogin = getSharedPreferences("myloginPreferences", MODE_PRIVATE);
-        user_id = (slogin.getString("login_key_cid", null));
 
         /*-------------------NavigationView Start-------------------------*/
 
@@ -383,7 +409,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                     filterLayoutDesign.setVisibility(View.GONE);
                     shimmerFilterSearchIcon.setVisibility(View.VISIBLE);
                     mShimmerViewContainer.startShimmerAnimation();
-                    getFilterListView("","MultiChooseCuisines");
+                    getFilterListView(0,"MultiChooseCuisines", null,"");
                     filtercategoryList.dismiss();
                 }else{
                     Toast.makeText(DashboardListActivity.this, "Please choose any one filter", Toast.LENGTH_SHORT).show();
@@ -422,12 +448,38 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onClick(View v) {
 
+                allFilterCategoryPopUpShow.getBackground().setTint(getResources().getColor(R.color.ListSelector));
+                listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+                listOffers.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+
                 filtercategoryList.show();
 
             }
         });
 
+        listFilterRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                allFilterCategoryPopUpShow.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+                listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListSelector));
+                listOffers.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+
+                getFilterListView(3,"MultiChooseFilter", null,"");
+            }
+        });
+
+        listOffers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                allFilterCategoryPopUpShow.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+                listFilterRating.getBackground().setTint(getResources().getColor(R.color.ListUnSelector));
+                listOffers.getBackground().setTint(getResources().getColor(R.color.ListSelector));
+
+                getFilterListView(1,"MultiChooseFilter", null,"");
+            }
+        });
 
     }
 
@@ -435,10 +487,10 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("post_code", "SK116TJ");
-            jsonObj.put("order_mode", "0");
-            jsonObj.put("order_time", "2023-10-11 12:50");
-            jsonObj.put("customer_id", "48");
+            jsonObj.put("post_code", key_postcode);
+            jsonObj.put("order_mode", pre_order_delivery_collection);
+            jsonObj.put("order_time", orderTime);
+            jsonObj.put("customer_id", user_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -496,10 +548,10 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
 
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("post_code", "SK116TJ");
-            jsonObj.put("order_mode", "0");
+            jsonObj.put("post_code", key_postcode);
+            jsonObj.put("order_mode", pre_order_delivery_collection);
             jsonObj.put("order_time", orderTime);
-            jsonObj.put("customer_id", "48");
+            jsonObj.put("customer_id", user_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -593,24 +645,25 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
     }
 
 
-    public void getFilterListView(String adapterfilterid, String paramsChoose) {
+    public void getFilterListView(int adapterfilterid, String paramsChoose, ArrayList<Integer> listviewcuisine,String bannerid) {
 
 
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("post_code", "SK116TJ");
-            jsonObj.put("order_mode", "0");
-            jsonObj.put("order_time", "2023-10-10 12:30");
-            jsonObj.put("customer_id", "48");
+            jsonObj.put("post_code", key_postcode);
+            jsonObj.put("order_mode", pre_order_delivery_collection);
+            jsonObj.put("order_time", orderTime);
+            jsonObj.put("customer_id", user_id);
 
             if(paramsChoose.equalsIgnoreCase("MultiChooseCuisines")){
                 jsonObj.put("cuisines", arrayListDemo);
             }else if(paramsChoose.equalsIgnoreCase("MultiChooseFilter")){
                 jsonObj.put("filter", adapterfilterid);
+            }else if(paramsChoose.equalsIgnoreCase("ListPageCuisines")){
+                jsonObj.put("cuisines", listviewcuisine);
+            }else if(paramsChoose.equalsIgnoreCase("BannerFilter")){
+                jsonObj.put("offerBanner", bannerid);
             }
-
-
-            Log.d("sdllsdklslks"," " + arrayListDemo);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -621,7 +674,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
         ApiInterface apiService = ApiClient.getInstance().getClientt().create(ApiInterface.class);
         Call<FilterFetchDetails> call = apiService.getFetchFilterList(requestBody);
 
-        Log.d("adjbvdbvjdbv", " " + jsonObj);
+        Log.d("fileterapireponse", " " + jsonObj);
 
         call.enqueue(new Callback<FilterFetchDetails>() {
             @Override
@@ -745,7 +798,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String item_position = String.valueOf(id);
                     int positonInt = Integer.valueOf(item_position);
-                    String hrs = dateDay.get(positonInt);
+                     orderDate = dateDay.get(positonInt);
                 }
 
                 @Override
@@ -812,7 +865,7 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item_position = String.valueOf(id);
                 int positonInt = Integer.valueOf(item_position);
-                String im = hoursmin.get(positonInt);
+                orderTimeMin = hoursmin.get(positonInt);
             }
 
             @Override
@@ -828,6 +881,53 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onClick(View v) {
 
+                    String inputDateStr = orderDate;
+                    SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MMM-yyyy");
+                    try {
+                        Date inputDate = inputFormat.parse(inputDateStr);
+                        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        dateFormate = outputFormat.format(inputDate);
+
+                    } catch (java.text.ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    String time12HourPreOrder = orderTimeMin + " " + sessionAMPM.getText().toString();
+
+                    SimpleDateFormat inputFormat12HourPreOrder = new SimpleDateFormat("hh : mm a");
+                    SimpleDateFormat outputFormat24HourPreOrder = new SimpleDateFormat("HH:mm");
+
+                    try {
+                        Date date12HourPreOrder = inputFormat12HourPreOrder.parse(time12HourPreOrder);
+                        time24HourPreOrder = outputFormat24HourPreOrder.format(date12HourPreOrder);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    Log.d("xkjcjdbdbcbdfjbjdbjdf"," " + dateFormate + " " + time24HourPreOrder);
+
+
+
+
+                    SharedPreferences.Editor getmenudata = sharedptcode.edit();
+                //   getmenudata.putString("KEY_posturl", "/location/" + Menu_Url);
+                     getmenudata.putString("KEY_postcode",postCodeAddress.getText().toString());
+                /*  getmenudata.putString("KEY_area", menu_share_area);
+                    getmenudata.putString("KEY_address", menu_share_address);
+                    getmenudata.putString("KEY_lat", lat_menu_share);
+                    getmenudata.putString("KEY_lon", log_menu_share);*/
+                    getmenudata.commit();
+
+                    key_postcode = postCodeAddress.getText().toString();
+                    orderTime = dateFormate + " " + time24HourPreOrder;
+
+                   // mShimmerViewContainer.setVisibility(View.VISIBLE);
+                  //  mShimmerViewContainer.startShimmerAnimation();
+                    getFilterListView(0,"PreOrderFilter", null,"");
+
+                    preOrderPopUp.dismiss();
                 }
             });
 
@@ -847,6 +947,8 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                         radiopickunchecked.setBounds(0, 0, 40, 40);
                         radioPickUp.setCompoundDrawables(radiopickunchecked, null, null, null);
 
+                        pre_order_delivery_collection = 0;
+
                         break;
 
                     case R.id.radioPickUp:
@@ -860,8 +962,12 @@ public class DashboardListActivity extends AppCompatActivity implements View.OnC
                         radiodeliveryunchecked.setBounds(0, 0, 40, 40);
                         radioDelivery.setCompoundDrawables(radiodeliveryunchecked, null, null, null);
 
+                        pre_order_delivery_collection = 1;
+
                         break;
                 }
+
+
             }
         });
 

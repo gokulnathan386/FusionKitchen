@@ -408,14 +408,14 @@ public interface ApiInterface {
     Call<HomeFetch_Detail_Model> getHomePage(@FieldMap Map<String, String> params);
 
 
-    @POST("/getRestrauntList")
+    @POST("/getRestaurantList")
     Call<location_fetch_details> getlocationfetchdetails(@Body RequestBody jsonObj );
 
     @POST("/getFilterType")
     Call<FetchFilterListModel> getFilterList(@Body RequestBody jsonObj );
 
 
-    @POST("/getRestrauntList")
+    @POST("/getRestaurantList")
     Call<FilterFetchDetails> getFetchFilterList(@Body RequestBody jsonObj );
 
 }

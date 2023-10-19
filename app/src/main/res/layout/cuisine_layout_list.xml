@@ -7,6 +7,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cusinesListCardTxt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="1dp"

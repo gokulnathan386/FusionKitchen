@@ -6,12 +6,12 @@ plugins {
 
 android {
 
-       compileSdkVersion 32
+       compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.fusionkitchen"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 73
         versionName "2.11"
         multiDexEnabled true

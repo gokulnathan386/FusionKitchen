@@ -49,7 +49,7 @@ public class FetchFilterOfferDetails extends RecyclerView.Adapter<FetchFilterOff
 
                 if (mcontext instanceof DashboardListActivity) {
                     DashboardListActivity dashboardListActivity = (DashboardListActivity) mcontext;
-                    dashboardListActivity.getFilterListView(allclient.get(position).getId(),"MultiChooseFilter");
+                    dashboardListActivity.getFilterListView(Integer.parseInt(allclient.get(position).getId()),"MultiChooseFilter", null,"");
                     filtercategoryList.dismiss();
                 }
 

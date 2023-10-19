@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.DashboardListActivity;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +42,11 @@ public class DashboardBannerAutoScrollAdapter extends RecyclerView.Adapter<Dashb
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, imageUrls.get(position).getId(), Toast.LENGTH_SHORT).show();
+
+                if (context instanceof DashboardListActivity) {
+                    DashboardListActivity dashboardListActivity = (DashboardListActivity) context;
+                    dashboardListActivity.getFilterListView(0,"BannerFilter",null, imageUrls.get(position).getId());
+                }
             }
         });
 

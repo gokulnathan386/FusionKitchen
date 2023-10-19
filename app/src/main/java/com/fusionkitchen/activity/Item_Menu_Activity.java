@@ -2438,9 +2438,6 @@ public class Item_Menu_Activity extends AppCompatActivity implements OnMapReadyC
                     if (response.body().getStatus().equalsIgnoreCase("true")) {
 
 
-                        //   mAddFab.setVisibility(View.GONE);
-
-
                         colloetion_tattime.setText(response.body().getData().getCollection().getCooking_time());
                         delivery_tattime.setText(response.body().getData().getDelivery().getCooking_time());
 

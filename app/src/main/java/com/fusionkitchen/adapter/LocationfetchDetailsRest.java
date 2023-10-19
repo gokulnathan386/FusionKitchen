@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fusionkitchen.R;
+import com.fusionkitchen.activity.DashboardListActivity;
 import com.fusionkitchen.activity.SVGImage;
 import com.fusionkitchen.model.dashboard.location_fetch_details;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +25,7 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
 
     Context mcontext;
     List<location_fetch_details.showCuisine> all_cuisine;
+    ArrayList<Integer> listviewcuisine = new ArrayList<Integer>();
 
     public LocationfetchDetailsRest(Context mContext, List<location_fetch_details.showCuisine> all_cuisine) {
         this.mcontext = mContext;
@@ -49,15 +53,25 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
         SVGImage utils = new SVGImage();
         utils.fetchSVG(mcontext, url, holder.cusinesImage);
 
+
+        holder.cusinesListCardTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listviewcuisine.clear();
+                listviewcuisine.add(Integer.valueOf(all_cuisine.get(position).getId()));
+                if (mcontext instanceof DashboardListActivity) {
+                    DashboardListActivity dashboardListActivity = (DashboardListActivity) mcontext;
+                    dashboardListActivity.getFilterListView(0,"ListPageCuisines",listviewcuisine,"");
+                }
+            }
+        });
+
     }
 
 
     @Override
     public int getItemCount() {
-
-
         return all_cuisine.size();
-
     }
 
     @Override
@@ -75,12 +89,14 @@ public class LocationfetchDetailsRest extends RecyclerView.Adapter<Locationfetch
 
         TextView cusinesName;
         ImageView cusinesImage;
+        CardView cusinesListCardTxt;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             cusinesName = (TextView) itemView.findViewById(R.id.cusinesName);
             cusinesImage = (ImageView) itemView.findViewById(R.id.cusinesImage);
+            cusinesListCardTxt = (CardView) itemView.findViewById(R.id.cusinesListCardTxt);
 
 
         }
